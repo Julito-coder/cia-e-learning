@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Clock, FileText, Headphones, Video, BookOpen, Mic, Play } from 'lucide-react';
+import { ArrowLeft, Clock, FileText, Headphones, Video, BookOpen, Mic, Play, Trophy } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -7,6 +8,8 @@ import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
 import { LevelBadge } from '@/components/courses/LevelBadge';
 import { demoCourses } from '@/data/demo-courses';
+import { getCourseContent } from '@/data/course-content';
+import { CoursePlayer } from '@/components/course-player/CoursePlayer';
 
 const contentTypeLabels: Record<string, { label: string; icon: React.ElementType }> = {
   text: { label: 'Texte', icon: FileText },
@@ -22,6 +25,10 @@ const contentTypeLabels: Record<string, { label: string; icon: React.ElementType
 export default function CourseDetail() {
   const { id } = useParams();
   const course = demoCourses.find((c) => c.id === id);
+  const content = id ? getCourseContent(id) : undefined;
+  const [playing, setPlaying] = useState(false);
+  const [completed, setCompleted] = useState(false);
+  const [finalScore, setFinalScore] = useState(0);
 
   if (!course) {
     return (
@@ -33,6 +40,31 @@ export default function CourseDetail() {
       </div>
     );
   }
+
+  if (playing && content) {
+    return (
+      <CoursePlayer
+        content={content}
+        courseTitle={course.title}
+        onExit={() => setPlaying(false)}
+        onComplete={(score) => {
+          setFinalScore(score);
+          setCompleted(true);
+          setPlaying(false);
+          // Save progress
+          const progress = JSON.parse(localStorage.getItem('course-progress') || '{}');
+          progress[course.id] = { score, completed: true, date: new Date().toISOString() };
+          localStorage.setItem('course-progress', JSON.stringify(progress));
+        }}
+      />
+    );
+  }
+
+  // Check saved progress
+  const savedProgress = JSON.parse(localStorage.getItem('course-progress') || '{}');
+  const courseProgress = savedProgress[course.id];
+  const displayScore = completed ? finalScore : courseProgress?.score;
+  const isCompleted = completed || courseProgress?.completed;
 
   return (
     <div className="animate-fade-in">
@@ -50,7 +82,7 @@ export default function CourseDetail() {
               <Badge variant="outline" className="text-primary-foreground border-primary-foreground/30">
                 {course.theme}
               </Badge>
-              {course.isNew && <Badge className="bg-cia-gold text-primary-foreground">Nouveau</Badge>}
+              {course.isNew && <Badge className="bg-accent text-accent-foreground">Nouveau</Badge>}
             </div>
             <h1 className="font-display text-2xl md:text-3xl font-bold">{course.title}</h1>
             <p className="text-sm font-mono opacity-70 mt-1">{course.code}</p>
@@ -62,39 +94,61 @@ export default function CourseDetail() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main */}
           <div className="lg:col-span-2 space-y-6">
+            {/* Completed banner */}
+            {isCompleted && (
+              <div className="flex items-center gap-4 p-4 rounded-xl bg-green-50 border-2 border-green-200 dark:bg-green-950 dark:border-green-800">
+                <Trophy className="h-8 w-8 text-green-600" />
+                <div>
+                  <p className="font-bold text-green-700 dark:text-green-400">Cours terminé !</p>
+                  <p className="text-sm text-green-600 dark:text-green-500">Score : {displayScore}/100</p>
+                </div>
+              </div>
+            )}
+
             <Card>
-              <CardHeader>
-                <CardTitle>Description</CardTitle>
-              </CardHeader>
+              <CardHeader><CardTitle>Description</CardTitle></CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">{course.description}</p>
-                <p className="text-muted-foreground mt-3">
-                  Ce cours fait partie du programme de niveau {course.level} dans la catégorie "{course.theme}". 
-                  Le contenu pédagogique sera ajouté prochainement par l'équipe du Centre International d'Antibes.
-                </p>
               </CardContent>
             </Card>
 
             <Card>
-              <CardHeader>
-                <CardTitle>Contenu du cours</CardTitle>
-              </CardHeader>
+              <CardHeader><CardTitle>Contenu du cours</CardTitle></CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  {course.contentTypes.map((type) => {
-                    const info = contentTypeLabels[type];
-                    if (!info) return null;
-                    const Icon = info.icon;
-                    return (
-                      <div key={type} className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
-                        <div className="h-8 w-8 rounded-md bg-primary/10 flex items-center justify-center">
-                          <Icon className="h-4 w-4 text-primary" />
+                  {content ? (
+                    content.steps.map((s, i) => {
+                      const typeInfo = contentTypeLabels[s.type] || { label: s.type, icon: BookOpen };
+                      const Icon = typeInfo.icon;
+                      return (
+                        <div key={s.id} className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
+                          <span className="h-7 w-7 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">
+                            {i + 1}
+                          </span>
+                          <div className="h-8 w-8 rounded-md bg-primary/10 flex items-center justify-center">
+                            <Icon className="h-4 w-4 text-primary" />
+                          </div>
+                          <span className="text-sm font-medium">{s.title}</span>
+                          <Badge variant="outline" className="ml-auto text-xs capitalize">{s.type}</Badge>
                         </div>
-                        <span className="text-sm font-medium">{info.label}</span>
-                        <Badge variant="outline" className="ml-auto text-xs">Bientôt</Badge>
-                      </div>
-                    );
-                  })}
+                      );
+                    })
+                  ) : (
+                    course.contentTypes.map((type) => {
+                      const info = contentTypeLabels[type];
+                      if (!info) return null;
+                      const Icon = info.icon;
+                      return (
+                        <div key={type} className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
+                          <div className="h-8 w-8 rounded-md bg-primary/10 flex items-center justify-center">
+                            <Icon className="h-4 w-4 text-primary" />
+                          </div>
+                          <span className="text-sm font-medium">{info.label}</span>
+                          <Badge variant="outline" className="ml-auto text-xs">Bientôt</Badge>
+                        </div>
+                      );
+                    })
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -104,24 +158,29 @@ export default function CourseDetail() {
           <div className="space-y-4">
             <Card>
               <CardContent className="p-5 space-y-4">
-                <Button size="lg" className="w-full gap-2">
-                  <Play className="h-4 w-4" />
-                  {course.progress && course.progress > 0 ? 'Continuer le cours' : 'Commencer le cours'}
-                </Button>
-                {course.progress !== undefined && course.progress > 0 && (
-                  <div className="space-y-1">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">Progression</span>
-                      <span className="font-medium">{course.progress}%</span>
-                    </div>
-                    <Progress value={course.progress} className="h-2" />
-                  </div>
+                {content ? (
+                  <Button size="lg" className="w-full gap-2" onClick={() => setPlaying(true)}>
+                    <Play className="h-4 w-4" />
+                    {isCompleted ? 'Refaire le cours' : courseProgress ? 'Continuer le cours' : 'Commencer le cours'}
+                  </Button>
+                ) : (
+                  <Button size="lg" className="w-full gap-2" disabled>
+                    <Play className="h-4 w-4" /> Bientôt disponible
+                  </Button>
                 )}
-                {course.score !== undefined && (
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Score</span>
-                    <span className="font-medium">{course.score}/100</span>
-                  </div>
+                {content && (
+                  <p className="text-xs text-muted-foreground text-center">
+                    {content.steps.length} étapes interactives
+                  </p>
+                )}
+                {displayScore !== undefined && (
+                  <>
+                    <Separator />
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Score</span>
+                      <span className="font-medium">{displayScore}/100</span>
+                    </div>
+                  </>
                 )}
                 <Separator />
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
