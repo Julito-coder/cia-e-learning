@@ -1,10 +1,12 @@
 import { useState, useMemo } from 'react';
-import { Search, SlidersHorizontal, X } from 'lucide-react';
+import { Search, X, SlidersHorizontal } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { CourseCard } from '@/components/courses/CourseCard';
 import { demoCourses, CECR_LEVELS, COURSE_THEMES, type CECRLevel, type CourseTheme } from '@/data/demo-courses';
+
+const levelEmojis: Record<string, string> = { A1: '🌱', A2: '🌿', B1: '🌊', B2: '⚡', C1: '🔥', C2: '👑' };
 
 export default function Catalogue() {
   const [search, setSearch] = useState('');
@@ -12,7 +14,6 @@ export default function Catalogue() {
   const [selectedTheme, setSelectedTheme] = useState<CourseTheme | null>(null);
   const [showNew, setShowNew] = useState(false);
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
-  const [showFilters, setShowFilters] = useState(false);
 
   const filteredCourses = useMemo(() => {
     return demoCourses.filter((course) => {
@@ -35,112 +36,88 @@ export default function Catalogue() {
   const hasFilters = selectedLevel || selectedTheme || showNew;
 
   return (
-    <div className="container py-8 animate-fade-in">
-      <div className="mb-8">
-        <h1 className="font-display text-3xl font-bold mb-2">Catalogue des cours</h1>
-        <p className="text-muted-foreground">
+    <div className="container py-8 animate-fade-in pb-24 md:pb-8">
+      <div className="mb-6">
+        <h1 className="font-display text-3xl mb-1">📚 Catalogue</h1>
+        <p className="text-muted-foreground font-semibold">
           {demoCourses.length} cours disponibles — du niveau A1 au C2
         </p>
       </div>
 
-      {/* Search & filter bar */}
-      <div className="flex flex-col sm:flex-row gap-3 mb-6">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Rechercher un cours, un code (ex: B1-VOC-012)..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="pl-10"
-          />
-        </div>
-        <Button
-          variant={showFilters ? 'default' : 'outline'}
-          onClick={() => setShowFilters(!showFilters)}
-          className="gap-2 sm:w-auto w-full"
-        >
-          <SlidersHorizontal className="h-4 w-4" />
-          Filtres
-          {hasFilters && (
-            <Badge variant="secondary" className="ml-1 h-5 w-5 p-0 justify-center rounded-full text-[10px]">
-              {[selectedLevel, selectedTheme, showNew].filter(Boolean).length}
-            </Badge>
-          )}
-        </Button>
+      {/* Search */}
+      <div className="relative mb-5">
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Input
+          placeholder="Rechercher un cours, un code (ex: B1-VOC-012)..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="pl-11 h-12 rounded-2xl border-2 text-sm font-semibold"
+        />
       </div>
 
-      {/* Filters panel */}
-      {showFilters && (
-        <div className="bg-card border rounded-lg p-4 mb-6 space-y-4 animate-fade-in">
-          <div>
-            <p className="text-sm font-medium mb-2">Niveau CECRL</p>
-            <div className="flex flex-wrap gap-2">
-              {CECR_LEVELS.map((level) => (
-                <Button
-                  key={level.value}
-                  variant={selectedLevel === level.value ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => setSelectedLevel(selectedLevel === level.value ? null : level.value)}
-                >
-                  {level.value}
-                </Button>
-              ))}
-            </div>
-          </div>
-          <div>
-            <p className="text-sm font-medium mb-2">Thème</p>
-            <div className="flex flex-wrap gap-2">
-              {COURSE_THEMES.map((theme) => (
-                <Button
-                  key={theme}
-                  variant={selectedTheme === theme ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => setSelectedTheme(selectedTheme === theme ? null : theme)}
-                >
-                  {theme}
-                </Button>
-              ))}
-            </div>
-          </div>
-          <div className="flex items-center gap-4">
-            <Button
-              variant={showNew ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => setShowNew(!showNew)}
-            >
-              🆕 Nouveautés uniquement
-            </Button>
-            {hasFilters && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => { setSelectedLevel(null); setSelectedTheme(null); setShowNew(false); }}
-                className="text-destructive gap-1"
-              >
-                <X className="h-3 w-3" /> Réinitialiser
-              </Button>
-            )}
-          </div>
-        </div>
-      )}
+      {/* Level chips */}
+      <div className="flex gap-2 overflow-x-auto pb-2 mb-3 scrollbar-hide">
+        {CECR_LEVELS.map((level) => (
+          <button
+            key={level.value}
+            onClick={() => setSelectedLevel(selectedLevel === level.value ? null : level.value)}
+            className={`chip-filter whitespace-nowrap ${selectedLevel === level.value ? 'chip-active' : ''}`}
+          >
+            {levelEmojis[level.value]} {level.value}
+          </button>
+        ))}
+      </div>
+
+      {/* Theme chips */}
+      <div className="flex gap-2 overflow-x-auto pb-2 mb-3 scrollbar-hide">
+        {COURSE_THEMES.map((theme) => (
+          <button
+            key={theme}
+            onClick={() => setSelectedTheme(selectedTheme === theme ? null : theme)}
+            className={`chip-filter whitespace-nowrap text-xs ${selectedTheme === theme ? 'chip-active' : ''}`}
+          >
+            {theme}
+          </button>
+        ))}
+      </div>
+
+      {/* Extra filters */}
+      <div className="flex gap-2 mb-5">
+        <button
+          onClick={() => setShowNew(!showNew)}
+          className={`chip-filter text-xs ${showNew ? 'chip-active' : ''}`}
+        >
+          ✨ Nouveautés
+        </button>
+        {hasFilters && (
+          <button
+            onClick={() => { setSelectedLevel(null); setSelectedTheme(null); setShowNew(false); }}
+            className="chip-filter text-xs !border-destructive/30 !text-destructive hover:!bg-destructive/5"
+          >
+            <X className="h-3 w-3" /> Réinitialiser
+          </button>
+        )}
+      </div>
 
       {/* Results */}
       {filteredCourses.length === 0 ? (
         <div className="text-center py-16">
-          <p className="text-lg text-muted-foreground mb-2">Aucun cours trouvé</p>
-          <p className="text-sm text-muted-foreground">Essayez de modifier vos critères de recherche.</p>
+          <div className="text-5xl mb-4">🔍</div>
+          <p className="text-lg font-bold text-muted-foreground mb-1">Aucun cours trouvé</p>
+          <p className="text-sm text-muted-foreground">Essayez de modifier vos critères.</p>
         </div>
       ) : (
         <>
-          <p className="text-sm text-muted-foreground mb-4">{filteredCourses.length} résultat(s)</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-            {filteredCourses.map((course) => (
-              <CourseCard
-                key={course.id}
-                course={course}
-                isFavorite={favorites.has(course.id)}
-                onToggleFavorite={toggleFavorite}
-              />
+          <p className="text-xs text-muted-foreground font-bold mb-4">{filteredCourses.length} résultat(s)</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {filteredCourses.map((course, i) => (
+              <div key={course.id} className="animate-slide-up" style={{ animationDelay: `${i * 50}ms` }}>
+                <CourseCard
+                  course={course}
+                  isFavorite={favorites.has(course.id)}
+                  onToggleFavorite={toggleFavorite}
+                />
+              </div>
             ))}
           </div>
         </>
