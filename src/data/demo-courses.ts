@@ -15,7 +15,7 @@ export interface Course {
   description: string;
   level: CECRLevel;
   theme: CourseTheme;
-  duration: number; // minutes
+  duration: number;
   isNew: boolean;
   imageUrl: string;
   progress?: number;
@@ -59,7 +59,7 @@ export const demoCourses: Course[] = [
     theme: 'Grammaire',
     duration: 20,
     isNew: true,
-    imageUrl: 'https://images.unsplash.com/photo-1503917988258-f87a78e3c995?w=400&h=250&fit=crop',
+    imageUrl: 'https://images.unsplash.com/photo-1503917988258-f87a78e3c995?w=800&h=500&fit=crop&q=80',
     progress: 0,
     contentTypes: ['text', 'qcm', 'fill-blank'],
   },
@@ -72,7 +72,7 @@ export const demoCourses: Course[] = [
     theme: 'Vocabulaire',
     duration: 15,
     isNew: true,
-    imageUrl: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=400&h=250&fit=crop',
+    imageUrl: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&h=500&fit=crop&q=80',
     progress: 45,
     score: 72,
     contentTypes: ['text', 'audio', 'flashcard', 'voice'],
@@ -86,7 +86,7 @@ export const demoCourses: Course[] = [
     theme: 'Culture & Civilisation',
     duration: 25,
     isNew: false,
-    imageUrl: 'https://images.unsplash.com/photo-1533104816931-20fa691ff6ca?w=400&h=250&fit=crop',
+    imageUrl: 'https://images.unsplash.com/photo-1533104816931-20fa691ff6ca?w=800&h=500&fit=crop&q=80',
     progress: 100,
     score: 88,
     contentTypes: ['text', 'video', 'qcm'],
@@ -100,7 +100,7 @@ export const demoCourses: Course[] = [
     theme: 'Grammaire',
     duration: 30,
     isNew: false,
-    imageUrl: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400&h=250&fit=crop',
+    imageUrl: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&h=500&fit=crop&q=80',
     progress: 20,
     score: 60,
     contentTypes: ['text', 'qcm', 'fill-blank', 'drag-drop'],
@@ -114,7 +114,7 @@ export const demoCourses: Course[] = [
     theme: 'Compréhension orale',
     duration: 20,
     isNew: true,
-    imageUrl: 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?w=400&h=250&fit=crop',
+    imageUrl: 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?w=800&h=500&fit=crop&q=80',
     progress: 0,
     contentTypes: ['audio', 'qcm', 'fill-blank'],
   },
@@ -127,7 +127,7 @@ export const demoCourses: Course[] = [
     theme: 'Vocabulaire',
     duration: 35,
     isNew: false,
-    imageUrl: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=400&h=250&fit=crop',
+    imageUrl: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&h=500&fit=crop&q=80',
     progress: 75,
     score: 82,
     contentTypes: ['text', 'audio', 'flashcard', 'qcm'],
@@ -141,7 +141,7 @@ export const demoCourses: Course[] = [
     theme: 'Expression orale',
     duration: 25,
     isNew: false,
-    imageUrl: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&h=250&fit=crop',
+    imageUrl: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=800&h=500&fit=crop&q=80',
     progress: 50,
     contentTypes: ['text', 'video', 'voice'],
   },
@@ -154,7 +154,7 @@ export const demoCourses: Course[] = [
     theme: 'Compréhension écrite',
     duration: 40,
     isNew: true,
-    imageUrl: 'https://images.unsplash.com/photo-1504711434969-e33886168d6c?w=400&h=250&fit=crop',
+    imageUrl: 'https://images.unsplash.com/photo-1504711434969-e33886168d6c?w=800&h=500&fit=crop&q=80',
     progress: 0,
     contentTypes: ['text', 'qcm', 'fill-blank'],
   },
@@ -167,7 +167,7 @@ export const demoCourses: Course[] = [
     theme: 'Grammaire',
     duration: 45,
     isNew: false,
-    imageUrl: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&h=250&fit=crop',
+    imageUrl: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&h=500&fit=crop&q=80',
     progress: 30,
     score: 55,
     contentTypes: ['text', 'qcm', 'drag-drop', 'fill-blank'],
@@ -181,7 +181,7 @@ export const demoCourses: Course[] = [
     theme: 'Culture & Civilisation',
     duration: 50,
     isNew: false,
-    imageUrl: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=250&fit=crop',
+    imageUrl: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&h=500&fit=crop&q=80',
     progress: 10,
     contentTypes: ['text', 'video', 'qcm'],
   },

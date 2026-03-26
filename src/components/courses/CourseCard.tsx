@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Clock, Heart, BookOpen, Headphones, Video, FileText, Mic, Check } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -31,12 +32,13 @@ interface CourseCardProps {
 }
 
 export function CourseCard({ course, isFavorite, onToggleFavorite }: CourseCardProps) {
+  const { t } = useTranslation();
   const levelInfo = CECR_LEVELS.find((l) => l.value === course.level);
   const isComplete = course.progress === 100;
 
   return (
     <div className={`card-duo border-b-4 ${levelBorderColors[course.level] || 'border-b-border'} group`}>
-      <div className="relative aspect-[16/10] overflow-hidden rounded-t-xl">
+      <div className="relative aspect-[16/9] overflow-hidden rounded-t-xl">
         <img
           src={course.imageUrl}
           alt={course.title}
@@ -46,7 +48,7 @@ export function CourseCard({ course, isFavorite, onToggleFavorite }: CourseCardP
         <div className="absolute top-2 left-2 flex gap-1.5">
           <Badge className={`${levelInfo?.color} font-bold text-xs`}>{course.level}</Badge>
           {course.isNew && (
-            <Badge className="bg-cia-gold text-primary-foreground font-bold text-xs">✨ Nouveau</Badge>
+            <Badge className="bg-cia-gold text-primary-foreground font-bold text-xs">{t('course.new')}</Badge>
           )}
         </div>
         {onToggleFavorite && (
@@ -74,14 +76,14 @@ export function CourseCard({ course, isFavorite, onToggleFavorite }: CourseCardP
       </div>
       <div className="p-4">
         <p className="text-[10px] font-bold text-muted-foreground tracking-wider mb-1">{course.code}</p>
-        <h3 className="font-display text-sm leading-tight mb-1.5 line-clamp-2">
+        <h3 className="font-display text-base font-extrabold leading-tight mb-1.5 line-clamp-2">
           {course.title}
         </h3>
         <p className="text-xs text-muted-foreground line-clamp-2 mb-3">{course.description}</p>
 
         <div className="flex items-center justify-between mb-3">
           <span className="flex items-center gap-1 text-xs text-muted-foreground font-semibold">
-            <Clock className="h-3 w-3" /> {course.duration} min
+            <Clock className="h-3 w-3" /> {course.duration} {t('course.min')}
           </span>
           <div className="flex gap-1">
             {course.contentTypes.slice(0, 3).map((type) => {
@@ -108,7 +110,7 @@ export function CourseCard({ course, isFavorite, onToggleFavorite }: CourseCardP
                   : ''
             }`}
           >
-            {isComplete ? '✅ Revoir' : course.progress && course.progress > 0 ? '▶ Continuer' : '🚀 Commencer'}
+            {isComplete ? t('course.review') : course.progress && course.progress > 0 ? t('course.continue') : t('course.start')}
           </Button>
         </Link>
       </div>

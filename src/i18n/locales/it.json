@@ -1,0 +1,12 @@
+{
+  "nav": { "home": "Home", "catalogue": "Catalogo", "test": "Test", "favorites": "Preferiti", "glossary": "Glossario", "login": "Accedi" },
+  "hero": { "greeting": "Ciao, {{name}}!", "subtitle": "Continua così — stai andando alla grande! 🚀", "explore": "Esplora i corsi", "test": "Test di livello", "level": "Livello {{level}}", "progression": "Progresso", "xpTotal": "⚡ XP totali" },
+  "stats": { "coursesCompleted": "Corsi completati", "streak": "Giorni consecutivi", "hoursStudied": "Ore di studio", "gems": "Gemme" },
+  "sections": { "continue": "📖 Continua", "new": "✨ Novità", "seeAll": "Vedi tutto", "levels": "📊 Livelli QCER", "leaderboard": "🏆 Classifica", "path": "🗺️ Percorso" },
+  "course": { "start": "🚀 Inizia", "continue": "▶ Continua", "review": "✅ Rivedi", "min": "min", "new": "✨ Nuovo" },
+  "catalogue": { "title": "📚 Catalogo", "subtitle": "{{count}} corsi disponibili — dal livello A1 al C2", "search": "Cerca un corso o codice (es: B1-VOC-012)...", "newFilter": "✨ Novità", "reset": "Ripristina", "noResults": "Nessun corso trovato", "noResultsHint": "Prova a modificare i filtri.", "results": "{{count}} risultato/i" },
+  "test": { "title": "Test di francese", "intro": "Valuta il tuo livello di francese in {{count}} domande.", "duration": "Durata stimata: <strong>10–15 minuti</strong>.", "progressive": "Domande progressive da A1 a C2 — scelta multipla e completamento", "start": "Inizia il test", "qcmHint": "Scegli la risposta corretta", "fillHint": "Completa la frase", "validate": "Conferma", "correct": "Corretto! 🎉", "incorrect": "Non proprio...", "answer": "Risposta: {{answer}}", "next": "Prossima domanda", "seeResults": "Vedi i risultati", "resultTitle": "Il tuo risultato", "correctAnswers": "risposte corrette", "estimatedLevel": "Il tuo livello stimato", "detailByLevel": "Dettaglio per livello", "retake": "Ripeti il test", "seeCourses": "Vedi corsi {{level}}", "placeholder": "La tua risposta..." },
+  "footer": { "school": "Centre International d'Antibes — Scuola di FLE dal 1985.", "learn": "Imparare", "theSchool": "La scuola", "legal": "Legale", "legalNotice": "Note legali", "privacy": "Privacy", "terms": "Condizioni", "rights": "© {{year}} Centre International d'Antibes. Tutti i diritti riservati." },
+  "dailyGoal": { "title": "Obiettivo del giorno", "streak": "🔥 {{count}} giorni consecutivi!", "done": "{{completed}}/{{goal}} esercizi" },
+  "achievements": { "title": "🏅 Badge" }
+}

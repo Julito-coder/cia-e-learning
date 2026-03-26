@@ -1,10 +1,12 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, CheckCircle2, XCircle, ChevronRight, RotateCcw, Share2, BookOpen } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { ArrowRight, CheckCircle2, XCircle, ChevronRight, RotateCcw, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { CircularProgress } from '@/components/gamification/CircularProgress';
-import { testQuestions, calculateLevel } from '@/data/demo-test';
+import { getRandomTest, calculateLevel } from '@/data/demo-test';
+import type { TestQuestion } from '@/data/demo-test';
 import type { CECRLevel } from '@/data/demo-courses';
 
 type Phase = 'intro' | 'test' | 'result';
@@ -23,15 +25,17 @@ const levelColors: Record<CECRLevel, string> = {
 };
 
 export default function TestNiveau() {
+  const { t } = useTranslation();
   const [phase, setPhase] = useState<Phase>('intro');
+  const [questions, setQuestions] = useState<TestQuestion[]>(() => getRandomTest());
   const [currentQ, setCurrentQ] = useState(0);
   const [answers, setAnswers] = useState<Record<number, boolean>>({});
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
   const [fillBlankInput, setFillBlankInput] = useState('');
 
-  const question = testQuestions[currentQ];
-  const progress = ((currentQ) / testQuestions.length) * 100;
+  const question = questions[currentQ];
+  const progress = ((currentQ) / questions.length) * 100;
 
   const handleAnswer = useCallback((answer: string) => {
     setSelectedAnswer(answer);
@@ -44,14 +48,15 @@ export default function TestNiveau() {
     setSelectedAnswer(null);
     setShowFeedback(false);
     setFillBlankInput('');
-    if (currentQ + 1 >= testQuestions.length) {
+    if (currentQ + 1 >= questions.length) {
       setPhase('result');
     } else {
       setCurrentQ((prev) => prev + 1);
     }
-  }, [currentQ]);
+  }, [currentQ, questions.length]);
 
   const restart = () => {
+    setQuestions(getRandomTest());
     setPhase('intro');
     setCurrentQ(0);
     setAnswers({});
@@ -63,13 +68,12 @@ export default function TestNiveau() {
   // INTRO
   if (phase === 'intro') {
     return (
-      <div className="min-h-[70vh] flex items-center justify-center px-4">
+      <div className="min-h-[70vh] flex items-center justify-center px-4 pb-24 md:pb-0">
         <div className="max-w-lg w-full text-center space-y-6 animate-fade-in">
           <div className="text-6xl mb-2 animate-float">🇫🇷</div>
-          <h1 className="font-display text-3xl md:text-4xl">Test de français</h1>
+          <h1 className="font-display text-3xl md:text-4xl">{t('test.title')}</h1>
           <p className="text-muted-foreground text-lg">
-            Évaluez votre niveau de français en {testQuestions.length} questions.<br />
-            Durée estimée : <strong>10–15 minutes</strong>.
+            {t('test.intro', { count: questions.length })}
           </p>
           <div className="flex flex-wrap justify-center gap-2">
             {(['A1', 'A2', 'B1', 'B2', 'C1', 'C2'] as CECRLevel[]).map((lvl) => (
@@ -77,10 +81,10 @@ export default function TestNiveau() {
             ))}
           </div>
           <p className="text-sm text-muted-foreground">
-            Questions progressives de A1 à C2 — QCM & texte à trous
+            {t('test.progressive')}
           </p>
-          <Button size="lg" className="btn-duo gap-2 text-lg px-8" onClick={() => setPhase('test')}>
-            Commencer le test <ArrowRight className="h-5 w-5" />
+          <Button size="lg" className="btn-duo gap-2 text-lg px-8 bg-destructive text-destructive-foreground hover:bg-destructive/90" onClick={() => setPhase('test')}>
+            {t('test.start')} <ArrowRight className="h-5 w-5" />
           </Button>
         </div>
       </div>
@@ -89,27 +93,27 @@ export default function TestNiveau() {
 
   // RESULT
   if (phase === 'result') {
-    const result = calculateLevel(answers);
+    const result = calculateLevel(answers, questions);
     const totalCorrect = Object.values(answers).filter(Boolean).length;
-    const totalPct = Math.round((totalCorrect / testQuestions.length) * 100);
+    const totalPct = Math.round((totalCorrect / questions.length) * 100);
 
     return (
-      <div className="container max-w-2xl py-12 space-y-8 animate-fade-in">
+      <div className="container max-w-2xl py-12 space-y-8 animate-fade-in pb-24 md:pb-12">
         <div className="text-center space-y-4">
           <div className="text-5xl animate-bounce-in">🎉</div>
-          <h1 className="font-display text-3xl">Votre résultat</h1>
+          <h1 className="font-display text-3xl">{t('test.resultTitle')}</h1>
           <div className="flex justify-center">
             <CircularProgress value={totalPct} size={120} strokeWidth={10} color="stroke-accent">
               <div className="text-center">
-                <p className="text-2xl font-bold">{totalCorrect}/{testQuestions.length}</p>
-                <p className="text-xs text-muted-foreground">bonnes réponses</p>
+                <p className="text-2xl font-bold">{totalCorrect}/{questions.length}</p>
+                <p className="text-xs text-muted-foreground">{t('test.correctAnswers')}</p>
               </div>
             </CircularProgress>
           </div>
         </div>
 
         <div className="card-duo p-6 text-center space-y-3">
-          <p className="text-sm text-muted-foreground font-semibold uppercase tracking-wider">Votre niveau estimé</p>
+          <p className="text-sm text-muted-foreground font-semibold uppercase tracking-wider">{t('test.estimatedLevel')}</p>
           <div className={`inline-flex items-center gap-3 px-6 py-3 rounded-2xl text-primary-foreground ${levelColors[result.level]}`}>
             <span className="text-3xl font-display">{result.level}</span>
           </div>
@@ -117,7 +121,7 @@ export default function TestNiveau() {
         </div>
 
         <div className="card-duo p-5 space-y-3">
-          <h3 className="font-display text-base">Détail par niveau</h3>
+          <h3 className="font-display text-base">{t('test.detailByLevel')}</h3>
           {(Object.entries(result.scores) as [CECRLevel, { correct: number; total: number }][]).map(([lvl, s]) => (
             <div key={lvl} className="flex items-center gap-3">
               <Badge variant="outline" className="w-10 justify-center text-xs">{lvl}</Badge>
@@ -134,11 +138,11 @@ export default function TestNiveau() {
 
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Button variant="outline" className="gap-2" onClick={restart}>
-            <RotateCcw className="h-4 w-4" /> Refaire le test
+            <RotateCcw className="h-4 w-4" /> {t('test.retake')}
           </Button>
           <Link to="/catalogue">
-            <Button className="btn-duo gap-2 w-full sm:w-auto">
-              <BookOpen className="h-4 w-4" /> Voir les cours {result.level}
+            <Button className="btn-duo gap-2 w-full sm:w-auto bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              <BookOpen className="h-4 w-4" /> {t('test.seeCourses', { level: result.level })}
             </Button>
           </Link>
         </div>
@@ -150,11 +154,11 @@ export default function TestNiveau() {
   const isCorrect = selectedAnswer?.trim().toLowerCase() === question.correctAnswer.trim().toLowerCase();
 
   return (
-    <div className="min-h-[70vh] flex flex-col">
+    <div className="min-h-[70vh] flex flex-col pb-24 md:pb-0">
       {/* Progress bar */}
       <div className="sticky top-16 z-40 bg-background/95 backdrop-blur border-b px-4 py-3">
         <div className="container max-w-2xl flex items-center gap-3">
-          <span className="text-sm font-bold text-muted-foreground">{currentQ + 1}/{testQuestions.length}</span>
+          <span className="text-sm font-bold text-muted-foreground">{currentQ + 1}/{questions.length}</span>
           <div className="flex-1 h-3 bg-border rounded-full overflow-hidden">
             <div
               className="h-full bg-accent rounded-full transition-all duration-500"
@@ -170,7 +174,7 @@ export default function TestNiveau() {
           {/* Question */}
           <div className="card-duo p-6">
             <p className="text-sm font-semibold text-accent mb-2">
-              {question.type === 'qcm' ? 'Choisissez la bonne réponse' : 'Complétez la phrase'}
+              {question.type === 'qcm' ? t('test.qcmHint') : t('test.fillHint')}
             </p>
             <h2 className="font-display text-xl md:text-2xl leading-relaxed">{question.question}</h2>
           </div>
@@ -212,7 +216,7 @@ export default function TestNiveau() {
                   value={fillBlankInput}
                   onChange={(e) => setFillBlankInput(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && fillBlankInput && !showFeedback && handleAnswer(fillBlankInput)}
-                  placeholder="Votre réponse..."
+                  placeholder={t('test.placeholder')}
                   className="w-full bg-transparent text-lg font-semibold outline-none placeholder:text-muted-foreground/50"
                   disabled={showFeedback}
                   autoFocus
@@ -224,7 +228,7 @@ export default function TestNiveau() {
                   disabled={!fillBlankInput}
                   onClick={() => handleAnswer(fillBlankInput)}
                 >
-                  Valider
+                  {t('test.validate')}
                 </Button>
               )}
             </div>
@@ -240,16 +244,16 @@ export default function TestNiveau() {
                 }
                 <div>
                   <p className={`font-bold ${isCorrect ? 'text-cia-success' : 'text-destructive'}`}>
-                    {isCorrect ? 'Correct ! 🎉' : 'Pas tout à fait...'}
+                    {isCorrect ? t('test.correct') : t('test.incorrect')}
                   </p>
                   <p className="text-sm text-muted-foreground mt-1">{question.explanation}</p>
                   {!isCorrect && (
-                    <p className="text-sm font-semibold mt-1">Réponse : {question.correctAnswer}</p>
+                    <p className="text-sm font-semibold mt-1">{t('test.answer', { answer: question.correctAnswer })}</p>
                   )}
                 </div>
               </div>
               <Button className="btn-duo w-full mt-4 gap-2" onClick={nextQuestion}>
-                {currentQ + 1 >= testQuestions.length ? 'Voir mes résultats' : 'Question suivante'}
+                {currentQ + 1 >= questions.length ? t('test.seeResults') : t('test.next')}
                 <ChevronRight className="h-4 w-4" />
               </Button>
             </div>
