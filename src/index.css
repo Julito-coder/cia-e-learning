@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,24 +6,24 @@
 
 @layer base {
   :root {
-    /* CIA Navy Blue palette */
-    --background: 210 20% 98%;
-    --foreground: 207 52% 23%;
+    /* CIA Navy Blue palette - Duolingo-inspired */
+    --background: 210 25% 97%;
+    --foreground: 207 52% 18%;
 
     --card: 0 0% 100%;
-    --card-foreground: 207 52% 23%;
+    --card-foreground: 207 52% 18%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 207 52% 23%;
+    --popover-foreground: 207 52% 18%;
 
     --primary: 207 52% 23%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 207 30% 92%;
+    --secondary: 207 20% 93%;
     --secondary-foreground: 207 52% 23%;
 
     --muted: 210 20% 95%;
-    --muted-foreground: 207 20% 46%;
+    --muted-foreground: 207 15% 50%;
 
     --accent: 199 78% 55%;
     --accent-foreground: 0 0% 100%;
@@ -31,11 +31,11 @@
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 210 20% 88%;
-    --input: 210 20% 88%;
+    --border: 210 18% 90%;
+    --input: 210 18% 90%;
     --ring: 207 52% 23%;
 
-    --radius: 0.5rem;
+    --radius: 1rem;
 
     /* CIA specific tokens */
     --cia-navy: 207 52% 23%;
@@ -43,8 +43,14 @@
     --cia-sky: 199 78% 55%;
     --cia-gold: 40 90% 55%;
     --cia-sand: 38 40% 95%;
-    --cia-success: 152 60% 40%;
+
+    /* Gamification tokens */
+    --cia-success: 145 63% 42%;
     --cia-warning: 40 90% 55%;
+    --cia-xp: 28 90% 55%;
+    --cia-streak: 10 80% 55%;
+    --cia-gems: 260 70% 60%;
+    --cia-bonus: 290 65% 55%;
 
     --sidebar-background: 207 52% 23%;
     --sidebar-foreground: 210 20% 95%;
@@ -57,22 +63,22 @@
   }
 
   .dark {
-    --background: 207 52% 10%;
+    --background: 207 52% 8%;
     --foreground: 210 20% 95%;
 
-    --card: 207 52% 14%;
+    --card: 207 52% 12%;
     --card-foreground: 210 20% 95%;
 
-    --popover: 207 52% 14%;
+    --popover: 207 52% 12%;
     --popover-foreground: 210 20% 95%;
 
     --primary: 199 78% 55%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 207 40% 20%;
+    --secondary: 207 40% 18%;
     --secondary-foreground: 210 20% 95%;
 
-    --muted: 207 40% 18%;
+    --muted: 207 40% 16%;
     --muted-foreground: 210 15% 60%;
 
     --accent: 199 78% 55%;
@@ -81,17 +87,17 @@
     --destructive: 0 62% 30%;
     --destructive-foreground: 210 20% 95%;
 
-    --border: 207 40% 20%;
-    --input: 207 40% 20%;
+    --border: 207 40% 18%;
+    --input: 207 40% 18%;
     --ring: 199 78% 55%;
 
-    --sidebar-background: 207 52% 10%;
+    --sidebar-background: 207 52% 8%;
     --sidebar-foreground: 210 20% 95%;
     --sidebar-primary: 199 78% 55%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 207 40% 18%;
+    --sidebar-accent: 207 40% 16%;
     --sidebar-accent-foreground: 210 20% 95%;
-    --sidebar-border: 207 40% 18%;
+    --sidebar-border: 207 40% 16%;
     --sidebar-ring: 199 78% 55%;
   }
 }
@@ -103,19 +109,71 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Source Sans 3', sans-serif;
+    font-family: 'Nunito', 'Source Sans 3', sans-serif;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
   }
 }
 
 @layer utilities {
   .font-display {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
   }
   .font-body {
-    font-family: 'Source Sans 3', sans-serif;
+    font-family: 'Nunito', 'Source Sans 3', sans-serif;
+  }
+}
+
+/* Gamification card style */
+@layer components {
+  .card-duo {
+    @apply relative overflow-hidden rounded-2xl border-2 border-border bg-card transition-all duration-200;
+    box-shadow: 0 4px 0 0 hsl(var(--border));
+  }
+  .card-duo:hover {
+    @apply -translate-y-1;
+    box-shadow: 0 6px 0 0 hsl(var(--border));
+  }
+  .card-duo:active {
+    @apply translate-y-0;
+    box-shadow: 0 2px 0 0 hsl(var(--border));
+  }
+
+  .btn-duo {
+    @apply relative font-bold rounded-2xl border-2 border-b-4 transition-all duration-150 active:border-b-2 active:translate-y-[2px];
+  }
+
+  .chip-filter {
+    @apply inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold border-2 transition-all duration-200 cursor-pointer select-none;
+  }
+  .chip-filter:not(.chip-active) {
+    @apply border-border bg-card text-muted-foreground hover:border-primary/30 hover:bg-primary/5;
+  }
+  .chip-active {
+    @apply border-primary bg-primary text-primary-foreground;
+  }
+
+  .level-node {
+    @apply relative flex items-center justify-center rounded-full border-4 transition-all duration-300;
+  }
+  .level-node-locked {
+    @apply border-muted bg-muted text-muted-foreground;
+  }
+  .level-node-available {
+    @apply border-accent bg-accent/10 text-accent cursor-pointer hover:scale-110;
+  }
+  .level-node-active {
+    @apply border-accent bg-accent text-accent-foreground animate-pulse-soft;
+  }
+  .level-node-complete {
+    @apply border-cia-success bg-cia-success text-primary-foreground;
+  }
+
+  .stat-bubble {
+    @apply flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-bold;
   }
 }
