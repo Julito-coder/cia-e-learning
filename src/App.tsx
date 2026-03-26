@@ -11,6 +11,7 @@ import Catalogue from "./pages/Catalogue";
 import Glossaire from "./pages/Glossaire";
 import Connexion from "./pages/Connexion";
 import CourseDetail from "./pages/CourseDetail";
+import TestNiveau from "./pages/TestNiveau";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminCourses from "./pages/admin/AdminCourses";
@@ -35,6 +36,7 @@ const App = () => (
               <Route path="/catalogue" element={<Catalogue />} />
               <Route path="/glossaire" element={<Glossaire />} />
               <Route path="/cours/:id" element={<CourseDetail />} />
+              <Route path="/test-niveau" element={<TestNiveau />} />
               <Route path="/connexion" element={<Connexion />} />
               <Route path="/favoris" element={<Catalogue />} />
             </Route>

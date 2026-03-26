@@ -6,7 +6,9 @@ interface LearningPathProps {
   courses: Course[];
 }
 
-function getNodeState(course: Course) {
+type NodeState = 'complete' | 'active' | 'available' | 'locked';
+
+function getNodeState(course: Course): NodeState {
   if (course.progress === 100) return 'complete';
   if (course.progress && course.progress > 0) return 'active';
   return 'available';
