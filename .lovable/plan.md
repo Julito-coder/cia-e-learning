@@ -1,92 +1,80 @@
 
 
-## Refonte UX Moderne — Style Duolingo + CIA
+## Corrections et Améliorations — CIA E-Learning
 
-### Vision
-Transformer l'interface actuelle (classique/corporate) en une expérience gamifiée, colorée et engageante inspirée de Duolingo, tout en conservant l'identité CIA (bleu marine, or). Ajouter un test de français en ligne et de nouvelles fonctionnalités de profondeur.
+### 1. Images floues → Résolution HD
+**Fichier : `src/data/demo-courses.ts`**
+- Les URLs Unsplash utilisent `w=400` ce qui donne des images floues sur écrans retina
+- Passer toutes les images à `w=800&h=500&fit=crop&q=80` pour une résolution nette
 
-### 1. Design System — Gamification & Animations
-
-**Fichiers : `src/index.css`, `tailwind.config.ts`**
-- Ajouter des animations riches : bounce, pulse, confetti, progress-fill, slide-up staggeré, shake (erreur), celebrate (succès)
-- Coins arrondis plus prononcés (radius 1rem), ombres douces colorées
-- Palette élargie avec des couleurs vives pour la gamification : vert succès, orange XP, rouge streak, violet bonus
-- Cards avec bordures épaisses colorées en bas (style Duolingo)
-- Transitions fluides sur toutes les interactions
-
-### 2. Header Modernisé
-
-**Fichier : `src/components/layout/Header.tsx`**
-- Barre de navigation avec icônes + labels, style bottom-bar mobile
-- Affichage du streak (flamme 🔥), XP et gems dans le header
-- Avatar utilisateur avec niveau affiché en badge
-- Navigation plus visuelle avec indicateurs actifs animés
-
-### 3. Dashboard (Index) — Gamifié
-
+### 2. Logo CIA dans le header à côté de "Bonjour"
 **Fichier : `src/pages/Index.tsx`**
-- **Section héro** repensée : carte de bienvenue avec mascotte/illustration, streak animé, XP du jour
-- **Parcours d'apprentissage** : parcours visuel en arbre/chemin (comme Duolingo) avec nœuds de cours connectés par des lignes, états verrouillé/en cours/complété
-- **Stats gamifiées** : cercles de progression animés au lieu de barres, compteurs animés
-- **Section "Objectif du jour"** : barre de progression quotidienne (ex: 3/5 exercices)
-- **Classement** : mini leaderboard avec avatars
-- **Badges/Récompenses** : section trophées débloqués
+- Ajouter `<img src="/cia-logo-2.jpg" />` à côté du texte "Bonjour, Marie !" dans la section héro
+- Logo arrondi avec bordure blanche, taille ~48px
 
-### 4. Catalogue Repensé
+### 3. Mise en page — chevauchements
+**Fichiers : `src/pages/Index.tsx`, `src/components/courses/CourseCard.tsx`**
+- Ajouter de l'espacement entre les sections héro et stats
+- S'assurer que les grilles de cards utilisent des gap suffisants
+- Vérifier le padding bottom mobile (bottom nav overlap)
 
-**Fichier : `src/pages/Catalogue.tsx`**
-- Navigation par niveaux en onglets visuels avec icônes et couleurs vives
-- Cards de cours avec design Duolingo : illustration arrondie, barre de progression circulaire, étoiles de difficulté
-- Filtres en chips horizontaux scrollables au lieu du panneau déroulant
-- Animations d'entrée staggerées sur les cards
-
-### 5. CourseCard Moderne
-
+### 4. CourseCard — titres plus visibles, image ajustée
 **Fichier : `src/components/courses/CourseCard.tsx`**
-- Bordure inférieure colorée par niveau (épaisse, 4px)
-- Progression circulaire au lieu de barre
-- Icônes de contenu en pastilles colorées
-- Animation hover plus prononcée (scale + shadow colorée)
-- État "complété" avec check animé et confetti
+- Titre : passer de `text-sm` à `text-base font-display font-extrabold` 
+- Image : réduire le ratio de `aspect-[16/10]` à `aspect-[16/9]` (légèrement moins haute)
+- Garder l'image importante mais donner plus de place au contenu texte
 
-### 6. Test de Français en Ligne (NOUVEAU)
+### 5. Favoris fonctionnels (persistance locale)
+**Fichier : `src/pages/Catalogue.tsx`**
+- Utiliser `localStorage` pour persister les favoris entre sessions
+- Initialiser le state depuis localStorage, sauvegarder à chaque toggle
 
-**Nouveaux fichiers : `src/pages/TestNiveau.tsx`, `src/components/test/*`**
-- **Page d'accueil du test** : explication du test, durée estimée (15-20 min), CTA prominent
-- **Déroulement du test** :
-  - 20-30 questions progressives (A1→C2) adaptatives
-  - Types : QCM, texte à trous, réordonnancement, compréhension audio
-  - Barre de progression animée en haut
-  - Timer optionnel
-  - Animations de transition entre questions (slide)
-  - Feedback visuel immédiat (vert/rouge avec animation)
-- **Page résultat** : niveau CECRL déterminé avec animation de révélation, graphique radar des compétences, recommandations de cours personnalisées, bouton de partage
-- Route : `/test-niveau`
-- Données de test stockées dans `src/data/demo-test.ts`
+### 6. Test de français — rotation de 5-10 tests aléatoires
+**Fichier : `src/data/demo-test.ts`**
+- Créer une banque de ~50-60 questions (au lieu de 27)
+- Ajouter une fonction `getRandomTest(count: number)` qui sélectionne aléatoirement N questions par niveau
+- Garantir que chaque test est différent
 
-### 7. Nouvelles Fonctionnalités
+**Fichier : `src/pages/TestNiveau.tsx`**
+- Utiliser `getRandomTest()` au lieu de `testQuestions` directement
+- Régénérer un nouveau set à chaque restart
 
-**Achievements/Badges** — `src/components/gamification/Achievements.tsx`
-- Système de badges : "Premier cours", "Streak 7 jours", "Score parfait", "Polyglotte"
-- Affichage en grille avec états verrouillé/débloqué
-- Animation de déblocage
+### 7. Bouton "Test de français" — contraste corrigé
+**Fichier : `src/pages/Index.tsx`**
+- Le bouton "Test de niveau" est blanc sur fond clair → texte en bleu marine (`text-primary`)
+- Bordure visible en bleu marine
 
-**Objectifs quotidiens** — `src/components/gamification/DailyGoal.tsx`
-- Widget avec progression circulaire animée
-- Choix d'objectif (5/10/15/20 min par jour)
+### 8. Bouton "Explorer les cours" en rouge entreprise
+**Fichier : `src/pages/Index.tsx`**
+- Changer le bouton "Explorer les cours" pour utiliser `bg-destructive text-destructive-foreground` (rouge CIA)
+- Ajouter des petits rappels visuels rouge sur d'autres pages (badges, accents)
 
-**Parcours visuel** — `src/components/courses/LearningPath.tsx`
-- Visualisation en chemin vertical avec nœuds connectés (inspiré Duolingo)
-- États : verrouillé (gris), disponible (couleur), en cours (pulsing), complété (étoile)
+**Fichiers : `src/pages/Catalogue.tsx`, `src/pages/TestNiveau.tsx`**
+- Ajouter des touches de rouge (petits badges, séparateurs, boutons CTA secondaires)
 
-### 8. Mise à Jour du Routage
+### 9. Multilingue — react-i18next
+**Nouveaux fichiers :**
+- `src/i18n/index.ts` — configuration i18next avec 6 langues (fr, en, es, de, it, ru)
+- `src/i18n/locales/fr.json`, `en.json`, `es.json`, `de.json`, `it.json`, `ru.json` — fichiers de traduction
 
-**Fichier : `src/App.tsx`**
-- Ajouter route `/test-niveau`
-- Ajouter route `/profil` (page profil avec badges)
-- Mettre à jour la navigation
+**Fichiers modifiés :**
+- `src/main.tsx` — importer la config i18n
+- `src/components/layout/Header.tsx` — connecter le sélecteur de langue à i18next (`i18n.changeLanguage()`)
+- `src/pages/Index.tsx` — remplacer les textes statiques par `t('key')`
+- `src/pages/Catalogue.tsx` — idem
+- `src/pages/TestNiveau.tsx` — idem
+- `src/components/courses/CourseCard.tsx` — idem
+- `src/components/layout/Footer.tsx` — idem
 
-### Résumé des fichiers impactés
-- **Modifiés** : `index.css`, `tailwind.config.ts`, `Header.tsx`, `Index.tsx`, `Catalogue.tsx`, `CourseCard.tsx`, `CourseDetail.tsx`, `App.tsx`, `Footer.tsx`
-- **Créés** : `TestNiveau.tsx`, `demo-test.ts`, `LearningPath.tsx`, `DailyGoal.tsx`, `Achievements.tsx`, `CircularProgress.tsx`, `AnimatedCounter.tsx`
+### Résumé des fichiers
+- **Modifiés** : `demo-courses.ts`, `demo-test.ts`, `Index.tsx`, `Catalogue.tsx`, `TestNiveau.tsx`, `CourseCard.tsx`, `Header.tsx`, `Footer.tsx`, `main.tsx`
+- **Créés** : `src/i18n/index.ts`, 6 fichiers de traduction JSON
+
+### Ordre d'implémentation
+1. Images HD + CourseCard styling
+2. Logo header + boutons couleurs
+3. Chevauchements layout
+4. Favoris localStorage
+5. Banque de tests élargie + rotation
+6. Multilingue i18next
 
