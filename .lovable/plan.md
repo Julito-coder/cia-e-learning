@@ -1,67 +1,92 @@
 
 
-## Plateforme E-Learning CIA — Plan d'implémentation
+## Refonte UX Moderne — Style Duolingo + CIA
 
-### Phase 1 : Fondations & Identité visuelle
-- Mise en place de la charte graphique CIA : bleu marine (#1a3a5c), blanc, typographies cohérentes avec cia-france.com
-- Logo CIA intégré (depuis les images fournies)
-- Design system responsive (desktop, tablette, mobile)
+### Vision
+Transformer l'interface actuelle (classique/corporate) en une expérience gamifiée, colorée et engageante inspirée de Duolingo, tout en conservant l'identité CIA (bleu marine, or). Ajouter un test de français en ligne et de nouvelles fonctionnalités de profondeur.
 
-### Phase 2 : Authentification & Profils
-- Inscription / connexion par email + mot de passe via Lovable Cloud
-- Récupération de mot de passe
-- Profil apprenant : niveau CECRL, langue d'interface, nationalité
-- Rôles : apprenant, manager/admin (table séparée pour la sécurité)
+### 1. Design System — Gamification & Animations
 
-### Phase 3 : Espace Apprenant (Front-office)
-- **Tableau de bord** : progression globale, cours récents, cours recommandés, niveau actuel
-- **Catalogue de cours** avec arborescence 3 niveaux (CECRL → Thème → Cours)
-- **Moteur de recherche & filtres** : niveau, thème, type de contenu, durée
-- **Section "Nouveaux cours"** avec badge "Nouveau"
-- **Système de favoris** (cours sauvegardés)
-- **Suivi de progression** : barres de progression, taux de complétion, scores
-- **Glossaire interactif** avec termes liés aux cours
-- **Interface multilingue** : FR, EN, ES, DE, IT, RU
+**Fichiers : `src/index.css`, `tailwind.config.ts`**
+- Ajouter des animations riches : bounce, pulse, confetti, progress-fill, slide-up staggeré, shake (erreur), celebrate (succès)
+- Coins arrondis plus prononcés (radius 1rem), ombres douces colorées
+- Palette élargie avec des couleurs vives pour la gamification : vert succès, orange XP, rouge streak, violet bonus
+- Cards avec bordures épaisses colorées en bas (style Duolingo)
+- Transitions fluides sur toutes les interactions
 
-### Phase 4 : Formats de cours interactifs
-- Lecteur de cours avec contenu mixte :
-  - Texte enrichi (titres, gras, listes, encadrés)
-  - Images et illustrations
-  - Audio intégré (compréhension orale, prononciation)
-  - Vidéo (YouTube embed + hébergement natif via Storage)
-  - **QCM** avec correction immédiate et explications
-  - **Glisser-déposer** (associations, réordonnancement)
-  - **Textes à trous** (complétion)
-  - **Flashcards** (mémorisation vocabulaire)
-  - **Enregistrement vocal** (prononciation de l'apprenant)
+### 2. Header Modernisé
 
-### Phase 5 : Back-office Manager
-- **Gestion des utilisateurs** : création, activation/désactivation, attribution de niveaux, distinction étudiant CIA / client externe
-- **Export CSV/Excel** des données utilisateurs (nom, email, nationalité, niveau, progression)
-- **Tableau de bord analytics** : inscrits actifs, taux de complétion, cours populaires, répartition par niveau/nationalité
-- **Éditeur de cours WYSIWYG** : composition de cours combinant tous les formats interactifs sans compétences techniques
-- **Gestion du catalogue** : publication/dépublication, gestion de l'arborescence niveaux/thèmes
-- **Gestion des abonnements** : offres gratuit/premium/accès école, durée, codes promo
-- **Notifications email** : bienvenue, nouveau cours, relance d'inactivité
+**Fichier : `src/components/layout/Header.tsx`**
+- Barre de navigation avec icônes + labels, style bottom-bar mobile
+- Affichage du streak (flamme 🔥), XP et gems dans le header
+- Avatar utilisateur avec niveau affiché en badge
+- Navigation plus visuelle avec indicateurs actifs animés
 
-### Phase 6 : Modèle économique
-- Accès gratuit limité (cours découverte A1)
-- Abonnement mensuel/annuel pour accès complet
-- Codes promo / activation manuelle pour anciens étudiants CIA
+### 3. Dashboard (Index) — Gamifié
 
-### Base de données (Lovable Cloud)
-- Tables : profiles, courses, course_sections, course_content, exercises, user_progress, user_favorites, glossary_terms, subscriptions, user_roles
-- Storage : médias de cours (audio, vidéo, images), enregistrements vocaux
-- RLS pour sécuriser les accès par rôle
-- Edge Functions pour exports, notifications, analytics
+**Fichier : `src/pages/Index.tsx`**
+- **Section héro** repensée : carte de bienvenue avec mascotte/illustration, streak animé, XP du jour
+- **Parcours d'apprentissage** : parcours visuel en arbre/chemin (comme Duolingo) avec nœuds de cours connectés par des lignes, états verrouillé/en cours/complété
+- **Stats gamifiées** : cercles de progression animés au lieu de barres, compteurs animés
+- **Section "Objectif du jour"** : barre de progression quotidienne (ex: 3/5 exercices)
+- **Classement** : mini leaderboard avec avatars
+- **Badges/Récompenses** : section trophées débloqués
 
-### Stack technique
-- React + TypeScript + Tailwind (charte CIA)
-- Lovable Cloud (Supabase) : auth, DB, storage, edge functions
-- react-i18next pour le multilingue
-- react-beautiful-dnd pour le drag & drop
-- Tiptap ou similar pour l'éditeur WYSIWYG
-- Web Audio API pour l'enregistrement vocal
+### 4. Catalogue Repensé
 
-> **Note** : Ce projet sera construit de manière incrémentale. La première implémentation couvrira les phases 1-3 avec des données de démonstration, puis nous ajouterons progressivement les formats interactifs et le back-office.
+**Fichier : `src/pages/Catalogue.tsx`**
+- Navigation par niveaux en onglets visuels avec icônes et couleurs vives
+- Cards de cours avec design Duolingo : illustration arrondie, barre de progression circulaire, étoiles de difficulté
+- Filtres en chips horizontaux scrollables au lieu du panneau déroulant
+- Animations d'entrée staggerées sur les cards
+
+### 5. CourseCard Moderne
+
+**Fichier : `src/components/courses/CourseCard.tsx`**
+- Bordure inférieure colorée par niveau (épaisse, 4px)
+- Progression circulaire au lieu de barre
+- Icônes de contenu en pastilles colorées
+- Animation hover plus prononcée (scale + shadow colorée)
+- État "complété" avec check animé et confetti
+
+### 6. Test de Français en Ligne (NOUVEAU)
+
+**Nouveaux fichiers : `src/pages/TestNiveau.tsx`, `src/components/test/*`**
+- **Page d'accueil du test** : explication du test, durée estimée (15-20 min), CTA prominent
+- **Déroulement du test** :
+  - 20-30 questions progressives (A1→C2) adaptatives
+  - Types : QCM, texte à trous, réordonnancement, compréhension audio
+  - Barre de progression animée en haut
+  - Timer optionnel
+  - Animations de transition entre questions (slide)
+  - Feedback visuel immédiat (vert/rouge avec animation)
+- **Page résultat** : niveau CECRL déterminé avec animation de révélation, graphique radar des compétences, recommandations de cours personnalisées, bouton de partage
+- Route : `/test-niveau`
+- Données de test stockées dans `src/data/demo-test.ts`
+
+### 7. Nouvelles Fonctionnalités
+
+**Achievements/Badges** — `src/components/gamification/Achievements.tsx`
+- Système de badges : "Premier cours", "Streak 7 jours", "Score parfait", "Polyglotte"
+- Affichage en grille avec états verrouillé/débloqué
+- Animation de déblocage
+
+**Objectifs quotidiens** — `src/components/gamification/DailyGoal.tsx`
+- Widget avec progression circulaire animée
+- Choix d'objectif (5/10/15/20 min par jour)
+
+**Parcours visuel** — `src/components/courses/LearningPath.tsx`
+- Visualisation en chemin vertical avec nœuds connectés (inspiré Duolingo)
+- États : verrouillé (gris), disponible (couleur), en cours (pulsing), complété (étoile)
+
+### 8. Mise à Jour du Routage
+
+**Fichier : `src/App.tsx`**
+- Ajouter route `/test-niveau`
+- Ajouter route `/profil` (page profil avec badges)
+- Mettre à jour la navigation
+
+### Résumé des fichiers impactés
+- **Modifiés** : `index.css`, `tailwind.config.ts`, `Header.tsx`, `Index.tsx`, `Catalogue.tsx`, `CourseCard.tsx`, `CourseDetail.tsx`, `App.tsx`, `Footer.tsx`
+- **Créés** : `TestNiveau.tsx`, `demo-test.ts`, `LearningPath.tsx`, `DailyGoal.tsx`, `Achievements.tsx`, `CircularProgress.tsx`, `AnimatedCounter.tsx`
 
