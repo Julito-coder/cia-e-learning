@@ -1,19 +1,31 @@
-import { useState, useMemo } from 'react';
-import { Search, X, SlidersHorizontal } from 'lucide-react';
+import { useState, useMemo, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Search, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { CourseCard } from '@/components/courses/CourseCard';
 import { demoCourses, CECR_LEVELS, COURSE_THEMES, type CECRLevel, type CourseTheme } from '@/data/demo-courses';
 
 const levelEmojis: Record<string, string> = { A1: '🌱', A2: '🌿', B1: '🌊', B2: '⚡', C1: '🔥', C2: '👑' };
 
+const FAVORITES_KEY = 'cia-favorites';
+
 export default function Catalogue() {
+  const { t } = useTranslation();
   const [search, setSearch] = useState('');
   const [selectedLevel, setSelectedLevel] = useState<CECRLevel | null>(null);
   const [selectedTheme, setSelectedTheme] = useState<CourseTheme | null>(null);
   const [showNew, setShowNew] = useState(false);
-  const [favorites, setFavorites] = useState<Set<string>>(new Set());
+  const [favorites, setFavorites] = useState<Set<string>>(() => {
+    try {
+      const stored = localStorage.getItem(FAVORITES_KEY);
+      return stored ? new Set(JSON.parse(stored)) : new Set();
+    } catch { return new Set(); }
+  });
+
+  useEffect(() => {
+    localStorage.setItem(FAVORITES_KEY, JSON.stringify([...favorites]));
+  }, [favorites]);
 
   const filteredCourses = useMemo(() => {
     return demoCourses.filter((course) => {
@@ -38,9 +50,9 @@ export default function Catalogue() {
   return (
     <div className="container py-8 animate-fade-in pb-24 md:pb-8">
       <div className="mb-6">
-        <h1 className="font-display text-3xl mb-1">📚 Catalogue</h1>
+        <h1 className="font-display text-3xl mb-1">{t('catalogue.title')}</h1>
         <p className="text-muted-foreground font-semibold">
-          {demoCourses.length} cours disponibles — du niveau A1 au C2
+          {t('catalogue.subtitle', { count: demoCourses.length })}
         </p>
       </div>
 
@@ -48,7 +60,7 @@ export default function Catalogue() {
       <div className="relative mb-5">
         <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
-          placeholder="Rechercher un cours, un code (ex: B1-VOC-012)..."
+          placeholder={t('catalogue.search')}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="pl-11 h-12 rounded-2xl border-2 text-sm font-semibold"
@@ -87,14 +99,14 @@ export default function Catalogue() {
           onClick={() => setShowNew(!showNew)}
           className={`chip-filter text-xs ${showNew ? 'chip-active' : ''}`}
         >
-          ✨ Nouveautés
+          {t('catalogue.newFilter')}
         </button>
         {hasFilters && (
           <button
             onClick={() => { setSelectedLevel(null); setSelectedTheme(null); setShowNew(false); }}
             className="chip-filter text-xs !border-destructive/30 !text-destructive hover:!bg-destructive/5"
           >
-            <X className="h-3 w-3" /> Réinitialiser
+            <X className="h-3 w-3" /> {t('catalogue.reset')}
           </button>
         )}
       </div>
@@ -103,12 +115,12 @@ export default function Catalogue() {
       {filteredCourses.length === 0 ? (
         <div className="text-center py-16">
           <div className="text-5xl mb-4">🔍</div>
-          <p className="text-lg font-bold text-muted-foreground mb-1">Aucun cours trouvé</p>
-          <p className="text-sm text-muted-foreground">Essayez de modifier vos critères.</p>
+          <p className="text-lg font-bold text-muted-foreground mb-1">{t('catalogue.noResults')}</p>
+          <p className="text-sm text-muted-foreground">{t('catalogue.noResultsHint')}</p>
         </div>
       ) : (
         <>
-          <p className="text-xs text-muted-foreground font-bold mb-4">{filteredCourses.length} résultat(s)</p>
+          <p className="text-xs text-muted-foreground font-bold mb-4">{t('catalogue.results', { count: filteredCourses.length })}</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {filteredCourses.map((course, i) => (
               <div key={course.id} className="animate-slide-up" style={{ animationDelay: `${i * 50}ms` }}>

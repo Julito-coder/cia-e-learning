@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Menu, X, User, BookOpen, Heart, Globe, Flame, GraduationCap, ClipboardCheck, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -8,14 +9,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-
-const navItems = [
-  { label: 'Accueil', href: '/', icon: Home },
-  { label: 'Catalogue', href: '/catalogue', icon: BookOpen },
-  { label: 'Test', href: '/test-niveau', icon: ClipboardCheck },
-  { label: 'Favoris', href: '/favoris', icon: Heart },
-  { label: 'Glossaire', href: '/glossaire', icon: GraduationCap },
-];
 
 const languages = [
   { code: 'fr', label: '🇫🇷 Français' },
@@ -26,13 +19,24 @@ const languages = [
   { code: 'ru', label: '🇷🇺 Русский' },
 ];
 
-// Demo gamification stats
 const demoStats = { streak: 5, xp: 1250, gems: 42 };
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [currentLang, setCurrentLang] = useState('fr');
+  const { t, i18n } = useTranslation();
   const location = useLocation();
+
+  const navItems = [
+    { label: t('nav.home'), href: '/', icon: Home },
+    { label: t('nav.catalogue'), href: '/catalogue', icon: BookOpen },
+    { label: t('nav.test'), href: '/test-niveau', icon: ClipboardCheck },
+    { label: t('nav.favorites'), href: '/favoris', icon: Heart },
+    { label: t('nav.glossary'), href: '/glossaire', icon: GraduationCap },
+  ];
+
+  const changeLang = (code: string) => {
+    i18n.changeLanguage(code);
+  };
 
   return (
     <>
@@ -94,8 +98,8 @@ export function Header() {
                 {languages.map((lang) => (
                   <DropdownMenuItem
                     key={lang.code}
-                    onClick={() => setCurrentLang(lang.code)}
-                    className={`rounded-lg ${currentLang === lang.code ? 'bg-muted font-bold' : ''}`}
+                    onClick={() => changeLang(lang.code)}
+                    className={`rounded-lg ${i18n.language === lang.code ? 'bg-muted font-bold' : ''}`}
                   >
                     {lang.label}
                   </DropdownMenuItem>
@@ -106,7 +110,7 @@ export function Header() {
             <Link to="/connexion">
               <Button size="sm" className="hidden sm:flex gap-2 btn-duo rounded-xl text-xs font-bold">
                 <User className="h-3.5 w-3.5" />
-                Connexion
+                {t('nav.login')}
               </Button>
             </Link>
 
@@ -124,7 +128,6 @@ export function Header() {
         {/* Mobile nav */}
         {mobileMenuOpen && (
           <div className="md:hidden border-t bg-card p-4 animate-slide-up">
-            {/* Mobile stats */}
             <div className="flex gap-2 mb-4 pb-4 border-b">
               <div className="stat-bubble bg-cia-streak/15 text-cia-streak text-xs">
                 <Flame className="h-3.5 w-3.5" /> {demoStats.streak}
@@ -158,7 +161,7 @@ export function Header() {
                 className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-bold text-muted-foreground hover:bg-muted mt-2 border-t pt-4"
               >
                 <User className="h-5 w-5" />
-                Connexion
+                {t('nav.login')}
               </Link>
             </nav>
           </div>
