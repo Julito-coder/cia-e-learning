@@ -9,6 +9,7 @@ import { Separator } from '@/components/ui/separator';
 import { LevelBadge } from '@/components/courses/LevelBadge';
 import { demoCourses } from '@/data/demo-courses';
 import { getCourseContent } from '@/data/course-content';
+import { getLessonById } from '@/data/curriculum';
 import { CoursePlayer } from '@/components/course-player/CoursePlayer';
 import { useUserProgress, isLevelAccessible } from '@/hooks/useUserProgress';
 import { toast } from 'sonner';
@@ -26,19 +27,39 @@ const contentTypeLabels: Record<string, { label: string; icon: React.ElementType
 
 export default function CourseDetail() {
   const { id } = useParams();
-  const course = demoCourses.find((c) => c.id === id);
+  
+  // Check if this is a curriculum lesson (lesson-N) or a legacy demo course
+  const isCurriculumLesson = id?.startsWith('lesson-');
+  const lessonId = isCurriculumLesson ? parseInt(id!.replace('lesson-', '')) : null;
+  const curriculumData = lessonId ? getLessonById(lessonId) : null;
+  
+  const course = isCurriculumLesson ? null : demoCourses.find((c) => c.id === id);
   const content = id ? getCourseContent(id) : undefined;
   const [playing, setPlaying] = useState(false);
   const [completed, setCompleted] = useState(false);
   const [finalScore, setFinalScore] = useState(0);
   const { cecrLevel, addXP } = useUserProgress();
 
-  if (!course) {
+  // Build a virtual course object for curriculum lessons
+  const displayCourse = course || (curriculumData ? {
+    id: id!,
+    code: `${curriculumData.module.id}-${String(curriculumData.lesson.id).padStart(3, '0')}`,
+    title: curriculumData.lesson.title,
+    description: curriculumData.lesson.description,
+    level: curriculumData.level.level,
+    theme: curriculumData.module.theme as any,
+    duration: 10,
+    isNew: false,
+    imageUrl: 'https://images.unsplash.com/photo-1503917988258-f87a78e3c995?w=800&h=500&fit=crop&q=80',
+    contentTypes: ['text', 'qcm', 'fill-blank'] as any[],
+  } : null);
+
+  if (!displayCourse) {
     return (
       <div className="container py-16 text-center">
         <p className="text-lg text-muted-foreground">Cours introuvable.</p>
-        <Link to="/catalogue">
-          <Button variant="outline" className="mt-4">Retour au catalogue</Button>
+        <Link to="/programme">
+          <Button variant="outline" className="mt-4">Retour au programme</Button>
         </Link>
       </div>
     );
