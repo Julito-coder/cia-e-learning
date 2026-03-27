@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -6,6 +6,10 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/hooks/useAuth';
+import { useUserProgress } from '@/hooks/useUserProgress';
+import { AvatarUpload } from '@/components/profile/AvatarUpload';
+import { Progress } from '@/components/ui/progress';
+import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
 export default function Connexion() {
@@ -16,15 +20,38 @@ export default function Connexion() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signIn, signUp, user, isAdmin } = useAuth();
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const { signIn, signUp, user, isAdmin, signOut } = useAuth();
+  const { totalXP, cecrLevel, xpProgress } = useUserProgress();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) return;
+    supabase.from('profiles').select('avatar_url').eq('user_id', user.id).maybeSingle()
+      .then(({ data }) => { if (data?.avatar_url) setAvatarUrl(data.avatar_url); });
+  }, [user]);
 
   if (user) {
     return (
       <div className="min-h-[80vh] flex items-center justify-center px-4 py-12 animate-fade-in">
         <Card className="w-full max-w-md">
-          <CardContent className="p-6 text-center space-y-4">
-            <p className="text-lg font-medium">Connecté en tant que {user.email}</p>
+          <CardContent className="p-6 space-y-6">
+            <div className="flex flex-col items-center gap-3">
+              <AvatarUpload currentUrl={avatarUrl} onUploaded={setAvatarUrl} size={96} />
+              <p className="text-lg font-medium">{user.email}</p>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex justify-between text-sm">
+                <span className="font-bold">Niveau {cecrLevel}</span>
+                <span className="text-muted-foreground">{totalXP} XP</span>
+              </div>
+              <Progress value={xpProgress.progress} className="h-3" />
+              <p className="text-xs text-muted-foreground text-center">
+                {xpProgress.current} / {xpProgress.needed} XP vers le niveau suivant
+              </p>
+            </div>
+
             {isAdmin && (
               <Link to="/admin">
                 <Button className="w-full">Accéder au back-office</Button>
@@ -33,6 +60,9 @@ export default function Connexion() {
             <Link to="/">
               <Button variant="outline" className="w-full">Retour à la plateforme</Button>
             </Link>
+            <Button variant="ghost" className="w-full text-destructive" onClick={signOut}>
+              Déconnexion
+            </Button>
           </CardContent>
         </Card>
       </div>
