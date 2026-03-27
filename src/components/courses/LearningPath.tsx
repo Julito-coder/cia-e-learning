@@ -39,8 +39,8 @@ const stateStyles = {
   locked: 'border-muted bg-muted text-muted-foreground cursor-not-allowed',
 };
 
-function ModulePopup({ mod, state, progress, onClose }: {
-  mod: Module; state: NodeState; progress: number; onClose: () => void;
+function ModulePopup({ mod, state, progress, onClose, index }: {
+  mod: Module; state: NodeState; progress: number; onClose: () => void; index: number;
 }) {
   const saved = useMemo(() => {
     try { return JSON.parse(localStorage.getItem('course-progress') || '{}'); }
