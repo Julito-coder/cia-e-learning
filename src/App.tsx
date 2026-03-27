@@ -9,6 +9,7 @@ import { AppLayout } from "@/components/layout/AppLayout";
 import { AdminLayout } from "@/components/layout/AdminLayout";
 import Index from "./pages/Index";
 import Catalogue from "./pages/Catalogue";
+import Curriculum from "./pages/Curriculum";
 import Glossaire from "./pages/Glossaire";
 import Connexion from "./pages/Connexion";
 import CourseDetail from "./pages/CourseDetail";
@@ -41,6 +42,7 @@ const App = () => {
             <Route element={<AppLayout />}>
               <Route path="/" element={<Index />} />
               <Route path="/catalogue" element={<Catalogue />} />
+              <Route path="/programme" element={<Curriculum />} />
               <Route path="/glossaire" element={<Glossaire />} />
               <Route path="/cours/:id" element={<CourseDetail />} />
               <Route path="/test-niveau" element={<TestNiveau />} />
