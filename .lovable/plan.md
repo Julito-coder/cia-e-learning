@@ -1,45 +1,31 @@
 
 
-## Plan : Synchroniser Catalogue et Programme
+## Fix: Popup card alternates sides based on node position
 
-### Constat actuel
-- **Catalogue** et **Programme** utilisent déjà les mêmes données (curriculum.ts → demoCourses). Les cours affichés sont identiques.
-- **Programme** est un listing accordion par niveau/module, pas un chemin visuel type Duolingo.
-- Le Catalogue fonctionne déjà bien comme moteur de recherche avec filtres, images et cards.
+### Problem
+The desktop popup card always appears to the right of the node (`left-full`), overlapping the path when the node zigzags right. It should appear on the **opposite side** of the path direction.
 
-### Changements
+### Solution
 
-#### 1. Programme → Chemin tracé visuel (Duolingo-style)
+**File: `src/components/courses/LearningPath.tsx`**
 
-**Fichier : `src/pages/Curriculum.tsx`** — Refonte complète
+1. **Pass the node index to `ModulePopup`** — add an `index: number` prop
+2. **Alternate popup position on desktop**:
+   - When `index % 2 === 0` (node is left / `-translate-x-16`), the path goes right → show popup on the **left** (`right-full mr-6`)
+   - When `index % 2 !== 0` (node is right / `translate-x-16`), the path goes left → show popup on the **right** (`left-full ml-6`)
 
-Remplacer l'accordion actuel par un parcours visuel vertical :
-- Chaque niveau = une section avec un bandeau coloré (titre + emoji + statut verrouillé/actuel)
-- Chaque module = un **noeud circulaire** disposé en zigzag (alternance gauche/droite), relié par une ligne courbe SVG
-- Noeud vert (✓) = module terminé, noeud pulsant (▶) = en cours, noeud gris (★) = disponible, noeud verrouillé (🔒)
-- Au clic sur un noeud, un **tooltip/popup** apparaît avec : titre du module, progression, nombre de leçons, bouton "Commencer" / "Continuer"
-- Utiliser le composant `LearningPath` existant mais l'adapter pour afficher les modules (pas les cours) avec les données du curriculum
-- Garder un filtre par niveau en haut (chips) pour scroller directement au niveau voulu
+### Changes
 
-#### 2. Catalogue — Confirmer qu'il affiche les cours du curriculum
+In `ModulePopup`, replace the fixed desktop positioning:
+```tsx
+// Before (always right)
+<div className="hidden md:block absolute left-full top-1/2 -translate-y-1/2 ml-6 z-50 w-72">
 
-**Fichier : `src/pages/Catalogue.tsx`** — Ajustements mineurs
-- Les données viennent déjà de `demoCourses` (généré depuis curriculum) — OK
-- Ajouter la recherche par **nom de leçon** en plus du nom de module (fouiller dans `curriculum` pour matcher les leçons individuelles)
-- Ajouter un filtre "En cours" et "Terminé" en plus de "Nouveau"
-- Le bouton sur chaque carte mène directement à `/programme?module=X` (déjà le cas)
+// After (alternates based on index)
+<div className={`hidden md:block absolute top-1/2 -translate-y-1/2 z-50 w-72 ${
+  index % 2 === 0 ? 'right-full mr-6' : 'left-full ml-6'
+}`}>
+```
 
-#### 3. LearningPath — Adapter pour les modules curriculum
-
-**Fichier : `src/components/courses/LearningPath.tsx`** — Refactoring
-- Accepter des `Module[]` en plus des `Course[]`
-- Noeuds plus gros (80px), avec l'emoji du badge du module à l'intérieur
-- Ligne de connexion SVG courbe entre les noeuds (pas juste un div droit)
-- Label sous chaque noeud : code module (A1.1) + titre court
-- Progression circulaire autour du noeud si en cours
-
-### Fichiers modifiés
-- `src/pages/Curriculum.tsx` — refonte en chemin tracé visuel
-- `src/components/courses/LearningPath.tsx` — adaptation pour modules
-- `src/pages/Catalogue.tsx` — ajout filtre "En cours"/"Terminé" + recherche par leçon
+This ensures the card appears on the empty side, never overlapping the path connectors.
 
