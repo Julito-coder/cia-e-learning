@@ -9,6 +9,7 @@ import { Separator } from '@/components/ui/separator';
 import { LevelBadge } from '@/components/courses/LevelBadge';
 import { demoCourses } from '@/data/demo-courses';
 import { getCourseContent } from '@/data/course-content';
+import { getLessonById } from '@/data/curriculum';
 import { CoursePlayer } from '@/components/course-player/CoursePlayer';
 import { useUserProgress, isLevelAccessible } from '@/hooks/useUserProgress';
 import { toast } from 'sonner';
@@ -26,31 +27,51 @@ const contentTypeLabels: Record<string, { label: string; icon: React.ElementType
 
 export default function CourseDetail() {
   const { id } = useParams();
-  const course = demoCourses.find((c) => c.id === id);
+  
+  // Check if this is a curriculum lesson (lesson-N) or a legacy demo course
+  const isCurriculumLesson = id?.startsWith('lesson-');
+  const lessonId = isCurriculumLesson ? parseInt(id!.replace('lesson-', '')) : null;
+  const curriculumData = lessonId ? getLessonById(lessonId) : null;
+  
+  const course = isCurriculumLesson ? null : demoCourses.find((c) => c.id === id);
   const content = id ? getCourseContent(id) : undefined;
   const [playing, setPlaying] = useState(false);
   const [completed, setCompleted] = useState(false);
   const [finalScore, setFinalScore] = useState(0);
   const { cecrLevel, addXP } = useUserProgress();
 
-  if (!course) {
+  // Build a virtual course object for curriculum lessons
+  const displayCourse = course || (curriculumData ? {
+    id: id!,
+    code: `${curriculumData.module.id}-${String(curriculumData.lesson.id).padStart(3, '0')}`,
+    title: curriculumData.lesson.title,
+    description: curriculumData.lesson.description,
+    level: curriculumData.level.level,
+    theme: curriculumData.module.theme as any,
+    duration: 10,
+    isNew: false,
+    imageUrl: 'https://images.unsplash.com/photo-1503917988258-f87a78e3c995?w=800&h=500&fit=crop&q=80',
+    contentTypes: ['text', 'qcm', 'fill-blank'] as any[],
+  } : null);
+
+  if (!displayCourse) {
     return (
       <div className="container py-16 text-center">
         <p className="text-lg text-muted-foreground">Cours introuvable.</p>
-        <Link to="/catalogue">
-          <Button variant="outline" className="mt-4">Retour au catalogue</Button>
+        <Link to="/programme">
+          <Button variant="outline" className="mt-4">Retour au programme</Button>
         </Link>
       </div>
     );
   }
 
-  const locked = !isLevelAccessible(course.level, cecrLevel);
+  const locked = !isLevelAccessible(displayCourse.level, cecrLevel);
 
   if (playing && content && !locked) {
     return (
       <CoursePlayer
         content={content}
-        courseTitle={course.title}
+        courseTitle={displayCourse.title}
         onExit={() => setPlaying(false)}
         onComplete={async (score) => {
           setFinalScore(score);
@@ -59,7 +80,7 @@ export default function CourseDetail() {
 
           // Save progress
           const progress = JSON.parse(localStorage.getItem('course-progress') || '{}');
-          progress[course.id] = { score, completed: true, date: new Date().toISOString() };
+          progress[displayCourse.id] = { score, completed: true, date: new Date().toISOString() };
           localStorage.setItem('course-progress', JSON.stringify(progress));
 
           // Award XP based on score
@@ -77,7 +98,7 @@ export default function CourseDetail() {
 
   // Check saved progress
   const savedProgress = JSON.parse(localStorage.getItem('course-progress') || '{}');
-  const courseProgress = savedProgress[course.id];
+  const courseProgress = savedProgress[displayCourse.id];
   const displayScore = completed ? finalScore : courseProgress?.score;
   const isCompleted = completed || courseProgress?.completed;
 
@@ -85,7 +106,7 @@ export default function CourseDetail() {
     <div className="animate-fade-in">
       {/* Hero */}
       <div className="relative h-64 md:h-80 overflow-hidden">
-        <img src={course.imageUrl} alt={course.title} className="h-full w-full object-cover" />
+        <img src={displayCourse.imageUrl} alt={displayCourse.title} className="h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/40 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 p-6 text-primary-foreground">
           <div className="container">
@@ -93,15 +114,15 @@ export default function CourseDetail() {
               <ArrowLeft className="h-4 w-4" /> Catalogue
             </Link>
             <div className="flex items-center gap-2 mb-2">
-              <LevelBadge level={course.level} />
+              <LevelBadge level={displayCourse.level} />
               <Badge variant="outline" className="text-primary-foreground border-primary-foreground/30">
-                {course.theme}
+                {displayCourse.theme}
               </Badge>
-              {course.isNew && <Badge className="bg-accent text-accent-foreground">Nouveau</Badge>}
+              {displayCourse.isNew && <Badge className="bg-accent text-accent-foreground">Nouveau</Badge>}
               {locked && <Badge className="bg-destructive text-destructive-foreground">🔒 Verrouillé</Badge>}
             </div>
-            <h1 className="font-display text-2xl md:text-3xl font-bold">{course.title}</h1>
-            <p className="text-sm font-mono opacity-70 mt-1">{course.code}</p>
+            <h1 className="font-display text-2xl md:text-3xl font-bold">{displayCourse.title}</h1>
+            <p className="text-sm font-mono opacity-70 mt-1">{displayCourse.code}</p>
           </div>
         </div>
       </div>
@@ -117,7 +138,7 @@ export default function CourseDetail() {
                 <div>
                   <p className="font-bold text-amber-700 dark:text-amber-400">Cours verrouillé</p>
                   <p className="text-sm text-amber-600 dark:text-amber-500">
-                    Atteignez le niveau {course.level} (5000 XP par niveau) pour débloquer ce cours.
+                    Atteignez le niveau {displayCourse.level} (5000 XP par niveau) pour débloquer ce cours.
                     Votre niveau actuel : {cecrLevel}
                   </p>
                 </div>
@@ -138,7 +159,7 @@ export default function CourseDetail() {
             <Card>
               <CardHeader><CardTitle>Description</CardTitle></CardHeader>
               <CardContent>
-                <p className="text-muted-foreground">{course.description}</p>
+                <p className="text-muted-foreground">{displayCourse.description}</p>
               </CardContent>
             </Card>
 
@@ -164,7 +185,7 @@ export default function CourseDetail() {
                       );
                     })
                   ) : (
-                    course.contentTypes.map((type) => {
+                    displayCourse.contentTypes.map((type) => {
                       const info = contentTypeLabels[type];
                       if (!info) return null;
                       const Icon = info.icon;
@@ -190,7 +211,7 @@ export default function CourseDetail() {
               <CardContent className="p-5 space-y-4">
                 {locked ? (
                   <Button size="lg" className="w-full gap-2" disabled>
-                    <Lock className="h-4 w-4" /> Niveau {course.level} requis
+                    <Lock className="h-4 w-4" /> Niveau {displayCourse.level} requis
                   </Button>
                 ) : content ? (
                   <Button size="lg" className="w-full gap-2" onClick={() => setPlaying(true)}>
@@ -219,7 +240,7 @@ export default function CourseDetail() {
                 <Separator />
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Clock className="h-4 w-4" />
-                  Durée estimée : {course.duration} minutes
+                  Durée estimée : {displayCourse.duration} minutes
                 </div>
               </CardContent>
             </Card>

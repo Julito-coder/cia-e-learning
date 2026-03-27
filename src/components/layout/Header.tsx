@@ -38,10 +38,10 @@ export function Header() {
 
   const navItems = [
     { label: t('nav.home'), href: '/', icon: Home },
-    { label: t('nav.catalogue'), href: '/catalogue', icon: BookOpen },
+    { label: 'Programme', href: '/programme', icon: BookOpen },
+    { label: t('nav.catalogue'), href: '/catalogue', icon: GraduationCap },
     { label: t('nav.test'), href: '/test-niveau', icon: ClipboardCheck },
     { label: t('nav.favorites'), href: '/favoris', icon: Heart },
-    { label: t('nav.glossary'), href: '/glossaire', icon: GraduationCap },
   ];
 
   const changeLang = (code: string) => {

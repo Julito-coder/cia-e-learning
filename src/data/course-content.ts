@@ -672,6 +672,12 @@ export const allCourseContent: CourseContent[] = [
   },
 ];
 
+// Import curriculum-based content
+import { a1Module1Content } from './a1-module1-content';
+
+// Merge all content: legacy demo courses + curriculum lessons
+const allContent = [...allCourseContent, ...a1Module1Content];
+
 export function getCourseContent(courseId: string): CourseContent | undefined {
-  return allCourseContent.find(c => c.courseId === courseId);
+  return allContent.find(c => c.courseId === courseId);
 }
