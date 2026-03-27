@@ -10,6 +10,7 @@ import { DailyGoal } from '@/components/gamification/DailyGoal';
 import { Achievements } from '@/components/gamification/Achievements';
 import { LearningPath } from '@/components/courses/LearningPath';
 import { demoCourses, CECR_LEVELS } from '@/data/demo-courses';
+import { curriculum } from '@/data/curriculum';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserProgress } from '@/hooks/useUserProgress';
 import { Progress } from '@/components/ui/progress';
@@ -30,7 +31,9 @@ export default function Index() {
   const userName = user?.user_metadata?.first_name || user?.email?.split('@')[0] || 'Apprenant';
   const recentCourses = demoCourses.filter((c) => c.progress && c.progress > 0).slice(0, 3);
   const newCourses = demoCourses.filter((c) => c.isNew).slice(0, 4);
-  const pathCourses = demoCourses.slice(0, 6);
+  // Get first level's modules for path preview
+  const currentLevelData = curriculum.find(l => l.level === cecrLevel) || curriculum[0];
+  const pathModules = currentLevelData.modules;
 
   return (
     <div className="animate-fade-in pb-24 md:pb-0">
@@ -225,7 +228,7 @@ export default function Index() {
             {/* Learning path preview */}
             <div className="card-duo p-5">
               <h3 className="font-display text-base mb-2">{t('sections.path')}</h3>
-              <LearningPath courses={pathCourses} />
+              <LearningPath modules={pathModules} />
             </div>
           </div>
         </div>
