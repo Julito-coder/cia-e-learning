@@ -149,6 +149,7 @@ export type Database = {
           is_cia_student: boolean | null
           last_name: string | null
           nationality: string | null
+          total_xp: number
           updated_at: string
           user_id: string
         }
@@ -164,6 +165,7 @@ export type Database = {
           is_cia_student?: boolean | null
           last_name?: string | null
           nationality?: string | null
+          total_xp?: number
           updated_at?: string
           user_id: string
         }
@@ -179,6 +181,7 @@ export type Database = {
           is_cia_student?: boolean | null
           last_name?: string | null
           nationality?: string | null
+          total_xp?: number
           updated_at?: string
           user_id?: string
         }
