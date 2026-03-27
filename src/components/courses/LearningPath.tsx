@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { Check, Lock, Star, Play } from 'lucide-react';
+import { Check, Lock, Play, X } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import type { Module } from '@/data/curriculum';
@@ -15,19 +15,21 @@ type NodeState = 'complete' | 'active' | 'available' | 'locked';
 
 function getModuleState(mod: Module, locked: boolean): NodeState {
   if (locked) return 'locked';
-  const savedProgress = JSON.parse(localStorage.getItem('course-progress') || '{}');
-  const completed = mod.lessons.filter(l => savedProgress[`lesson-${l.id}`]?.completed).length;
-  if (completed === mod.lessons.length) return 'complete';
-  if (completed > 0) return 'active';
-  // Check if any lesson has content
-  const hasAnyContent = mod.lessons.some(l => !!getCourseContent(`lesson-${l.id}`));
-  return hasAnyContent ? 'available' : 'available';
+  try {
+    const savedProgress = JSON.parse(localStorage.getItem('course-progress') || '{}');
+    const completed = mod.lessons.filter(l => savedProgress[`lesson-${l.id}`]?.completed).length;
+    if (completed === mod.lessons.length) return 'complete';
+    if (completed > 0) return 'active';
+  } catch { /* noop */ }
+  return 'available';
 }
 
 function getModuleProgress(mod: Module): number {
-  const savedProgress = JSON.parse(localStorage.getItem('course-progress') || '{}');
-  const completed = mod.lessons.filter(l => savedProgress[`lesson-${l.id}`]?.completed).length;
-  return Math.round((completed / mod.lessons.length) * 100);
+  try {
+    const savedProgress = JSON.parse(localStorage.getItem('course-progress') || '{}');
+    const completed = mod.lessons.filter(l => savedProgress[`lesson-${l.id}`]?.completed).length;
+    return Math.round((completed / mod.lessons.length) * 100);
+  } catch { return 0; }
 }
 
 const stateStyles = {
@@ -36,6 +38,95 @@ const stateStyles = {
   available: 'border-border bg-card text-foreground hover:border-accent hover:shadow-md cursor-pointer',
   locked: 'border-muted bg-muted text-muted-foreground cursor-not-allowed',
 };
+
+function ModulePopup({ mod, state, progress, onClose }: {
+  mod: Module; state: NodeState; progress: number; onClose: () => void;
+}) {
+  const saved = useMemo(() => {
+    try { return JSON.parse(localStorage.getItem('course-progress') || '{}'); }
+    catch { return {}; }
+  }, []);
+
+  return (
+    <>
+      {/* Backdrop */}
+      <div className="fixed inset-0 z-40 bg-black/20 md:bg-transparent" onClick={onClose} />
+
+      {/* Mobile: bottom sheet / Desktop: side card */}
+      <div className="fixed inset-x-0 bottom-0 z-50 md:hidden animate-slide-up">
+        <div className="bg-card border-t-2 border-border rounded-t-3xl p-5 pb-8 shadow-2xl max-h-[70vh] overflow-y-auto">
+          <PopupContent mod={mod} state={state} progress={progress} saved={saved} onClose={onClose} />
+        </div>
+      </div>
+
+      {/* Desktop: positioned card next to the node */}
+      <div className="hidden md:block absolute left-full top-1/2 -translate-y-1/2 ml-6 z-50 w-72 animate-fade-in">
+        <div className="card-duo p-4 relative">
+          <button onClick={onClose} className="absolute top-2 right-2 h-6 w-6 rounded-full bg-muted flex items-center justify-center hover:bg-muted/80">
+            <X className="h-3 w-3" />
+          </button>
+          <PopupContent mod={mod} state={state} progress={progress} saved={saved} onClose={onClose} />
+        </div>
+      </div>
+    </>
+  );
+}
+
+function PopupContent({ mod, state, progress, saved, onClose }: {
+  mod: Module; state: NodeState; progress: number; saved: Record<string, any>; onClose: () => void;
+}) {
+  return (
+    <>
+      <div className="flex items-center gap-3 mb-3">
+        <span className="text-2xl">{mod.badgeEmoji}</span>
+        <div className="flex-1 min-w-0">
+          <p className="font-display text-sm leading-tight">{mod.title}</p>
+          <p className="text-[11px] text-muted-foreground truncate">{mod.theme}</p>
+        </div>
+      </div>
+      <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
+        <Badge variant="outline" className="text-[10px] font-bold">{mod.id}</Badge>
+        <span className="font-bold">{mod.lessons.length} leçons</span>
+        <span>·</span>
+        <span className="font-bold">🏅 {mod.badge}</span>
+      </div>
+      {progress > 0 && (
+        <div className="mb-3">
+          <Progress value={progress} className="h-2" />
+          <p className="text-[10px] text-right text-muted-foreground mt-0.5">{progress}%</p>
+        </div>
+      )}
+      <div className="space-y-1 max-h-48 overflow-y-auto mb-3">
+        {mod.lessons.map(lesson => {
+          const done = saved[`lesson-${lesson.id}`]?.completed;
+          const hasContent = !!getCourseContent(`lesson-${lesson.id}`);
+          return (
+            <Link
+              key={lesson.id}
+              to={hasContent ? `/cours/lesson-${lesson.id}` : '#'}
+              onClick={e => { if (!hasContent) e.preventDefault(); else onClose(); }}
+              className={`flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs transition-colors ${
+                done ? 'bg-cia-success/10' : hasContent ? 'hover:bg-muted' : 'opacity-40'
+              }`}
+            >
+              <span className={`h-5 w-5 rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0 ${
+                done ? 'bg-cia-success text-primary-foreground' : 'bg-muted text-muted-foreground'
+              }`}>
+                {done ? <Check className="h-3 w-3" /> : lesson.id}
+              </span>
+              <span className="truncate font-semibold">{lesson.title}</span>
+            </Link>
+          );
+        })}
+      </div>
+      <Link to={`/programme?module=${mod.id}`} onClick={onClose}>
+        <button className="w-full btn-duo bg-accent text-accent-foreground border-accent px-4 py-2.5 text-sm font-bold rounded-xl">
+          {state === 'complete' ? 'Revoir' : state === 'active' ? 'Continuer' : 'Commencer'}
+        </button>
+      </Link>
+    </>
+  );
+}
 
 export function LearningPath({ modules, locked = false }: LearningPathProps) {
   const [expandedModule, setExpandedModule] = useState<string | null>(null);
@@ -66,14 +157,12 @@ export function LearningPath({ modules, locked = false }: LearningPathProps) {
               </svg>
             )}
 
-            {/* Node + popup container */}
+            {/* Node + label */}
             <div className={`${offset} relative transition-transform duration-300`}>
-              {/* Node circle */}
               <button
                 onClick={() => state !== 'locked' && setExpandedModule(isExpanded ? null : mod.id)}
                 className={`relative w-20 h-20 rounded-full border-4 flex items-center justify-center transition-all duration-300 ${stateStyles[state]}`}
               >
-                {/* Progress ring for active */}
                 {state === 'active' && progress > 0 && (
                   <svg className="absolute inset-0 w-20 h-20 -rotate-90" viewBox="0 0 80 80">
                     <circle cx="40" cy="40" r="36" fill="none" stroke="hsl(var(--accent) / 0.2)" strokeWidth="4" />
@@ -87,16 +176,15 @@ export function LearningPath({ modules, locked = false }: LearningPathProps) {
                     />
                   </svg>
                 )}
-                {/* Inner icon/emoji */}
                 <span className="text-2xl relative z-10">
-                  {state === 'complete' ? <Check className="h-7 w-7" strokeWidth={3} /> : 
+                  {state === 'complete' ? <Check className="h-7 w-7" strokeWidth={3} /> :
                    state === 'active' ? <Play className="h-6 w-6 ml-0.5" fill="currentColor" /> :
                    state === 'locked' ? <Lock className="h-6 w-6" /> :
                    mod.badgeEmoji}
                 </span>
               </button>
 
-              {/* Label below node */}
+              {/* Label */}
               <div className="mt-2 text-center w-28 mx-auto">
                 <Badge variant="outline" className="text-[10px] font-bold mb-0.5">{mod.id}</Badge>
                 <p className="text-xs font-bold leading-tight line-clamp-2">{mod.title}</p>
@@ -105,60 +193,14 @@ export function LearningPath({ modules, locked = false }: LearningPathProps) {
                 )}
               </div>
 
-              {/* Expanded popup */}
+              {/* Popup — positioned to the side on desktop, bottom sheet on mobile */}
               {isExpanded && state !== 'locked' && (
-                <div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 z-30 w-64 animate-fade-in">
-                  <div className="card-duo p-4">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="text-xl">{mod.badgeEmoji}</span>
-                      <div>
-                        <p className="font-display text-sm">{mod.title}</p>
-                        <p className="text-[10px] text-muted-foreground">{mod.theme}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
-                      <span className="font-bold">{mod.lessons.length} leçons</span>
-                      <span>·</span>
-                      <span className="font-bold">🏅 {mod.badge}</span>
-                    </div>
-                    {progress > 0 && (
-                      <div className="mb-3">
-                        <Progress value={progress} className="h-2" />
-                        <p className="text-[10px] text-right text-muted-foreground mt-0.5">{progress}%</p>
-                      </div>
-                    )}
-                    {/* Lesson list preview */}
-                    <div className="space-y-1 max-h-40 overflow-y-auto mb-3">
-                      {mod.lessons.map(lesson => {
-                        const saved = JSON.parse(localStorage.getItem('course-progress') || '{}');
-                        const done = saved[`lesson-${lesson.id}`]?.completed;
-                        const hasContent = !!getCourseContent(`lesson-${lesson.id}`);
-                        return (
-                          <Link
-                            key={lesson.id}
-                            to={hasContent ? `/cours/lesson-${lesson.id}` : '#'}
-                            onClick={e => !hasContent && e.preventDefault()}
-                            className={`flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs transition-colors ${
-                              done ? 'bg-cia-success/10' : hasContent ? 'hover:bg-muted' : 'opacity-40'
-                            }`}
-                          >
-                            <span className={`h-5 w-5 rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0 ${
-                              done ? 'bg-cia-success text-primary-foreground' : 'bg-muted text-muted-foreground'
-                            }`}>
-                              {done ? <Check className="h-3 w-3" /> : lesson.id}
-                            </span>
-                            <span className="truncate font-semibold">{lesson.title}</span>
-                          </Link>
-                        );
-                      })}
-                    </div>
-                    <Link to={`/programme?module=${mod.id}`}>
-                      <button className="w-full btn-duo bg-accent text-accent-foreground border-accent px-4 py-2 text-xs font-bold rounded-xl">
-                        {state === 'complete' ? 'Revoir' : state === 'active' ? 'Continuer' : 'Commencer'}
-                      </button>
-                    </Link>
-                  </div>
-                </div>
+                <ModulePopup
+                  mod={mod}
+                  state={state}
+                  progress={progress}
+                  onClose={() => setExpandedModule(null)}
+                />
               )}
             </div>
           </div>
