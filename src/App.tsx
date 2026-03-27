@@ -1,3 +1,4 @@
+import { useState, useCallback } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -19,15 +20,20 @@ import AdminAnalytics from "./pages/admin/AdminAnalytics";
 import AdminSubscriptions from "./pages/admin/AdminSubscriptions";
 import AdminSettings from "./pages/admin/AdminSettings";
 import NotFound from "./pages/NotFound";
+import { SplashScreen } from "./components/SplashScreen";
 
 const queryClient = new QueryClient();
 
-const App = () => (
+const App = () => {
+  const [showSplash, setShowSplash] = useState(true);
+  const hideSplash = useCallback(() => setShowSplash(false), []);
+
+  return (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
+      {showSplash && <SplashScreen onFinish={hideSplash} />}
       <Toaster />
       <Sonner />
-      <BrowserRouter>
         <AuthProvider>
           <Routes>
             {/* Front-office */}
@@ -57,6 +63,7 @@ const App = () => (
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
-);
+  );
+};
 
 export default App;
