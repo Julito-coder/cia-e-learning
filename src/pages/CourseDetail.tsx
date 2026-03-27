@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Clock, FileText, Headphones, Video, BookOpen, Mic, Play, Trophy } from 'lucide-react';
+import { ArrowLeft, Clock, FileText, Headphones, Video, BookOpen, Mic, Play, Trophy, Lock } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -10,6 +10,8 @@ import { LevelBadge } from '@/components/courses/LevelBadge';
 import { demoCourses } from '@/data/demo-courses';
 import { getCourseContent } from '@/data/course-content';
 import { CoursePlayer } from '@/components/course-player/CoursePlayer';
+import { useUserProgress, isLevelAccessible } from '@/hooks/useUserProgress';
+import { toast } from 'sonner';
 
 const contentTypeLabels: Record<string, { label: string; icon: React.ElementType }> = {
   text: { label: 'Texte', icon: FileText },
@@ -29,6 +31,7 @@ export default function CourseDetail() {
   const [playing, setPlaying] = useState(false);
   const [completed, setCompleted] = useState(false);
   const [finalScore, setFinalScore] = useState(0);
+  const { cecrLevel, addXP } = useUserProgress();
 
   if (!course) {
     return (
@@ -41,20 +44,32 @@ export default function CourseDetail() {
     );
   }
 
-  if (playing && content) {
+  const locked = !isLevelAccessible(course.level, cecrLevel);
+
+  if (playing && content && !locked) {
     return (
       <CoursePlayer
         content={content}
         courseTitle={course.title}
         onExit={() => setPlaying(false)}
-        onComplete={(score) => {
+        onComplete={async (score) => {
           setFinalScore(score);
           setCompleted(true);
           setPlaying(false);
+
           // Save progress
           const progress = JSON.parse(localStorage.getItem('course-progress') || '{}');
           progress[course.id] = { score, completed: true, date: new Date().toISOString() };
           localStorage.setItem('course-progress', JSON.stringify(progress));
+
+          // Award XP based on score
+          const xpEarned = Math.round(score * 5); // 0-500 XP per course
+          const { leveledUp, newLevel } = await addXP(xpEarned);
+
+          if (leveledUp) {
+            toast.success(`🎉 Niveau supérieur ! Vous êtes maintenant ${newLevel} !`, { duration: 5000 });
+          }
+          toast.success(`+${xpEarned} XP gagnés !`);
         }}
       />
     );
@@ -83,6 +98,7 @@ export default function CourseDetail() {
                 {course.theme}
               </Badge>
               {course.isNew && <Badge className="bg-accent text-accent-foreground">Nouveau</Badge>}
+              {locked && <Badge className="bg-destructive text-destructive-foreground">🔒 Verrouillé</Badge>}
             </div>
             <h1 className="font-display text-2xl md:text-3xl font-bold">{course.title}</h1>
             <p className="text-sm font-mono opacity-70 mt-1">{course.code}</p>
@@ -94,8 +110,22 @@ export default function CourseDetail() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main */}
           <div className="lg:col-span-2 space-y-6">
+            {/* Locked banner */}
+            {locked && (
+              <div className="flex items-center gap-4 p-4 rounded-xl bg-amber-50 border-2 border-amber-200 dark:bg-amber-950 dark:border-amber-800">
+                <Lock className="h-8 w-8 text-amber-600" />
+                <div>
+                  <p className="font-bold text-amber-700 dark:text-amber-400">Cours verrouillé</p>
+                  <p className="text-sm text-amber-600 dark:text-amber-500">
+                    Atteignez le niveau {course.level} (5000 XP par niveau) pour débloquer ce cours.
+                    Votre niveau actuel : {cecrLevel}
+                  </p>
+                </div>
+              </div>
+            )}
+
             {/* Completed banner */}
-            {isCompleted && (
+            {!locked && isCompleted && (
               <div className="flex items-center gap-4 p-4 rounded-xl bg-green-50 border-2 border-green-200 dark:bg-green-950 dark:border-green-800">
                 <Trophy className="h-8 w-8 text-green-600" />
                 <div>
@@ -158,7 +188,11 @@ export default function CourseDetail() {
           <div className="space-y-4">
             <Card>
               <CardContent className="p-5 space-y-4">
-                {content ? (
+                {locked ? (
+                  <Button size="lg" className="w-full gap-2" disabled>
+                    <Lock className="h-4 w-4" /> Niveau {course.level} requis
+                  </Button>
+                ) : content ? (
                   <Button size="lg" className="w-full gap-2" onClick={() => setPlaying(true)}>
                     <Play className="h-4 w-4" />
                     {isCompleted ? 'Refaire le cours' : courseProgress ? 'Continuer le cours' : 'Commencer le cours'}
@@ -168,7 +202,7 @@ export default function CourseDetail() {
                     <Play className="h-4 w-4" /> Bientôt disponible
                   </Button>
                 )}
-                {content && (
+                {content && !locked && (
                   <p className="text-xs text-muted-foreground text-center">
                     {content.steps.length} étapes interactives
                   </p>
