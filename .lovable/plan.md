@@ -1,44 +1,53 @@
 
 
-## Plan : Logo CIA en fond du header, ajout niveau A0, et logo sans encadré
+## Plan : Header modernisé, suppression éléments parasites, splash screen animé
 
-### 1. Header — Logo CIA en filigrane dans le fond bleu dégradé
-
-**Fichier : `src/components/layout/Header.tsx`**
-- Le header actuel est en `bg-card/95` (fond clair). Le fond bleu dégradé est dans le **hero** de `Index.tsx`, pas dans le header.
-- L'utilisateur veut le logo CIA visible en filigrane dans le **hero section** (le bandeau bleu dégradé de la page d'accueil), pas dans la barre de navigation blanche.
-- **Action** : Dans `src/pages/Index.tsx`, ajouter le logo `/cia-logo-2.jpg` en position absolute dans la section hero avec une opacity faible (~0.08-0.10), centré, pour créer un effet watermark dans le dégradé bleu.
-- Supprimer ou ajuster le watermark existant dans le header blanc (lignes 55-60 de Header.tsx) qui n'est pas visible car trop petit et trop transparent.
-
-### 2. Logo CIA à côté de "CIA E-Learning" — sans encadré
+### 1. Header — Nettoyage et modernisation
 
 **Fichier : `src/components/layout/Header.tsx`**
-- Actuellement : `<img src="/cia-logo-2.jpg" className="h-9 rounded-lg" />` — le `rounded-lg` crée un cadre arrondi visible.
-- **Action** : Retirer `rounded-lg`, ajouter un fond transparent. Si le fichier `cia-logo-2.jpg` a un fond blanc, il faut utiliser `mix-blend-mode: multiply` ou `object-fit` pour masquer le fond blanc et ne garder que le logo bleu marine.
-- Alternative : appliquer `rounded-none` et potentiellement un `drop-shadow` subtil pour intégrer le logo proprement.
+- **Supprimer** le logo watermark au centre du header (lignes 54-60 — l'`<img>` avec `opacity-[0.06]`)
+- **Logo sans encadré** : le logo à côté de "CIA E-Learning" a déjà `mixBlendMode: 'multiply'` mais s'assurer qu'il n'y a aucun border/rounded/shadow. Garder juste `className="h-9"` avec le mix-blend.
+- Moderniser le header : bordure inférieure subtile avec un dégradé au lieu de `border-b-2`, ajouter une légère ombre `shadow-sm` pour un look premium.
 
-### 3. Ajout du niveau A0
+### 2. Hero — Supprimer le drapeau français et le logo en fond
 
-**Fichier : `src/data/demo-courses.ts`**
-- Ajouter `'A0'` au type `CECRLevel` : `'A0' | 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2'`
-- Ajouter `A0` dans le tableau `CECR_LEVELS` existant
+**Fichier : `src/pages/Index.tsx`**
+- **Supprimer** le drapeau français 🇫🇷 (ligne 40 — le `div` avec `text-[200px]`)
+- **Supprimer** le logo CIA en filigrane dans le hero (lignes 42-48 — l'`<img>` watermark)
+- Remplacer par un fond plus moderne : motifs géométriques subtils en CSS (circles/dots pattern ou un dégradé mesh) pour un rendu premium sans image
 
-**Fichier : `src/hooks/useUserProgress.ts`**
-- Ajouter `'A0'` en premier dans `LEVEL_ORDER` : `['A0', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2']`
-- Ajuster les seuils XP :
-  - 0-4999 → A0
-  - 5000-9999 → A1
-  - 10000-14999 → A2
-  - 15000-19999 → B1
-  - 20000-24999 → B2
-  - 25000-29999 → C1
-  - 30000+ → C2
+### 3. Splash Screen animé au lancement
 
-**Fichiers impactés** : `CourseCard.tsx`, `Catalogue.tsx`, `Index.tsx` — le type `CECRLevel` se propage automatiquement, mais vérifier que les filtres et badges incluent A0.
+**Nouveau fichier : `src/components/SplashScreen.tsx`**
+- Composant plein écran (`fixed inset-0 z-[100]`) avec fond bleu marine (couleur primaire CIA)
+- Logo CIA centré avec animation :
+  - Fade-in + scale de 0.7 à 1 (0-600ms)
+  - Pulse subtil (600-1200ms)
+  - Texte "CIA E-Learning" apparaît en dessous avec fade-in décalé
+  - Fade-out du tout (1200-1800ms)
+- Barre de chargement fine en bas (accent color) qui se remplit
+- Après ~2 secondes, le splash disparaît avec une transition smooth
 
-### Résumé des fichiers modifiés
-- `src/pages/Index.tsx` — logo watermark dans le hero
-- `src/components/layout/Header.tsx` — logo sans encadré + suppression watermark inutile
-- `src/data/demo-courses.ts` — type CECRLevel avec A0
-- `src/hooks/useUserProgress.ts` — LEVEL_ORDER avec A0, seuils XP ajustés
+**Fichier : `src/App.tsx`**
+- Ajouter un state `showSplash` initialisé à `true`
+- Afficher `<SplashScreen>` par-dessus l'app
+- Après 2s, `setShowSplash(false)` avec animation de sortie
+- Le splash ne s'affiche qu'au premier chargement (pas à chaque navigation)
+
+### 4. Modernisation globale du header
+
+**Fichier : `src/components/layout/Header.tsx`**
+- Remplacer `border-b-2` par `border-b border-border/50 shadow-sm` pour un look plus léger
+- Ajouter un léger `backdrop-blur-xl` au lieu de `backdrop-blur`
+- Nav items : transition plus smooth, underline animée au hover au lieu du bg change
+
+### Résumé des fichiers
+
+**Créé :**
+- `src/components/SplashScreen.tsx`
+
+**Modifiés :**
+- `src/components/layout/Header.tsx` — suppression watermark central, modernisation style
+- `src/pages/Index.tsx` — suppression drapeau FR et logo watermark, fond moderne
+- `src/App.tsx` — intégration du splash screen
 
