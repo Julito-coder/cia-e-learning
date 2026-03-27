@@ -45,7 +45,7 @@ export default function CurriculumPage() {
     : curriculum;
 
   return (
-    <div className="container py-8 animate-fade-in pb-24 md:pb-8 max-w-2xl mx-auto">
+    <div className="container py-8 animate-fade-in pb-32 max-w-2xl mx-auto">
       {/* Header */}
       <div className="text-center mb-6">
         <h1 className="font-display text-3xl mb-1">Mon Parcours</h1>

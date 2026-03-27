@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Trophy, Heart, CheckCircle2, XCircle, Star } from 'lucide-react';
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export function FinalQuizStep({ step, onNext }: Props) {
+  const { t } = useTranslation();
   const [qIndex, setQIndex] = useState(0);
   const [lives, setLives] = useState(3);
   const [score, setScore] = useState(0);
@@ -57,12 +59,12 @@ export function FinalQuizStep({ step, onNext }: Props) {
           {passed ? <Trophy className="h-12 w-12 text-green-600" /> : <XCircle className="h-12 w-12 text-destructive" />}
         </div>
         <h2 className="text-2xl font-bold font-display">
-          {passed ? '🎉 Félicitations !' : 'Cours non validé'}
+          {passed ? `🎉 ${t('player.congratulations')}` : t('player.courseNotPassed')}
         </h2>
         <p className="text-muted-foreground">
-          Score : {score}/{step.questions.length}
-          {passed && ' — Vous avez validé ce cours !'}
-          {!passed && ' — Continuez à vous entraîner.'}
+          {t('player.score')} : {score}/{step.questions.length}
+          {passed && ` — ${t('player.validated')}`}
+          {!passed && ` — ${t('player.keepPracticing')}`}
         </p>
         <div className="flex justify-center gap-1">
           {Array.from({ length: step.questions.length }).map((_, i) => (
@@ -70,7 +72,7 @@ export function FinalQuizStep({ step, onNext }: Props) {
           ))}
         </div>
         <Button size="lg" className="w-full" onClick={() => onNext(passed)}>
-          {passed ? 'Terminer le cours' : 'Retour au cours'}
+          {passed ? t('player.finishCourse') : t('player.backToCourse')}
         </Button>
       </div>
     );
@@ -85,7 +87,7 @@ export function FinalQuizStep({ step, onNext }: Props) {
           </div>
           <div>
             <h2 className="text-xl font-bold font-display">{step.title}</h2>
-            <p className="text-sm text-muted-foreground">Question {qIndex + 1}/{step.questions.length}</p>
+            <p className="text-sm text-muted-foreground">{t('player.question')} {qIndex + 1}/{step.questions.length}</p>
           </div>
         </div>
         <div className="flex items-center gap-1">
@@ -128,7 +130,7 @@ export function FinalQuizStep({ step, onNext }: Props) {
 
       {answered && (
         <Button size="lg" className="w-full" onClick={handleContinue}>
-          {qIndex + 1 >= step.questions.length ? 'Voir le résultat' : 'Question suivante'}
+          {qIndex + 1 >= step.questions.length ? t('player.seeResult') : t('player.nextQuestion')}
         </Button>
       )}
     </div>

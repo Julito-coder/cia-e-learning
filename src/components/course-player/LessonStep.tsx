@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { BookOpen, Lightbulb } from 'lucide-react';
@@ -9,6 +10,8 @@ interface Props {
 }
 
 export function LessonStep({ step, onNext }: Props) {
+  const { t } = useTranslation();
+
   return (
     <div className="max-w-2xl mx-auto space-y-6 animate-fade-in">
       <div className="flex items-center gap-3 mb-2">
@@ -22,7 +25,6 @@ export function LessonStep({ step, onNext }: Props) {
         <CardContent className="p-6 prose prose-sm max-w-none">
           {step.content.split('\n').map((line, i) => {
             if (!line.trim()) return <br key={i} />;
-            // Bold
             const formatted = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
             return (
               <p
@@ -43,7 +45,7 @@ export function LessonStep({ step, onNext }: Props) {
       )}
 
       <Button size="lg" className="w-full" onClick={onNext}>
-        Continuer
+        {t('player.continue')}
       </Button>
     </div>
   );

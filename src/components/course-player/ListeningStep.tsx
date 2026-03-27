@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Headphones, Play, CheckCircle2, XCircle, Volume2 } from 'lucide-react';
@@ -10,18 +11,54 @@ interface Props {
   onNext: (correct: boolean) => void;
 }
 
+function getNaturalFrenchVoice(): SpeechSynthesisVoice | undefined {
+  const voices = speechSynthesis.getVoices();
+  const frVoices = voices.filter(v => v.lang.startsWith('fr'));
+  if (frVoices.length === 0) return undefined;
+
+  // Prioritize premium/natural voices
+  const premium = frVoices.find(v =>
+    /Google|Microsoft|Natural|Enhanced|Premium|Amelie|Thomas|Audrey/i.test(v.name) &&
+    !/compact|espeak/i.test(v.name)
+  );
+  if (premium) return premium;
+
+  // Fallback: prefer non-compact voices
+  const nonCompact = frVoices.find(v => !/compact|espeak/i.test(v.name));
+  return nonCompact || frVoices[0];
+}
+
 export function ListeningStep({ step, onNext }: Props) {
+  const { t } = useTranslation();
   const [playing, setPlaying] = useState(false);
   const [hasListened, setHasListened] = useState(false);
   const [selected, setSelected] = useState<number | null>(null);
   const [answered, setAnswered] = useState(false);
+  const [voicesReady, setVoicesReady] = useState(false);
   const isCorrect = selected === step.correctIndex;
+
+  useEffect(() => {
+    const loadVoices = () => {
+      if (speechSynthesis.getVoices().length > 0) {
+        setVoicesReady(true);
+      }
+    };
+    loadVoices();
+    speechSynthesis.onvoiceschanged = loadVoices;
+    return () => { speechSynthesis.onvoiceschanged = null; };
+  }, []);
 
   const handlePlay = () => {
     if (playing) return;
     const utterance = new SpeechSynthesisUtterance(step.text);
     utterance.lang = 'fr-FR';
     utterance.rate = 0.85;
+    utterance.pitch = 1.0;
+    utterance.volume = 1.0;
+
+    const voice = getNaturalFrenchVoice();
+    if (voice) utterance.voice = voice;
+
     utterance.onstart = () => setPlaying(true);
     utterance.onend = () => { setPlaying(false); setHasListened(true); };
     utterance.onerror = () => { setPlaying(false); setHasListened(true); };
@@ -65,7 +102,7 @@ export function ListeningStep({ step, onNext }: Props) {
               )}
             </button>
             <p className="text-sm text-muted-foreground">
-              {playing ? 'Écoute en cours…' : hasListened ? 'Cliquez pour réécouter' : 'Cliquez pour écouter'}
+              {playing ? t('player.listening') : hasListened ? t('player.clickToReplay') : t('player.clickToListen')}
             </p>
           </div>
         </CardContent>
@@ -104,7 +141,7 @@ export function ListeningStep({ step, onNext }: Props) {
 
       {answered && (
         <Button size="lg" className="w-full" onClick={() => onNext(isCorrect)}>
-          Continuer
+          {t('player.continue')}
         </Button>
       )}
     </div>

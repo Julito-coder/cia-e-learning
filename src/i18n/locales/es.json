@@ -8,5 +8,32 @@
   "test": { "title": "Test de francés", "intro": "Evalúa tu nivel de francés en {{count}} preguntas.", "duration": "Duración estimada: <strong>10–15 minutos</strong>.", "progressive": "Preguntas progresivas de A1 a C2 — opción múltiple y completar", "start": "Comenzar el test", "qcmHint": "Elige la respuesta correcta", "fillHint": "Completa la frase", "validate": "Validar", "correct": "¡Correcto! 🎉", "incorrect": "No del todo...", "answer": "Respuesta: {{answer}}", "next": "Siguiente pregunta", "seeResults": "Ver mis resultados", "resultTitle": "Tu resultado", "correctAnswers": "respuestas correctas", "estimatedLevel": "Tu nivel estimado", "detailByLevel": "Detalle por nivel", "retake": "Repetir el test", "seeCourses": "Ver cursos {{level}}", "placeholder": "Tu respuesta..." },
   "footer": { "school": "Centre International d'Antibes — Escuela de FLE desde 1985.", "learn": "Aprender", "theSchool": "La escuela", "legal": "Legal", "legalNotice": "Aviso legal", "privacy": "Privacidad", "terms": "Condiciones", "rights": "© {{year}} Centre International d'Antibes. Todos los derechos reservados." },
   "dailyGoal": { "title": "Objetivo del día", "streak": "🔥 ¡{{count}} días seguidos!", "done": "{{completed}}/{{goal}} ejercicios" },
-  "achievements": { "title": "🏅 Insignias" }
+  "achievements": { "title": "🏅 Insignias" },
+  "player": {
+    "continue": "Continuar",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "check": "Comprobar",
+    "correct": "¡Correcto!",
+    "incorrect": "Incorrecto",
+    "clickToListen": "Haz clic para escuchar",
+    "listening": "Escuchando…",
+    "clickToReplay": "Haz clic para volver a escuchar",
+    "clickToFlip": "Haz clic para voltear",
+    "goodAnswer": "¡Buena respuesta!",
+    "correctAnswerWas": "La respuesta correcta era: \"{{answer}}\"",
+    "correctAnswer": "Respuesta correcta",
+    "perfect": "¡Perfecto!",
+    "clickWordsBelow": "Haz clic en las palabras de abajo",
+    "congratulations": "¡Felicidades!",
+    "courseNotPassed": "Curso no aprobado",
+    "score": "Puntuación",
+    "validated": "¡Has aprobado este curso!",
+    "keepPracticing": "Sigue practicando.",
+    "finishCourse": "Terminar curso",
+    "backToCourse": "Volver al curso",
+    "nextQuestion": "Siguiente pregunta",
+    "seeResult": "Ver resultado",
+    "question": "Pregunta"
+  }
 }

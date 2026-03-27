@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { GripVertical, CheckCircle2, XCircle, ArrowRight } from 'lucide-react';
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export function DragDropStep({ step, onNext }: Props) {
+  const { t } = useTranslation();
   const [available, setAvailable] = useState<string[]>(() => 
     [...step.items].sort(() => Math.random() - 0.5)
   );
@@ -56,7 +58,7 @@ export function DragDropStep({ step, onNext }: Props) {
             answered && !isCorrect && 'border-destructive bg-destructive/10',
           )}>
             {placed.length === 0 && (
-              <span className="text-sm text-muted-foreground">Cliquez sur les mots ci-dessous</span>
+              <span className="text-sm text-muted-foreground">{t('player.clickWordsBelow')}</span>
             )}
             {placed.map((item, i) => (
               <button
@@ -99,11 +101,11 @@ export function DragDropStep({ step, onNext }: Props) {
           isCorrect ? 'bg-green-50 border-green-200 dark:bg-green-950 dark:border-green-800' : 'bg-destructive/10 border-destructive/30'
         )}>
           <p className={cn('font-bold', isCorrect ? 'text-green-700 dark:text-green-400' : 'text-destructive')}>
-            {isCorrect ? '🎉 Parfait !' : '❌ Incorrect'}
+            {isCorrect ? `🎉 ${t('player.perfect')}` : `❌ ${t('player.incorrect')}`}
           </p>
           {!isCorrect && (
             <p className="text-sm text-muted-foreground mt-1 flex items-center gap-1">
-              Réponse correcte : {step.correctOrder.join(' ')}
+              {t('player.correctAnswer')} : {step.correctOrder.join(' ')}
             </p>
           )}
         </div>
@@ -111,13 +113,13 @@ export function DragDropStep({ step, onNext }: Props) {
 
       {!answered && placed.length === step.correctOrder.length && (
         <Button size="lg" className="w-full" onClick={handleCheck}>
-          <CheckCircle2 className="h-4 w-4 mr-2" /> Vérifier
+          <CheckCircle2 className="h-4 w-4 mr-2" /> {t('player.check')}
         </Button>
       )}
 
       {answered && (
         <Button size="lg" className="w-full" onClick={() => onNext(isCorrect)}>
-          Continuer <ArrowRight className="h-4 w-4 ml-2" />
+          {t('player.continue')} <ArrowRight className="h-4 w-4 ml-2" />
         </Button>
       )}
     </div>

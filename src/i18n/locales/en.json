@@ -8,5 +8,32 @@
   "test": { "title": "French Test", "intro": "Evaluate your French level in {{count}} questions.", "duration": "Estimated duration: <strong>10–15 minutes</strong>.", "progressive": "Progressive questions from A1 to C2 — MCQ & fill-in-the-blank", "start": "Start the test", "qcmHint": "Choose the correct answer", "fillHint": "Complete the sentence", "validate": "Submit", "correct": "Correct! 🎉", "incorrect": "Not quite...", "answer": "Answer: {{answer}}", "next": "Next question", "seeResults": "See my results", "resultTitle": "Your result", "correctAnswers": "correct answers", "estimatedLevel": "Your estimated level", "detailByLevel": "Detail by level", "retake": "Retake the test", "seeCourses": "See {{level}} courses", "placeholder": "Your answer..." },
   "footer": { "school": "Centre International d'Antibes — French school since 1985.", "learn": "Learn", "theSchool": "The school", "legal": "Legal", "legalNotice": "Legal notice", "privacy": "Privacy", "terms": "Terms", "rights": "© {{year}} Centre International d'Antibes. All rights reserved." },
   "dailyGoal": { "title": "Daily goal", "streak": "🔥 {{count}} day streak!", "done": "{{completed}}/{{goal}} exercises" },
-  "achievements": { "title": "🏅 Badges" }
+  "achievements": { "title": "🏅 Badges" },
+  "player": {
+    "continue": "Continue",
+    "next": "Next",
+    "previous": "Previous",
+    "check": "Check",
+    "correct": "Correct!",
+    "incorrect": "Incorrect",
+    "clickToListen": "Click to listen",
+    "listening": "Listening…",
+    "clickToReplay": "Click to replay",
+    "clickToFlip": "Click to flip",
+    "goodAnswer": "Good answer!",
+    "correctAnswerWas": "The correct answer was: \"{{answer}}\"",
+    "correctAnswer": "Correct answer",
+    "perfect": "Perfect!",
+    "clickWordsBelow": "Click the words below",
+    "congratulations": "Congratulations!",
+    "courseNotPassed": "Course not passed",
+    "score": "Score",
+    "validated": "You passed this course!",
+    "keepPracticing": "Keep practicing.",
+    "finishCourse": "Finish course",
+    "backToCourse": "Back to course",
+    "nextQuestion": "Next question",
+    "seeResult": "See result",
+    "question": "Question"
+  }
 }
