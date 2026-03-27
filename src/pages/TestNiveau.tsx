@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowRight, CheckCircle2, XCircle, ChevronRight, RotateCcw, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -8,6 +8,7 @@ import { CircularProgress } from '@/components/gamification/CircularProgress';
 import { getRandomTest, calculateLevel } from '@/data/demo-test';
 import type { TestQuestion } from '@/data/demo-test';
 import type { CECRLevel } from '@/data/demo-courses';
+import { useUserProgress } from '@/hooks/useUserProgress';
 
 type Phase = 'intro' | 'test' | 'result';
 
@@ -27,6 +28,8 @@ const levelColors: Record<CECRLevel, string> = {
 
 export default function TestNiveau() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { setLevel } = useUserProgress();
   const [phase, setPhase] = useState<Phase>('intro');
   const [questions, setQuestions] = useState<TestQuestion[]>(() => getRandomTest());
   const [currentQ, setCurrentQ] = useState(0);
@@ -98,6 +101,12 @@ export default function TestNiveau() {
     const totalCorrect = Object.values(answers).filter(Boolean).length;
     const totalPct = Math.round((totalCorrect / questions.length) * 100);
 
+    // Save the detected level
+    const handleSaveLevel = async () => {
+      await setLevel(result.level);
+      navigate(`/catalogue?level=${result.level}`);
+    };
+
     return (
       <div className="container max-w-2xl py-12 space-y-8 animate-fade-in pb-24 md:pb-12">
         <div className="text-center space-y-4">
@@ -141,11 +150,9 @@ export default function TestNiveau() {
           <Button variant="outline" className="gap-2" onClick={restart}>
             <RotateCcw className="h-4 w-4" /> {t('test.retake')}
           </Button>
-          <Link to="/catalogue">
-            <Button className="btn-duo gap-2 w-full sm:w-auto bg-destructive text-destructive-foreground hover:bg-destructive/90">
-              <BookOpen className="h-4 w-4" /> {t('test.seeCourses', { level: result.level })}
-            </Button>
-          </Link>
+          <Button className="btn-duo gap-2 w-full sm:w-auto bg-destructive text-destructive-foreground hover:bg-destructive/90" onClick={handleSaveLevel}>
+            <BookOpen className="h-4 w-4" /> {t('test.seeCourses', { level: result.level })}
+          </Button>
         </div>
       </div>
     );
