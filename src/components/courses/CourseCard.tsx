@@ -114,7 +114,7 @@ export function CourseCard({ course, isFavorite, onToggleFavorite, userLevel }: 
             <Lock className="h-3 w-3 mr-1" /> Niveau {course.level} requis
           </Button>
         ) : (
-          <Link to={`/cours/${course.id}`}>
+          <Link to={course.moduleId ? `/programme?module=${course.moduleId}` : `/cours/${course.id}`}>
             <Button
               size="sm"
               className={`w-full btn-duo text-xs font-bold ${
