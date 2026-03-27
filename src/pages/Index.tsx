@@ -35,17 +35,13 @@ export default function Index() {
   return (
     <div className="animate-fade-in pb-24 md:pb-0">
       {/* Hero section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary to-accent/80 text-primary-foreground">
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-10 right-10 text-[200px] font-display">🇫🇷</div>
+      <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary/90 to-accent/70 text-primary-foreground">
+        {/* Modern geometric pattern */}
+        <div className="absolute inset-0 opacity-[0.04] pointer-events-none" aria-hidden="true">
+          <div className="absolute -top-20 -right-20 w-80 h-80 rounded-full border border-primary-foreground/30" />
+          <div className="absolute -bottom-32 -left-16 w-96 h-96 rounded-full border border-primary-foreground/20" />
+          <div className="absolute top-1/2 right-1/4 w-48 h-48 rounded-full border border-primary-foreground/20" />
         </div>
-        <img
-          src="/cia-logo-2.jpg"
-          alt=""
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-48 md:h-64 opacity-[0.08] pointer-events-none select-none"
-          style={{ mixBlendMode: 'soft-light', filter: 'brightness(2)' }}
-          aria-hidden="true"
-        />
         <div className="container relative py-10 md:py-14">
           <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
             <div className="flex-1">

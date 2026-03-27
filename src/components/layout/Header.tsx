@@ -50,15 +50,8 @@ export function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 border-b-2 bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80 relative overflow-hidden">
-        {/* CIA logo watermark background */}
-        <img
-          src="/cia-logo-2.jpg"
-          alt=""
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-20 opacity-[0.06] pointer-events-none select-none"
-          aria-hidden="true"
-        />
-        <div className="container relative flex h-16 items-center justify-between gap-2">
+      <header className="sticky top-0 z-50 border-b border-border/40 bg-card/95 backdrop-blur-xl supports-[backdrop-filter]:bg-card/80 shadow-sm">
+        <div className="container flex h-16 items-center justify-between gap-2">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2.5 flex-shrink-0">
             <img src="/cia-logo-2.jpg" alt="CIA" className="h-9" style={{ mixBlendMode: 'multiply' }} />
@@ -76,10 +69,10 @@ export function Header() {
                 <Link
                   key={item.href}
                   to={item.href}
-                  className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-bold transition-all duration-200 ${
+                  className={`story-link flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-bold transition-all duration-200 ${
                     active
-                      ? 'bg-primary text-primary-foreground scale-105'
-                      : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                      ? 'bg-primary text-primary-foreground'
+                      : 'text-muted-foreground hover:text-foreground'
                   }`}
                 >
                   <item.icon className="h-4 w-4" />
