@@ -1,14 +1,17 @@
 import { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useSearchParams } from 'react-router-dom';
-import { Search, X } from 'lucide-react';
+import { Search, X, PlayCircle, CheckCircle } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { CourseCard } from '@/components/courses/CourseCard';
 import { demoCourses, CECR_LEVELS, COURSE_THEMES, type CECRLevel, type CourseTheme } from '@/data/demo-courses';
+import { curriculum } from '@/data/curriculum';
 import { useFavorites } from '@/hooks/useFavorites';
 import { useUserProgress } from '@/hooks/useUserProgress';
 
 const levelEmojis: Record<string, string> = { A0: '🌰', A1: '🌱', A2: '🌿', B1: '🌊', B2: '⚡', C1: '🔥', C2: '👑' };
+
+type StatusFilter = 'all' | 'in-progress' | 'completed';
 
 export default function Catalogue() {
   const { t } = useTranslation();
@@ -21,21 +24,41 @@ export default function Catalogue() {
   );
   const [selectedTheme, setSelectedTheme] = useState<CourseTheme | null>(null);
   const [showNew, setShowNew] = useState(false);
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
   const { favorites, toggleFavorite } = useFavorites();
   const { cecrLevel } = useUserProgress();
+
+  // Build a search index that includes lesson titles per module
+  const lessonSearchIndex = useMemo(() => {
+    const index: Record<string, string[]> = {};
+    curriculum.forEach(level => {
+      level.modules.forEach(mod => {
+        index[`module-${mod.id}`] = mod.lessons.map(l => l.title.toLowerCase());
+      });
+    });
+    return index;
+  }, []);
 
   const filteredCourses = useMemo(() => {
     return demoCourses.filter((course) => {
       if (isFavoritesPage && !favorites.has(course.id)) return false;
-      if (search && !course.title.toLowerCase().includes(search.toLowerCase()) && !course.code.toLowerCase().includes(search.toLowerCase())) return false;
+      if (search) {
+        const q = search.toLowerCase();
+        const matchTitle = course.title.toLowerCase().includes(q);
+        const matchCode = course.code.toLowerCase().includes(q);
+        const matchLesson = (lessonSearchIndex[course.id] || []).some(t => t.includes(q));
+        if (!matchTitle && !matchCode && !matchLesson) return false;
+      }
       if (selectedLevel && course.level !== selectedLevel) return false;
       if (selectedTheme && course.theme !== selectedTheme) return false;
       if (showNew && !course.isNew) return false;
+      if (statusFilter === 'in-progress' && (!course.progress || course.progress === 0 || course.progress === 100)) return false;
+      if (statusFilter === 'completed' && course.progress !== 100) return false;
       return true;
     });
-  }, [search, selectedLevel, selectedTheme, showNew, isFavoritesPage, favorites]);
+  }, [search, selectedLevel, selectedTheme, showNew, statusFilter, isFavoritesPage, favorites, lessonSearchIndex]);
 
-  const hasFilters = selectedLevel || selectedTheme || showNew;
+  const hasFilters = selectedLevel || selectedTheme || showNew || statusFilter !== 'all';
 
   return (
     <div className="container py-8 animate-fade-in pb-24 md:pb-8">
@@ -50,11 +73,11 @@ export default function Catalogue() {
         </p>
       </div>
 
-      {/* Search */}
+      {/* Search — also searches lesson names */}
       <div className="relative mb-5">
         <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
-          placeholder={t('catalogue.search')}
+          placeholder="Rechercher un cours ou une leçon…"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="pl-11 h-12 rounded-2xl border-2 text-sm font-semibold"
@@ -89,8 +112,20 @@ export default function Catalogue() {
             ))}
           </div>
 
-          {/* Extra filters */}
-          <div className="flex gap-2 mb-5">
+          {/* Status + extra filters */}
+          <div className="flex gap-2 mb-5 flex-wrap">
+            <button
+              onClick={() => setStatusFilter(statusFilter === 'in-progress' ? 'all' : 'in-progress')}
+              className={`chip-filter text-xs ${statusFilter === 'in-progress' ? 'chip-active' : ''}`}
+            >
+              <PlayCircle className="h-3 w-3" /> En cours
+            </button>
+            <button
+              onClick={() => setStatusFilter(statusFilter === 'completed' ? 'all' : 'completed')}
+              className={`chip-filter text-xs ${statusFilter === 'completed' ? 'chip-active' : ''}`}
+            >
+              <CheckCircle className="h-3 w-3" /> Terminés
+            </button>
             <button
               onClick={() => setShowNew(!showNew)}
               className={`chip-filter text-xs ${showNew ? 'chip-active' : ''}`}
@@ -99,7 +134,7 @@ export default function Catalogue() {
             </button>
             {hasFilters && (
               <button
-                onClick={() => { setSelectedLevel(null); setSelectedTheme(null); setShowNew(false); }}
+                onClick={() => { setSelectedLevel(null); setSelectedTheme(null); setShowNew(false); setStatusFilter('all'); }}
                 className="chip-filter text-xs !border-destructive/30 !text-destructive hover:!bg-destructive/5"
               >
                 <X className="h-3 w-3" /> {t('catalogue.reset')}
