@@ -8,5 +8,32 @@
   "test": { "title": "Тест по французскому", "intro": "Оцените свой уровень французского за {{count}} вопросов.", "duration": "Примерная продолжительность: <strong>10–15 минут</strong>.", "progressive": "Вопросы от A1 до C2 — тесты и заполнение пропусков", "start": "Начать тест", "qcmHint": "Выберите правильный ответ", "fillHint": "Дополните предложение", "validate": "Подтвердить", "correct": "Правильно! 🎉", "incorrect": "Не совсем...", "answer": "Ответ: {{answer}}", "next": "Следующий вопрос", "seeResults": "Посмотреть результаты", "resultTitle": "Ваш результат", "correctAnswers": "правильных ответов", "estimatedLevel": "Ваш предполагаемый уровень", "detailByLevel": "Детали по уровням", "retake": "Пройти тест снова", "seeCourses": "Курсы уровня {{level}}", "placeholder": "Ваш ответ..." },
   "footer": { "school": "Centre International d'Antibes — школа FLE с 1985 года.", "learn": "Обучение", "theSchool": "Школа", "legal": "Правовая информация", "legalNotice": "Правовые уведомления", "privacy": "Конфиденциальность", "terms": "Условия", "rights": "© {{year}} Centre International d'Antibes. Все права защищены." },
   "dailyGoal": { "title": "Цель дня", "streak": "🔥 {{count}} дней подряд!", "done": "{{completed}}/{{goal}} упражнений" },
-  "achievements": { "title": "🏅 Достижения" }
+  "achievements": { "title": "🏅 Достижения" },
+  "player": {
+    "continue": "Продолжить",
+    "next": "Далее",
+    "previous": "Назад",
+    "check": "Проверить",
+    "correct": "Правильно!",
+    "incorrect": "Неправильно",
+    "clickToListen": "Нажмите, чтобы прослушать",
+    "listening": "Воспроизведение…",
+    "clickToReplay": "Нажмите, чтобы прослушать снова",
+    "clickToFlip": "Нажмите, чтобы перевернуть",
+    "goodAnswer": "Правильный ответ!",
+    "correctAnswerWas": "Правильный ответ: «{{answer}}»",
+    "correctAnswer": "Правильный ответ",
+    "perfect": "Отлично!",
+    "clickWordsBelow": "Нажмите на слова ниже",
+    "congratulations": "Поздравляем!",
+    "courseNotPassed": "Курс не пройден",
+    "score": "Результат",
+    "validated": "Вы прошли этот курс!",
+    "keepPracticing": "Продолжайте тренироваться.",
+    "finishCourse": "Завершить курс",
+    "backToCourse": "Вернуться к курсу",
+    "nextQuestion": "Следующий вопрос",
+    "seeResult": "Посмотреть результат",
+    "question": "Вопрос"
+  }
 }

@@ -8,5 +8,32 @@
   "test": { "title": "Test di francese", "intro": "Valuta il tuo livello di francese in {{count}} domande.", "duration": "Durata stimata: <strong>10–15 minuti</strong>.", "progressive": "Domande progressive da A1 a C2 — scelta multipla e completamento", "start": "Inizia il test", "qcmHint": "Scegli la risposta corretta", "fillHint": "Completa la frase", "validate": "Conferma", "correct": "Corretto! 🎉", "incorrect": "Non proprio...", "answer": "Risposta: {{answer}}", "next": "Prossima domanda", "seeResults": "Vedi i risultati", "resultTitle": "Il tuo risultato", "correctAnswers": "risposte corrette", "estimatedLevel": "Il tuo livello stimato", "detailByLevel": "Dettaglio per livello", "retake": "Ripeti il test", "seeCourses": "Vedi corsi {{level}}", "placeholder": "La tua risposta..." },
   "footer": { "school": "Centre International d'Antibes — Scuola di FLE dal 1985.", "learn": "Imparare", "theSchool": "La scuola", "legal": "Legale", "legalNotice": "Note legali", "privacy": "Privacy", "terms": "Condizioni", "rights": "© {{year}} Centre International d'Antibes. Tutti i diritti riservati." },
   "dailyGoal": { "title": "Obiettivo del giorno", "streak": "🔥 {{count}} giorni consecutivi!", "done": "{{completed}}/{{goal}} esercizi" },
-  "achievements": { "title": "🏅 Badge" }
+  "achievements": { "title": "🏅 Badge" },
+  "player": {
+    "continue": "Continua",
+    "next": "Avanti",
+    "previous": "Indietro",
+    "check": "Verifica",
+    "correct": "Corretto!",
+    "incorrect": "Sbagliato",
+    "clickToListen": "Clicca per ascoltare",
+    "listening": "In ascolto…",
+    "clickToReplay": "Clicca per riascoltare",
+    "clickToFlip": "Clicca per girare",
+    "goodAnswer": "Risposta esatta!",
+    "correctAnswerWas": "La risposta corretta era: \"{{answer}}\"",
+    "correctAnswer": "Risposta corretta",
+    "perfect": "Perfetto!",
+    "clickWordsBelow": "Clicca sulle parole qui sotto",
+    "congratulations": "Congratulazioni!",
+    "courseNotPassed": "Corso non superato",
+    "score": "Punteggio",
+    "validated": "Hai superato questo corso!",
+    "keepPracticing": "Continua ad esercitarti.",
+    "finishCourse": "Termina il corso",
+    "backToCourse": "Torna al corso",
+    "nextQuestion": "Prossima domanda",
+    "seeResult": "Vedi risultato",
+    "question": "Domanda"
+  }
 }

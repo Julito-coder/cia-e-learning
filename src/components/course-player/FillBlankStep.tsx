@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { PenLine, CheckCircle2, XCircle } from 'lucide-react';
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export function FillBlankStep({ step, onNext }: Props) {
+  const { t } = useTranslation();
   const [selected, setSelected] = useState<string | null>(null);
   const [answered, setAnswered] = useState(false);
   const isCorrect = selected === step.correctAnswer;
@@ -79,14 +81,14 @@ export function FillBlankStep({ step, onNext }: Props) {
           isCorrect ? 'bg-green-50 border-green-200 dark:bg-green-950 dark:border-green-800' : 'bg-destructive/10 border-destructive/30'
         )}>
           <p className={cn('font-bold', isCorrect ? 'text-green-700 dark:text-green-400' : 'text-destructive')}>
-            {isCorrect ? '🎉 Bonne réponse !' : `❌ La bonne réponse était : « ${step.correctAnswer} »`}
+            {isCorrect ? `🎉 ${t('player.goodAnswer')}` : `❌ ${t('player.correctAnswerWas', { answer: step.correctAnswer })}`}
           </p>
         </div>
       )}
 
       {answered && (
         <Button size="lg" className="w-full" onClick={() => onNext(isCorrect)}>
-          Continuer
+          {t('player.continue')}
         </Button>
       )}
     </div>

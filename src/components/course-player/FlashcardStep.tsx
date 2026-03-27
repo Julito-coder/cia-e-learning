@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, ArrowRight, RotateCcw } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export function FlashcardStep({ step, onNext }: Props) {
+  const { t } = useTranslation();
   const [index, setIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const card = step.cards[index];
@@ -47,7 +49,7 @@ export function FlashcardStep({ step, onNext }: Props) {
             <div>
               <p className="text-2xl font-bold text-foreground">{card.front}</p>
               <p className="text-sm text-muted-foreground mt-4 flex items-center justify-center gap-1">
-                <RotateCcw className="h-3 w-3" /> Cliquez pour retourner
+                <RotateCcw className="h-3 w-3" /> {t('player.clickToFlip')}
               </p>
             </div>
           </div>
@@ -64,15 +66,15 @@ export function FlashcardStep({ step, onNext }: Props) {
       {/* Navigation */}
       <div className="flex items-center gap-3">
         <Button variant="outline" onClick={handlePrev} disabled={index === 0} className="flex-1">
-          <ArrowLeft className="h-4 w-4 mr-1" /> Précédent
+          <ArrowLeft className="h-4 w-4 mr-1" /> {t('player.previous')}
         </Button>
         {index < step.cards.length - 1 ? (
           <Button onClick={handleNext} className="flex-1">
-            Suivant <ArrowRight className="h-4 w-4 ml-1" />
+            {t('player.next')} <ArrowRight className="h-4 w-4 ml-1" />
           </Button>
         ) : (
           <Button onClick={onNext} className="flex-1">
-            Continuer <ArrowRight className="h-4 w-4 ml-1" />
+            {t('player.continue')} <ArrowRight className="h-4 w-4 ml-1" />
           </Button>
         )}
       </div>

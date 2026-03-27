@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { CheckCircle2, XCircle, HelpCircle } from 'lucide-react';
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export function QCMStep({ step, onNext }: Props) {
+  const { t } = useTranslation();
   const [selected, setSelected] = useState<number | null>(null);
   const [answered, setAnswered] = useState(false);
   const isCorrect = selected === step.correctIndex;
@@ -68,7 +70,7 @@ export function QCMStep({ step, onNext }: Props) {
           isCorrect ? 'bg-green-50 border-green-200 dark:bg-green-950 dark:border-green-800' : 'bg-destructive/10 border-destructive/30'
         )}>
           <p className={cn('font-bold mb-1', isCorrect ? 'text-green-700 dark:text-green-400' : 'text-destructive')}>
-            {isCorrect ? '🎉 Correct !' : '❌ Incorrect'}
+            {isCorrect ? `🎉 ${t('player.correct')}` : `❌ ${t('player.incorrect')}`}
           </p>
           <p className="text-sm text-muted-foreground">{step.explanation}</p>
         </div>
@@ -76,7 +78,7 @@ export function QCMStep({ step, onNext }: Props) {
 
       {answered && (
         <Button size="lg" className="w-full" onClick={() => onNext(isCorrect)}>
-          Continuer
+          {t('player.continue')}
         </Button>
       )}
     </div>
