@@ -35,6 +35,7 @@ const App = () => {
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <AuthProvider>
           <Routes>
             {/* Front-office */}
             <Route element={<AppLayout />}>
