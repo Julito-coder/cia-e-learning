@@ -34,7 +34,7 @@ const App = () => {
       {showSplash && <SplashScreen onFinish={hideSplash} />}
       <Toaster />
       <Sonner />
-        <AuthProvider>
+      <BrowserRouter>
           <Routes>
             {/* Front-office */}
             <Route element={<AppLayout />}>
