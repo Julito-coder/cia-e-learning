@@ -39,6 +39,13 @@ export default function Index() {
         <div className="absolute inset-0 opacity-5">
           <div className="absolute top-10 right-10 text-[200px] font-display">🇫🇷</div>
         </div>
+        <img
+          src="/cia-logo-2.jpg"
+          alt=""
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-48 md:h-64 opacity-[0.08] pointer-events-none select-none"
+          style={{ mixBlendMode: 'soft-light', filter: 'brightness(2)' }}
+          aria-hidden="true"
+        />
         <div className="container relative py-10 md:py-14">
           <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
             <div className="flex-1">

@@ -3,7 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import type { CECRLevel } from '@/data/demo-courses';
 
-const LEVEL_ORDER: CECRLevel[] = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+const LEVEL_ORDER: CECRLevel[] = ['A0', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 const XP_PER_LEVEL = 5000;
 
 export function getLevelFromXP(xp: number): CECRLevel {

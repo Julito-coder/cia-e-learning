@@ -32,6 +32,7 @@ export interface GlossaryTerm {
 }
 
 export const CECR_LEVELS: { value: CECRLevel; label: string; color: string }[] = [
+  { value: 'A0', label: 'A0 — Initiation', color: 'bg-lime-100 text-lime-800' },
   { value: 'A1', label: 'A1 — Découverte', color: 'bg-emerald-100 text-emerald-800' },
   { value: 'A2', label: 'A2 — Survie', color: 'bg-green-100 text-green-800' },
   { value: 'B1', label: 'B1 — Seuil', color: 'bg-sky-100 text-sky-800' },
