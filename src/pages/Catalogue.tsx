@@ -1,9 +1,8 @@
 import { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import { Search, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
 import { CourseCard } from '@/components/courses/CourseCard';
 import { demoCourses, CECR_LEVELS, COURSE_THEMES, type CECRLevel, type CourseTheme } from '@/data/demo-courses';
 import { useFavorites } from '@/hooks/useFavorites';
@@ -14,9 +13,12 @@ const levelEmojis: Record<string, string> = { A0: '🌰', A1: '🌱', A2: '🌿'
 export default function Catalogue() {
   const { t } = useTranslation();
   const location = useLocation();
+  const [searchParams] = useSearchParams();
   const isFavoritesPage = location.pathname === '/favoris';
   const [search, setSearch] = useState('');
-  const [selectedLevel, setSelectedLevel] = useState<CECRLevel | null>(null);
+  const [selectedLevel, setSelectedLevel] = useState<CECRLevel | null>(
+    (searchParams.get('level') as CECRLevel) || null
+  );
   const [selectedTheme, setSelectedTheme] = useState<CourseTheme | null>(null);
   const [showNew, setShowNew] = useState(false);
   const { favorites, toggleFavorite } = useFavorites();
@@ -63,7 +65,7 @@ export default function Catalogue() {
         <>
           {/* Level chips */}
           <div className="flex gap-2 overflow-x-auto pb-2 mb-3 scrollbar-hide">
-            {CECR_LEVELS.map((level) => (
+            {CECR_LEVELS.filter(l => l.value !== 'A0').map((level) => (
               <button
                 key={level.value}
                 onClick={() => setSelectedLevel(selectedLevel === level.value ? null : level.value)}

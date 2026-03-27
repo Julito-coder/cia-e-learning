@@ -23,6 +23,11 @@ export function isLevelAccessible(courseLevel: CECRLevel, userLevel: CECRLevel):
   return courseIdx <= userIdx + 1;
 }
 
+export function getXPForLevel(level: CECRLevel): number {
+  const idx = LEVEL_ORDER.indexOf(level);
+  return idx * XP_PER_LEVEL;
+}
+
 export function useUserProgress() {
   const { user } = useAuth();
   const [totalXP, setTotalXP] = useState(0);
@@ -31,9 +36,13 @@ export function useUserProgress() {
 
   useEffect(() => {
     if (!user) {
-      // Fallback to localStorage for anonymous users
       const stored = localStorage.getItem('user-xp');
-      if (stored) {
+      const storedLevel = localStorage.getItem('user-cecr-level');
+      if (storedLevel) {
+        setCecrLevel(storedLevel as CECRLevel);
+        const xp = stored ? parseInt(stored, 10) : getXPForLevel(storedLevel as CECRLevel);
+        setTotalXP(xp);
+      } else if (stored) {
         const xp = parseInt(stored, 10);
         setTotalXP(xp);
         setCecrLevel(getLevelFromXP(xp));
@@ -73,10 +82,27 @@ export function useUserProgress() {
         .eq('user_id', user.id);
     } else {
       localStorage.setItem('user-xp', String(newXP));
+      localStorage.setItem('user-cecr-level', newLevel);
     }
 
     return { leveledUp, newLevel };
   }, [totalXP, cecrLevel, user]);
 
-  return { totalXP, cecrLevel, loading, addXP, xpProgress: getXPForNextLevel(totalXP) };
+  const setLevel = useCallback(async (level: CECRLevel) => {
+    const xp = getXPForLevel(level);
+    setTotalXP(xp);
+    setCecrLevel(level);
+
+    if (user) {
+      await supabase
+        .from('profiles')
+        .update({ total_xp: xp, cecr_level: level })
+        .eq('user_id', user.id);
+    } else {
+      localStorage.setItem('user-xp', String(xp));
+      localStorage.setItem('user-cecr-level', level);
+    }
+  }, [user]);
+
+  return { totalXP, cecrLevel, loading, addXP, setLevel, xpProgress: getXPForNextLevel(totalXP) };
 }

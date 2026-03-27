@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ChevronRight, Lock, Play, CheckCircle, BookOpen } from 'lucide-react';
+import { ChevronRight, Lock, Play, CheckCircle, BookOpen, Star } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { curriculum, type Module, type Lesson } from '@/data/curriculum';
@@ -14,8 +14,21 @@ const levelEmojis: Record<string, string> = { A0: '🌰', A1: '🌱', A2: '🌿'
 export default function CurriculumPage() {
   const { t } = useTranslation();
   const { cecrLevel } = useUserProgress();
-  const [expandedModule, setExpandedModule] = useState<string | null>(null);
+  const [searchParams] = useSearchParams();
+  const moduleFromUrl = searchParams.get('module');
+  const [expandedModule, setExpandedModule] = useState<string | null>(moduleFromUrl);
   const [selectedLevel, setSelectedLevel] = useState<CECRLevel | null>(null);
+
+  useEffect(() => {
+    if (moduleFromUrl) {
+      setExpandedModule(moduleFromUrl);
+      // Auto-scroll to the module
+      setTimeout(() => {
+        const el = document.getElementById(`module-${moduleFromUrl}`);
+        el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 300);
+    }
+  }, [moduleFromUrl]);
 
   const filteredLevels = selectedLevel
     ? curriculum.filter(l => l.level === selectedLevel)
@@ -38,6 +51,11 @@ export default function CurriculumPage() {
         <p className="text-muted-foreground font-semibold">
           300 leçons · 30 modules · 6 niveaux CECRL
         </p>
+        <div className="mt-2 flex items-center gap-2">
+          <Badge className="bg-accent text-accent-foreground">
+            {levelEmojis[cecrLevel]} Votre niveau : {cecrLevel}
+          </Badge>
+        </div>
       </div>
 
       {/* Level filter */}
@@ -64,16 +82,22 @@ export default function CurriculumPage() {
         {filteredLevels.map((levelData) => {
           const locked = !isLevelAccessible(levelData.level, cecrLevel);
           const levelInfo = CECR_LEVELS.find(l => l.value === levelData.level);
+          const isCurrentLevel = levelData.level === cecrLevel;
 
           return (
             <div key={levelData.level}>
               {/* Level header */}
               <div className={`flex items-center gap-3 mb-4 ${locked ? 'opacity-50' : ''}`}>
                 <div className="text-2xl">{levelEmojis[levelData.level]}</div>
-                <div>
+                <div className="flex-1">
                   <div className="flex items-center gap-2">
                     <h2 className="font-display text-xl">{levelData.level} — {levelData.title}</h2>
                     {locked && <Lock className="h-4 w-4 text-muted-foreground" />}
+                    {isCurrentLevel && (
+                      <Badge className="bg-accent/20 text-accent border border-accent/30 text-xs">
+                        <Star className="h-3 w-3 mr-1" /> Niveau actuel
+                      </Badge>
+                    )}
                   </div>
                   <p className="text-sm text-muted-foreground">{levelData.objective}</p>
                 </div>
@@ -87,7 +111,7 @@ export default function CurriculumPage() {
                   const moduleLocked = locked;
 
                   return (
-                    <div key={mod.id} className={`card-duo ${moduleLocked ? 'opacity-50 pointer-events-none' : ''}`}>
+                    <div key={mod.id} id={`module-${mod.id}`} className={`card-duo ${moduleLocked ? 'opacity-50 pointer-events-none' : ''}`}>
                       {/* Module header */}
                       <button
                         className="w-full flex items-center gap-3 p-4 text-left"
@@ -98,6 +122,9 @@ export default function CurriculumPage() {
                           <div className="flex items-center gap-2 mb-1">
                             <Badge className={`${levelInfo?.color} text-xs font-bold`}>{mod.id}</Badge>
                             <span className="text-xs text-muted-foreground font-semibold">{mod.lessons.length} leçons</span>
+                            {progress === 100 && (
+                              <Badge className="bg-green-100 text-green-700 text-xs">✅ Terminé</Badge>
+                            )}
                           </div>
                           <h3 className="font-display text-base truncate">{mod.title}</h3>
                           <p className="text-xs text-muted-foreground truncate">{mod.theme}</p>

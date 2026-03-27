@@ -1,3 +1,5 @@
+import { curriculum, type Module } from './curriculum';
+
 export type CECRLevel = 'A0' | 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
 
 export type CourseTheme = 
@@ -6,7 +8,8 @@ export type CourseTheme =
   | 'Culture & Civilisation' 
   | 'Expression orale' 
   | 'Compréhension écrite' 
-  | 'Compréhension orale';
+  | 'Compréhension orale'
+  | string;
 
 export interface Course {
   id: string;
@@ -21,6 +24,8 @@ export interface Course {
   progress?: number;
   score?: number;
   contentTypes: ('text' | 'audio' | 'video' | 'qcm' | 'drag-drop' | 'fill-blank' | 'flashcard' | 'voice')[];
+  moduleId?: string;
+  lessonCount?: number;
 }
 
 export interface GlossaryTerm {
@@ -50,143 +55,89 @@ export const COURSE_THEMES: CourseTheme[] = [
   'Compréhension orale',
 ];
 
-export const demoCourses: Course[] = [
-  {
-    id: '1',
-    code: 'A1-GRA-001',
-    title: 'Les articles définis et indéfinis',
-    description: 'Apprenez à utiliser le, la, les, un, une, des dans les contextes du quotidien.',
-    level: 'A1',
-    theme: 'Grammaire',
-    duration: 20,
-    isNew: true,
-    imageUrl: 'https://images.unsplash.com/photo-1503917988258-f87a78e3c995?w=800&h=500&fit=crop&q=80',
-    progress: 0,
-    contentTypes: ['text', 'qcm', 'fill-blank'],
-  },
-  {
-    id: '2',
-    code: 'A1-VOC-001',
-    title: 'Se présenter en français',
-    description: 'Les mots et expressions essentiels pour se présenter et faire connaissance.',
-    level: 'A1',
-    theme: 'Vocabulaire',
-    duration: 15,
-    isNew: true,
-    imageUrl: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&h=500&fit=crop&q=80',
-    progress: 45,
-    score: 72,
-    contentTypes: ['text', 'audio', 'flashcard', 'voice'],
-  },
-  {
-    id: '3',
-    code: 'A1-CUL-001',
-    title: 'Découvrir Antibes et la Côte d\'Azur',
-    description: 'Explorez la ville d\'Antibes, sa culture et ses traditions méditerranéennes.',
-    level: 'A1',
-    theme: 'Culture & Civilisation',
-    duration: 25,
-    isNew: false,
-    imageUrl: 'https://images.unsplash.com/photo-1533104816931-20fa691ff6ca?w=800&h=500&fit=crop&q=80',
-    progress: 100,
-    score: 88,
-    contentTypes: ['text', 'video', 'qcm'],
-  },
-  {
-    id: '4',
-    code: 'A2-GRA-001',
-    title: 'Le passé composé',
-    description: 'Maîtrisez la formation et l\'utilisation du passé composé avec être et avoir.',
-    level: 'A2',
-    theme: 'Grammaire',
-    duration: 30,
-    isNew: false,
-    imageUrl: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&h=500&fit=crop&q=80',
-    progress: 20,
-    score: 60,
-    contentTypes: ['text', 'qcm', 'fill-blank', 'drag-drop'],
-  },
-  {
-    id: '5',
-    code: 'A2-COM-001',
-    title: 'Comprendre une conversation simple',
-    description: 'Écoutez et comprenez des dialogues de la vie quotidienne.',
-    level: 'A2',
-    theme: 'Compréhension orale',
-    duration: 20,
-    isNew: true,
-    imageUrl: 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?w=800&h=500&fit=crop&q=80',
-    progress: 0,
-    contentTypes: ['audio', 'qcm', 'fill-blank'],
-  },
-  {
-    id: '6',
-    code: 'B1-VOC-012',
-    title: 'Le monde du travail',
-    description: 'Vocabulaire professionnel : entretien, CV, vie en entreprise.',
-    level: 'B1',
-    theme: 'Vocabulaire',
-    duration: 35,
-    isNew: false,
-    imageUrl: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&h=500&fit=crop&q=80',
-    progress: 75,
-    score: 82,
-    contentTypes: ['text', 'audio', 'flashcard', 'qcm'],
-  },
-  {
-    id: '7',
-    code: 'B1-EXP-001',
-    title: 'Donner son opinion',
-    description: 'Apprenez à exprimer, nuancer et défendre votre point de vue.',
-    level: 'B1',
-    theme: 'Expression orale',
-    duration: 25,
-    isNew: false,
-    imageUrl: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=800&h=500&fit=crop&q=80',
-    progress: 50,
-    contentTypes: ['text', 'video', 'voice'],
-  },
-  {
-    id: '8',
-    code: 'B2-CRE-001',
-    title: 'Lire la presse française',
-    description: 'Techniques de lecture et compréhension d\'articles de presse.',
-    level: 'B2',
-    theme: 'Compréhension écrite',
-    duration: 40,
-    isNew: true,
-    imageUrl: 'https://images.unsplash.com/photo-1504711434969-e33886168d6c?w=800&h=500&fit=crop&q=80',
-    progress: 0,
-    contentTypes: ['text', 'qcm', 'fill-blank'],
-  },
-  {
-    id: '9',
-    code: 'B2-GRA-005',
-    title: 'Le subjonctif présent',
-    description: 'Comprendre et utiliser le subjonctif dans ses différents contextes.',
-    level: 'B2',
-    theme: 'Grammaire',
-    duration: 45,
-    isNew: false,
-    imageUrl: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&h=500&fit=crop&q=80',
-    progress: 30,
-    score: 55,
-    contentTypes: ['text', 'qcm', 'drag-drop', 'fill-blank'],
-  },
-  {
-    id: '10',
-    code: 'C1-CUL-003',
-    title: 'La littérature française contemporaine',
-    description: 'Découvrez les grands auteurs et mouvements littéraires actuels.',
-    level: 'C1',
-    theme: 'Culture & Civilisation',
-    duration: 50,
-    isNew: false,
-    imageUrl: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&h=500&fit=crop&q=80',
-    progress: 10,
-    contentTypes: ['text', 'video', 'qcm'],
-  },
-];
+// Thematic images per module
+const moduleImages: Record<string, string> = {
+  'A1.1': 'https://images.unsplash.com/photo-1503917988258-f87a78e3c995?w=800&h=500&fit=crop&q=80',
+  'A1.2': 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&h=500&fit=crop&q=80',
+  'A1.3': 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&h=500&fit=crop&q=80',
+  'A1.4': 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=800&h=500&fit=crop&q=80',
+  'A1.5': 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?w=800&h=500&fit=crop&q=80',
+  'A2.1': 'https://images.unsplash.com/photo-1533104816931-20fa691ff6ca?w=800&h=500&fit=crop&q=80',
+  'A2.2': 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&h=500&fit=crop&q=80',
+  'A2.3': 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&h=500&fit=crop&q=80',
+  'A2.4': 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=500&fit=crop&q=80',
+  'A2.5': 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800&h=500&fit=crop&q=80',
+  'B1.1': 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=800&h=500&fit=crop&q=80',
+  'B1.2': 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800&h=500&fit=crop&q=80',
+  'B1.3': 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=500&fit=crop&q=80',
+  'B1.4': 'https://images.unsplash.com/photo-1523050854058-8df90110c6f1?w=800&h=500&fit=crop&q=80',
+  'B1.5': 'https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=800&h=500&fit=crop&q=80',
+  'B2.1': 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&h=500&fit=crop&q=80',
+  'B2.2': 'https://images.unsplash.com/photo-1504711434969-e33886168d6c?w=800&h=500&fit=crop&q=80',
+  'B2.3': 'https://images.unsplash.com/photo-1495020689067-958852a7765e?w=800&h=500&fit=crop&q=80',
+  'B2.4': 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&h=500&fit=crop&q=80',
+  'B2.5': 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&h=500&fit=crop&q=80',
+  'C1.1': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=500&fit=crop&q=80',
+  'C1.2': 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&h=500&fit=crop&q=80',
+  'C1.3': 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=500&fit=crop&q=80',
+  'C1.4': 'https://images.unsplash.com/photo-1504711434969-e33886168d6c?w=800&h=500&fit=crop&q=80',
+  'C1.5': 'https://images.unsplash.com/photo-1546410531-bb4caa6b3624?w=800&h=500&fit=crop&q=80',
+  'C2.1': 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=800&h=500&fit=crop&q=80',
+  'C2.2': 'https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&h=500&fit=crop&q=80',
+  'C2.3': 'https://images.unsplash.com/photo-1589391886645-d51941baf7fb?w=800&h=500&fit=crop&q=80',
+  'C2.4': 'https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?w=800&h=500&fit=crop&q=80',
+  'C2.5': 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=800&h=500&fit=crop&q=80',
+};
+
+function getModuleProgress(mod: Module): { progress: number; score?: number } {
+  try {
+    const savedProgress = JSON.parse(localStorage.getItem('course-progress') || '{}');
+    const completedLessons = mod.lessons.filter(l => savedProgress[`lesson-${l.id}`]?.completed).length;
+    const progress = Math.round((completedLessons / mod.lessons.length) * 100);
+    const scores = mod.lessons
+      .map(l => savedProgress[`lesson-${l.id}`]?.score)
+      .filter((s): s is number => s !== undefined);
+    const avgScore = scores.length > 0 ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : undefined;
+    return { progress, score: avgScore };
+  } catch {
+    return { progress: 0 };
+  }
+}
+
+function mapTheme(theme: string): CourseTheme {
+  const lower = theme.toLowerCase();
+  if (lower.includes('gramm')) return 'Grammaire';
+  if (lower.includes('vocab')) return 'Vocabulaire';
+  if (lower.includes('cultur') || lower.includes('civil') || lower.includes('géograph') || lower.includes('tradition')) return 'Culture & Civilisation';
+  if (lower.includes('oral') && lower.includes('express')) return 'Expression orale';
+  if (lower.includes('écrit') && lower.includes('compréhen')) return 'Compréhension écrite';
+  if (lower.includes('oral') && lower.includes('compréhen')) return 'Compréhension orale';
+  return theme;
+}
+
+// Generate courses from curriculum modules
+export const demoCourses: Course[] = curriculum.flatMap(level =>
+  level.modules.map(mod => {
+    const { progress, score } = getModuleProgress(mod);
+    const totalDuration = mod.lessons.length * 10;
+    return {
+      id: `module-${mod.id}`,
+      code: mod.id,
+      title: mod.title,
+      description: `${level.level} · ${mod.theme}. ${mod.lessons.length} leçons interactives.`,
+      level: mod.level,
+      theme: mapTheme(mod.theme),
+      duration: totalDuration,
+      isNew: mod.id === 'A1.1' || mod.id === 'A1.2',
+      imageUrl: moduleImages[mod.id] || 'https://images.unsplash.com/photo-1503917988258-f87a78e3c995?w=800&h=500&fit=crop&q=80',
+      progress,
+      score,
+      contentTypes: ['text', 'qcm', 'fill-blank', 'flashcard', 'audio'] as any[],
+      moduleId: mod.id,
+      lessonCount: mod.lessons.length,
+    };
+  })
+);
 
 export const demoGlossary: GlossaryTerm[] = [
   { id: '1', term: 'Article défini', definition: 'Déterminant qui précède un nom pour indiquer qu\'il est identifié (le, la, les).', level: 'A1', relatedCourseIds: ['1'] },
