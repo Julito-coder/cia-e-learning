@@ -39,8 +39,8 @@ const stateStyles = {
   locked: 'border-muted bg-muted text-muted-foreground cursor-not-allowed',
 };
 
-function ModulePopup({ mod, state, progress, onClose }: {
-  mod: Module; state: NodeState; progress: number; onClose: () => void;
+function ModulePopup({ mod, state, progress, onClose, index }: {
+  mod: Module; state: NodeState; progress: number; onClose: () => void; index: number;
 }) {
   const saved = useMemo(() => {
     try { return JSON.parse(localStorage.getItem('course-progress') || '{}'); }
@@ -60,7 +60,9 @@ function ModulePopup({ mod, state, progress, onClose }: {
       </div>
 
       {/* Desktop: positioned card next to the node */}
-      <div className="hidden md:block absolute left-full top-1/2 -translate-y-1/2 ml-6 z-50 w-72 animate-fade-in">
+      <div className={`hidden md:block absolute top-1/2 -translate-y-1/2 z-50 w-72 animate-fade-in ${
+        index % 2 === 0 ? 'right-full mr-6' : 'left-full ml-6'
+      }`}>
         <div className="card-duo p-4 relative">
           <button onClick={onClose} className="absolute top-2 right-2 h-6 w-6 rounded-full bg-muted flex items-center justify-center hover:bg-muted/80">
             <X className="h-3 w-3" />
@@ -200,6 +202,7 @@ export function LearningPath({ modules, locked = false }: LearningPathProps) {
                   state={state}
                   progress={progress}
                   onClose={() => setExpandedModule(null)}
+                  index={i}
                 />
               )}
             </div>
