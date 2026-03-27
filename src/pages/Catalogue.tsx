@@ -9,7 +9,7 @@ import { demoCourses, CECR_LEVELS, COURSE_THEMES, type CECRLevel, type CourseThe
 import { useFavorites } from '@/hooks/useFavorites';
 import { useUserProgress } from '@/hooks/useUserProgress';
 
-const levelEmojis: Record<string, string> = { A1: '🌱', A2: '🌿', B1: '🌊', B2: '⚡', C1: '🔥', C2: '👑' };
+const levelEmojis: Record<string, string> = { A0: '🌰', A1: '🌱', A2: '🌿', B1: '🌊', B2: '⚡', C1: '🔥', C2: '👑' };
 
 export default function Catalogue() {
   const { t } = useTranslation();

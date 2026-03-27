@@ -12,6 +12,7 @@ import type { CECRLevel } from '@/data/demo-courses';
 type Phase = 'intro' | 'test' | 'result';
 
 const levelDescriptions: Record<CECRLevel, string> = {
+  A0: 'Initiation — Vous débutez complètement en français.',
   A1: 'Découverte — Vous comprenez des expressions familières du quotidien.',
   A2: 'Survie — Vous pouvez communiquer lors de tâches simples.',
   B1: 'Seuil — Vous pouvez vous débrouiller dans la plupart des situations.',
@@ -21,7 +22,7 @@ const levelDescriptions: Record<CECRLevel, string> = {
 };
 
 const levelColors: Record<CECRLevel, string> = {
-  A1: 'bg-emerald-500', A2: 'bg-green-500', B1: 'bg-accent', B2: 'bg-blue-500', C1: 'bg-violet-500', C2: 'bg-purple-500',
+  A0: 'bg-lime-500', A1: 'bg-emerald-500', A2: 'bg-green-500', B1: 'bg-accent', B2: 'bg-blue-500', C1: 'bg-violet-500', C2: 'bg-purple-500',
 };
 
 export default function TestNiveau() {

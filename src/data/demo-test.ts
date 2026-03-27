@@ -90,8 +90,8 @@ const questionBank: TestQuestion[] = [
  * @param questionsPerLevel Number of questions to pick per level (default 4 for A1-B2, 3 for C1-C2)
  */
 export function getRandomTest(): TestQuestion[] {
-  const levels: CECRLevel[] = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
-  const perLevel: Record<CECRLevel, number> = { A1: 4, A2: 4, B1: 4, B2: 4, C1: 3, C2: 3 };
+  const levels: CECRLevel[] = ['A0', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+  const perLevel: Record<CECRLevel, number> = { A0: 4, A1: 4, A2: 4, B1: 4, B2: 4, C1: 3, C2: 3 };
   
   const selected: TestQuestion[] = [];
   
@@ -111,7 +111,7 @@ export function getRandomTest(): TestQuestion[] {
 export const testQuestions = questionBank;
 
 export const levelThresholds: Record<CECRLevel, number> = {
-  A1: 3, A2: 3, B1: 3, B2: 3, C1: 2, C2: 2,
+  A0: 3, A1: 3, A2: 3, B1: 3, B2: 3, C1: 2, C2: 2,
 };
 
 export function calculateLevel(
@@ -119,6 +119,7 @@ export function calculateLevel(
   questions: TestQuestion[]
 ): { level: CECRLevel; scores: Record<CECRLevel, { correct: number; total: number }> } {
   const scores: Record<CECRLevel, { correct: number; total: number }> = {
+    A0: { correct: 0, total: 0 },
     A1: { correct: 0, total: 0 },
     A2: { correct: 0, total: 0 },
     B1: { correct: 0, total: 0 },
