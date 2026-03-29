@@ -229,22 +229,19 @@ export default function Index() {
           </div>
         </div>
 
-        {/* Characters + Learning Path — full-width section */}
-        <section className="mt-4">
-          <div className="flex flex-col lg:flex-row gap-6">
-            {/* Characters — sticky on desktop, horizontal scroll on mobile */}
-            <aside className="lg:w-64 flex-shrink-0">
-              <div className="card-duo p-5 lg:sticky lg:top-20 lg:self-start">
-                <h3 className="font-display text-base mb-3">Nos personnages</h3>
-                <CharacterShowcase cecrLevel={cecrLevel} />
-              </div>
-            </aside>
+        {/* Characters — full-width section */}
+        <section>
+          <div className="card-duo p-4 md:p-5">
+            <h3 className="font-display text-base mb-3">Nos personnages</h3>
+            <CharacterShowcase cecrLevel={cecrLevel} />
+          </div>
+        </section>
 
-            {/* Learning path — takes remaining space */}
-            <div className="flex-1 card-duo p-5">
-              <h3 className="font-display text-base mb-2">{t('sections.path')}</h3>
-              <LearningPath modules={pathModules} cecrLevel={cecrLevel} />
-            </div>
+        {/* Learning Path — full-width section */}
+        <section>
+          <div className="card-duo p-4 md:p-5 overflow-visible">
+            <h3 className="font-display text-base mb-2">{t('sections.path')}</h3>
+            <LearningPath modules={pathModules} cecrLevel={cecrLevel} />
           </div>
         </section>
       </div>
