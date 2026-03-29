@@ -55,7 +55,11 @@ export function ListeningStep({ step, onNext }: Props) {
             apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
             Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
           },
-          body: JSON.stringify({ text: step.text }),
+          body: JSON.stringify({
+            text: step.text,
+            voiceId: character?.voiceId,
+            voiceSettings: evolution?.voiceSettings,
+          }),
         }
       );
 
