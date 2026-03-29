@@ -6,6 +6,7 @@ export interface LessonStep {
   content: string;
   tip?: string;
   characterId?: string;
+  characterMessage?: string;
 }
 
 export interface QCMStep {
@@ -17,6 +18,7 @@ export interface QCMStep {
   correctIndex: number;
   explanation: string;
   characterId?: string;
+  characterMessage?: string;
 }
 
 export interface FillBlankStep {
@@ -27,6 +29,7 @@ export interface FillBlankStep {
   options: string[];
   correctAnswer: string;
   characterId?: string;
+  characterMessage?: string;
 }
 
 export interface DragDropStep {
@@ -37,6 +40,7 @@ export interface DragDropStep {
   items: string[];
   correctOrder: string[];
   characterId?: string;
+  characterMessage?: string;
 }
 
 export interface FlashcardStep {
@@ -45,6 +49,7 @@ export interface FlashcardStep {
   title: string;
   cards: { front: string; back: string }[];
   characterId?: string;
+  characterMessage?: string;
 }
 
 export interface ListeningStep {
@@ -53,6 +58,7 @@ export interface ListeningStep {
   title: string;
   text: string; // text read by TTS
   characterId?: string; // ID of the speaking character
+  characterMessage?: string;
   question: string;
   options: string[];
   correctIndex: number;
@@ -68,6 +74,7 @@ export interface FinalQuizStep {
     correctIndex: number;
   }[];
   characterId?: string;
+  characterMessage?: string;
 }
 
 export type CourseStep = LessonStep | QCMStep | FillBlankStep | DragDropStep | FlashcardStep | ListeningStep | FinalQuizStep;
