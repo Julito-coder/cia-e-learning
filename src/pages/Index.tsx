@@ -9,6 +9,7 @@ import { AnimatedCounter } from '@/components/gamification/AnimatedCounter';
 import { DailyGoal } from '@/components/gamification/DailyGoal';
 import { Achievements } from '@/components/gamification/Achievements';
 import { LearningPath } from '@/components/courses/LearningPath';
+import { CharacterShowcase } from '@/components/characters/CharacterShowcase';
 import { demoCourses, CECR_LEVELS } from '@/data/demo-courses';
 import { curriculum } from '@/data/curriculum';
 import { useAuth } from '@/hooks/useAuth';
@@ -225,10 +226,19 @@ export default function Index() {
             {/* Achievements */}
             <Achievements />
 
-            {/* Learning path preview */}
+            {/* Learning path + Characters side by side */}
             <div className="card-duo p-5">
               <h3 className="font-display text-base mb-2">{t('sections.path')}</h3>
-              <LearningPath modules={pathModules} cecrLevel={cecrLevel} />
+              <div className="flex gap-4">
+                {/* Characters showcase - left side (hidden on small screens) */}
+                <div className="hidden lg:block w-48 flex-shrink-0 border-r border-border pr-4">
+                  <CharacterShowcase cecrLevel={cecrLevel} />
+                </div>
+                {/* Learning path - right side */}
+                <div className="flex-1">
+                  <LearningPath modules={pathModules} cecrLevel={cecrLevel} />
+                </div>
+              </div>
             </div>
           </div>
         </div>

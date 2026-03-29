@@ -5,9 +5,6 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import type { Module } from '@/data/curriculum';
 import { getCourseContent } from '@/data/course-content';
-import { CHARACTERS, getCharacterEvolution } from '@/data/characters';
-import { Character3DAvatar } from '@/components/characters/Character3DAvatar';
-import { CharacterStoryModal } from '@/components/characters/CharacterStoryModal';
 import type { CECRLevel } from '@/data/demo-courses';
 
 interface LearningPathProps {
@@ -137,11 +134,6 @@ function PopupContent({ mod, state, progress, saved, onClose }: {
 
 export function LearningPath({ modules, locked = false, cecrLevel = 'A1' }: LearningPathProps) {
   const [expandedModule, setExpandedModule] = useState<string | null>(null);
-  const [selectedCharacterId, setSelectedCharacterId] = useState<string | null>(null);
-
-  const selectedCharacter = selectedCharacterId
-    ? CHARACTERS.find(c => c.id === selectedCharacterId)
-    : null;
 
   return (
     <div className="relative flex flex-col items-center py-2">
@@ -150,9 +142,6 @@ export function LearningPath({ modules, locked = false, cecrLevel = 'A1' }: Lear
         const progress = getModuleProgress(mod);
         const offset = i % 2 === 0 ? 'md:-translate-x-16' : 'md:translate-x-16';
         const isExpanded = expandedModule === mod.id;
-        const character = CHARACTERS[i % CHARACTERS.length];
-        const evolution = getCharacterEvolution(character, cecrLevel);
-        const avatarSide = i % 2 === 0 ? 'right' : 'left';
 
         return (
           <div key={mod.id} className="relative flex flex-col items-center">
@@ -174,28 +163,6 @@ export function LearningPath({ modules, locked = false, cecrLevel = 'A1' }: Lear
 
             {/* Node + label + avatar */}
             <div className={`${offset} relative transition-transform duration-300`}>
-              {/* 3D Avatar — positioned to the side */}
-              <div
-                className={`hidden md:block absolute top-1/2 -translate-y-1/2 ${
-                  avatarSide === 'left' ? 'right-full mr-4' : 'left-full ml-4'
-                }`}
-                style={{ animationDelay: `${i * 150}ms` }}
-              >
-                <div className="animate-fade-in" style={{ animationDelay: `${i * 150}ms` }}>
-                  <Character3DAvatar
-                    character={character}
-                    evolution={evolution}
-                    isSelected={selectedCharacterId === character.id}
-                    onClick={() =>
-                      setSelectedCharacterId(
-                        selectedCharacterId === character.id ? null : character.id
-                      )
-                    }
-                    size={52}
-                  />
-                </div>
-              </div>
-
               <button
                 onClick={() => state !== 'locked' && setExpandedModule(isExpanded ? null : mod.id)}
                 className={`relative w-20 h-20 rounded-full border-4 flex items-center justify-center transition-all duration-300 ${stateStyles[state]}`}
@@ -245,14 +212,6 @@ export function LearningPath({ modules, locked = false, cecrLevel = 'A1' }: Lear
         );
       })}
 
-      {/* Character story modal */}
-      {selectedCharacter && (
-        <CharacterStoryModal
-          character={selectedCharacter}
-          currentLevel={cecrLevel}
-          onClose={() => setSelectedCharacterId(null)}
-        />
-      )}
     </div>
   );
 }
