@@ -249,23 +249,5 @@ export default function Index() {
         </section>
       </div>
     </div>
-            {/* Achievements */}
-            <Achievements />
-
-            {/* Characters showcase — separate section */}
-            <div className="card-duo p-5">
-              <h3 className="font-display text-base mb-3">Nos personnages</h3>
-              <CharacterShowcase cecrLevel={cecrLevel} />
-            </div>
-
-            {/* Learning path — separate section */}
-            <div className="card-duo p-5">
-              <h3 className="font-display text-base mb-2">{t('sections.path')}</h3>
-              <LearningPath modules={pathModules} cecrLevel={cecrLevel} />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
   );
 }
