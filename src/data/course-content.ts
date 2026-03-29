@@ -46,7 +46,8 @@ export interface ListeningStep {
   id: string;
   type: 'listening';
   title: string;
-  text: string; // text read by SpeechSynthesis
+  text: string; // text read by TTS
+  characterId?: string; // ID of the speaking character
   question: string;
   options: string[];
   correctIndex: number;

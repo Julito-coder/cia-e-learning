@@ -20,7 +20,7 @@ serve(async (req) => {
   }
 
   try {
-    const { text } = await req.json();
+    const { text, voiceId: requestedVoiceId, voiceSettings } = await req.json();
 
     if (!text || typeof text !== "string" || text.length > 5000) {
       return new Response(JSON.stringify({ error: "Invalid text parameter" }), {
@@ -29,8 +29,21 @@ serve(async (req) => {
       });
     }
 
-    // Laura - natural French female voice
-    const voiceId = "FGY2WhTYpPnrIDTdsKH5";
+    // Use requested voice or default to Laura
+    const voiceId = requestedVoiceId || "FGY2WhTYpPnrIDTdsKH5";
+
+    // Merge default voice settings with character-specific ones
+    const defaultSettings = {
+      stability: 0.6,
+      similarity_boost: 0.75,
+      style: 0.4,
+      use_speaker_boost: true,
+      speed: 0.9,
+    };
+
+    const mergedSettings = voiceSettings
+      ? { ...defaultSettings, ...voiceSettings, use_speaker_boost: true }
+      : defaultSettings;
 
     const response = await fetch(
       `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}?output_format=mp3_44100_128`,
@@ -43,13 +56,7 @@ serve(async (req) => {
         body: JSON.stringify({
           text,
           model_id: "eleven_multilingual_v2",
-          voice_settings: {
-            stability: 0.6,
-            similarity_boost: 0.75,
-            style: 0.4,
-            use_speaker_boost: true,
-            speed: 0.9,
-          },
+          voice_settings: mergedSettings,
         }),
       }
     );
