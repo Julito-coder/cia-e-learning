@@ -16,6 +16,8 @@ interface LearningPathProps {
   cecrLevel?: CECRLevel;
 }
 
+type NodeState = 'complete' | 'active' | 'available' | 'locked';
+
 function getModuleState(mod: Module, locked: boolean): NodeState {
   if (locked) return 'locked';
   try {
