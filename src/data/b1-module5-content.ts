@@ -8,11 +8,13 @@ export const b1Module5Content: CourseContent[] = [
     steps: [
       {
         id: 'L141-1', type: 'lesson', title: 'L\'environnement', characterId: 'marie',
+        characterMessage: "Vous êtes maintenant capables de comprendre des sujets plus complexes.",
         content: `Parlons de **l'environnement** et de l'écologie en français ! 🌍🌱\n\n📝 **Vocabulaire écologique :**\n- Le réchauffement climatique / le changement climatique\n- La pollution (de l'air, de l'eau, des sols)\n- Les énergies renouvelables (solaire, éolienne)\n- Le tri des déchets / le recyclage\n- L'empreinte carbone\n- Le développement durable\n\n📋 **Les gestes écologiques :**\n- Trier ses déchets\n- Économiser l'eau et l'énergie\n- Utiliser les transports en commun\n- Réduire sa consommation de plastique\n- Acheter local et de saison\n\n🗣️ **Débattre sur l'écologie :**\n- « Je pense qu'il est urgent de protéger l'environnement. »\n- « À mon avis, le recyclage n'est pas suffisant. »\n- « Il faudrait que les gouvernements agissent davantage. »`,
         tip: '💡 La France a interdit les sacs plastiques à usage unique en 2016 — un geste écologique important !'
       },
       {
         id: 'L141-2', type: 'listening', title: 'Écoute — Débat écologique', characterId: 'omar',
+        characterMessage: "Tu devrais maintenant comprendre l'essentiel des conversations courantes.",
         text: 'À Antibes, la mairie a mis en place le tri sélectif et des pistes cyclables. Certains habitants pensent que ce n\'est pas suffisant et qu\'il faudrait interdire les voitures dans le centre-ville. D\'autres estiment que ces mesures sont déjà un bon début.',
         question: 'Que demandent certains habitants ?',
         options: ['Plus de voitures', 'L\'interdiction des voitures dans le centre', 'La construction d\'autoroutes', 'La suppression du tri'],
@@ -20,6 +22,7 @@ export const b1Module5Content: CourseContent[] = [
       },
       {
         id: 'L141-3', type: 'qcm', title: 'Vocabulaire écologique', characterId: 'elena',
+        characterMessage: "À ce niveau, il faut aller au-delà de la traduction.",
         question: 'Le « tri sélectif » consiste à…',
         options: ['jeter tous les déchets ensemble', 'séparer les déchets par catégorie', 'brûler les déchets', 'enterrer les déchets'],
         correctIndex: 1,
@@ -27,6 +30,7 @@ export const b1Module5Content: CourseContent[] = [
       },
       {
         id: 'L141-4', type: 'flashcard', title: 'Vocabulaire de l\'environnement', characterId: 'thomas',
+        characterMessage: "Ces termes enrichissent considérablement ton expression.",
         cards: [
           { front: 'Le réchauffement climatique', back: 'Global warming' },
           { front: 'Les énergies renouvelables', back: 'Renewable energies' },
@@ -38,18 +42,21 @@ export const b1Module5Content: CourseContent[] = [
       },
       {
         id: 'L141-5', type: 'fill-blank', title: 'Complétez la phrase', characterId: 'fatou',
+        characterMessage: "Les phrases sont plus complexes, mais tu as les outils pour réussir.",
         sentence: 'Il faudrait que les gouvernements ___ davantage pour l\'environnement.',
         options: ['agissent', 'agissons', 'agir', 'agissez'],
         correctAnswer: 'agissent'
       },
       {
         id: 'L141-6', type: 'drag-drop', title: 'Gestes écologiques', characterId: 'yuki',
+        characterMessage: "Les structures deviennent complexes. Attention aux propositions !",
         instruction: 'Remettez les gestes du plus simple au plus engagé :',
         items: ['Devenir végétarien', 'Éteindre la lumière', 'Trier ses déchets', 'Utiliser les transports en commun'],
         correctOrder: ['Éteindre la lumière', 'Trier ses déchets', 'Utiliser les transports en commun', 'Devenir végétarien']
       },
       {
         id: 'L141-7', type: 'qcm', title: 'Écologie en France', characterId: 'hans',
+        characterMessage: "Le monde professionnel exige ce genre de compétence. Entraîne-toi !",
         question: 'Depuis quand les sacs plastiques à usage unique sont-ils interdits en France ?',
         options: ['2010', '2014', '2016', '2020'],
         correctIndex: 2,
@@ -57,6 +64,7 @@ export const b1Module5Content: CourseContent[] = [
       },
       {
         id: 'L141-8', type: 'final-quiz', title: 'Quiz final — L\'environnement', characterId: 'marie',
+        characterMessage: "Ce quiz teste votre compréhension en profondeur. Allez-y !",
         questions: [
           { question: 'Le « développement durable » vise à…', options: ['produire plus', 'consommer plus', 'protéger l\'environnement tout en se développant', 'arrêter le progrès'], correctIndex: 2 },
           { question: 'Les « énergies renouvelables » incluent…', options: ['le pétrole', 'le charbon', 'le solaire et l\'éolien', 'le gaz'], correctIndex: 2 },
@@ -74,11 +82,13 @@ export const b1Module5Content: CourseContent[] = [
     steps: [
       {
         id: 'L142-1', type: 'lesson', title: 'Le cinéma français', characterId: 'marie',
+        characterMessage: "On entre dans le vif du sujet aujourd'hui — accrochez-vous !",
         content: `Découvrons le **cinéma français**, l'un des plus riches au monde ! 🎬\n\n🎥 **Histoire :**\n- Les frères Lumière : inventeurs du cinéma (1895, Lyon)\n- Premier film projeté : « La Sortie de l'usine Lumière »\n- Le Festival de Cannes (depuis 1946) : plus prestigieux festival au monde\n\n🏆 **Récompenses :**\n- Les César (équivalent des Oscars)\n- La Palme d'Or (Festival de Cannes)\n\n🎬 **Genres populaires :**\n- La comédie (Le Dîner de cons, Intouchables)\n- Le drame (Amour, La Haine)\n- Le film d'auteur (Nouvelle Vague : Godard, Truffaut)\n\n📝 **Vocabulaire du cinéma :**\n- Un réalisateur / une réalisatrice\n- Un acteur / une actrice\n- Un scénario\n- Une bande-annonce\n- La VO (version originale) / la VF (version française)`,
         tip: '💡 Le Festival de Cannes se déroule chaque année en mai, à seulement 20 km d\'Antibes !'
       },
       {
         id: 'L142-2', type: 'listening', title: 'Écoute — Critique de film', characterId: 'lucas',
+        characterMessage: "L'écoute est plus rapide maintenant. Reste attentif aux détails !",
         text: 'J\'ai vu le film « Intouchables » hier. C\'est une comédie dramatique avec Omar Sy et François Cluzet. Le film raconte l\'histoire d\'un homme riche tétraplégique et de son aide à domicile. C\'est émouvant et drôle en même temps. Je le recommande !',
         question: 'Quel est le genre du film ?',
         options: ['Horreur', 'Science-fiction', 'Comédie dramatique', 'Documentaire'],
@@ -86,6 +96,7 @@ export const b1Module5Content: CourseContent[] = [
       },
       {
         id: 'L142-3', type: 'qcm', title: 'Histoire du cinéma', characterId: 'elena',
+        characterMessage: "La nuance est importante — chaque option est crédible !",
         question: 'Qui a inventé le cinéma ?',
         options: ['Les frères Grimm', 'Les frères Lumière', 'Les frères Wright', 'Les frères Marx'],
         correctIndex: 1,
@@ -93,6 +104,7 @@ export const b1Module5Content: CourseContent[] = [
       },
       {
         id: 'L142-4', type: 'flashcard', title: 'Vocabulaire du cinéma', characterId: 'thomas',
+        characterMessage: "Le vocabulaire avancé te permet de nuancer ta pensée en français.",
         cards: [
           { front: 'Un réalisateur / une réalisatrice', back: 'A director' },
           { front: 'Un scénario', back: 'A screenplay / script' },
@@ -104,18 +116,21 @@ export const b1Module5Content: CourseContent[] = [
       },
       {
         id: 'L142-5', type: 'fill-blank', title: 'Complétez', characterId: 'fatou',
+        characterMessage: "Pense aux temps verbaux — passé, présent, futur ?",
         sentence: 'Le Festival de Cannes décerne la ___.',
         options: ['Palme d\'Or', 'Médaille d\'Argent', 'Étoile d\'Or', 'Coupe du Monde'],
         correctAnswer: 'Palme d\'Or'
       },
       {
         id: 'L142-6', type: 'drag-drop', title: 'Chronologie du cinéma français', characterId: 'yuki',
+        characterMessage: "Cherche les connecteurs logiques pour comprendre l'enchaînement.",
         instruction: 'Remettez dans l\'ordre chronologique :',
         items: ['Intouchables (2011)', 'Frères Lumière (1895)', 'Festival de Cannes (1946)', 'Nouvelle Vague (1960s)'],
         correctOrder: ['Frères Lumière (1895)', 'Festival de Cannes (1946)', 'Nouvelle Vague (1960s)', 'Intouchables (2011)']
       },
       {
         id: 'L142-7', type: 'qcm', title: 'Festivals', characterId: 'omar',
+        characterMessage: "Réfléchis comme un Français — pas mot à mot depuis ta langue !",
         question: 'Le Festival de Cannes a lieu en…',
         options: ['janvier', 'mars', 'mai', 'septembre'],
         correctIndex: 2,
@@ -123,6 +138,7 @@ export const b1Module5Content: CourseContent[] = [
       },
       {
         id: 'L142-8', type: 'final-quiz', title: 'Quiz final — Le cinéma français', characterId: 'marie',
+        characterMessage: "Les questions sont plus nuancées à ce niveau. Réfléchissez bien !",
         questions: [
           { question: 'Les frères Lumière ont inventé le cinéma en…', options: ['1875', '1895', '1905', '1920'], correctIndex: 1 },
           { question: 'Les César sont l\'équivalent français des…', options: ['Grammy', 'Emmy', 'Oscars', 'BAFTA'], correctIndex: 2 },
@@ -140,11 +156,13 @@ export const b1Module5Content: CourseContent[] = [
     steps: [
       {
         id: 'L143-1', type: 'lesson', title: 'L\'art de vivre à la française', characterId: 'marie',
+        characterMessage: "Cette leçon demande un peu plus de réflexion. Je compte sur vous !",
         content: `Découvrons **l'art de vivre** à la française ! 🥐☕\n\n💋 **La bise :**\n- Se faire la bise = se saluer avec un ou plusieurs bisous sur les joues\n- Le nombre varie selon les régions (1 à 4 !)\n- Sur la Côte d'Azur : généralement 2 bises\n\n🍷 **L'apéro :**\n- L'apéritif avant le repas : un moment social important\n- Boissons : pastis, kir, vin rosé\n- Grignoter : olives, chips, cacahuètes\n\n☕ **Le café :**\n- Les terrasses de café : un art de vivre\n- « Un café » = un expresso\n- « Un café crème » = avec du lait\n\n🍽️ **Les repas :**\n- Le petit-déjeuner (léger : tartine + café)\n- Le déjeuner (12h-14h, souvent copieux)\n- Le dîner (19h-21h)\n- Les Français prennent le temps de manger !`,
         tip: '💡 En France, le déjeuner dure en moyenne 40 minutes — les Français prennent le temps de manger ensemble !'
       },
       {
         id: 'L143-2', type: 'listening', title: 'Écoute — Un apéro à Antibes', characterId: 'omar',
+        characterMessage: "Écoute les intonations — elles donnent beaucoup d'informations.",
         text: 'Ce soir, nous faisons un apéro sur le port d\'Antibes. Thomas a apporté du rosé de Provence, Elena a préparé des olives et de la tapenade. On se fait la bise pour se dire bonjour. C\'est un moment simple mais très agréable entre amis.',
         question: 'Que boit-on lors de l\'apéro ?',
         options: ['Du lait', 'Du rosé de Provence', 'Du jus d\'orange', 'De l\'eau'],
@@ -152,6 +170,7 @@ export const b1Module5Content: CourseContent[] = [
       },
       {
         id: 'L143-3', type: 'qcm', title: 'Art de vivre', characterId: 'elena',
+        characterMessage: "J'ai appris cette subtilité en discutant avec des Français.",
         question: 'Combien de bises fait-on généralement sur la Côte d\'Azur ?',
         options: ['1', '2', '3', '4'],
         correctIndex: 1,
@@ -159,6 +178,7 @@ export const b1Module5Content: CourseContent[] = [
       },
       {
         id: 'L143-4', type: 'flashcard', title: 'Art de vivre français', characterId: 'thomas',
+        characterMessage: "J'ai découvert ces mots en explorant les villages provençaux.",
         cards: [
           { front: 'La bise', back: 'Greeting kiss(es) on the cheek(s)' },
           { front: 'L\'apéro (l\'apéritif)', back: 'Pre-dinner drinks and snacks' },
@@ -170,18 +190,21 @@ export const b1Module5Content: CourseContent[] = [
       },
       {
         id: 'L143-5', type: 'fill-blank', title: 'Complétez', characterId: 'fatou',
+        characterMessage: "La concordance des temps, c'est un point crucial à ce niveau.",
         sentence: 'En France, « un café » signifie un ___.',
         options: ['cappuccino', 'latte', 'expresso', 'café glacé'],
         correctAnswer: 'expresso'
       },
       {
         id: 'L143-6', type: 'drag-drop', title: 'Les repas français', characterId: 'yuki',
+        characterMessage: "Cet exercice te prépare à écrire des textes plus élaborés.",
         instruction: 'Remettez les repas dans l\'ordre chronologique :',
         items: ['Le dîner', 'Le petit-déjeuner', 'Le goûter', 'Le déjeuner'],
         correctOrder: ['Le petit-déjeuner', 'Le déjeuner', 'Le goûter', 'Le dîner']
       },
       {
         id: 'L143-7', type: 'qcm', title: 'Culture française', characterId: 'lucas',
+        characterMessage: "Même après deux ans en France, ce point me fait parfois hésiter.",
         question: 'Le pastis est typique de…',
         options: ['la Bretagne', 'l\'Alsace', 'la Provence', 'la Normandie'],
         correctIndex: 2,
@@ -189,6 +212,7 @@ export const b1Module5Content: CourseContent[] = [
       },
       {
         id: 'L143-8', type: 'final-quiz', title: 'Quiz final — L\'art de vivre', characterId: 'marie',
+        characterMessage: "Montrez-moi que vous maîtrisez ce sujet. C'est parti !",
         questions: [
           { question: '« La bise » est…', options: ['un plat', 'un salut avec un bisou', 'une boisson', 'un sport'], correctIndex: 1 },
           { question: 'L\'apéro est un moment…', options: ['stressant', 'social et convivial', 'sportif', 'professionnel'], correctIndex: 1 },
@@ -206,11 +230,13 @@ export const b1Module5Content: CourseContent[] = [
     steps: [
       {
         id: 'L144-1', type: 'lesson', title: 'Le subjonctif — Approfondissement', characterId: 'marie',
+        characterMessage: "Vous allez adorer ce thème, il est très riche culturellement.",
         content: `Approfondissons le **subjonctif** avec les expressions de sentiment et de doute.\n\n📐 **Après les expressions de sentiment :**\n- Je suis content(e) que + subjonctif\n- Je suis triste que + subjonctif\n- J'ai peur que + subjonctif\n- C'est dommage que + subjonctif\n- Je regrette que + subjonctif\n\n📐 **Après les expressions de doute :**\n- Je doute que + subjonctif\n- Il est peu probable que + subjonctif\n- Il n'est pas certain que + subjonctif\n\n📐 **Après certaines conjonctions :**\n- Bien que + subjonctif (although)\n- Pour que + subjonctif (so that)\n- Avant que + subjonctif (before)\n- À moins que + subjonctif (unless)\n\n⚠️ **Rappel : PAS de subjonctif après :**\n- Je pense que (affirmatif) → indicatif\n- Je sais que → indicatif\n- Il est certain que → indicatif\n- Après que → indicatif`,
         tip: '💡 Le subjonctif exprime toujours une subjectivité : émotion, doute, volonté, possibilité.'
       },
       {
         id: 'L144-2', type: 'listening', title: 'Écoute — Sentiments et subjonctif', characterId: 'lucas',
+        characterMessage: "L'écoute est plus rapide maintenant. Reste attentif aux détails !",
         text: 'Je suis content que tu puisses venir à Antibes cet été. C\'est dommage que le festival soit déjà complet. J\'ai peur qu\'il fasse mauvais temps. Mais bien que le logement soit cher, je suis sûr que nous passerons un bon moment.',
         question: 'Pourquoi est-il content ?',
         options: ['Le festival n\'est pas complet', 'Son ami peut venir à Antibes', 'Il fait beau', 'Le logement est pas cher'],
@@ -218,6 +244,7 @@ export const b1Module5Content: CourseContent[] = [
       },
       {
         id: 'L144-3', type: 'qcm', title: 'Subjonctif après sentiment', characterId: 'elena',
+        characterMessage: "Pense au contexte avant de choisir ta réponse.",
         question: '« Je suis triste qu\'elle ___ malade. »',
         options: ['est', 'soit', 'sera', 'était'],
         correctIndex: 1,
@@ -225,6 +252,7 @@ export const b1Module5Content: CourseContent[] = [
       },
       {
         id: 'L144-4', type: 'flashcard', title: 'Subjonctif avec conjonctions', characterId: 'thomas',
+        characterMessage: "La langue française est un trésor. Chaque mot est une perle !",
         cards: [
           { front: 'bien que (+ subj.)', back: 'although' },
           { front: 'pour que (+ subj.)', back: 'so that / in order that' },
@@ -236,18 +264,21 @@ export const b1Module5Content: CourseContent[] = [
       },
       {
         id: 'L144-5', type: 'fill-blank', title: 'Complétez au subjonctif', characterId: 'fatou',
+        characterMessage: "Au Sénégal, le français a ses particularités. Ici, on apprend le standard.",
         sentence: 'Bien qu\'il ___ froid, nous sommes allés à la plage.',
         options: ['fait', 'fasse', 'fera', 'faisait'],
         correctAnswer: 'fasse'
       },
       {
         id: 'L144-6', type: 'drag-drop', title: 'Formez la phrase', characterId: 'yuki',
+        characterMessage: "La syntaxe française a ses subtilités — entraîne-toi bien !",
         instruction: 'Remettez les mots dans l\'ordre :',
         items: ['tu', 'que', 'Je', 'puisses', 'suis content', 'venir'],
         correctOrder: ['Je', 'suis content', 'que', 'tu', 'puisses', 'venir']
       },
       {
         id: 'L144-7', type: 'qcm', title: 'Indicatif ou subjonctif ?', characterId: 'hans',
+        characterMessage: "Le monde professionnel exige ce genre de compétence. Entraîne-toi !",
         question: '« Après que » est suivi de…',
         options: ['le subjonctif', 'l\'indicatif', 'le conditionnel', 'l\'infinitif'],
         correctIndex: 1,
@@ -255,6 +286,7 @@ export const b1Module5Content: CourseContent[] = [
       },
       {
         id: 'L144-8', type: 'final-quiz', title: 'Quiz final — Subjonctif approfondissement', characterId: 'marie',
+        characterMessage: "Quiz de niveau intermédiaire — je sais que vous pouvez y arriver.",
         questions: [
           { question: '« Je doute qu\'il ___ raison. »', options: ['a', 'ait', 'aura', 'avait'], correctIndex: 1 },
           { question: '« Bien que » est suivi du…', options: ['indicatif', 'conditionnel', 'subjonctif', 'infinitif'], correctIndex: 2 },
@@ -272,11 +304,13 @@ export const b1Module5Content: CourseContent[] = [
     steps: [
       {
         id: 'L145-1', type: 'lesson', title: 'Écrire une critique', characterId: 'marie',
+        characterMessage: "Aujourd'hui, on travaille un point de grammaire plus avancé.",
         content: `Apprenons à **écrire une critique** de film, livre ou restaurant ! ⭐📝\n\n📐 **Structure d'une critique :**\n\n1️⃣ **Présentation** : Titre, auteur/réalisateur, genre, date\n2️⃣ **Résumé** : De quoi ça parle (sans spoiler !)\n3️⃣ **Points positifs** : Ce que vous avez aimé\n4️⃣ **Points négatifs** : Ce que vous avez moins aimé\n5️⃣ **Verdict** : Note et recommandation\n\n📝 **Expressions utiles :**\n\n✅ Positif :\n- « J'ai beaucoup apprécié… »\n- « Ce qui m'a plu, c'est… »\n- « Le point fort est… »\n- « Je recommande vivement… »\n\n❌ Négatif :\n- « J'ai été déçu(e) par… »\n- « Le point faible est… »\n- « Il manque… »\n- « Je ne recommande pas… »`,
         tip: '💡 Une bonne critique est équilibrée : mentionnez les points positifs ET négatifs.'
       },
       {
         id: 'L145-2', type: 'listening', title: 'Écoute — Critique d\'un restaurant', characterId: 'omar',
+        characterMessage: "Dans mon restaurant, les clients parlent vite. C'est un bon entraînement !",
         text: 'J\'ai dîné au restaurant Le Safranier à Antibes. La cuisine était excellente, surtout le poisson grillé. Le service était rapide et le cadre très agréable avec vue sur la mer. Cependant, les prix sont un peu élevés. Dans l\'ensemble, je recommande ce restaurant. Note : 4 sur 5.',
         question: 'Quel est le point négatif mentionné ?',
         options: ['La nourriture', 'Le service', 'Les prix', 'Le cadre'],
@@ -284,6 +318,7 @@ export const b1Module5Content: CourseContent[] = [
       },
       {
         id: 'L145-3', type: 'qcm', title: 'Vocabulaire de la critique', characterId: 'elena',
+        characterMessage: "Le français et l'espagnol divergent sur ce point. Mémorise bien !",
         question: '« J\'ai été déçu(e) par… » exprime…',
         options: ['la satisfaction', 'la déception', 'la surprise', 'la joie'],
         correctIndex: 1,
@@ -291,6 +326,7 @@ export const b1Module5Content: CourseContent[] = [
       },
       {
         id: 'L145-4', type: 'flashcard', title: 'Expressions pour la critique', characterId: 'thomas',
+        characterMessage: "Avec ce vocabulaire, tu peux tenir des conversations plus riches.",
         cards: [
           { front: 'J\'ai beaucoup apprécié…', back: 'I really appreciated…' },
           { front: 'Ce qui m\'a plu, c\'est…', back: 'What I liked was…' },
@@ -302,18 +338,21 @@ export const b1Module5Content: CourseContent[] = [
       },
       {
         id: 'L145-5', type: 'fill-blank', title: 'Complétez la critique', characterId: 'fatou',
+        characterMessage: "Cet exercice teste ta maîtrise de la grammaire en contexte.",
         sentence: 'Ce qui m\'a ___, c\'est l\'ambiance chaleureuse du restaurant.',
         options: ['déçu', 'plu', 'manqué', 'ennuyé'],
         correctAnswer: 'plu'
       },
       {
         id: 'L145-6', type: 'drag-drop', title: 'Structure de la critique', characterId: 'yuki',
+        characterMessage: "Pense au sens global avant de placer chaque mot.",
         instruction: 'Remettez les parties dans l\'ordre :',
         items: ['Verdict', 'Points négatifs', 'Présentation', 'Points positifs', 'Résumé'],
         correctOrder: ['Présentation', 'Résumé', 'Points positifs', 'Points négatifs', 'Verdict']
       },
       {
         id: 'L145-7', type: 'qcm', title: 'Écrire une critique', characterId: 'lucas',
+        characterMessage: "C'est subtil, mais une fois que tu as compris, c'est automatique.",
         question: 'Une bonne critique doit être…',
         options: ['uniquement positive', 'uniquement négative', 'équilibrée', 'très courte'],
         correctIndex: 2,
@@ -321,6 +360,7 @@ export const b1Module5Content: CourseContent[] = [
       },
       {
         id: 'L145-8', type: 'final-quiz', title: 'Quiz final — La critique', characterId: 'marie',
+        characterMessage: "Prenez le temps de bien lire chaque option. Bonne chance !",
         questions: [
           { question: '« Je recommande vivement » est…', options: ['négatif', 'très positif', 'neutre', 'indifférent'], correctIndex: 1 },
           { question: 'Une critique doit commencer par…', options: ['le verdict', 'la présentation', 'les points négatifs', 'une blague'], correctIndex: 1 },
@@ -338,11 +378,13 @@ export const b1Module5Content: CourseContent[] = [
     steps: [
       {
         id: 'L146-1', type: 'lesson', title: 'Les stéréotypes culturels', characterId: 'marie',
+        characterMessage: "Vous êtes maintenant capables de comprendre des sujets plus complexes.",
         content: `Parlons des **stéréotypes culturels** et apprenons à les **nuancer**. 🌍\n\n🇫🇷 **Stéréotypes sur les Français :**\n- Ils portent un béret et une baguette → Vrai pour la baguette (12 milliards par an !), faux pour le béret\n- Ils sont romantiques → Image culturelle, pas toujours réelle\n- Ils sont en grève tout le temps → La France a une tradition de manifestation sociale\n- Ils mangent des cuisses de grenouille → Très rare en réalité !\n\n🗣️ **Nuancer les stéréotypes :**\n- « Certes… mais il faut nuancer… »\n- « C'est vrai en partie, cependant… »\n- « Tous les Français ne sont pas… »\n- « Il y a une part de vérité, mais… »\n- « On ne peut pas généraliser… »\n\n📝 **Vocabulaire :**\n- Un stéréotype / un cliché / un préjugé\n- Généraliser / nuancer\n- La diversité culturelle\n- L'ouverture d'esprit`,
         tip: '💡 Les stéréotypes contiennent parfois une part de vérité, mais il est important de ne jamais généraliser !'
       },
       {
         id: 'L146-2', type: 'listening', title: 'Écoute — Débat sur les clichés', characterId: 'omar',
+        characterMessage: "Cherche à comprendre l'intention derrière les mots.",
         text: 'On dit que les Français mangent des cuisses de grenouille tous les jours. C\'est un cliché ! En réalité, c\'est très rare. Par contre, la baguette, c\'est vrai : les Français en achètent des millions chaque jour. On ne peut pas généraliser, mais certains stéréotypes ont une part de vérité.',
         question: 'Quel stéréotype est vrai selon le texte ?',
         options: ['Les cuisses de grenouille', 'Le béret', 'La baguette', 'Les grèves'],
@@ -350,6 +392,7 @@ export const b1Module5Content: CourseContent[] = [
       },
       {
         id: 'L146-3', type: 'qcm', title: 'Nuancer', characterId: 'elena',
+        characterMessage: "À ce niveau, il faut aller au-delà de la traduction.",
         question: 'Quelle expression permet de nuancer un stéréotype ?',
         options: ['C\'est absolument vrai !', 'Tous les Français sont comme ça !', 'Il y a une part de vérité, mais…', 'C\'est totalement faux !'],
         correctIndex: 2,
@@ -357,6 +400,7 @@ export const b1Module5Content: CourseContent[] = [
       },
       {
         id: 'L146-4', type: 'flashcard', title: 'Vocabulaire des stéréotypes', characterId: 'thomas',
+        characterMessage: "Ces termes enrichissent considérablement ton expression.",
         cards: [
           { front: 'Un stéréotype / un cliché', back: 'A stereotype / a cliché' },
           { front: 'Un préjugé', back: 'A prejudice / bias' },
@@ -368,18 +412,21 @@ export const b1Module5Content: CourseContent[] = [
       },
       {
         id: 'L146-5', type: 'fill-blank', title: 'Nuancez le stéréotype', characterId: 'fatou',
+        characterMessage: "Les phrases sont plus complexes, mais tu as les outils pour réussir.",
         sentence: 'On ne peut pas ___ à partir d\'un seul exemple.',
         options: ['nuancer', 'généraliser', 'accepter', 'refuser'],
         correctAnswer: 'généraliser'
       },
       {
         id: 'L146-6', type: 'drag-drop', title: 'Formez une nuance', characterId: 'yuki',
+        characterMessage: "Les structures deviennent complexes. Attention aux propositions !",
         instruction: 'Formez la phrase :',
         items: ['il faut nuancer', 'Certes', 'mais', ','],
         correctOrder: ['Certes', ',', 'mais', 'il faut nuancer']
       },
       {
         id: 'L146-7', type: 'qcm', title: 'Stéréotypes', characterId: 'lucas',
+        characterMessage: "J'ai discuté de ça avec des amis français — même eux hésitent parfois !",
         question: 'Combien de baguettes les Français achètent-ils par an ?',
         options: ['1 million', '100 millions', '6 milliards', '12 milliards'],
         correctIndex: 2,
@@ -387,6 +434,7 @@ export const b1Module5Content: CourseContent[] = [
       },
       {
         id: 'L146-8', type: 'final-quiz', title: 'Quiz final — Les stéréotypes', characterId: 'marie',
+        characterMessage: "Ce quiz teste votre compréhension en profondeur. Allez-y !",
         questions: [
           { question: 'Un « préjugé » est…', options: ['un fait vérifié', 'une opinion préconçue', 'une certitude', 'une blague'], correctIndex: 1 },
           { question: '« Nuancer » signifie…', options: ['exagérer', 'ajouter de la complexité', 'simplifier', 'ignorer'], correctIndex: 1 },
@@ -404,11 +452,13 @@ export const b1Module5Content: CourseContent[] = [
     steps: [
       {
         id: 'L147-1', type: 'lesson', title: 'La littérature française — Premiers pas', characterId: 'marie',
+        characterMessage: "On entre dans le vif du sujet aujourd'hui — accrochez-vous !",
         content: `Découvrons quelques **chefs-d'œuvre** de la littérature française ! 📚\n\n📖 **Œuvres incontournables :**\n\n🌹 **Le Petit Prince** (Antoine de Saint-Exupéry, 1943)\n- « L'essentiel est invisible pour les yeux. »\n- 3e livre le plus traduit au monde\n\n📕 **Les Misérables** (Victor Hugo, 1862)\n- L'histoire de Jean Valjean, un ancien bagnard\n- Un roman social sur la pauvreté et la justice\n\n📗 **L'Étranger** (Albert Camus, 1942)\n- « Aujourd'hui, maman est morte. »\n- Un roman philosophique (l'absurde)\n\n📘 **Les Trois Mousquetaires** (Alexandre Dumas, 1844)\n- « Un pour tous, tous pour un ! »\n- Roman d'aventures historique\n\n📝 **Vocabulaire littéraire :**\n- Un roman / une nouvelle / un conte\n- Un auteur / un écrivain\n- Un personnage / un héros\n- L'intrigue / le dénouement`,
         tip: '💡 « Le Petit Prince » est le livre français le plus traduit au monde — dans plus de 300 langues !'
       },
       {
         id: 'L147-2', type: 'listening', title: 'Écoute — Le Petit Prince', characterId: 'lucas',
+        characterMessage: "L'écoute est plus rapide maintenant. Reste attentif aux détails !",
         text: 'Le Petit Prince est un conte poétique écrit par Antoine de Saint-Exupéry en 1943. C\'est l\'histoire d\'un petit garçon qui vit sur une minuscule planète. Il voyage de planète en planète et rencontre des personnages étranges. La phrase la plus célèbre est : « L\'essentiel est invisible pour les yeux. »',
         question: 'Qui a écrit Le Petit Prince ?',
         options: ['Victor Hugo', 'Albert Camus', 'Antoine de Saint-Exupéry', 'Alexandre Dumas'],
@@ -416,6 +466,7 @@ export const b1Module5Content: CourseContent[] = [
       },
       {
         id: 'L147-3', type: 'qcm', title: 'Littérature française', characterId: 'elena',
+        characterMessage: "La nuance est importante — chaque option est crédible !",
         question: '« Un pour tous, tous pour un » vient de…',
         options: ['Le Petit Prince', 'Les Misérables', 'L\'Étranger', 'Les Trois Mousquetaires'],
         correctIndex: 3,
@@ -423,6 +474,7 @@ export const b1Module5Content: CourseContent[] = [
       },
       {
         id: 'L147-4', type: 'flashcard', title: 'Littérature essentielle', characterId: 'thomas',
+        characterMessage: "Le vocabulaire avancé te permet de nuancer ta pensée en français.",
         cards: [
           { front: 'Le Petit Prince', back: 'Saint-Exupéry (1943) — Conte poétique' },
           { front: 'Les Misérables', back: 'Victor Hugo (1862) — Roman social' },
@@ -434,18 +486,21 @@ export const b1Module5Content: CourseContent[] = [
       },
       {
         id: 'L147-5', type: 'fill-blank', title: 'Citations célèbres', characterId: 'fatou',
+        characterMessage: "Pense aux temps verbaux — passé, présent, futur ?",
         sentence: '« L\'essentiel est ___ pour les yeux. »',
         options: ['visible', 'invisible', 'important', 'beau'],
         correctAnswer: 'invisible'
       },
       {
         id: 'L147-6', type: 'drag-drop', title: 'Associez l\'œuvre et l\'auteur', characterId: 'yuki',
+        characterMessage: "Cherche les connecteurs logiques pour comprendre l'enchaînement.",
         instruction: 'Remettez dans l\'ordre chronologique de publication :',
         items: ['L\'Étranger (1942)', 'Les Trois Mousquetaires (1844)', 'Le Petit Prince (1943)', 'Les Misérables (1862)'],
         correctOrder: ['Les Trois Mousquetaires (1844)', 'Les Misérables (1862)', 'L\'Étranger (1942)', 'Le Petit Prince (1943)']
       },
       {
         id: 'L147-7', type: 'qcm', title: 'Culture littéraire', characterId: 'omar',
+        characterMessage: "Réfléchis comme un Français — pas mot à mot depuis ta langue !",
         question: 'Le Petit Prince est traduit dans combien de langues ?',
         options: ['50', '100', '200', 'plus de 300'],
         correctIndex: 3,
@@ -453,6 +508,7 @@ export const b1Module5Content: CourseContent[] = [
       },
       {
         id: 'L147-8', type: 'final-quiz', title: 'Quiz final — La littérature', characterId: 'marie',
+        characterMessage: "Les questions sont plus nuancées à ce niveau. Réfléchissez bien !",
         questions: [
           { question: 'Qui a écrit Les Misérables ?', options: ['Camus', 'Hugo', 'Dumas', 'Saint-Exupéry'], correctIndex: 1 },
           { question: '« L\'Étranger » est un roman…', options: ['d\'aventures', 'romantique', 'philosophique', 'policier'], correctIndex: 2 },
@@ -470,11 +526,13 @@ export const b1Module5Content: CourseContent[] = [
     steps: [
       {
         id: 'L148-1', type: 'lesson', title: 'Bilan de communication B1', characterId: 'marie',
+        characterMessage: "Cette leçon demande un peu plus de réflexion. Je compte sur vous !",
         content: `Faisons le **bilan** de vos compétences de communication B1 ! 🎯\n\n🗣️ **Vous savez maintenant :**\n\n✅ **Exprimer votre opinion** et débattre poliment\n✅ **Raconter** un voyage, une expérience au passé\n✅ **Faire des hypothèses** avec SI\n✅ **Résoudre un problème** et vous plaindre poliment\n✅ **Rédiger** des emails formels et des essais\n✅ **Présenter un exposé** structuré\n✅ **Comprendre** les médias et la culture française\n✅ **Nuancer** vos propos avec le subjonctif\n\n📐 **Points de grammaire maîtrisés :**\n- Le subjonctif (introduction + approfondissement)\n- Le conditionnel présent\n- Les hypothèses avec SI\n- Le gérondif\n- La voix passive\n- Le discours indirect\n- Les pronoms relatifs (qui, que, où)\n- Les pronoms EN et Y`,
         tip: '💡 Vous êtes au niveau B1 « Seuil » : vous pouvez vous débrouiller dans la plupart des situations de la vie quotidienne en français !'
       },
       {
         id: 'L148-2', type: 'qcm', title: 'Bilan — Opinion', characterId: 'elena',
+        characterMessage: "J'ai appris cette subtilité en discutant avec des Français.",
         question: '« À mon avis, il ___ agir maintenant. »',
         options: ['faut', 'faudrait', 'a fallu', 'fallait'],
         correctIndex: 1,
@@ -482,12 +540,14 @@ export const b1Module5Content: CourseContent[] = [
       },
       {
         id: 'L148-3', type: 'fill-blank', title: 'Bilan — Hypothèse', characterId: 'fatou',
+        characterMessage: "La concordance des temps, c'est un point crucial à ce niveau.",
         sentence: 'Si je ___ en France, je visiterais tous les musées.',
         options: ['vis', 'vivais', 'vivrais', 'vivrai'],
         correctAnswer: 'vivais'
       },
       {
         id: 'L148-4', type: 'qcm', title: 'Bilan — Subjonctif', characterId: 'lucas',
+        characterMessage: "La nuance est importante ici. Réfléchis au contexte.",
         question: '« Bien qu\'il ___ froid, nous sortons. »',
         options: ['fait', 'fasse', 'fera', 'faisait'],
         correctIndex: 1,
@@ -495,18 +555,21 @@ export const b1Module5Content: CourseContent[] = [
       },
       {
         id: 'L148-5', type: 'fill-blank', title: 'Bilan — Gérondif', characterId: 'fatou',
+        characterMessage: "Au Sénégal, le français a ses particularités. Ici, on apprend le standard.",
         sentence: 'J\'apprends le français ___ des podcasts.',
         options: ['en écoutant', 'écouter', 'écouté', 'en écouter'],
         correctAnswer: 'en écoutant'
       },
       {
         id: 'L148-6', type: 'drag-drop', title: 'Bilan — Voix passive', characterId: 'yuki',
+        characterMessage: "Cet exercice te prépare à écrire des textes plus élaborés.",
         instruction: 'Transformez au passif :',
         items: ['par Marie', 'Le gâteau', 'est préparé'],
         correctOrder: ['Le gâteau', 'est préparé', 'par Marie']
       },
       {
         id: 'L148-7', type: 'qcm', title: 'Bilan — Culture', characterId: 'omar',
+        characterMessage: "Réfléchis comme un Français — pas mot à mot depuis ta langue !",
         question: 'Le Festival de Cannes récompense avec…',
         options: ['un Oscar', 'un César', 'une Palme d\'Or', 'un Grammy'],
         correctIndex: 2,
@@ -514,6 +577,7 @@ export const b1Module5Content: CourseContent[] = [
       },
       {
         id: 'L148-8', type: 'final-quiz', title: 'Quiz bilan B1', characterId: 'marie',
+        characterMessage: "Montrez-moi que vous maîtrisez ce sujet. C'est parti !",
         questions: [
           { question: '« Je ne pense pas qu\'il ___ raison. »', options: ['a', 'ait', 'aura', 'avait'], correctIndex: 1 },
           { question: '« Si j\'avais le temps, je ___ . »', options: ['voyage', 'voyagerais', 'voyagerai', 'voyageais'], correctIndex: 1 },
@@ -531,11 +595,13 @@ export const b1Module5Content: CourseContent[] = [
     steps: [
       {
         id: 'L149-1', type: 'lesson', title: 'Révision finale B1', characterId: 'marie',
+        characterMessage: "Vous allez adorer ce thème, il est très riche culturellement.",
         content: `Révision complète du niveau B1 ! 📚🧠\n\nTous les modules en résumé :\n\n🧠 **B1.1** : Opinion, subjonctif, débat, médias, essai, pronoms relatifs, cause/conséquence\n\n🌍 **B1.2** : Hôtel, voyage, conditionnel, hypothèses SI, réclamation, transports, outre-mer\n\n🏠 **B1.3** : Logement, colocation, EN/Y, budget, discours indirect, administration, technologie\n\n📚 **B1.4** : Éducation, université, gérondif, notes, exposé, passif, vie étudiante, résumé\n\n🎨 **B1.5** : Environnement, cinéma, art de vivre, subjonctif avancé, critique, stéréotypes, littérature`,
         tip: '💡 Ce quiz complet couvre TOUT le niveau B1. Prenez votre temps !'
       },
       {
         id: 'L149-2', type: 'qcm', title: 'Révision 1', characterId: 'elena',
+        characterMessage: "Pense au contexte avant de choisir ta réponse.",
         question: '« Il faut que je ___ mes devoirs. »',
         options: ['fais', 'fasse', 'ferai', 'faisais'],
         correctIndex: 1,
@@ -543,12 +609,14 @@ export const b1Module5Content: CourseContent[] = [
       },
       {
         id: 'L149-3', type: 'fill-blank', title: 'Révision 2', characterId: 'fatou',
+        characterMessage: "Cet exercice teste ta maîtrise de la grammaire en contexte.",
         sentence: 'Si nous ___ riches, nous achèterions un bateau.',
         options: ['sommes', 'étions', 'serions', 'serons'],
         correctAnswer: 'étions'
       },
       {
         id: 'L149-4', type: 'qcm', title: 'Révision 3', characterId: 'lucas',
+        characterMessage: "En portugais, c'est différent. Il faut penser « à la française » !",
         question: '« Tu veux du pain ? — Oui, j\'___ veux bien. »',
         options: ['y', 'en', 'le', 'la'],
         correctIndex: 1,
@@ -556,12 +624,14 @@ export const b1Module5Content: CourseContent[] = [
       },
       {
         id: 'L149-5', type: 'fill-blank', title: 'Révision 4', characterId: 'fatou',
+        characterMessage: "Les phrases sont plus complexes, mais tu as les outils pour réussir.",
         sentence: 'Ce tableau ___ par un artiste célèbre.',
         options: ['a peint', 'a été peint', 'peint', 'est peindre'],
         correctAnswer: 'a été peint'
       },
       {
         id: 'L149-6', type: 'qcm', title: 'Révision 5', characterId: 'omar',
+        characterMessage: "Réfléchis comme un Français — pas mot à mot depuis ta langue !",
         question: '« Le Petit Prince » a été écrit par…',
         options: ['Victor Hugo', 'Albert Camus', 'Saint-Exupéry', 'Alexandre Dumas'],
         correctIndex: 2,
@@ -569,12 +639,14 @@ export const b1Module5Content: CourseContent[] = [
       },
       {
         id: 'L149-7', type: 'drag-drop', title: 'Révision 6', characterId: 'yuki',
+        characterMessage: "La syntaxe française a ses subtilités — entraîne-toi bien !",
         instruction: 'Formez l\'hypothèse :',
         items: ['je voyagerais', 'Si', ',', 'j\'avais le temps'],
         correctOrder: ['Si', 'j\'avais le temps', ',', 'je voyagerais']
       },
       {
         id: 'L149-8', type: 'final-quiz', title: 'Quiz de révision finale B1', characterId: 'marie',
+        characterMessage: "Quiz de niveau intermédiaire — je sais que vous pouvez y arriver.",
         questions: [
           { question: '« Bien que » est suivi du…', options: ['indicatif', 'conditionnel', 'subjonctif', 'infinitif'], correctIndex: 2 },
           { question: 'Le gérondif de « être » est…', options: ['en essant', 'en étant', 'en soyant', 'en êtant'], correctIndex: 1 },
@@ -592,6 +664,7 @@ export const b1Module5Content: CourseContent[] = [
     steps: [
       {
         id: 'L150-1', type: 'lesson', title: 'EXAMEN FINAL B1 — Niveau B1 validé 🎓', characterId: 'marie',
+        characterMessage: "Aujourd'hui, on travaille un point de grammaire plus avancé.",
         content: `Bienvenue à l'**EXAMEN FINAL** du niveau B1 !\n\n🎓 **Ce test certifiant évalue TOUTES les compétences B1 :**\n\n- Expression de l'opinion et débat\n- Subjonctif (introduction + approfondissement)\n- Conditionnel et hypothèses\n- Voyage et résolution de problèmes\n- Vie quotidienne avancée (logement, budget, admin)\n- Études et formation\n- Culture et société française\n- Littérature et cinéma\n\n⏱️ Cet examen comporte 8 questions couvrant l'ensemble du niveau.\n\n🏆 **Récompense :** Badge « Niveau B1 validé — Seuil » + certificat\n\nBonne chance ! 🍀`,
         tip: '💡 C\'est le grand examen ! Prenez votre temps et faites confiance à vos connaissances.'
       },
@@ -636,6 +709,7 @@ export const b1Module5Content: CourseContent[] = [
       },
       {
         id: 'L150-8', type: 'final-quiz', title: 'EXAMEN FINAL B1 — Certification', characterId: 'marie',
+        characterMessage: "Prenez le temps de bien lire chaque option. Bonne chance !",
         questions: [
           { question: '« Serait-il ___ de m\'aider ? » (poli)', options: ['bien', 'possible', 'bon', 'normal'], correctIndex: 1 },
           { question: '« Tu vas à Paris ? — Oui, j\' ___ vais. »', options: ['en', 'y', 'le', 'la'], correctIndex: 1 },

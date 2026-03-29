@@ -8,11 +8,13 @@ export const b2Module4Content: CourseContent[] = [
     steps: [
       {
         id: 'L181-1', type: 'lesson', title: 'La littérature française', characterId: 'marie',
+        characterMessage: "À ce niveau, vous maîtrisez déjà beaucoup. Allons plus loin ensemble.",
         content: `La littérature française est l'une des plus riches au monde.\n\n📚 **Grands auteurs et œuvres :**\n\n🔵 **Le XIXe siècle :**\n- **Victor Hugo** — Les Misérables, Notre-Dame de Paris\n- **Gustave Flaubert** — Madame Bovary\n- **Guy de Maupassant** — Boule de Suif, nouvelles\n- **Émile Zola** — Germinal, L'Assommoir\n\n🟢 **Le XXe siècle :**\n- **Albert Camus** — L'Étranger, La Peste\n- **Jean-Paul Sartre** — La Nausée, Huis clos\n- **Simone de Beauvoir** — Le Deuxième Sexe\n- **Antoine de Saint-Exupéry** — Le Petit Prince\n- **Jacques Prévert** — Paroles (poésie)\n\n📝 **Vocabulaire littéraire :**\n- Un roman, une nouvelle, un poème, une pièce de théâtre\n- Un personnage, l'intrigue, le dénouement\n- Le narrateur, le point de vue, le style`,
         tip: '💡 Le Petit Prince est le livre français le plus traduit au monde : plus de 300 langues !'
       },
       {
         id: 'L181-2', type: 'listening', title: 'Écoute — Extrait du Petit Prince', characterId: 'omar',
+        characterMessage: "À ce niveau, tu peux suivre des conversations rapides et nuancées.",
         text: 'On ne voit bien qu\'avec le cœur. L\'essentiel est invisible pour les yeux. C\'est le temps que tu as perdu pour ta rose qui fait ta rose si importante. Tu deviens responsable pour toujours de ce que tu as apprivoisé.',
         question: 'Selon le Petit Prince, avec quoi voit-on bien ?',
         options: ['Les yeux', 'Le cœur', 'Les mains', 'Le cerveau'],
@@ -20,6 +22,7 @@ export const b2Module4Content: CourseContent[] = [
       },
       {
         id: 'L181-3', type: 'qcm', title: 'Auteurs français', characterId: 'elena',
+        characterMessage: "Question subtile ! Même moi, j'ai dû réfléchir longtemps.",
         question: 'Qui a écrit L\'Étranger ?',
         options: ['Victor Hugo', 'Albert Camus', 'Gustave Flaubert', 'Émile Zola'],
         correctIndex: 1,
@@ -27,6 +30,7 @@ export const b2Module4Content: CourseContent[] = [
       },
       {
         id: 'L181-4', type: 'flashcard', title: 'Vocabulaire littéraire', characterId: 'thomas',
+        characterMessage: "Ce vocabulaire te rapproche du niveau d'un francophone cultivé.",
         cards: [
           { front: 'L\'intrigue', back: 'The plot' },
           { front: 'Le dénouement', back: 'The ending / resolution' },
@@ -38,18 +42,21 @@ export const b2Module4Content: CourseContent[] = [
       },
       {
         id: 'L181-5', type: 'fill-blank', title: 'Complétez', characterId: 'fatou',
+        characterMessage: "À ce niveau, les choix sont tous plausibles. La nuance fait la différence.",
         sentence: 'Victor Hugo a écrit « Les ___ », l\'un des plus grands romans français.',
         options: ['Misérables', 'Fleurs', 'Étrangers', 'Mots'],
         correctAnswer: 'Misérables'
       },
       {
         id: 'L181-6', type: 'drag-drop', title: 'Associez auteur et œuvre', characterId: 'yuki',
+        characterMessage: "Ces phrases complexes reflètent le français écrit authentique.",
         instruction: 'Classez dans l\'ordre chronologique :',
         items: ['Camus — L\'Étranger (1942)', 'Saint-Exupéry — Le Petit Prince (1943)', 'Hugo — Les Misérables (1862)'],
         correctOrder: ['Hugo — Les Misérables (1862)', 'Camus — L\'Étranger (1942)', 'Saint-Exupéry — Le Petit Prince (1943)']
       },
       {
         id: 'L181-7', type: 'qcm', title: 'Le Petit Prince', characterId: 'lucas',
+        characterMessage: "À ce niveau, les pièges sont plus subtils. Reste vigilant !",
         question: 'Quel est le record du Petit Prince ?',
         options: ['Le plus long roman', 'Le livre français le plus traduit', 'Le premier roman français', 'Le livre le plus cher'],
         correctIndex: 1,
@@ -57,6 +64,7 @@ export const b2Module4Content: CourseContent[] = [
       },
       {
         id: 'L181-8', type: 'final-quiz', title: 'Quiz final — Littérature française', characterId: 'marie',
+        characterMessage: "Ce quiz exige précision et nuance. Vous en êtes capables !",
         questions: [
           { question: 'Qui a écrit Les Misérables ?', options: ['Flaubert', 'Camus', 'Hugo', 'Zola'], correctIndex: 2 },
           { question: '« L\'intrigue » d\'un roman, c\'est :', options: ['Le titre', 'L\'histoire / le plot', 'L\'auteur', 'La couverture'], correctIndex: 1 },
@@ -74,11 +82,13 @@ export const b2Module4Content: CourseContent[] = [
     steps: [
       {
         id: 'L182-1', type: 'lesson', title: 'Écrire une nouvelle courte', characterId: 'marie',
+        characterMessage: "Cette leçon exige de la nuance — c'est ça, le vrai français !",
         content: `La **nouvelle** est un récit court avec une intrigue resserrée et souvent une **chute** (twist final).\n\n📐 **Structure :**\n\n1️⃣ **Situation initiale** — Qui ? Où ? Quand ?\n2️⃣ **Élément perturbateur** — Quelque chose change\n3️⃣ **Péripéties** — Les événements se développent\n4️⃣ **Climax** — Le point culminant\n5️⃣ **Dénouement / Chute** — La fin (souvent inattendue)\n\n📝 **Techniques narratives :**\n- **La description** — planter le décor\n- **Le dialogue** — donner vie aux personnages\n- **Le suspense** — retarder l'information clé\n- **La chute** — surprendre le lecteur\n\n💡 **Temps du récit :**\n- Passé simple + imparfait (récit littéraire)\n- Passé composé + imparfait (récit plus moderne)`,
         tip: '💡 Une bonne chute change complètement la compréhension de l\'histoire !'
       },
       {
         id: 'L182-2', type: 'listening', title: 'Écoute — Micro-nouvelle', characterId: 'omar',
+        characterMessage: "Écoute les subtilités : ironie, humour, sous-entendus.",
         text: 'Ce matin-là, Pierre se leva plus tôt que d\'habitude. Il s\'habilla avec soin, prit son café en silence, et regarda une dernière fois son appartement. Sur la table, il laissa un mot : « Je pars à Antibes. Ne me cherchez pas. » En descendant les escaliers, il souriait.',
         question: 'Comment se sent Pierre en partant ?',
         options: ['Triste', 'En colère', 'Content / soulagé', 'Effrayé'],
@@ -86,6 +96,7 @@ export const b2Module4Content: CourseContent[] = [
       },
       {
         id: 'L182-3', type: 'qcm', title: 'Structure narrative', characterId: 'elena',
+        characterMessage: "C'est le niveau où on comprend vraiment les nuances du français.",
         question: 'L\'élément perturbateur est :',
         options: ['La fin de l\'histoire', 'Le début de l\'histoire', 'L\'événement qui déclenche l\'action', 'Le résumé'],
         correctIndex: 2,
@@ -93,6 +104,7 @@ export const b2Module4Content: CourseContent[] = [
       },
       {
         id: 'L182-4', type: 'flashcard', title: 'Vocabulaire narratif', characterId: 'thomas',
+        characterMessage: "Ces termes sont essentiels pour comprendre la littérature française.",
         cards: [
           { front: 'La chute (d\'une nouvelle)', back: 'The twist ending' },
           { front: 'L\'élément perturbateur', back: 'The inciting incident' },
@@ -104,18 +116,21 @@ export const b2Module4Content: CourseContent[] = [
       },
       {
         id: 'L182-5', type: 'fill-blank', title: 'Complétez la phrase', characterId: 'fatou',
+        characterMessage: "Pense au registre de langue — formel ou informel ?",
         sentence: 'La ___ d\'une nouvelle est souvent inattendue et surprend le lecteur.',
         options: ['chute', 'introduction', 'description', 'situation'],
         correctAnswer: 'chute'
       },
       {
         id: 'L182-6', type: 'drag-drop', title: 'Structure de la nouvelle', characterId: 'yuki',
+        characterMessage: "L'ordre des mots peut changer la nuance. Sois précis !",
         instruction: 'Ordonnez les étapes narratives :',
         items: ['Dénouement', 'Situation initiale', 'Climax', 'Élément perturbateur', 'Péripéties'],
         correctOrder: ['Situation initiale', 'Élément perturbateur', 'Péripéties', 'Climax', 'Dénouement']
       },
       {
         id: 'L182-7', type: 'qcm', title: 'Temps du récit', characterId: 'lucas',
+        characterMessage: "C'est le genre de question qu'on trouve dans les examens DELF B2.",
         question: 'Dans un récit littéraire classique, quels temps utilise-t-on ?',
         options: ['Présent + futur', 'Passé simple + imparfait', 'Conditionnel + subjonctif', 'Futur + passé composé'],
         correctIndex: 1,
@@ -123,6 +138,7 @@ export const b2Module4Content: CourseContent[] = [
       },
       {
         id: 'L182-8', type: 'final-quiz', title: 'Quiz final — Écrire une nouvelle', characterId: 'marie',
+        characterMessage: "Questions avancées — faites appel à tout ce que vous savez.",
         questions: [
           { question: 'La « chute » d\'une nouvelle est :', options: ['Le début', 'La fin inattendue', 'Un accident', 'Un personnage'], correctIndex: 1 },
           { question: 'L\'élément perturbateur déclenche :', options: ['La fin', 'L\'action', 'La description', 'Le titre'], correctIndex: 1 },
@@ -140,11 +156,13 @@ export const b2Module4Content: CourseContent[] = [
     steps: [
       {
         id: 'L183-1', type: 'lesson', title: 'Le passé simple', characterId: 'marie',
+        characterMessage: "On aborde un sujet qui demande une réflexion approfondie.",
         content: `Le **passé simple** est un temps littéraire utilisé à l'écrit pour exprimer des actions passées.\n\n📐 **Formation :**\n\n🔵 **1er groupe (-er) :** radical + -ai, -as, -a, -âmes, -âtes, -èrent\n- Parler : je parlai, tu parlas, il parla, nous parlâmes, vous parlâtes, ils parlèrent\n\n🟢 **2e groupe (-ir) :** radical + -is, -is, -it, -îmes, -îtes, -irent\n- Finir : je finis, tu finis, il finit, nous finîmes, vous finîtes, ils finirent\n\n🟣 **3e groupe (irréguliers) :**\n- Avoir : j'eus, il eut, ils eurent\n- Être : je fus, il fut, ils furent\n- Faire : je fis, il fit, ils firent\n- Prendre : je pris, il prit, ils prirent\n- Voir : je vis, il vit, ils virent\n\n⚠️ On ne l'utilise PAS à l'oral (sauf contexte très soutenu). Il est remplacé par le passé composé.`,
         tip: '💡 Vous n\'avez pas besoin de conjuguer au passé simple, mais vous devez le RECONNAÎTRE dans les textes.'
       },
       {
         id: 'L183-2', type: 'listening', title: 'Écoute — Extrait littéraire', characterId: 'omar',
+        characterMessage: "Tu es presque comme un francophone maintenant. Bravo !",
         text: 'Il sortit de la maison à l\'aube. Le soleil se levait lentement sur la Méditerranée. Il marcha longtemps le long de la plage, puis s\'arrêta devant le vieux port. Il contempla les bateaux et soupira. Ce fut à cet instant qu\'il prit sa décision.',
         question: 'Quand le personnage prit-il sa décision ?',
         options: ['En sortant de la maison', 'En marchant', 'En contemplant les bateaux', 'Le soir'],
@@ -152,6 +170,7 @@ export const b2Module4Content: CourseContent[] = [
       },
       {
         id: 'L183-3', type: 'qcm', title: 'Reconnaître le passé simple', characterId: 'elena',
+        characterMessage: "Analyse chaque option avec un œil critique.",
         question: '« Il fut surpris par la nouvelle. » — « fut » est le passé simple de :',
         options: ['Faire', 'Avoir', 'Être', 'Aller'],
         correctIndex: 2,
@@ -159,6 +178,7 @@ export const b2Module4Content: CourseContent[] = [
       },
       {
         id: 'L183-4', type: 'flashcard', title: 'Passé simple — Formes clés', characterId: 'thomas',
+        characterMessage: "La richesse lexicale du français est l'une de ses plus grandes beautés.",
         cards: [
           { front: 'Il fut (être)', back: 'He was' },
           { front: 'Il eut (avoir)', back: 'He had' },
@@ -170,18 +190,21 @@ export const b2Module4Content: CourseContent[] = [
       },
       {
         id: 'L183-5', type: 'fill-blank', title: 'Identifiez le verbe', characterId: 'fatou',
+        characterMessage: "La précision grammaticale est ce qui distingue un bon francophone.",
         sentence: '« Elle ___ la porte et entra. » (ouvrir au passé simple)',
         options: ['ouvrit', 'ouvra', 'ouvris', 'ouvrait'],
         correctAnswer: 'ouvrit'
       },
       {
         id: 'L183-6', type: 'drag-drop', title: 'Passé simple vs Passé composé', characterId: 'yuki',
+        characterMessage: "C'est un exercice exigeant mais très formateur.",
         instruction: 'Classez : d\'abord passé simple, puis passé composé :',
         items: ['Il a mangé', 'Il mangea', 'Elle est partie', 'Elle partit'],
         correctOrder: ['Il mangea', 'Elle partit', 'Il a mangé', 'Elle est partie']
       },
       {
         id: 'L183-7', type: 'qcm', title: 'Usage du passé simple', characterId: 'lucas',
+        characterMessage: "La différence est fine mais cruciale. Analyse bien chaque option.",
         question: 'Où trouve-t-on le passé simple ?',
         options: ['Dans les SMS', 'Dans les textes littéraires', 'À l\'oral courant', 'Dans les tweets'],
         correctIndex: 1,
@@ -189,6 +212,7 @@ export const b2Module4Content: CourseContent[] = [
       },
       {
         id: 'L183-8', type: 'final-quiz', title: 'Quiz final — Le passé simple', characterId: 'marie',
+        characterMessage: "C'est un vrai défi, mais vous avez le niveau pour réussir.",
         questions: [
           { question: '« Il fut » est le passé simple de :', options: ['Faire', 'Être', 'Avoir', 'Aller'], correctIndex: 1 },
           { question: '« Ils prirent » vient de :', options: ['Prier', 'Prendre', 'Partir', 'Porter'], correctIndex: 1 },
@@ -206,11 +230,13 @@ export const b2Module4Content: CourseContent[] = [
     steps: [
       {
         id: 'L184-1', type: 'lesson', title: 'La chanson française', characterId: 'marie',
+        characterMessage: "Vous êtes presque bilingues ! Perfectionnons encore votre français.",
         content: `La chanson française est un art à part entière, riche en poésie et en émotion.\n\n🎵 **Grands noms de la chanson française :**\n\n🎤 **Classiques :**\n- **Édith Piaf** — La Vie en rose, Non je ne regrette rien\n- **Jacques Brel** — Ne me quitte pas, Amsterdam\n- **Charles Aznavour** — La Bohème, Emmenez-moi\n- **Georges Brassens** — Les copains d'abord\n\n🎶 **Modernes / Contemporains :**\n- **Stromae** — Papaoutai, Alors on danse\n- **Zaz** — Je veux\n- **Angèle** — Balance ton quoi\n- **MC Solaar** — Bouge de là (rap français)\n\n📝 **Analyser une chanson :**\n- Le thème (amour, société, nostalgie…)\n- Les figures de style (métaphore, répétition…)\n- Le rapport texte/musique\n- Le message de l'artiste`,
         tip: '💡 Écouter des chansons françaises est l\'un des meilleurs moyens d\'améliorer votre compréhension orale !'
       },
       {
         id: 'L184-2', type: 'listening', title: 'Écoute — Analyse de paroles', characterId: 'omar',
+        characterMessage: "Les registres de langue changent selon le contexte. Repère-les !",
         text: 'Dans sa chanson Papaoutai, Stromae pose la question de l\'absence paternelle. Le titre est un jeu de mots : Papa, où t\'es ? Le clip montre un enfant qui essaie de communiquer avec un père immobile. C\'est une métaphore de l\'absence émotionnelle.',
         question: 'Quel est le thème de Papaoutai ?',
         options: ['L\'amour', 'L\'absence du père', 'Les vacances', 'La politique'],
@@ -218,6 +244,7 @@ export const b2Module4Content: CourseContent[] = [
       },
       {
         id: 'L184-3', type: 'qcm', title: 'Chanson classique', characterId: 'elena',
+        characterMessage: "Cette question teste ta compréhension profonde de la langue.",
         question: 'Qui chante « Non, je ne regrette rien » ?',
         options: ['Jacques Brel', 'Stromae', 'Édith Piaf', 'Charles Aznavour'],
         correctIndex: 2,
@@ -225,6 +252,7 @@ export const b2Module4Content: CourseContent[] = [
       },
       {
         id: 'L184-4', type: 'flashcard', title: 'Vocabulaire musical', characterId: 'thomas',
+        characterMessage: "Maîtriser ce vocabulaire, c'est accéder à la pensée française.",
         cards: [
           { front: 'Les paroles', back: 'The lyrics' },
           { front: 'Le refrain', back: 'The chorus' },
@@ -236,18 +264,21 @@ export const b2Module4Content: CourseContent[] = [
       },
       {
         id: 'L184-5', type: 'fill-blank', title: 'Vocabulaire musical', characterId: 'fatou',
+        characterMessage: "Cet exercice te prépare à l'écrit académique et professionnel.",
         sentence: 'Les ___ de cette chanson sont très poétiques.',
         options: ['paroles', 'notes', 'sons', 'bruits'],
         correctAnswer: 'paroles'
       },
       {
         id: 'L184-6', type: 'drag-drop', title: 'Chronologie musicale', characterId: 'yuki',
+        characterMessage: "Maîtriser la syntaxe, c'est la clé d'un français élégant.",
         instruction: 'Du plus ancien au plus récent :',
         items: ['Stromae', 'Édith Piaf', 'Jacques Brel'],
         correctOrder: ['Édith Piaf', 'Jacques Brel', 'Stromae']
       },
       {
         id: 'L184-7', type: 'qcm', title: 'Papaoutai', characterId: 'lucas',
+        characterMessage: "J'ai appris cette nuance en lisant des articles de journaux français.",
         question: '« Papaoutai » est un jeu de mots sur :',
         options: ['Papa, où tu vas ?', 'Papa, où t\'es ?', 'Papa, qui es-tu ?', 'Papa, quand ?'],
         correctIndex: 1,
@@ -255,6 +286,7 @@ export const b2Module4Content: CourseContent[] = [
       },
       {
         id: 'L184-8', type: 'final-quiz', title: 'Quiz final — La chanson française', characterId: 'marie',
+        characterMessage: "Quiz final de niveau avancé. Concentration maximale !",
         questions: [
           { question: 'Édith Piaf est célèbre pour :', options: ['Papaoutai', 'Non, je ne regrette rien', 'La Bohème', 'Ne me quitte pas'], correctIndex: 1 },
           { question: 'Le « refrain » d\'une chanson est :', options: ['Le début', 'La partie qui se répète', 'La fin', 'Le solo'], correctIndex: 1 },
@@ -272,11 +304,13 @@ export const b2Module4Content: CourseContent[] = [
     steps: [
       {
         id: 'L185-1', type: 'lesson', title: 'L\'art contemporain', characterId: 'marie',
+        characterMessage: "Aujourd'hui, on explore les subtilités de la langue française.",
         content: `L'art contemporain est un domaine riche en débats et en expressions.\n\n🎨 **Mouvements clés :**\n- **L'impressionnisme** — Monet, Renoir (lumière, couleur)\n- **Le cubisme** — Picasso, Braque (formes géométriques)\n- **Le surréalisme** — Dalí, Magritte (rêve, inconscient)\n- **L'art abstrait** — Kandinsky, Mondrian\n- **Le street art** — Banksy, JR, Invader\n\n📝 **Décrire une œuvre d'art :**\n- « Cette œuvre représente / illustre / évoque… »\n- « L'artiste cherche à exprimer / transmettre… »\n- « Les couleurs dominantes sont… »\n- « On ressent une impression de… »\n- « Cette pièce interroge le spectateur sur… »\n\n🏛️ **Musées célèbres :**\n- Le Louvre, le Musée d'Orsay, le Centre Pompidou (Paris)\n- Le MAMAC (Nice), le Musée Picasso (Antibes)`,
         tip: '💡 Pour décrire une œuvre, commencez par ce que vous VOYEZ, puis dites ce que vous RESSENTEZ.'
       },
       {
         id: 'L185-2', type: 'listening', title: 'Écoute — Visite guidée', characterId: 'omar',
+        characterMessage: "Comprendre le français oral authentique, c'est une vraie victoire.",
         text: 'Nous voici devant une œuvre de Picasso, datant de sa période à Antibes. Cette peinture représente la joie de vivre. Les couleurs vives évoquent la lumière méditerranéenne. L\'artiste cherche à transmettre un sentiment de liberté et de bonheur.',
         question: 'Quel sentiment l\'œuvre évoque-t-elle ?',
         options: ['La tristesse', 'La colère', 'La joie et la liberté', 'La peur'],
@@ -284,6 +318,7 @@ export const b2Module4Content: CourseContent[] = [
       },
       {
         id: 'L185-3', type: 'qcm', title: 'Mouvements artistiques', characterId: 'elena',
+        characterMessage: "En espagnol, on dirait ça différemment. Le français a sa logique !",
         question: 'L\'impressionnisme se caractérise par :',
         options: ['Les formes géométriques', 'Le jeu de lumière et de couleur', 'Les images de rêve', 'Le noir et blanc'],
         correctIndex: 1,
@@ -291,6 +326,7 @@ export const b2Module4Content: CourseContent[] = [
       },
       {
         id: 'L185-4', type: 'flashcard', title: 'Vocabulaire artistique', characterId: 'thomas',
+        characterMessage: "Avec ces mots, tu pourras apprécier les subtilités du français.",
         cards: [
           { front: 'Cette œuvre représente…', back: 'This work depicts…' },
           { front: 'L\'artiste cherche à exprimer…', back: 'The artist seeks to express…' },
@@ -302,18 +338,21 @@ export const b2Module4Content: CourseContent[] = [
       },
       {
         id: 'L185-5', type: 'fill-blank', title: 'Décrire une œuvre', characterId: 'fatou',
+        characterMessage: "Chaque détail compte. Le français est une langue de précision !",
         sentence: 'L\'artiste ___ à exprimer la solitude à travers des couleurs froides.',
         options: ['cherche', 'mange', 'dort', 'court'],
         correctAnswer: 'cherche'
       },
       {
         id: 'L185-6', type: 'drag-drop', title: 'Chronologie artistique', characterId: 'yuki',
+        characterMessage: "Imagine que tu rédiges un article — chaque mot à sa place !",
         instruction: 'Du plus ancien au plus récent :',
         items: ['Street art', 'Impressionnisme', 'Cubisme'],
         correctOrder: ['Impressionnisme', 'Cubisme', 'Street art']
       },
       {
         id: 'L185-7', type: 'qcm', title: 'Musées', characterId: 'lucas',
+        characterMessage: "Même les natifs peuvent hésiter sur cette question !",
         question: 'Quel musée est à Antibes ?',
         options: ['Le Louvre', 'Le Centre Pompidou', 'Le Musée Picasso', 'Le Musée d\'Orsay'],
         correctIndex: 2,
@@ -321,6 +360,7 @@ export const b2Module4Content: CourseContent[] = [
       },
       {
         id: 'L185-8', type: 'final-quiz', title: 'Quiz final — L\'art contemporain', characterId: 'marie',
+        characterMessage: "Montrez votre maîtrise du français. Je compte sur vous !",
         questions: [
           { question: 'L\'impressionnisme est associé à :', options: ['Picasso', 'Monet', 'Dalí', 'Banksy'], correctIndex: 1 },
           { question: 'Le cubisme utilise :', options: ['La lumière naturelle', 'Les formes géométriques', 'Les rêves', 'La photographie'], correctIndex: 1 },
@@ -338,11 +378,13 @@ export const b2Module4Content: CourseContent[] = [
     steps: [
       {
         id: 'L186-1', type: 'lesson', title: 'Le cinéma d\'auteur', characterId: 'marie',
+        characterMessage: "À ce niveau, vous maîtrisez déjà beaucoup. Allons plus loin ensemble.",
         content: `Le **cinéma d'auteur** français est reconnu dans le monde entier.\n\n🎬 **La Nouvelle Vague (années 1960) :**\n- **François Truffaut** — Les 400 coups, Jules et Jim\n- **Jean-Luc Godard** — À bout de souffle\n- Rupture avec le cinéma classique : caméra portée, tournages en extérieur, improvisation\n\n🎥 **Réalisateurs contemporains :**\n- **Jacques Audiard** — Un prophète, Dheepan (Palme d'or 2015)\n- **Céline Sciamma** — Portrait de la jeune fille en feu\n- **Julia Ducournau** — Titane (Palme d'or 2021)\n\n🏆 **Festival de Cannes :**\n- Le plus prestigieux festival de cinéma au monde\n- La Palme d'or récompense le meilleur film\n- Se tient chaque année en mai, sur la Côte d'Azur\n\n📝 **Analyser un film :**\n- Le scénario / l'histoire\n- La mise en scène\n- La photographie (plans, lumière)\n- La bande originale\n- Le jeu des acteurs`,
         tip: '💡 Cannes est à seulement 30 minutes d\'Antibes ! Le festival a lieu chaque année en mai.'
       },
       {
         id: 'L186-2', type: 'listening', title: 'Écoute — Critique de film', characterId: 'omar',
+        characterMessage: "À ce niveau, tu peux suivre des conversations rapides et nuancées.",
         text: 'Le dernier film de Jacques Audiard est un chef-d\'œuvre. La mise en scène est époustouflante, les acteurs sont remarquables, et la bande originale accompagne parfaitement l\'intrigue. Le film a reçu la Palme d\'or à Cannes. Je le recommande vivement.',
         question: 'Quel est l\'avis du critique ?',
         options: ['Négatif', 'Neutre', 'Très positif', 'Indifférent'],
@@ -350,6 +392,7 @@ export const b2Module4Content: CourseContent[] = [
       },
       {
         id: 'L186-3', type: 'qcm', title: 'La Nouvelle Vague', characterId: 'elena',
+        characterMessage: "Question subtile ! Même moi, j'ai dû réfléchir longtemps.",
         question: 'Qui est le réalisateur de « À bout de souffle » ?',
         options: ['Truffaut', 'Godard', 'Audiard', 'Ducournau'],
         correctIndex: 1,
@@ -357,6 +400,7 @@ export const b2Module4Content: CourseContent[] = [
       },
       {
         id: 'L186-4', type: 'flashcard', title: 'Vocabulaire du cinéma', characterId: 'thomas',
+        characterMessage: "Ce vocabulaire te rapproche du niveau d'un francophone cultivé.",
         cards: [
           { front: 'La mise en scène', back: 'The directing / staging' },
           { front: 'La bande originale', back: 'The soundtrack' },
@@ -368,18 +412,21 @@ export const b2Module4Content: CourseContent[] = [
       },
       {
         id: 'L186-5', type: 'fill-blank', title: 'Critique de film', characterId: 'fatou',
+        characterMessage: "À ce niveau, les choix sont tous plausibles. La nuance fait la différence.",
         sentence: 'La ___ en scène de ce film est remarquable.',
         options: ['mise', 'prise', 'vue', 'entrée'],
         correctAnswer: 'mise'
       },
       {
         id: 'L186-6', type: 'drag-drop', title: 'Éléments d\'analyse', characterId: 'yuki',
+        characterMessage: "Ces phrases complexes reflètent le français écrit authentique.",
         instruction: 'Classez les éléments pour analyser un film :',
         items: ['Bande originale', 'Scénario', 'Jeu des acteurs', 'Mise en scène'],
         correctOrder: ['Scénario', 'Mise en scène', 'Jeu des acteurs', 'Bande originale']
       },
       {
         id: 'L186-7', type: 'qcm', title: 'Festival de Cannes', characterId: 'lucas',
+        characterMessage: "À ce niveau, les pièges sont plus subtils. Reste vigilant !",
         question: 'Le Festival de Cannes a lieu en :',
         options: ['Janvier', 'Mars', 'Mai', 'Septembre'],
         correctIndex: 2,
@@ -387,6 +434,7 @@ export const b2Module4Content: CourseContent[] = [
       },
       {
         id: 'L186-8', type: 'final-quiz', title: 'Quiz final — Le cinéma d\'auteur', characterId: 'marie',
+        characterMessage: "Ce quiz exige précision et nuance. Vous en êtes capables !",
         questions: [
           { question: 'La Nouvelle Vague date des années :', options: ['1940', '1960', '1980', '2000'], correctIndex: 1 },
           { question: 'La Palme d\'or récompense :', options: ['Un livre', 'Le meilleur film à Cannes', 'Un acteur', 'Un musicien'], correctIndex: 1 },
@@ -404,11 +452,13 @@ export const b2Module4Content: CourseContent[] = [
     steps: [
       {
         id: 'L187-1', type: 'lesson', title: 'Les figures de style', characterId: 'marie',
+        characterMessage: "Cette leçon exige de la nuance — c'est ça, le vrai français !",
         content: `Les **figures de style** enrichissent l'expression écrite et orale.\n\n📝 **Figures principales :**\n\n🔵 **La métaphore** — Comparaison sans « comme »\n- « Cet homme est un lion. » (= il est courageux)\n\n🟢 **La comparaison** — Avec « comme, tel, semblable à »\n- « Elle chante comme un oiseau. »\n\n🟣 **L'hyperbole** — Exagération\n- « Je meurs de faim. » « Il fait un froid de canard. »\n\n🟡 **La litote** — Dire moins pour exprimer plus\n- « Ce n'est pas mal. » (= c'est bien)\n- « Il n'est pas bête. » (= il est intelligent)\n\n🔴 **L'ironie** — Dire le contraire\n- « Quel beau temps ! » (quand il pleut)\n\n🟠 **L'anaphore** — Répétition en début de phrase\n- « Moi, président… Moi, président… Moi, président… »`,
         tip: '💡 Les figures de style sont essentielles pour analyser un texte littéraire au DELF B2.'
       },
       {
         id: 'L187-2', type: 'listening', title: 'Écoute — Texte avec figures de style', characterId: 'omar',
+        characterMessage: "Écoute les subtilités : ironie, humour, sous-entendus.",
         text: 'La mer était un miroir d\'argent sous le soleil d\'Antibes. Le vent chantait comme un musicien invisible. J\'aurais donné mille ans pour rester sur cette plage. Ce n\'était pas mal du tout, cette vie méditerranéenne.',
         question: '« La mer était un miroir d\'argent » est :',
         options: ['Une comparaison', 'Une métaphore', 'Une hyperbole', 'Une litote'],
@@ -416,6 +466,7 @@ export const b2Module4Content: CourseContent[] = [
       },
       {
         id: 'L187-3', type: 'qcm', title: 'Identifier la figure', characterId: 'elena',
+        characterMessage: "C'est le niveau où on comprend vraiment les nuances du français.",
         question: '« Je meurs de faim. » est :',
         options: ['Une litote', 'Une métaphore', 'Une hyperbole', 'Une ironie'],
         correctIndex: 2,
@@ -423,6 +474,7 @@ export const b2Module4Content: CourseContent[] = [
       },
       {
         id: 'L187-4', type: 'flashcard', title: 'Figures de style', characterId: 'thomas',
+        characterMessage: "Ces termes sont essentiels pour comprendre la littérature française.",
         cards: [
           { front: 'La métaphore', back: 'Comparison without "like" — "He is a lion"' },
           { front: 'La comparaison', back: 'Comparison with "like/as" — "She sings like a bird"' },
@@ -434,18 +486,21 @@ export const b2Module4Content: CourseContent[] = [
       },
       {
         id: 'L187-5', type: 'fill-blank', title: 'Identifiez la figure', characterId: 'fatou',
+        characterMessage: "Pense au registre de langue — formel ou informel ?",
         sentence: '« Ce n\'est pas mal. » (= c\'est bien) est une ___.',
         options: ['litote', 'hyperbole', 'métaphore', 'anaphore'],
         correctAnswer: 'litote'
       },
       {
         id: 'L187-6', type: 'drag-drop', title: 'Classez les figures', characterId: 'yuki',
+        characterMessage: "L'ordre des mots peut changer la nuance. Sois précis !",
         instruction: 'De l\'exagération à l\'atténuation :',
         items: ['La litote (atténuation)', 'L\'hyperbole (exagération)', 'La comparaison (neutre)'],
         correctOrder: ['L\'hyperbole (exagération)', 'La comparaison (neutre)', 'La litote (atténuation)']
       },
       {
         id: 'L187-7', type: 'qcm', title: 'Métaphore ou comparaison ?', characterId: 'lucas',
+        characterMessage: "C'est le genre de question qu'on trouve dans les examens DELF B2.",
         question: '« Elle chante comme un oiseau. » est :',
         options: ['Une métaphore', 'Une comparaison', 'Une hyperbole', 'Une litote'],
         correctIndex: 1,
@@ -453,6 +508,7 @@ export const b2Module4Content: CourseContent[] = [
       },
       {
         id: 'L187-8', type: 'final-quiz', title: 'Quiz final — Figures de style', characterId: 'marie',
+        characterMessage: "Questions avancées — faites appel à tout ce que vous savez.",
         questions: [
           { question: '« Il est un lion. » = :', options: ['Comparaison', 'Métaphore', 'Litote', 'Ironie'], correctIndex: 1 },
           { question: '« Je meurs de soif. » = :', options: ['Litote', 'Hyperbole', 'Anaphore', 'Comparaison'], correctIndex: 1 },
@@ -470,11 +526,13 @@ export const b2Module4Content: CourseContent[] = [
     steps: [
       {
         id: 'L188-1', type: 'lesson', title: 'Écrire une critique culturelle', characterId: 'marie',
+        characterMessage: "On aborde un sujet qui demande une réflexion approfondie.",
         content: `La **critique culturelle** (film, livre, expo, spectacle) est un exercice de rédaction argumentée.\n\n📐 **Structure (300+ mots, ton soutenu) :**\n\n1️⃣ **Présentation** — Titre, auteur/réalisateur, genre, date\n2️⃣ **Résumé** — Synopsis SANS révéler la fin\n3️⃣ **Analyse** — Points forts et points faibles\n4️⃣ **Jugement personnel** — Votre avis argumenté\n5️⃣ **Recommandation** — Pour quel public ?\n\n📝 **Formules :**\n- « Ce film/roman/spectacle se distingue par… »\n- « L'auteur/le réalisateur réussit à… »\n- « On peut toutefois regretter que… »\n- « Je recommande vivement cette œuvre à… »\n- « En dépit de quelques longueurs, l'ensemble reste… »`,
         tip: '💡 Ne JAMAIS révéler la fin dans une critique ! C\'est ce qu\'on appelle un « spoiler ».'
       },
       {
         id: 'L188-2', type: 'listening', title: 'Écoute — Critique de restaurant', characterId: 'omar',
+        characterMessage: "Tu es presque comme un francophone maintenant. Bravo !",
         text: 'Le restaurant Le Provençal, situé dans le vieil Antibes, se distingue par sa cuisine méditerranéenne raffinée. Le chef réussit à sublimer les produits locaux. On peut toutefois regretter que les portions soient un peu petites. Je recommande vivement cet établissement aux amateurs de gastronomie.',
         question: 'Quel est le point faible mentionné ?',
         options: ['Le service', 'Les portions petites', 'Le prix', 'L\'emplacement'],
@@ -482,6 +540,7 @@ export const b2Module4Content: CourseContent[] = [
       },
       {
         id: 'L188-3', type: 'qcm', title: 'Structure de la critique', characterId: 'elena',
+        characterMessage: "Analyse chaque option avec un œil critique.",
         question: 'Que NE DOIT-ON PAS faire dans une critique ?',
         options: ['Donner son avis', 'Résumer l\'œuvre', 'Révéler la fin', 'Recommander'],
         correctIndex: 2,
@@ -489,6 +548,7 @@ export const b2Module4Content: CourseContent[] = [
       },
       {
         id: 'L188-4', type: 'flashcard', title: 'Formules pour la critique', characterId: 'thomas',
+        characterMessage: "La richesse lexicale du français est l'une de ses plus grandes beautés.",
         cards: [
           { front: 'Ce film se distingue par…', back: 'This film stands out for…' },
           { front: 'Le réalisateur réussit à…', back: 'The director succeeds in…' },
@@ -500,18 +560,21 @@ export const b2Module4Content: CourseContent[] = [
       },
       {
         id: 'L188-5', type: 'fill-blank', title: 'Complétez la critique', characterId: 'fatou',
+        characterMessage: "La précision grammaticale est ce qui distingue un bon francophone.",
         sentence: 'On peut toutefois ___ que le scénario manque de profondeur.',
         options: ['regretter', 'aimer', 'oublier', 'ignorer'],
         correctAnswer: 'regretter'
       },
       {
         id: 'L188-6', type: 'drag-drop', title: 'Structure de la critique', characterId: 'yuki',
+        characterMessage: "C'est un exercice exigeant mais très formateur.",
         instruction: 'Ordonnez les parties :',
         items: ['Recommandation', 'Présentation', 'Analyse', 'Résumé'],
         correctOrder: ['Présentation', 'Résumé', 'Analyse', 'Recommandation']
       },
       {
         id: 'L188-7', type: 'qcm', title: 'Ton de la critique', characterId: 'lucas',
+        characterMessage: "La différence est fine mais cruciale. Analyse bien chaque option.",
         question: 'Le ton d\'une critique culturelle est :',
         options: ['Familier', 'Soutenu et argumenté', 'Enfantin', 'Agressif'],
         correctIndex: 1,
@@ -519,6 +582,7 @@ export const b2Module4Content: CourseContent[] = [
       },
       {
         id: 'L188-8', type: 'final-quiz', title: 'Quiz final — La critique culturelle', characterId: 'marie',
+        characterMessage: "C'est un vrai défi, mais vous avez le niveau pour réussir.",
         questions: [
           { question: 'Une critique ne doit PAS :', options: ['Donner un avis', 'Révéler la fin', 'Résumer', 'Argumenter'], correctIndex: 1 },
           { question: '« Ce film ___ par sa mise en scène. »', options: ['se distingue', 'se cache', 'se perd', 'se trompe'], correctIndex: 0 },
@@ -536,11 +600,13 @@ export const b2Module4Content: CourseContent[] = [
     steps: [
       {
         id: 'L189-1', type: 'lesson', title: 'Révision B2.4 — Arts et littérature', characterId: 'marie',
+        characterMessage: "Vous êtes presque bilingues ! Perfectionnons encore votre français.",
         content: `Révisons le module B2.4 !\n\n📝 **Ce que vous avez appris :**\n\n1️⃣ **Littérature française** — Hugo, Camus, Saint-Exupéry\n2️⃣ **Écrire une nouvelle** — Structure narrative, chute\n3️⃣ **Le passé simple** — Reconnaissance à l'écrit\n4️⃣ **La chanson française** — Piaf, Brel, Stromae\n5️⃣ **L'art contemporain** — Mouvements, description d'œuvres\n6️⃣ **Le cinéma d'auteur** — Nouvelle Vague, Cannes\n7️⃣ **Les figures de style** — Métaphore, hyperbole, litote…\n8️⃣ **La critique culturelle** — Structure, ton soutenu`,
         tip: '💡 Révisez les figures de style et le vocabulaire artistique pour le DELF B2 !'
       },
       {
         id: 'L189-2', type: 'qcm', title: 'Révision — Littérature', characterId: 'elena',
+        characterMessage: "Cette question teste ta compréhension profonde de la langue.",
         question: 'Qui a écrit Le Petit Prince ?',
         options: ['Camus', 'Hugo', 'Saint-Exupéry', 'Flaubert'],
         correctIndex: 2,
@@ -548,12 +614,14 @@ export const b2Module4Content: CourseContent[] = [
       },
       {
         id: 'L189-3', type: 'fill-blank', title: 'Révision — Passé simple', characterId: 'fatou',
+        characterMessage: "Cet exercice te prépare à l'écrit académique et professionnel.",
         sentence: '« Il ___ surpris par la nouvelle. » (être, passé simple)',
         options: ['fut', 'est', 'sera', 'était'],
         correctAnswer: 'fut'
       },
       {
         id: 'L189-4', type: 'qcm', title: 'Révision — Figures de style', characterId: 'lucas',
+        characterMessage: "J'ai appris cette nuance en lisant des articles de journaux français.",
         question: '« Je meurs de soif » est :',
         options: ['Une litote', 'Une métaphore', 'Une hyperbole', 'Une anaphore'],
         correctIndex: 2,
@@ -561,18 +629,21 @@ export const b2Module4Content: CourseContent[] = [
       },
       {
         id: 'L189-5', type: 'fill-blank', title: 'Révision — Cinéma', characterId: 'fatou',
+        characterMessage: "Chaque détail compte. Le français est une langue de précision !",
         sentence: 'La ___ d\'or est le prix le plus prestigieux du Festival de Cannes.',
         options: ['Palme', 'Médaille', 'Coupe', 'Étoile'],
         correctAnswer: 'Palme'
       },
       {
         id: 'L189-6', type: 'drag-drop', title: 'Révision — Narrative', characterId: 'yuki',
+        characterMessage: "Maîtriser la syntaxe, c'est la clé d'un français élégant.",
         instruction: 'Ordonnez la structure narrative :',
         items: ['Dénouement', 'Situation initiale', 'Péripéties', 'Élément perturbateur'],
         correctOrder: ['Situation initiale', 'Élément perturbateur', 'Péripéties', 'Dénouement']
       },
       {
         id: 'L189-7', type: 'qcm', title: 'Révision — Chanson', characterId: 'elena',
+        characterMessage: "En espagnol, on dirait ça différemment. Le français a sa logique !",
         question: '« Non, je ne regrette rien » est de :',
         options: ['Brel', 'Aznavour', 'Piaf', 'Stromae'],
         correctIndex: 2,
@@ -580,6 +651,7 @@ export const b2Module4Content: CourseContent[] = [
       },
       {
         id: 'L189-8', type: 'final-quiz', title: 'Quiz récapitulatif B2.4', characterId: 'marie',
+        characterMessage: "Quiz final de niveau avancé. Concentration maximale !",
         questions: [
           { question: 'L\'Étranger est de :', options: ['Hugo', 'Camus', 'Flaubert', 'Zola'], correctIndex: 1 },
           { question: 'La « chute » d\'une nouvelle est :', options: ['Le début', 'La fin inattendue', 'Le milieu', 'Le titre'], correctIndex: 1 },
@@ -599,11 +671,13 @@ export const b2Module4Content: CourseContent[] = [
     steps: [
       {
         id: 'L190-1', type: 'lesson', title: 'Examen B2.4 — Arts et littérature', characterId: 'marie',
+        characterMessage: "Aujourd'hui, on explore les subtilités de la langue française.",
         content: `🏆 **Examen du module B2.4 — Arts et littérature**\n\nToutes les compétences sont testées :\n- Littérature française\n- Écriture narrative\n- Le passé simple\n- La chanson française\n- L'art contemporain\n- Le cinéma d'auteur\n- Les figures de style\n- La critique culturelle\n\n🎭 Badge à débloquer : **Critique Littéraire**\n\nBonne chance !`,
         tip: '💡 Concentrez-vous et prenez le temps de réfléchir.'
       },
       {
         id: 'L190-2', type: 'final-quiz', title: 'Examen final B2.4', characterId: 'marie',
+        characterMessage: "Montrez votre maîtrise du français. Je compte sur vous !",
         questions: [
           { question: 'Les Misérables sont de :', options: ['Camus', 'Hugo', 'Flaubert', 'Maupassant'], correctIndex: 1 },
           { question: 'L\'élément perturbateur d\'un récit est :', options: ['La fin', 'Le début de l\'action', 'Le résumé', 'La morale'], correctIndex: 1 },

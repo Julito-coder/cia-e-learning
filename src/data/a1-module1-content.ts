@@ -26,7 +26,8 @@ export const a1Module1Content: CourseContent[] = [
         explanation: 'Le matin et l\'après-midi, on dit « Bonjour ». « Bonsoir » est réservé au soir.'
       },
       {
-        id: 'L1-4', type: 'flashcard', title: 'Les salutations — Vocabulaire',
+        id: 'L1-4', type: 'flashcard', title: 'Les salutations — Vocabulaire', characterId: 'lucas',
+        characterMessage: "Moi aussi au début, je trouvais ça compliqué ! Mais on s'y habitue.",
         cards: [
           { front: 'Bonjour', back: 'Hello / Good morning' },
           { front: 'Bonsoir', back: 'Good evening' },
@@ -45,7 +46,8 @@ export const a1Module1Content: CourseContent[] = [
         correctAnswer: 'Bonjour'
       },
       {
-        id: 'L1-6', type: 'qcm', title: 'Formel ou informel ?',
+        id: 'L1-6', type: 'qcm', title: 'Formel ou informel ?', characterId: 'fatou',
+        characterMessage: "Complète la phrase ! C'est comme un puzzle — trouve la pièce manquante.",
         question: 'Vous parlez à votre professeur. Que dites-vous ?',
         options: ['Salut !', 'Bonjour, Madame.', 'Coucou !', 'Yo !'],
         correctIndex: 1,
@@ -59,6 +61,7 @@ export const a1Module1Content: CourseContent[] = [
       },
       {
         id: 'L1-8', type: 'listening', title: 'Compréhension — Au café', characterId: 'omar',
+        characterMessage: "Écoute bien ! Je vais te parler comme au marché d'Antibes.",
         text: 'Bonsoir madame ! Bonsoir monsieur. Comment allez-vous ? Très bien, merci. Au revoir et bonne soirée !',
         question: 'À quel moment de la journée se passe cette scène ?',
         options: ['Le matin', 'L\'après-midi', 'Le soir', 'La nuit'],
@@ -87,7 +90,8 @@ export const a1Module1Content: CourseContent[] = [
         tip: '💡 En français, on dit « J\'ai 20 ans » (I HAVE 20 years), pas « Je suis 20 ans ».'
       },
       {
-        id: 'L2-2', type: 'flashcard', title: 'Vocabulaire — Se présenter',
+        id: 'L2-2', type: 'flashcard', title: 'Vocabulaire — Se présenter', characterId: 'marie',
+        characterMessage: "Bonjour à tous ! Prêts pour une nouvelle leçon ?",
         cards: [
           { front: 'Comment vous appelez-vous ?', back: 'What is your name? (formal)' },
           { front: 'Je m\'appelle…', back: 'My name is…' },
@@ -99,6 +103,7 @@ export const a1Module1Content: CourseContent[] = [
       },
       {
         id: 'L2-3', type: 'listening', title: 'Écoute — Présentation de Lucas', characterId: 'lucas',
+        characterMessage: "Écoute bien, je vais te lire quelque chose. C'est parti !",
         text: 'Bonjour ! Je m\'appelle Lucas. J\'ai vingt-deux ans. Je suis brésilien. J\'habite à Antibes pour apprendre le français.',
         question: 'D\'où vient Lucas ?',
         options: ['De France', 'Du Japon', 'Du Brésil', 'D\'Espagne'],
@@ -112,7 +117,8 @@ export const a1Module1Content: CourseContent[] = [
         explanation: 'En français on utilise le verbe AVOIR pour l\'âge : « J\'ai 25 ans ».'
       },
       {
-        id: 'L2-5', type: 'fill-blank', title: 'Complétez la présentation',
+        id: 'L2-5', type: 'fill-blank', title: 'Complétez la présentation', characterId: 'lucas',
+        characterMessage: "Cette question m'a piégé la première fois. Fais attention !",
         sentence: 'Je ___ Marie et j\'___ trente ans.',
         options: ['m\'appelle / ai', 'suis / suis', 'appelle / suis', 'm\'appelle / suis'],
         correctAnswer: 'm\'appelle / ai'
@@ -124,7 +130,8 @@ export const a1Module1Content: CourseContent[] = [
         correctOrder: ['Je', 'm\'appelle', 'Ahmed', 'et', 'je', 'suis', 'marocain']
       },
       {
-        id: 'L2-7', type: 'qcm', title: 'Formel ou informel ?',
+        id: 'L2-7', type: 'qcm', title: 'Formel ou informel ?', characterId: 'hans',
+        characterMessage: "Sujet, verbe, complément — c'est la structure de base en français.",
         question: 'Vous êtes à l\'école. La professeure vous demande votre nom. Que dit-elle ?',
         options: ['Tu t\'appelles comment ?', 'C\'est quoi ton nom ?', 'Comment vous appelez-vous ?', 'T\'es qui ?'],
         correctIndex: 2,
@@ -167,7 +174,8 @@ export const a1Module1Content: CourseContent[] = [
         explanation: 'L\'accent aigu (é) donne un son fermé. On le trouve dans : café, étudiant, été.'
       },
       {
-        id: 'L3-4', type: 'flashcard', title: 'Les sons — Exemples',
+        id: 'L3-4', type: 'flashcard', title: 'Les sons — Exemples', characterId: 'lucas',
+        characterMessage: "Réfléchis bien, la réponse est plus simple qu'on ne le pense.",
         cards: [
           { front: 'ou → bonjour', back: 'Sound: "oo" like in "food"' },
           { front: 'u → salut', back: 'Sound: round your lips while saying "ee"' },
@@ -184,7 +192,8 @@ export const a1Module1Content: CourseContent[] = [
         correctAnswer: 'étudiant'
       },
       {
-        id: 'L3-6', type: 'qcm', title: 'La cédille',
+        id: 'L3-6', type: 'qcm', title: 'La cédille', characterId: 'fatou',
+        characterMessage: "Au Sénégal, on apprend le français à l'école. C'est un exercice classique !",
         question: 'Pourquoi met-on une cédille sous le « c » de « français » ?',
         options: ['Pour décorer', 'Pour faire le son « k »', 'Pour faire le son « s » devant a/o/u', 'C\'est optionnel'],
         correctIndex: 2,
@@ -213,7 +222,8 @@ export const a1Module1Content: CourseContent[] = [
         tip: '💡 En cas de doute, commencez par « vous ». L\'autre personne vous dira « On peut se tutoyer ! » si elle préfère « tu ».'
       },
       {
-        id: 'L4-2', type: 'qcm', title: 'Tu ou vous ?',
+        id: 'L4-2', type: 'qcm', title: 'Tu ou vous ?', characterId: 'marie',
+        characterMessage: "Aujourd'hui, je vais vous expliquer quelque chose de très utile.",
         question: 'Vous parlez à un vendeur au marché d\'Antibes. Que dites-vous ?',
         options: ['Tu as des oranges ?', 'Vous avez des oranges ?', 'T\'as des oranges ?', 'Avez des oranges ?'],
         correctIndex: 1,
@@ -227,7 +237,8 @@ export const a1Module1Content: CourseContent[] = [
         correctIndex: 2
       },
       {
-        id: 'L4-4', type: 'fill-blank', title: 'Choisissez tu ou vous',
+        id: 'L4-4', type: 'fill-blank', title: 'Choisissez tu ou vous', characterId: 'omar',
+        characterMessage: "Dans ma cuisine, j'écoute toujours la radio française. Ça aide !",
         sentence: 'Salut Marie ! ___ vas bien ? (à une amie)',
         options: ['Vous', 'Tu', 'Il', 'Elle'],
         correctAnswer: 'Tu'
@@ -240,7 +251,8 @@ export const a1Module1Content: CourseContent[] = [
         explanation: 'On utilise « vous » avec un professeur pour montrer du respect.'
       },
       {
-        id: 'L4-6', type: 'drag-drop', title: 'Classez les situations',
+        id: 'L4-6', type: 'drag-drop', title: 'Classez les situations', characterId: 'lucas',
+        characterMessage: "J'ai fait cette erreur au début — ne tombe pas dans le piège !",
         instruction: 'Remettez dans l\'ordre ce dialogue au marché :',
         items: ['Voilà, merci !', 'Bonjour, vous avez du miel ?', 'Oui, cinq euros le pot.', 'J\'en prends un, s\'il vous plaît.'],
         correctOrder: ['Bonjour, vous avez du miel ?', 'Oui, cinq euros le pot.', 'J\'en prends un, s\'il vous plaît.', 'Voilà, merci !']
@@ -268,7 +280,8 @@ export const a1Module1Content: CourseContent[] = [
         tip: '💡 Les nombres de 11 à 16 sont irréguliers — il faut les mémoriser ! À partir de 17, c\'est logique : dix-sept, dix-huit, dix-neuf.'
       },
       {
-        id: 'L5-2', type: 'flashcard', title: 'Les nombres — Flashcards',
+        id: 'L5-2', type: 'flashcard', title: 'Les nombres — Flashcards', characterId: 'marie',
+        characterMessage: "C'est un sujet passionnant, vous allez voir !",
         cards: [
           { front: '0', back: 'zéro' },
           { front: '5', back: 'cinq' },
@@ -288,7 +301,8 @@ export const a1Module1Content: CourseContent[] = [
         correctIndex: 1
       },
       {
-        id: 'L5-4', type: 'qcm', title: 'Le bon nombre',
+        id: 'L5-4', type: 'qcm', title: 'Le bon nombre', characterId: 'omar',
+        characterMessage: "Concentre-toi sur les mots que tu connais déjà.",
         question: 'Comment écrit-on « 17 » en lettres ?',
         options: ['Dix-sept', 'Sept-dix', 'Dixsept', 'Septante'],
         correctIndex: 0,
@@ -301,7 +315,8 @@ export const a1Module1Content: CourseContent[] = [
         correctAnswer: 'dix-huit'
       },
       {
-        id: 'L5-6', type: 'drag-drop', title: 'L\'ordre des nombres',
+        id: 'L5-6', type: 'drag-drop', title: 'L\'ordre des nombres', characterId: 'fatou',
+        characterMessage: "Lis toute la phrase avant de choisir. Le contexte est la clé !",
         instruction: 'Remettez ces nombres dans l\'ordre croissant :',
         items: ['quinze', 'trois', 'onze', 'vingt', 'sept'],
         correctOrder: ['trois', 'sept', 'onze', 'quinze', 'vingt']
@@ -329,7 +344,8 @@ export const a1Module1Content: CourseContent[] = [
         tip: '💡 Les nationalités ne prennent PAS de majuscule quand elles sont des adjectifs : « Je suis français. »'
       },
       {
-        id: 'L6-2', type: 'flashcard', title: 'Nationalités — Masculin / Féminin',
+        id: 'L6-2', type: 'flashcard', title: 'Nationalités — Masculin / Féminin', characterId: 'marie',
+        characterMessage: "Bienvenue dans ma classe ! Aujourd'hui, on découvre ensemble un nouveau sujet.",
         cards: [
           { front: '🇫🇷 français / française', back: 'French (m/f)' },
           { front: '🇧🇷 brésilien / brésilienne', back: 'Brazilian (m/f)' },
@@ -347,7 +363,8 @@ export const a1Module1Content: CourseContent[] = [
         explanation: 'Japonais → japonaise (on ajoute -e au féminin).'
       },
       {
-        id: 'L6-4', type: 'fill-blank', title: 'La bonne nationalité',
+        id: 'L6-4', type: 'fill-blank', title: 'La bonne nationalité', characterId: 'lucas',
+        characterMessage: "Quand je suis arrivé à Antibes, j'ai dû apprendre ça aussi !",
         sentence: 'Lucas est brésilien. Maria est ___.',
         options: ['brésilien', 'brésilienne', 'brésiliene', 'brasilienne'],
         correctAnswer: 'brésilienne'
@@ -360,7 +377,8 @@ export const a1Module1Content: CourseContent[] = [
         explanation: 'Ahmed est un homme, donc on utilise le masculin : marocain.'
       },
       {
-        id: 'L6-6', type: 'final-quiz', title: 'Quiz final — Les nationalités',
+        id: 'L6-6', type: 'final-quiz', title: 'Quiz final — Les nationalités', characterId: 'lucas',
+        characterMessage: "Moi aussi au début, je trouvais ça compliqué ! Mais on s'y habitue.",
         questions: [
           { question: 'Sophie est de France. Elle est…', options: ['français', 'française', 'France', 'francaise'], correctIndex: 1 },
           { question: 'Le féminin de « italien » est…', options: ['italiene', 'italienne', 'italianne', 'itale'], correctIndex: 1 },
@@ -382,7 +400,8 @@ export const a1Module1Content: CourseContent[] = [
         tip: '💡 À Antibes, l\'été est magnifique ! La saison dure de juin à septembre avec plus de 300 jours de soleil par an.'
       },
       {
-        id: 'L7-2', type: 'flashcard', title: 'Jours et mois',
+        id: 'L7-2', type: 'flashcard', title: 'Jours et mois', characterId: 'marie',
+        characterMessage: "Bonjour à tous ! Prêts pour une nouvelle leçon ?",
         cards: [
           { front: 'lundi', back: 'Monday' },
           { front: 'mercredi', back: 'Wednesday' },
@@ -399,7 +418,8 @@ export const a1Module1Content: CourseContent[] = [
         correctOrder: ['lundi', 'mardi', 'mercredi', 'vendredi', 'dimanche']
       },
       {
-        id: 'L7-4', type: 'qcm', title: 'Les saisons',
+        id: 'L7-4', type: 'qcm', title: 'Les saisons', characterId: 'hans',
+        characterMessage: "Prends le temps de lire tous les mots avant de les placer.",
         question: 'En France, « l\'été » correspond à…',
         options: ['Décembre-février', 'Mars-mai', 'Juin-août', 'Septembre-novembre'],
         correctIndex: 2,
@@ -412,7 +432,8 @@ export const a1Module1Content: CourseContent[] = [
         correctAnswer: 'décembre'
       },
       {
-        id: 'L7-6', type: 'final-quiz', title: 'Quiz final — Jours et mois',
+        id: 'L7-6', type: 'final-quiz', title: 'Quiz final — Jours et mois', characterId: 'fatou',
+        characterMessage: "Ne te précipite pas, réfléchis au sens de la phrase complète.",
         questions: [
           { question: 'Quel jour vient après mercredi ?', options: ['Mardi', 'Jeudi', 'Vendredi', 'Lundi'], correctIndex: 1 },
           { question: 'Combien de jours dans une semaine ?', options: ['5', '6', '7', '8'], correctIndex: 2 },
@@ -434,7 +455,8 @@ export const a1Module1Content: CourseContent[] = [
         tip: '💡 « Je voudrais » est plus poli que « Je veux ». Utilisez toujours « je voudrais » au café et au restaurant !'
       },
       {
-        id: 'L8-2', type: 'listening', title: 'Écoute — Au café',
+        id: 'L8-2', type: 'listening', title: 'Écoute — Au café', characterId: 'marie',
+        characterMessage: "Installez-vous confortablement, on commence !",
         text: 'Bonjour madame ! Je voudrais un thé à la menthe et un croissant, s\'il vous plaît. Très bien ! Ça fait cinq euros.',
         question: 'Que commande le client ?',
         options: ['Un café et un croissant', 'Un thé à la menthe et un croissant', 'Un jus d\'orange', 'Un verre d\'eau'],
@@ -458,7 +480,8 @@ export const a1Module1Content: CourseContent[] = [
         correctAnswer: 'voudrais'
       },
       {
-        id: 'L8-5', type: 'drag-drop', title: 'L\'ordre du dialogue',
+        id: 'L8-5', type: 'drag-drop', title: 'L\'ordre du dialogue', characterId: 'fatou',
+        characterMessage: "Cet exercice entraîne ta grammaire et ton vocabulaire en même temps.",
         instruction: 'Remettez ce dialogue au café dans l\'ordre :',
         items: ['Ça fait trois euros.', 'Bonjour ! Qu\'est-ce que vous désirez ?', 'Voilà, merci !', 'Un café, s\'il vous plaît.'],
         correctOrder: ['Bonjour ! Qu\'est-ce que vous désirez ?', 'Un café, s\'il vous plaît.', 'Ça fait trois euros.', 'Voilà, merci !']
@@ -471,7 +494,8 @@ export const a1Module1Content: CourseContent[] = [
         explanation: '« Je voudrais… s\'il vous plaît » est la formule polie standard.'
       },
       {
-        id: 'L8-7', type: 'final-quiz', title: 'Quiz final — Au café',
+        id: 'L8-7', type: 'final-quiz', title: 'Quiz final — Au café', characterId: 'lucas',
+        characterMessage: "Cette question m'a piégé la première fois. Fais attention !",
         questions: [
           { question: '« Je voudrais » signifie…', options: ['I must', 'I would like', 'I can', 'I know'], correctIndex: 1 },
           { question: 'Pour demander le prix, on dit…', options: ['C\'est quoi ?', 'Ça fait combien ?', 'C\'est où ?', 'C\'est qui ?'], correctIndex: 1 },
@@ -493,7 +517,8 @@ export const a1Module1Content: CourseContent[] = [
         tip: '💡 C\'est le moment de tout réviser avant l\'examen du module !'
       },
       {
-        id: 'L9-2', type: 'qcm', title: 'Révision — Salutations',
+        id: 'L9-2', type: 'qcm', title: 'Révision — Salutations', characterId: 'marie',
+        characterMessage: "Aujourd'hui, je vais vous expliquer quelque chose de très utile.",
         question: 'Il est 21h. Que dites-vous ?',
         options: ['Bonjour', 'Bonsoir', 'Bonne nuit', 'Salut'],
         correctIndex: 1,
@@ -506,7 +531,8 @@ export const a1Module1Content: CourseContent[] = [
         correctAnswer: 'm\'appelle / ai'
       },
       {
-        id: 'L9-4', type: 'qcm', title: 'Révision — Tu ou vous ?',
+        id: 'L9-4', type: 'qcm', title: 'Révision — Tu ou vous ?', characterId: 'fatou',
+        characterMessage: "Complète la phrase ! C'est comme un puzzle — trouve la pièce manquante.",
         question: 'Avec votre professeur :',
         options: ['Tu parles français ?', 'Vous parlez français ?', 'Il parle français ?', 'On parle français ?'],
         correctIndex: 1,
@@ -520,7 +546,8 @@ export const a1Module1Content: CourseContent[] = [
         correctIndex: 2
       },
       {
-        id: 'L9-6', type: 'final-quiz', title: 'Quiz de révision — Module A1.1',
+        id: 'L9-6', type: 'final-quiz', title: 'Quiz de révision — Module A1.1', characterId: 'omar',
+        characterMessage: "Au Maroc aussi, on apprend en écoutant. C'est la meilleure méthode !",
         questions: [
           { question: '« Au revoir » signifie…', options: ['Hello', 'Please', 'Goodbye', 'Thank you'], correctIndex: 2 },
           { question: 'Comment dit-on « 15 » ?', options: ['Quinze', 'Cinquante', 'Cinq', 'Quatorze'], correctIndex: 0 },
@@ -545,7 +572,8 @@ export const a1Module1Content: CourseContent[] = [
         tip: '💡 Prenez votre temps et relisez bien chaque question avant de répondre.'
       },
       {
-        id: 'L10-2', type: 'final-quiz', title: 'Examen — Module A1.1',
+        id: 'L10-2', type: 'final-quiz', title: 'Examen — Module A1.1', characterId: 'marie',
+        characterMessage: "C'est un sujet passionnant, vous allez voir !",
         questions: [
           { question: 'Il est 8h du matin. Vous dites…', options: ['Bonsoir', 'Bonne nuit', 'Bonjour', 'Au revoir'], correctIndex: 2 },
           { question: '« Je m\'appelle Marie » signifie…', options: ['I like Marie', 'My name is Marie', 'I am calling Marie', 'Marie is here'], correctIndex: 1 },

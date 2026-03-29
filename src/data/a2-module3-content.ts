@@ -8,6 +8,7 @@ export const a2Module3Content: CourseContent[] = [
     steps: [
       {
         id: 'L71-1', type: 'lesson', title: 'Les métiers', characterId: 'marie',
+        characterMessage: "Vous progressez bien ! Cette leçon va enrichir votre français.",
         content: `Découvrons les **professions** en français ! 💼\n\n👨‍⚕️ **Professions courantes (masculin / féminin) :**\n- Un médecin / Une médecin(e)\n- Un professeur / Une professeure\n- Un avocat / Une avocate\n- Un ingénieur / Une ingénieure\n- Un serveur / Une serveuse\n- Un boulanger / Une boulangère\n- Un infirmier / Une infirmière\n- Un vendeur / Une vendeuse\n- Un comptable / Une comptable\n- Un journaliste / Une journaliste\n\n📐 **Structure :**\n- Je suis + profession (sans article !)\n- Il est médecin. / Elle est avocate.\n- Je travaille comme + profession\n- Je travaille dans + domaine (la santé, l'éducation…)`,
         tip: '💡 En français, on ne met PAS d\'article devant la profession : « Je suis médecin » (pas « je suis un médecin »).'
       },
@@ -20,6 +21,7 @@ export const a2Module3Content: CourseContent[] = [
       },
       {
         id: 'L71-3', type: 'qcm', title: 'Masculin / Féminin', characterId: 'elena',
+        characterMessage: "C'est plus facile quand on parle déjà une langue latine !",
         question: 'Quel est le féminin de « boulanger » ?',
         options: ['Boulangeuse', 'Boulangère', 'Boulangère', 'Boulangeresse'],
         correctIndex: 1,
@@ -27,6 +29,7 @@ export const a2Module3Content: CourseContent[] = [
       },
       {
         id: 'L71-4', type: 'flashcard', title: 'Les métiers', characterId: 'thomas',
+        characterMessage: "Le français est riche de mots qui n'existent pas dans d'autres langues.",
         cards: [
           { front: 'Un médecin', back: 'A doctor' },
           { front: 'Un avocat / Une avocate', back: 'A lawyer' },
@@ -38,18 +41,21 @@ export const a2Module3Content: CourseContent[] = [
       },
       {
         id: 'L71-5', type: 'fill-blank', title: 'Sans article !', characterId: 'fatou',
+        characterMessage: "La grammaire française, c'est comme une recette : il faut les bons ingrédients !",
         sentence: 'Marie ___ professeure de français.',
         options: ['est une', 'est', 'a une', 'fait'],
         correctAnswer: 'est'
       },
       {
         id: 'L71-6', type: 'drag-drop', title: 'Présentez-vous', characterId: 'yuki',
+        characterMessage: "Les phrases sont plus longues maintenant. Lis d'abord tous les mots !",
         instruction: 'Formez une phrase de présentation professionnelle :',
         items: ['dans', 'travaille', 'la santé', 'Je', 'comme', 'infirmière'],
         correctOrder: ['Je', 'travaille', 'comme', 'infirmière', 'dans', 'la santé']
       },
       {
         id: 'L71-7', type: 'qcm', title: 'Sophia Antipolis', characterId: 'omar',
+        characterMessage: "Cette question me rappelle mes premiers mois en France.",
         question: 'Sophia Antipolis est…',
         options: ['Un musée', 'Une plage', 'Un parc technologique', 'Un restaurant'],
         correctIndex: 2,
@@ -57,6 +63,7 @@ export const a2Module3Content: CourseContent[] = [
       },
       {
         id: 'L71-8', type: 'final-quiz', title: 'Quiz final — Les métiers', characterId: 'marie',
+        characterMessage: "Ce quiz est un peu plus long, mais vous êtes prêts !",
         questions: [
           { question: '« Elle est ___ . » (doctor)', options: ['une médecin', 'médecin', 'la médecin', 'de médecin'], correctIndex: 1 },
           { question: 'Féminin de « serveur » = …', options: ['Serveuse', 'Serveure', 'Servante', 'Servrice'], correctIndex: 0 },
@@ -74,6 +81,7 @@ export const a2Module3Content: CourseContent[] = [
     steps: [
       {
         id: 'L72-1', type: 'lesson', title: 'Mon CV en français', characterId: 'marie',
+        characterMessage: "Bravo pour votre travail ! Continuons avec un nouveau thème.",
         content: `Apprenons à rédiger un **CV** en français ! 📄\n\n📋 **Structure d'un CV français :**\n\n1. **État civil :**\n- Nom, prénom\n- Adresse, téléphone, email\n- Date de naissance\n\n2. **Formation :**\n- Diplômes, études\n- Université, école\n\n3. **Expérience professionnelle :**\n- Poste occupé\n- Entreprise et dates\n- Responsabilités\n\n4. **Compétences :**\n- Langues parlées\n- Informatique\n- Permis de conduire\n\n5. **Centres d'intérêt :**\n- Loisirs, sports, voyages\n\n📝 **Vocabulaire :**\n- Une formation → education/training\n- Un diplôme → a degree\n- Une expérience → an experience\n- Une compétence → a skill`,
         tip: '💡 En France, on ajoute souvent une photo sur le CV. C\'est différent dans d\'autres pays !'
       },
@@ -86,6 +94,7 @@ export const a2Module3Content: CourseContent[] = [
       },
       {
         id: 'L72-3', type: 'qcm', title: 'Structure du CV', characterId: 'elena',
+        characterMessage: "Attention, le français a des pièges que l'espagnol n'a pas.",
         question: 'Quelle section contient les diplômes ?',
         options: ['Expérience', 'Formation', 'Compétences', 'Centres d\'intérêt'],
         correctIndex: 1,
@@ -93,6 +102,7 @@ export const a2Module3Content: CourseContent[] = [
       },
       {
         id: 'L72-4', type: 'flashcard', title: 'Vocabulaire du CV', characterId: 'thomas',
+        characterMessage: "Ces expressions colorent la langue française. Apprends-les par cœur !",
         cards: [
           { front: 'Un CV (Curriculum Vitae)', back: 'A resume / CV' },
           { front: 'La formation', back: 'Education / Training' },
@@ -104,18 +114,21 @@ export const a2Module3Content: CourseContent[] = [
       },
       {
         id: 'L72-5', type: 'fill-blank', title: 'Complétez le CV', characterId: 'fatou',
+        characterMessage: "À Dakar, mes professeurs nous faisaient faire beaucoup de ces exercices.",
         sentence: '___ professionnelle : Serveur au Restaurant du Port (2022-2024).',
         options: ['Formation', 'Expérience', 'Compétence', 'Intérêt'],
         correctAnswer: 'Expérience'
       },
       {
         id: 'L72-6', type: 'drag-drop', title: 'Ordre du CV', characterId: 'yuki',
+        characterMessage: "La structure française est plus souple qu'on ne le pense.",
         instruction: 'Mettez les sections du CV dans l\'ordre :',
         items: ['Centres d\'intérêt', 'État civil', 'Expérience professionnelle', 'Formation'],
         correctOrder: ['État civil', 'Formation', 'Expérience professionnelle', 'Centres d\'intérêt']
       },
       {
         id: 'L72-7', type: 'qcm', title: 'Vocabulaire', characterId: 'lucas',
+        characterMessage: "Au Brésil, on n'a pas cette règle. J'ai mis du temps à comprendre !",
         question: '« Skills » en français = …',
         options: ['Formations', 'Diplômes', 'Compétences', 'Expériences'],
         correctIndex: 2,
@@ -123,6 +136,7 @@ export const a2Module3Content: CourseContent[] = [
       },
       {
         id: 'L72-8', type: 'final-quiz', title: 'Quiz final — Le CV', characterId: 'marie',
+        characterMessage: "Montrez-moi tout ce que vous avez appris. Je crois en vous !",
         questions: [
           { question: 'Les diplômes sont dans la section…', options: ['Expérience', 'Formation', 'Compétences', 'État civil'], correctIndex: 1 },
           { question: '« A degree » = …', options: ['Un métier', 'Un diplôme', 'Un stage', 'Un salaire'], correctIndex: 1 },
@@ -140,6 +154,7 @@ export const a2Module3Content: CourseContent[] = [
     steps: [
       {
         id: 'L73-1', type: 'lesson', title: 'L\'entretien d\'embauche', characterId: 'marie',
+        characterMessage: "Aujourd'hui, on approfondit vos connaissances. C'est parti !",
         content: `Préparez-vous pour un **entretien d'embauche** en français ! 🤝\n\n📝 **Questions fréquentes :**\n- Parlez-moi de vous.\n- Pourquoi voulez-vous ce poste ?\n- Quelles sont vos qualités / vos défauts ?\n- Où vous voyez-vous dans 5 ans ?\n- Avez-vous des questions ?\n\n✅ **Réponses types :**\n- Je suis motivé(e) et organisé(e).\n- J'ai de l'expérience dans ce domaine.\n- Je suis passionné(e) par…\n- Mon défaut : je suis parfois trop perfectionniste.\n\n🎯 **Vocabulaire :**\n- Un entretien → an interview\n- Un poste → a position\n- Un candidat / une candidate → a candidate\n- Embaucher → to hire\n- Le salaire → the salary\n- Un stage → an internship`,
         tip: '💡 En France, serrez la main fermement, regardez dans les yeux et utilisez le vouvoiement pendant l\'entretien !'
       },
@@ -152,6 +167,7 @@ export const a2Module3Content: CourseContent[] = [
       },
       {
         id: 'L73-3', type: 'qcm', title: 'Questions d\'entretien', characterId: 'elena',
+        characterMessage: "J'ai compris cette règle en comparant avec l'espagnol.",
         question: '« Parlez-moi de vous » est…',
         options: ['Une demande de CV', 'Une invitation à se présenter', 'Une question sur le salaire', 'Une question technique'],
         correctIndex: 1,
@@ -159,6 +175,7 @@ export const a2Module3Content: CourseContent[] = [
       },
       {
         id: 'L73-4', type: 'flashcard', title: 'Vocabulaire de l\'entretien', characterId: 'thomas',
+        characterMessage: "En tant que guide, j'utilise ces mots tous les jours avec les touristes.",
         cards: [
           { front: 'Un entretien d\'embauche', back: 'A job interview' },
           { front: 'Un poste', back: 'A position / job' },
@@ -170,18 +187,21 @@ export const a2Module3Content: CourseContent[] = [
       },
       {
         id: 'L73-5', type: 'fill-blank', title: 'Complétez', characterId: 'fatou',
+        characterMessage: "Pense à la conjugaison et à l'accord — c'est souvent la clé.",
         sentence: 'Je suis ___ par le marketing digital.',
         options: ['passionnée', 'salariée', 'embauchée', 'diplômée'],
         correctAnswer: 'passionnée'
       },
       {
         id: 'L73-6', type: 'drag-drop', title: 'Ordonnez l\'entretien', characterId: 'yuki',
+        characterMessage: "Commence par trouver le sujet, puis le verbe. Le reste suivra !",
         instruction: 'Mettez les étapes de l\'entretien dans l\'ordre :',
         items: ['Merci, au revoir.', 'Bonjour, asseyez-vous.', 'Avez-vous des questions ?', 'Parlez-moi de vous.'],
         correctOrder: ['Bonjour, asseyez-vous.', 'Parlez-moi de vous.', 'Avez-vous des questions ?', 'Merci, au revoir.']
       },
       {
         id: 'L73-7', type: 'qcm', title: 'Qualités', characterId: 'omar',
+        characterMessage: "Cette question me rappelle mes premiers mois en France.",
         question: 'Quelle est une qualité professionnelle ?',
         options: ['Paresseux', 'Organisé', 'Distrait', 'Impatient'],
         correctIndex: 1,
@@ -189,6 +209,7 @@ export const a2Module3Content: CourseContent[] = [
       },
       {
         id: 'L73-8', type: 'final-quiz', title: 'Quiz final — L\'entretien', characterId: 'marie',
+        characterMessage: "Quiz final ! Prenez votre temps, relisez bien chaque question.",
         questions: [
           { question: '« An internship » = …', options: ['Un entretien', 'Un stage', 'Un diplôme', 'Un poste'], correctIndex: 1 },
           { question: 'Première question classique : « ___ de vous. »', options: ['Dites-moi', 'Parlez-moi', 'Montrez-moi', 'Écrivez-moi'], correctIndex: 1 },
@@ -206,6 +227,7 @@ export const a2Module3Content: CourseContent[] = [
     steps: [
       {
         id: 'L74-1', type: 'lesson', title: 'Au bureau', characterId: 'marie',
+        characterMessage: "Vous êtes prêts pour un défi un peu plus grand ? Allons-y !",
         content: `Découvrons le vocabulaire du **bureau** ! 🏢\n\n🖥️ **Objets du bureau :**\n- Un ordinateur → a computer\n- Un clavier → a keyboard\n- Une souris → a mouse\n- Un écran → a screen\n- Une imprimante → a printer\n- Un bureau (meuble) → a desk\n- Un dossier → a file / folder\n- Un classeur → a binder\n- Une agrafeuse → a stapler\n\n🏢 **Lieux :**\n- Le bureau → the office\n- La salle de réunion → the meeting room\n- La machine à café → the coffee machine\n- L\'accueil → the reception\n\n💬 **Actions :**\n- Envoyer un email → to send an email\n- Imprimer un document → to print a document\n- Participer à une réunion → to attend a meeting`,
         tip: '💡 « Bureau » a deux sens : le meuble (desk) et la pièce (office).'
       },
@@ -218,6 +240,7 @@ export const a2Module3Content: CourseContent[] = [
       },
       {
         id: 'L74-3', type: 'qcm', title: 'Vocabulaire', characterId: 'elena',
+        characterMessage: "Ne traduis pas mot à mot — pense directement en français !",
         question: '« A printer » en français = …',
         options: ['Un écran', 'Une imprimante', 'Un clavier', 'Une souris'],
         correctIndex: 1,
@@ -225,6 +248,7 @@ export const a2Module3Content: CourseContent[] = [
       },
       {
         id: 'L74-4', type: 'flashcard', title: 'Au bureau', characterId: 'thomas',
+        characterMessage: "Le vocabulaire français reflète l'art de vivre à la française.",
         cards: [
           { front: 'Un ordinateur', back: 'A computer' },
           { front: 'Un clavier', back: 'A keyboard' },
@@ -236,18 +260,21 @@ export const a2Module3Content: CourseContent[] = [
       },
       {
         id: 'L74-5', type: 'fill-blank', title: 'Complétez', characterId: 'fatou',
+        characterMessage: "Le français a des règles précises. Cet exercice t'aide à les maîtriser.",
         sentence: 'J\'ai ___ un email à mon collègue.',
         options: ['envoyé', 'imprimé', 'lu', 'reçu'],
         correctAnswer: 'envoyé'
       },
       {
         id: 'L74-6', type: 'drag-drop', title: 'Journée au bureau', characterId: 'yuki',
+        characterMessage: "Cet exercice entraîne ta pensée à fonctionner en français.",
         instruction: 'Ordonnez la journée de travail :',
         items: ['Je suis parti à 18h.', 'J\'ai allumé mon ordinateur.', 'J\'ai participé à une réunion.', 'J\'ai lu mes emails.'],
         correctOrder: ['J\'ai allumé mon ordinateur.', 'J\'ai lu mes emails.', 'J\'ai participé à une réunion.', 'Je suis parti à 18h.']
       },
       {
         id: 'L74-7', type: 'qcm', title: 'Double sens', characterId: 'lucas',
+        characterMessage: "C'est une question classique d'examen. Prends ton temps.",
         question: '« Bureau » peut signifier…',
         options: ['Desk et office', 'Chair et table', 'Computer et phone', 'Door et window'],
         correctIndex: 0,
@@ -255,6 +282,7 @@ export const a2Module3Content: CourseContent[] = [
       },
       {
         id: 'L74-8', type: 'final-quiz', title: 'Quiz final — Au bureau', characterId: 'marie',
+        characterMessage: "Vous avez bien travaillé, ce quiz va le prouver !",
         questions: [
           { question: '« A keyboard » = …', options: ['Un écran', 'Un clavier', 'Une souris', 'Une imprimante'], correctIndex: 1 },
           { question: '« Envoyer un ___ »', options: ['café', 'email', 'bureau', 'clavier'], correctIndex: 1 },
@@ -272,11 +300,13 @@ export const a2Module3Content: CourseContent[] = [
     steps: [
       {
         id: 'L75-1', type: 'lesson', title: 'Le futur proche', characterId: 'marie',
+        characterMessage: "Cette leçon vous sera très utile dans la vie quotidienne.",
         content: `Le **futur proche** exprime une action qui va se passer bientôt ! 🔮\n\n📐 **Formation :**\n**ALLER** (au présent) + **infinitif**\n\n🔵 **Exemples :**\n- Je **vais travailler** demain. → I'm going to work tomorrow.\n- Tu **vas manger** au restaurant. → You're going to eat at the restaurant.\n- Il **va pleuvoir**. → It's going to rain.\n- Nous **allons partir** en vacances. → We're going to leave on vacation.\n- Vous **allez comprendre**. → You're going to understand.\n- Ils **vont arriver** ce soir. → They're going to arrive tonight.\n\n❌ **Négatif :**\n- Je **ne vais pas** travailler demain.\n- Elle **ne va pas** venir.\n\n❓ **Interrogatif :**\n- Est-ce que tu **vas** manger ?\n- **Vas-tu** venir ?`,
         tip: '💡 Le futur proche est très utilisé en français parlé, souvent à la place du futur simple !'
       },
       {
         id: 'L75-2', type: 'listening', title: 'Écoute — Projets', characterId: 'lucas',
+        characterMessage: "Concentre-toi sur les mots-clés, pas besoin de tout comprendre.",
         text: 'Ce week-end, je vais aller à la plage avec mes amis. Samedi, nous allons faire un pique-nique. Dimanche, je vais visiter le musée Picasso à Antibes. Et lundi, je vais commencer mon nouveau travail !',
         question: 'Que va-t-il faire dimanche ?',
         options: ['Aller à la plage', 'Faire un pique-nique', 'Visiter le musée Picasso', 'Commencer son travail'],
@@ -284,6 +314,7 @@ export const a2Module3Content: CourseContent[] = [
       },
       {
         id: 'L75-3', type: 'qcm', title: 'Futur proche', characterId: 'elena',
+        characterMessage: "Cette structure est différente en espagnol. Fais attention !",
         question: 'Complétez : « Nous ___ manger au restaurant ce soir. »',
         options: ['allons', 'avons', 'sommes', 'faisons'],
         correctIndex: 0,
@@ -291,6 +322,7 @@ export const a2Module3Content: CourseContent[] = [
       },
       {
         id: 'L75-4', type: 'flashcard', title: 'Le futur proche', characterId: 'thomas',
+        characterMessage: "Chaque nouveau mot te rapproche de la culture française.",
         cards: [
           { front: 'je vais + infinitif', back: 'I\'m going to…' },
           { front: 'tu vas + infinitif', back: 'You\'re going to…' },
@@ -302,18 +334,21 @@ export const a2Module3Content: CourseContent[] = [
       },
       {
         id: 'L75-5', type: 'fill-blank', title: 'Complétez', characterId: 'fatou',
+        characterMessage: "Lis la phrase à voix haute avec chaque option — tu entendras la bonne !",
         sentence: 'Demain, elle ___ commencer un nouveau travail.',
         options: ['va', 'est', 'a', 'fait'],
         correctAnswer: 'va'
       },
       {
         id: 'L75-6', type: 'drag-drop', title: 'Formez une phrase', characterId: 'yuki',
+        characterMessage: "En japonais, le verbe est à la fin. En français, il est au milieu !",
         instruction: 'Construisez une phrase au futur proche :',
         items: ['vais', 'Je', 'français', 'étudier', 'le'],
         correctOrder: ['Je', 'vais', 'étudier', 'le', 'français']
       },
       {
         id: 'L75-7', type: 'qcm', title: 'Négatif', characterId: 'omar',
+        characterMessage: "Cette question me rappelle mes premiers mois en France.",
         question: '« Je ___ travailler demain. » (négatif)',
         options: ['ne vais pas', 'ne suis pas', 'n\'ai pas', 'ne fais pas'],
         correctIndex: 0,
@@ -321,6 +356,7 @@ export const a2Module3Content: CourseContent[] = [
       },
       {
         id: 'L75-8', type: 'final-quiz', title: 'Quiz final — Le futur proche', characterId: 'marie',
+        characterMessage: "C'est le moment de briller ! Bonne chance !",
         questions: [
           { question: '« Nous ___ partir demain. »', options: ['allons', 'avons', 'sommes', 'faisons'], correctIndex: 0 },
           { question: '« Elle ne ___ pas venir. »', options: ['est', 'a', 'va', 'fait'], correctIndex: 2 },
@@ -338,6 +374,7 @@ export const a2Module3Content: CourseContent[] = [
     steps: [
       {
         id: 'L76-1', type: 'lesson', title: 'Téléphoner au travail', characterId: 'marie',
+        characterMessage: "Vous progressez bien ! Cette leçon va enrichir votre français.",
         content: `Apprenons à **téléphoner** dans un contexte professionnel ! 📞\n\n📞 **Décrocher :**\n- Allô ? / Bonjour, entreprise X, bonjour.\n- Société ABC, Marie à l'appareil.\n\n📞 **Demander quelqu'un :**\n- Je voudrais parler à M. Dupont, s'il vous plaît.\n- Pourriez-vous me passer le service commercial ?\n- Est-ce que Mme Martin est disponible ?\n\n📝 **Laisser un message :**\n- Pourriez-vous lui laisser un message ?\n- Pourriez-vous lui demander de me rappeler ?\n- Mon numéro est le 06 12 34 56 78.\n\n✅ **Formules de politesse :**\n- Merci, bonne journée.\n- Je vous remercie. Au revoir.`,
         tip: '💡 En France, les numéros de téléphone se disent par groupes de deux : 06-12-34-56-78.'
       },
@@ -350,6 +387,7 @@ export const a2Module3Content: CourseContent[] = [
       },
       {
         id: 'L76-3', type: 'qcm', title: 'Formule téléphonique', characterId: 'elena',
+        characterMessage: "C'est plus facile quand on parle déjà une langue latine !",
         question: '« Pourriez-vous me ___ le service commercial ? »',
         options: ['donner', 'passer', 'envoyer', 'montrer'],
         correctIndex: 1,
@@ -357,6 +395,7 @@ export const a2Module3Content: CourseContent[] = [
       },
       {
         id: 'L76-4', type: 'flashcard', title: 'Au téléphone (pro)', characterId: 'thomas',
+        characterMessage: "Le français est riche de mots qui n'existent pas dans d'autres langues.",
         cards: [
           { front: 'X à l\'appareil', back: 'X speaking (on the phone)' },
           { front: 'Je voudrais parler à…', back: 'I\'d like to speak to…' },
@@ -368,18 +407,21 @@ export const a2Module3Content: CourseContent[] = [
       },
       {
         id: 'L76-5', type: 'fill-blank', title: 'Complétez', characterId: 'fatou',
+        characterMessage: "La grammaire française, c'est comme une recette : il faut les bons ingrédients !",
         sentence: 'Pourriez-vous lui demander de me ___ ?',
         options: ['appeler', 'rappeler', 'parler', 'envoyer'],
         correctAnswer: 'rappeler'
       },
       {
         id: 'L76-6', type: 'drag-drop', title: 'Ordonnez l\'appel', characterId: 'yuki',
+        characterMessage: "Les phrases sont plus longues maintenant. Lis d'abord tous les mots !",
         instruction: 'Mettez l\'appel téléphonique dans l\'ordre :',
         items: ['Merci, au revoir.', 'Allô, société ABC, bonjour.', 'Il est en réunion, voulez-vous laisser un message ?', 'Je voudrais parler à M. Dupont.'],
         correctOrder: ['Allô, société ABC, bonjour.', 'Je voudrais parler à M. Dupont.', 'Il est en réunion, voulez-vous laisser un message ?', 'Merci, au revoir.']
       },
       {
         id: 'L76-7', type: 'qcm', title: 'Numéros français', characterId: 'omar',
+        characterMessage: "Cette question me rappelle mes premiers mois en France.",
         question: 'Comment dit-on le numéro 06 45 23 18 67 ?',
         options: ['Six quatre cinq…', 'Zéro six, quarante-cinq, vingt-trois…', 'Zéro, six, quatre, cinq…', 'Soixante-quatre, cinquante-deux…'],
         correctIndex: 1,
@@ -387,6 +429,7 @@ export const a2Module3Content: CourseContent[] = [
       },
       {
         id: 'L76-8', type: 'final-quiz', title: 'Quiz final — Téléphoner', characterId: 'marie',
+        characterMessage: "Ce quiz est un peu plus long, mais vous êtes prêts !",
         questions: [
           { question: '« X ___ l\'appareil. »', options: ['à', 'de', 'sur', 'en'], correctIndex: 0 },
           { question: '« ___ un message » = to leave a message', options: ['Donner', 'Laisser', 'Prendre', 'Envoyer'], correctIndex: 1 },
@@ -404,6 +447,7 @@ export const a2Module3Content: CourseContent[] = [
     steps: [
       {
         id: 'L77-1', type: 'lesson', title: 'Écrire un email professionnel', characterId: 'marie',
+        characterMessage: "Bravo pour votre travail ! Continuons avec un nouveau thème.",
         content: `Apprenons à écrire un **email professionnel** en français ! ✉️\n\n📧 **Structure :**\n\n1. **Objet :** clair et précis\n   - Demande de rendez-vous / Candidature au poste de…\n\n2. **Formule d'ouverture :**\n   - Madame, Monsieur,\n   - Cher Monsieur / Chère Madame,\n\n3. **Corps du message :**\n   - Je me permets de vous contacter pour…\n   - Suite à notre conversation…\n   - Je souhaiterais obtenir des informations sur…\n\n4. **Formule de clôture :**\n   - Je vous remercie par avance.\n   - Dans l'attente de votre réponse…\n\n5. **Formule de politesse :**\n   - Cordialement,\n   - Bien cordialement,\n   - Veuillez agréer, Madame, mes salutations distinguées.`,
         tip: '💡 « Cordialement » est la formule de politesse la plus courante dans les emails professionnels.'
       },
@@ -416,6 +460,7 @@ export const a2Module3Content: CourseContent[] = [
       },
       {
         id: 'L77-3', type: 'qcm', title: 'Formule de politesse', characterId: 'elena',
+        characterMessage: "Attention, le français a des pièges que l'espagnol n'a pas.",
         question: 'Quelle est la formule de clôture la plus courante ?',
         options: ['Bisous', 'Cordialement', 'Salut', 'À plus'],
         correctIndex: 1,
@@ -423,6 +468,7 @@ export const a2Module3Content: CourseContent[] = [
       },
       {
         id: 'L77-4', type: 'flashcard', title: 'Email professionnel', characterId: 'thomas',
+        characterMessage: "Ces expressions colorent la langue française. Apprends-les par cœur !",
         cards: [
           { front: 'Madame, Monsieur,', back: 'Dear Sir or Madam,' },
           { front: 'Je me permets de…', back: 'I am writing to… (formal)' },
@@ -434,18 +480,21 @@ export const a2Module3Content: CourseContent[] = [
       },
       {
         id: 'L77-5', type: 'fill-blank', title: 'Complétez l\'email', characterId: 'fatou',
+        characterMessage: "À Dakar, mes professeurs nous faisaient faire beaucoup de ces exercices.",
         sentence: 'Je me ___ de vous contacter pour solliciter un rendez-vous.',
         options: ['veux', 'permets', 'fais', 'dois'],
         correctAnswer: 'permets'
       },
       {
         id: 'L77-6', type: 'drag-drop', title: 'Structure de l\'email', characterId: 'yuki',
+        characterMessage: "La structure française est plus souple qu'on ne le pense.",
         instruction: 'Ordonnez les éléments de l\'email :',
         items: ['Cordialement, Marie.', 'Madame, Monsieur,', 'Je vous remercie par avance.', 'Je me permets de vous contacter pour…'],
         correctOrder: ['Madame, Monsieur,', 'Je me permets de vous contacter pour…', 'Je vous remercie par avance.', 'Cordialement, Marie.']
       },
       {
         id: 'L77-7', type: 'qcm', title: 'Registre', characterId: 'lucas',
+        characterMessage: "J'ai posé cette question à Marie hier en classe. Maintenant je sais !",
         question: '« Bisous » est approprié dans un email…',
         options: ['Professionnel', 'Amical', 'Administratif', 'Commercial'],
         correctIndex: 1,
@@ -453,6 +502,7 @@ export const a2Module3Content: CourseContent[] = [
       },
       {
         id: 'L77-8', type: 'final-quiz', title: 'Quiz final — Email pro', characterId: 'marie',
+        characterMessage: "Montrez-moi tout ce que vous avez appris. Je crois en vous !",
         questions: [
           { question: 'Formule d\'ouverture formelle = …', options: ['Salut !', 'Coucou !', 'Madame, Monsieur,', 'Yo !'], correctIndex: 2 },
           { question: '« Cordialement » est pour un email…', options: ['Amical', 'Professionnel', 'Romantique', 'Familier'], correctIndex: 1 },
@@ -470,6 +520,7 @@ export const a2Module3Content: CourseContent[] = [
     steps: [
       {
         id: 'L78-1', type: 'lesson', title: 'Les pronoms COI', characterId: 'marie',
+        characterMessage: "Aujourd'hui, on approfondit vos connaissances. C'est parti !",
         content: `Les **pronoms COI** (Complément d'Objet Indirect) remplacent « à + personne ». 🔄\n\n📐 **Les pronoms COI :**\n- **me** (m') → to me\n- **te** (t') → to you (informal)\n- **lui** → to him / to her\n- **nous** → to us\n- **vous** → to you (formal/plural)\n- **leur** → to them\n\n📍 **Position :** AVANT le verbe\n- Je parle **à Marie** → Je **lui** parle.\n- Il téléphone **à ses parents** → Il **leur** téléphone.\n- Elle m'envoie un email → She sends me an email.\n\n⚠️ **COD vs COI :**\n- COD : verbe + nom (sans préposition) → le, la, les\n- COI : verbe + **à** + personne → lui, leur\n\n📝 **Verbes courants + à :**\nparler à, téléphoner à, écrire à, donner à, envoyer à, demander à, répondre à`,
         tip: '💡 « Lui » remplace aussi bien un homme qu\'une femme : je lui parle (à Pierre / à Marie).'
       },
@@ -482,6 +533,7 @@ export const a2Module3Content: CourseContent[] = [
       },
       {
         id: 'L78-3', type: 'qcm', title: 'Pronom COI', characterId: 'elena',
+        characterMessage: "J'ai compris cette règle en comparant avec l'espagnol.",
         question: '« Je téléphone à mes parents. » → « Je ___ téléphone. »',
         options: ['les', 'lui', 'leur', 'leurs'],
         correctIndex: 2,
@@ -489,6 +541,7 @@ export const a2Module3Content: CourseContent[] = [
       },
       {
         id: 'L78-4', type: 'flashcard', title: 'Les pronoms COI', characterId: 'thomas',
+        characterMessage: "En tant que guide, j'utilise ces mots tous les jours avec les touristes.",
         cards: [
           { front: 'me / m\'', back: 'to me (Il me parle.)' },
           { front: 'te / t\'', back: 'to you (Je te réponds.)' },
@@ -500,18 +553,21 @@ export const a2Module3Content: CourseContent[] = [
       },
       {
         id: 'L78-5', type: 'fill-blank', title: 'Remplacez', characterId: 'fatou',
+        characterMessage: "Pense à la conjugaison et à l'accord — c'est souvent la clé.",
         sentence: 'Elle écrit à son professeur. → Elle ___ écrit.',
         options: ['le', 'la', 'lui', 'leur'],
         correctAnswer: 'lui'
       },
       {
         id: 'L78-6', type: 'drag-drop', title: 'Ordre des mots', characterId: 'yuki',
+        characterMessage: "Commence par trouver le sujet, puis le verbe. Le reste suivra !",
         instruction: 'Remettez dans l\'ordre avec le pronom COI :',
         items: ['lui', 'Je', 'un email', 'ai', 'envoyé'],
         correctOrder: ['Je', 'lui', 'ai', 'envoyé', 'un email']
       },
       {
         id: 'L78-7', type: 'qcm', title: 'COD ou COI ?', characterId: 'omar',
+        characterMessage: "Cette question me rappelle mes premiers mois en France.",
         question: '« Je regarde Marie. » — Quel pronom ?',
         options: ['lui (COI)', 'la (COD)', 'leur (COI)', 'les (COD)'],
         correctIndex: 1,
@@ -519,6 +575,7 @@ export const a2Module3Content: CourseContent[] = [
       },
       {
         id: 'L78-8', type: 'final-quiz', title: 'Quiz final — Pronoms COI', characterId: 'marie',
+        characterMessage: "Quiz final ! Prenez votre temps, relisez bien chaque question.",
         questions: [
           { question: '« Je parle à Pierre. » → « Je ___ parle. »', options: ['le', 'la', 'lui', 'leur'], correctIndex: 2 },
           { question: '« Ils téléphonent à leurs amis. » → « Ils ___ téléphonent. »', options: ['les', 'lui', 'leur', 'leurs'], correctIndex: 2 },
@@ -536,11 +593,13 @@ export const a2Module3Content: CourseContent[] = [
     steps: [
       {
         id: 'L79-1', type: 'lesson', title: 'Révision — Le monde du travail', characterId: 'marie',
+        characterMessage: "Vous êtes prêts pour un défi un peu plus grand ? Allons-y !",
         content: `📚 **Révision du Module A2.3** — Le monde du travail\n\n✅ **Les métiers :** médecin, avocat, ingénieur… (sans article !)\n\n✅ **Le CV :** état civil, formation, expérience, compétences\n\n✅ **L'entretien :** Parlez-moi de vous, qualités/défauts\n\n✅ **Au bureau :** ordinateur, clavier, réunion, email\n\n✅ **Le futur proche :** aller + infinitif\n\n✅ **Téléphoner :** formules professionnelles, laisser un message\n\n✅ **Email pro :** Madame/Monsieur, Cordialement\n\n✅ **Pronoms COI :** me, te, lui, nous, vous, leur`,
         tip: '💡 Révisez les pronoms COI vs COD : COD = verbe direct, COI = verbe + à + personne.'
       },
       {
         id: 'L79-2', type: 'qcm', title: 'Révision', characterId: 'hans',
+        characterMessage: "Cet exercice demande de la précision. Analyse chaque option.",
         question: '« Elle est ___ . » (avocat, féminin)',
         options: ['avocat', 'avocate', 'une avocate', 'l\'avocate'],
         correctIndex: 1,
@@ -548,12 +607,14 @@ export const a2Module3Content: CourseContent[] = [
       },
       {
         id: 'L79-3', type: 'fill-blank', title: 'Révision', characterId: 'fatou',
+        characterMessage: "Le français a des règles précises. Cet exercice t'aide à les maîtriser.",
         sentence: 'Demain, nous ___ commencer le nouveau projet.',
         options: ['allons', 'avons', 'sommes', 'faisons'],
         correctAnswer: 'allons'
       },
       {
         id: 'L79-4', type: 'qcm', title: 'Révision', characterId: 'elena',
+        characterMessage: "Ne traduis pas mot à mot — pense directement en français !",
         question: '« Cordialement » termine un email…',
         options: ['Amical', 'Professionnel', 'Romantique', 'Familier'],
         correctIndex: 1,
@@ -561,6 +622,7 @@ export const a2Module3Content: CourseContent[] = [
       },
       {
         id: 'L79-5', type: 'drag-drop', title: 'Révision', characterId: 'yuki',
+        characterMessage: "Cet exercice entraîne ta pensée à fonctionner en français.",
         instruction: 'Ordonnez les sections du CV :',
         items: ['Compétences', 'État civil', 'Formation', 'Expérience'],
         correctOrder: ['État civil', 'Formation', 'Expérience', 'Compétences']
@@ -573,6 +635,7 @@ export const a2Module3Content: CourseContent[] = [
       },
       {
         id: 'L79-7', type: 'qcm', title: 'Révision', characterId: 'lucas',
+        characterMessage: "Souviens-toi de ce qu'on a vu dans la leçon, ça va t'aider.",
         question: '« Sophia Antipolis » est…',
         options: ['Une ville', 'Un parc technologique', 'Un musée', 'Une plage'],
         correctIndex: 1,
@@ -580,6 +643,7 @@ export const a2Module3Content: CourseContent[] = [
       },
       {
         id: 'L79-8', type: 'final-quiz', title: 'Quiz de révision A2.3', characterId: 'marie',
+        characterMessage: "Vous avez bien travaillé, ce quiz va le prouver !",
         questions: [
           { question: '« A job interview » = …', options: ['Un entretien', 'Un stage', 'Un diplôme', 'Un poste'], correctIndex: 0 },
           { question: '« Nous ___ partir bientôt. » (futur proche)', options: ['allons', 'avons', 'sommes', 'faisons'], correctIndex: 0 },
@@ -597,6 +661,7 @@ export const a2Module3Content: CourseContent[] = [
     steps: [
       {
         id: 'L80-1', type: 'lesson', title: 'Examen Module A2.3 — Le monde du travail', characterId: 'marie',
+        characterMessage: "Cette leçon vous sera très utile dans la vie quotidienne.",
         content: `🎓 **Examen du Module A2.3**\n\nVous allez passer l'examen final du module « Le monde du travail ».\n\n📋 **Ce qui sera évalué :**\n- Les métiers et leur genre\n- La structure du CV\n- L'entretien d'embauche\n- Le vocabulaire du bureau\n- Le futur proche\n- Les formules téléphoniques et d'email\n- Les pronoms COI\n\n💪 Badge « Pro Débutant » 💼 à débloquer !`,
         tip: '💡 Concentrez-vous et bonne chance !'
       },
@@ -641,6 +706,7 @@ export const a2Module3Content: CourseContent[] = [
       },
       {
         id: 'L80-8', type: 'final-quiz', title: 'Examen final A2.3', characterId: 'marie',
+        characterMessage: "C'est le moment de briller ! Bonne chance !",
         questions: [
           { question: '« To hire » = …', options: ['Licencier', 'Embaucher', 'Former', 'Payer'], correctIndex: 1 },
           { question: '« Elle va ___ demain. » (partir)', options: ['partie', 'partant', 'partir', 'part'], correctIndex: 2 },

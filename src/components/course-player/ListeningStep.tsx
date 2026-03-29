@@ -102,7 +102,7 @@ export function ListeningStep({ step, onNext }: Props) {
       </div>
       {/* Character info */}
       {character && evolution && (
-        <CharacterBubble character={character} evolution={evolution} showBio />
+        <CharacterBubble character={character} evolution={evolution} showBio message={step.characterMessage} />
       )}
 
       {/* Audio player */}
