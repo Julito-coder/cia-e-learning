@@ -12,7 +12,7 @@ export const a1Module1Content: CourseContent[] = [
         tip: '💡 « Salut » est informel — utilisez-le avec des amis. « Bonjour » est toujours approprié !'
       },
       {
-        id: 'L1-2', type: 'listening', title: 'Écoute — Arrivée au CIA',
+        id: 'L1-2', type: 'listening', title: 'Écoute — Arrivée au CIA', characterId: 'marie',
         text: 'Bonjour ! Bienvenue au Centre International d\'Antibes. Je m\'appelle Marie. Comment allez-vous ?',
         question: 'Où se passe cette scène ?',
         options: ['À Paris', 'Au Centre International d\'Antibes', 'À la gare', 'Au restaurant'],
@@ -58,7 +58,7 @@ export const a1Module1Content: CourseContent[] = [
         correctOrder: ['Bonjour !', 'Comment allez-vous ?', 'Très bien, merci.', 'Et vous ?']
       },
       {
-        id: 'L1-8', type: 'listening', title: 'Compréhension — Au café',
+        id: 'L1-8', type: 'listening', title: 'Compréhension — Au café', characterId: 'omar',
         text: 'Bonsoir madame ! Bonsoir monsieur. Comment allez-vous ? Très bien, merci. Au revoir et bonne soirée !',
         question: 'À quel moment de la journée se passe cette scène ?',
         options: ['Le matin', 'L\'après-midi', 'Le soir', 'La nuit'],
@@ -98,7 +98,7 @@ export const a1Module1Content: CourseContent[] = [
         ]
       },
       {
-        id: 'L2-3', type: 'listening', title: 'Écoute — Présentation de Lucas',
+        id: 'L2-3', type: 'listening', title: 'Écoute — Présentation de Lucas', characterId: 'lucas',
         text: 'Bonjour ! Je m\'appelle Lucas. J\'ai vingt-deux ans. Je suis brésilien. J\'habite à Antibes pour apprendre le français.',
         question: 'D\'où vient Lucas ?',
         options: ['De France', 'Du Japon', 'Du Brésil', 'D\'Espagne'],
@@ -153,7 +153,7 @@ export const a1Module1Content: CourseContent[] = [
         tip: '💡 Le son « u » français n\'existe pas en anglais ! Dites « ee » et arrondissez vos lèvres → « u ».'
       },
       {
-        id: 'L3-2', type: 'listening', title: 'Écoute — Les voyelles nasales',
+        id: 'L3-2', type: 'listening', title: 'Écoute — Les voyelles nasales', characterId: 'thomas',
         text: 'Bonjour, mon nom est Antoine. Je suis français. J\'habite à Antibes, en France.',
         question: 'Combien de sons nasaux (on, an, in) entendez-vous dans cette phrase ?',
         options: ['1', '2', '3', '4 ou plus'],
