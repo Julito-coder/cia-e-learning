@@ -1,56 +1,56 @@
 
 
-## Plan : Avatars plein pied dans l'espace gauche de la page d'accueil
+## Plan : Sections séparées, personnages intégrés aux cours, progression persistante
 
-### Ce qui change
+### 1. Séparer CharacterShowcase et LearningPath en sections distinctes
 
-1. **Supprimer les avatars du LearningPath** : Retirer toute la logique Character3DAvatar et CharacterStoryModal du composant `LearningPath.tsx` (lignes 8-10, 140-144, 153-155, 178-197, 248-255). Le parcours redevient un simple chemin de modules.
+**Fichier : `src/pages/Index.tsx`**
+- Retirer le CharacterShowcase du bloc `card-duo` qui contient le LearningPath (lignes 229-242)
+- Créer une section pleine largeur dédiée "Nos personnages" **au-dessus** de la section parcours, avec un titre et les 8 avatars en ligne horizontale scrollable
+- La section LearningPath reste dans sa propre card séparée
+- Sur mobile : CharacterShowcase en grille 2x4 ou scroll horizontal, puis LearningPath en dessous
+- Sur desktop : CharacterShowcase en ligne de 8 avatars, puis LearningPath en dessous
 
-2. **Créer `src/components/characters/CharacterShowcase.tsx`** : Nouveau composant affichant les 8 personnages en pied dans un espace vertical. Chaque avatar :
-   - Occupe une zone de ~120x200px avec une image stylisée (silhouette/avatar arrondi)
-   - **Au hover** : tourne sur lui-même (rotation Y 360° en CSS 3D, `rotateY` animé)
-   - **Au clic** : ouvre le CharacterStoryModal existant (bio, histoire CIA, evolution)
-   - Disposition en grille 2x4 ou en colonne scrollable
-   - Animations staggerées à l'apparition (fade-in décalé)
+### 2. Intégrer les personnages dans tous les types de steps des cours
 
-3. **Modifier `src/pages/Index.tsx`** : Restructurer la section "Parcours" pour qu'elle prenne toute la largeur (full-width section en bas) avec un layout 2 colonnes :
-   - **Gauche** : `CharacterShowcase` avec les 8 personnages interactifs
-   - **Droite** : `LearningPath` (le parcours actuel, sans avatars)
+**Fichier : `src/data/course-content.ts`**
+- Ajouter `characterId?: string` à TOUS les types de steps (LessonStep, QCMStep, FillBlankStep, etc.), pas seulement ListeningStep
+- Permet d'afficher quel personnage "parle" ou "pose la question" dans chaque exercice
 
-4. **Modifier `src/index.css`** : Ajouter `@keyframes character-spin` (rotation Y 0->360°, 0.8s) pour l'effet de tour sur soi au hover.
+**Fichiers : `src/components/course-player/LessonStep.tsx`, `QCMStep.tsx`, `FillBlankStep.tsx`, `DragDropStep.tsx`, `FlashcardStep.tsx`, `FinalQuizStep.tsx`**
+- Importer `CharacterBubble` et `useUserProgress`
+- Si le step a un `characterId`, afficher la bulle du personnage en haut du step (avatar + nom + catchphrase)
+- Cela donne l'impression que le personnage guide/enseigne/questionne l'apprenant
 
-5. **Mettre à jour `Character3DAvatar.tsx`** : Adapter pour un mode "full body" plus grand (taille ~180px), avec l'animation de marche idle par défaut et spin au hover.
+**Fichiers de contenu : `src/data/a1-module1-content.ts`, `src/data/a1-module2-content.ts`, `src/data/course-content.ts`**
+- Ajouter des `characterId` à tous les steps existants, en répartissant les 8 personnages selon leur rôle :
+  - `marie` → lessons (c'est la prof)
+  - `lucas`, `yuki`, `omar`, `elena`, `fatou`, `hans` → exercices variés (les étudiants posent des questions, font des dialogues)
+  - `thomas` → culture, flashcards (c'est le barman/local)
 
-### Disposition visuelle
+### 3. Persister la progression par module/cours (correctCount + step)
 
-```text
-┌──────────────────────────────────────────────┐
-│  Parcours (full-width section)               │
-│  ┌──────────────┐  ┌─────────────────────┐   │
-│  │  Personnages  │  │   Learning Path     │   │
-│  │  ┌────┐┌────┐ │  │   (zigzag nodes)    │   │
-│  │  │Marie││Luca│ │  │                     │   │
-│  │  └────┘└────┘ │  │   ○ A1.1            │   │
-│  │  ┌────┐┌────┐ │  │     ╲               │   │
-│  │  │Yuki││Omar│ │  │      ○ A1.2         │   │
-│  │  └────┘└────┘ │  │     ╱               │   │
-│  │  ┌────┐┌────┐ │  │   ○ A1.3            │   │
-│  │  │Elen││Thom│ │  │                     │   │
-│  │  └────┘└────┘ │  │                     │   │
-│  │  ┌────┐┌────┐ │  │                     │   │
-│  │  │Fato││Hans│ │  │                     │   │
-│  │  └────┘└────┘ │  │                     │   │
-│  └──────────────┘  └─────────────────────┘   │
-└──────────────────────────────────────────────┘
-```
+**Fichier : `src/components/course-player/CoursePlayer.tsx`**
+- Actuellement : `correctCount` et `totalQuestions` sont en mémoire (state) et se perdent quand on quitte
+- **Fix** : sauvegarder `correctCount` et `totalQuestions` dans localStorage en plus du `currentStep`
+- Clé : `course-progress-state-${courseId}` → `{ step, correctCount, totalQuestions }`
+- Au montage, restaurer les 3 valeurs
+- À la complétion, nettoyer cette clé
+- Cela permet de passer d'un cours à un autre et de retrouver sa progression exacte
 
 ### Fichiers modifiés
 
 | Fichier | Action |
 |---------|--------|
-| `src/components/courses/LearningPath.tsx` | Supprimer imports et code des avatars |
-| `src/components/characters/CharacterShowcase.tsx` | Nouveau - grille des 8 personnages |
-| `src/components/characters/Character3DAvatar.tsx` | Adapter pour mode large + spin hover |
-| `src/pages/Index.tsx` | Restructurer section parcours (2 colonnes) |
-| `src/index.css` | Ajouter keyframes `character-spin` |
+| `src/pages/Index.tsx` | Séparer showcase et path en 2 sections |
+| `src/data/course-content.ts` | Ajouter `characterId?` à tous les types |
+| `src/components/course-player/CoursePlayer.tsx` | Persister correctCount/totalQuestions |
+| `src/components/course-player/LessonStep.tsx` | Afficher CharacterBubble si characterId |
+| `src/components/course-player/QCMStep.tsx` | Idem |
+| `src/components/course-player/FillBlankStep.tsx` | Idem |
+| `src/components/course-player/DragDropStep.tsx` | Idem |
+| `src/components/course-player/FlashcardStep.tsx` | Idem |
+| `src/components/course-player/FinalQuizStep.tsx` | Idem |
+| `src/data/a1-module1-content.ts` | Ajouter characterId à tous les steps |
+| `src/data/a1-module2-content.ts` | Idem |
 
