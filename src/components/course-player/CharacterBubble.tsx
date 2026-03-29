@@ -10,9 +10,9 @@ interface Props {
 
 export function CharacterBubble({ character, evolution, size = 'md', showBio = false }: Props) {
   const sizeClasses = {
-    sm: 'h-8 w-8 text-xs',
-    md: 'h-12 w-12 text-sm',
-    lg: 'h-16 w-16 text-base',
+    sm: 'h-8 w-8',
+    md: 'h-12 w-12',
+    lg: 'h-16 w-16',
   };
 
   const initials = character.name
@@ -24,13 +24,28 @@ export function CharacterBubble({ character, evolution, size = 'md', showBio = f
     <div className="flex items-start gap-3">
       <div
         className={cn(
-          'rounded-full flex items-center justify-center font-bold shrink-0 ring-2 ring-background shadow-md',
+          'rounded-full shrink-0 ring-2 ring-background shadow-md overflow-hidden',
           character.color,
           sizeClasses[size],
         )}
         title={character.name}
       >
-        {initials}
+        <img
+          src={character.avatarPath}
+          alt={character.name}
+          className="h-full w-full object-cover"
+          loading="lazy"
+          onError={(e) => {
+            // Fallback to initials
+            const target = e.currentTarget;
+            target.style.display = 'none';
+            const parent = target.parentElement;
+            if (parent) {
+              parent.classList.add('flex', 'items-center', 'justify-center', 'font-bold', 'text-sm');
+              parent.textContent = initials;
+            }
+          }}
+        />
       </div>
       <div className="min-w-0">
         <div className="flex items-center gap-2">
