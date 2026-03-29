@@ -6,9 +6,10 @@ interface Props {
   evolution: CharacterEvolution;
   size?: 'sm' | 'md' | 'lg';
   showBio?: boolean;
+  message?: string;
 }
 
-export function CharacterBubble({ character, evolution, size = 'md', showBio = false }: Props) {
+export function CharacterBubble({ character, evolution, size = 'md', showBio = false, message }: Props) {
   const sizeClasses = {
     sm: 'h-8 w-8',
     md: 'h-12 w-12',
@@ -19,6 +20,8 @@ export function CharacterBubble({ character, evolution, size = 'md', showBio = f
     .split(' ')
     .map((w) => w[0])
     .join('');
+
+  const displayMessage = message || (showBio ? evolution.catchphrase : null);
 
   return (
     <div className="flex items-start gap-3">
@@ -36,7 +39,6 @@ export function CharacterBubble({ character, evolution, size = 'md', showBio = f
           className="h-full w-full object-cover"
           loading="lazy"
           onError={(e) => {
-            // Fallback to initials
             const target = e.currentTarget;
             target.style.display = 'none';
             const parent = target.parentElement;
@@ -47,15 +49,17 @@ export function CharacterBubble({ character, evolution, size = 'md', showBio = f
           }}
         />
       </div>
-      <div className="min-w-0">
+      <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
           <span className="font-semibold text-sm">{character.name}</span>
           <span className="text-xs text-muted-foreground">{character.role}</span>
         </div>
-        {showBio && (
-          <p className="text-xs text-muted-foreground mt-0.5 italic">
-            « {evolution.catchphrase} »
-          </p>
+        {displayMessage && (
+          <div className="relative mt-1.5 bg-accent/30 border border-accent/40 rounded-xl rounded-tl-sm px-3 py-2">
+            <p className="text-sm text-foreground leading-relaxed">
+              « {displayMessage} »
+            </p>
+          </div>
         )}
       </div>
     </div>
