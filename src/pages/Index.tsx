@@ -241,7 +241,7 @@ export default function Index() {
         <section>
           <div className="card-duo p-4 md:p-5 overflow-visible">
             <h3 className="font-display text-base mb-2">{t('sections.path')}</h3>
-            <LearningPath modules={pathModules} cecrLevel={cecrLevel} />
+            <LearningPath modules={pathModules} />
           </div>
         </section>
       </div>
