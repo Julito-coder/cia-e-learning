@@ -12,6 +12,8 @@ import Catalogue from "./pages/Catalogue";
 import Curriculum from "./pages/Curriculum";
 import Glossaire from "./pages/Glossaire";
 import Connexion from "./pages/Connexion";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import CourseDetail from "./pages/CourseDetail";
 import TestNiveau from "./pages/TestNiveau";
 import AdminDashboard from "./pages/admin/AdminDashboard";
