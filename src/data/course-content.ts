@@ -708,6 +708,11 @@ const allContent = [
   ...b1Module3Content,
   ...b1Module4Content,
   ...b1Module5Content,
+  ...b2Module1Content,
+  ...b2Module2Content,
+  ...b2Module3Content,
+  ...b2Module4Content,
+  ...b2Module5Content,
 ];
 
 export function getCourseContent(courseId: string): CourseContent | undefined {
