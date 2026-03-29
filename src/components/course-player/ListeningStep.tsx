@@ -5,6 +5,9 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Headphones, Play, CheckCircle2, XCircle, Volume2, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { ListeningStep as ListeningStepType } from '@/data/course-content';
+import { getCharacter, getCharacterEvolution } from '@/data/characters';
+import { CharacterBubble } from './CharacterBubble';
+import { useUserProgress } from '@/hooks/useUserProgress';
 
 interface Props {
   step: ListeningStepType;
