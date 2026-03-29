@@ -103,7 +103,8 @@ export default function Index() {
 
       <div className="container py-8 space-y-8">
         {/* Stats row */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Stats row — fills better on tablet */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {[
             { icon: <Zap className="h-5 w-5" />, value: 0, label: t('stats.coursesCompleted'), bg: 'bg-cia-success/15', color: 'text-cia-success' },
             { icon: <span className="text-lg">🔥</span>, value: 0, label: t('stats.streak'), bg: 'bg-cia-streak/15', color: 'text-cia-streak' },
@@ -139,7 +140,7 @@ export default function Index() {
                     {t('sections.seeAll')} <ArrowRight className="h-3 w-3" />
                   </Link>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                   {recentCourses.map((course) => (
                     <CourseCard key={course.id} course={course} userLevel={cecrLevel} />
                   ))}
@@ -160,7 +161,7 @@ export default function Index() {
                   {t('sections.seeAll')} <ArrowRight className="h-3 w-3" />
                 </Link>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 {newCourses.slice(0, 4).map((course, i) => (
                   <div key={course.id} className="animate-slide-up" style={{ animationDelay: `${i * 100}ms` }}>
                     <CourseCard course={course} userLevel={cecrLevel} />
@@ -170,8 +171,8 @@ export default function Index() {
             </section>
           </div>
 
-          {/* Right sidebar */}
-          <div className="space-y-6">
+          {/* Right sidebar — level + leaderboard + achievements */}
+          <div className="space-y-6 md:grid md:grid-cols-2 md:gap-4 md:space-y-0 lg:grid-cols-1 lg:space-y-6 lg:block">
             {/* Level progress */}
             <div className="card-duo p-5">
               <h3 className="font-display text-base mb-4">{t('sections.levels')}</h3>
@@ -225,20 +226,27 @@ export default function Index() {
 
             {/* Achievements */}
             <Achievements />
+          </div>
+        </div>
 
-            {/* Characters showcase — separate section */}
-            <div className="card-duo p-5">
-              <h3 className="font-display text-base mb-3">Nos personnages</h3>
-              <CharacterShowcase cecrLevel={cecrLevel} />
-            </div>
+        {/* Characters + Learning Path — full-width section */}
+        <section className="mt-4">
+          <div className="flex flex-col lg:flex-row gap-6">
+            {/* Characters — sticky on desktop, horizontal scroll on mobile */}
+            <aside className="lg:w-64 flex-shrink-0">
+              <div className="card-duo p-5 lg:sticky lg:top-20 lg:self-start">
+                <h3 className="font-display text-base mb-3">Nos personnages</h3>
+                <CharacterShowcase cecrLevel={cecrLevel} />
+              </div>
+            </aside>
 
-            {/* Learning path — separate section */}
-            <div className="card-duo p-5">
+            {/* Learning path — takes remaining space */}
+            <div className="flex-1 card-duo p-5">
               <h3 className="font-display text-base mb-2">{t('sections.path')}</h3>
               <LearningPath modules={pathModules} cecrLevel={cecrLevel} />
             </div>
           </div>
-        </div>
+        </section>
       </div>
     </div>
   );
