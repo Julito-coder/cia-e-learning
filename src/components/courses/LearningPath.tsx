@@ -51,23 +51,21 @@ function ModulePopup({ mod, state, progress, onClose, index }: {
 
   return (
     <>
-      {/* Backdrop */}
-      <div className="fixed inset-0 z-40 bg-black/20 md:bg-transparent" onClick={onClose} />
+      {/* Backdrop — always fixed full-screen */}
+      <div className="fixed inset-0 z-40 bg-black/20" onClick={onClose} />
 
-      {/* Mobile: bottom sheet / Desktop: side card */}
-      <div className="fixed inset-x-0 bottom-0 z-50 md:hidden animate-slide-up">
+      {/* Mobile/Tablet: bottom sheet */}
+      <div className="fixed inset-x-0 bottom-0 z-50 lg:hidden animate-slide-up">
         <div className="bg-card border-t-2 border-border rounded-t-3xl p-5 pb-8 shadow-2xl max-h-[70vh] overflow-y-auto">
           <PopupContent mod={mod} state={state} progress={progress} saved={saved} onClose={onClose} />
         </div>
       </div>
 
-      {/* Desktop: positioned card next to the node */}
-      <div className={`hidden md:block absolute top-1/2 -translate-y-1/2 z-50 w-72 animate-fade-in ${
-        index % 2 === 0 ? 'right-full mr-6' : 'left-full ml-6'
-      }`}>
-        <div className="card-duo p-4 relative">
-          <button onClick={onClose} className="absolute top-2 right-2 h-6 w-6 rounded-full bg-muted flex items-center justify-center hover:bg-muted/80">
-            <X className="h-3 w-3" />
+      {/* Desktop: fixed centered dialog */}
+      <div className="hidden lg:flex fixed inset-0 z-50 items-center justify-center p-6 pointer-events-none">
+        <div className="card-duo p-5 w-full max-w-sm max-h-[70vh] overflow-y-auto pointer-events-auto animate-scale-in relative">
+          <button onClick={onClose} className="absolute top-3 right-3 h-7 w-7 rounded-full bg-muted flex items-center justify-center hover:bg-muted/80">
+            <X className="h-3.5 w-3.5" />
           </button>
           <PopupContent mod={mod} state={state} progress={progress} saved={saved} onClose={onClose} />
         </div>
@@ -136,18 +134,18 @@ export function LearningPath({ modules, locked = false, cecrLevel = 'A1' }: Lear
   const [expandedModule, setExpandedModule] = useState<string | null>(null);
 
   return (
-    <div className="relative flex flex-col items-center py-2">
+    <div className="relative flex flex-col items-center py-2 pb-16">
       {modules.map((mod, i) => {
         const state = getModuleState(mod, locked);
         const progress = getModuleProgress(mod);
-        const offset = i % 2 === 0 ? 'md:-translate-x-16' : 'md:translate-x-16';
+        const offset = i % 2 === 0 ? 'md:-translate-x-12 lg:-translate-x-16' : 'md:translate-x-12 lg:translate-x-16';
         const isExpanded = expandedModule === mod.id;
 
         return (
           <div key={mod.id} className="relative flex flex-col items-center">
             {/* SVG connector */}
             {i > 0 && (
-              <svg className="w-40 h-10 -mt-1 mb-0" viewBox="0 0 160 40" fill="none">
+              <svg className="w-32 md:w-40 h-8 md:h-10 -mt-1 mb-0" viewBox="0 0 160 40" fill="none">
                 <path
                   d={i % 2 === 0
                     ? 'M 120 0 C 120 20, 40 20, 40 40'
@@ -161,14 +159,14 @@ export function LearningPath({ modules, locked = false, cecrLevel = 'A1' }: Lear
               </svg>
             )}
 
-            {/* Node + label + avatar */}
+            {/* Node + label */}
             <div className={`${offset} relative transition-transform duration-300`}>
               <button
                 onClick={() => state !== 'locked' && setExpandedModule(isExpanded ? null : mod.id)}
-                className={`relative w-20 h-20 rounded-full border-4 flex items-center justify-center transition-all duration-300 ${stateStyles[state]}`}
+                className={`relative w-16 h-16 md:w-20 md:h-20 rounded-full border-4 flex items-center justify-center transition-all duration-300 ${stateStyles[state]}`}
               >
                 {state === 'active' && progress > 0 && (
-                  <svg className="absolute inset-0 w-20 h-20 -rotate-90" viewBox="0 0 80 80">
+                  <svg className="absolute inset-0 w-16 h-16 md:w-20 md:h-20 -rotate-90" viewBox="0 0 80 80">
                     <circle cx="40" cy="40" r="36" fill="none" stroke="hsl(var(--accent) / 0.2)" strokeWidth="4" />
                     <circle
                       cx="40" cy="40" r="36" fill="none"
@@ -180,18 +178,18 @@ export function LearningPath({ modules, locked = false, cecrLevel = 'A1' }: Lear
                     />
                   </svg>
                 )}
-                <span className="text-2xl relative z-10">
-                  {state === 'complete' ? <Check className="h-7 w-7" strokeWidth={3} /> :
-                   state === 'active' ? <Play className="h-6 w-6 ml-0.5" fill="currentColor" /> :
-                   state === 'locked' ? <Lock className="h-6 w-6" /> :
+                <span className="text-xl md:text-2xl relative z-10">
+                  {state === 'complete' ? <Check className="h-5 w-5 md:h-7 md:w-7" strokeWidth={3} /> :
+                   state === 'active' ? <Play className="h-5 w-5 md:h-6 md:w-6 ml-0.5" fill="currentColor" /> :
+                   state === 'locked' ? <Lock className="h-5 w-5 md:h-6 md:w-6" /> :
                    mod.badgeEmoji}
                 </span>
               </button>
 
               {/* Label */}
-              <div className="mt-2 text-center w-28 mx-auto">
-                <Badge variant="outline" className="text-[10px] font-bold mb-0.5">{mod.id}</Badge>
-                <p className="text-xs font-bold leading-tight line-clamp-2">{mod.title}</p>
+              <div className="mt-1.5 md:mt-2 text-center w-24 md:w-28 mx-auto">
+                <Badge variant="outline" className="text-[9px] md:text-[10px] font-bold mb-0.5">{mod.id}</Badge>
+                <p className="text-[11px] md:text-xs font-bold leading-tight line-clamp-2">{mod.title}</p>
                 {state === 'active' && progress > 0 && (
                   <p className="text-[10px] text-accent font-bold mt-0.5">{progress}%</p>
                 )}
@@ -211,7 +209,6 @@ export function LearningPath({ modules, locked = false, cecrLevel = 'A1' }: Lear
           </div>
         );
       })}
-
     </div>
   );
 }
