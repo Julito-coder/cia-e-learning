@@ -91,11 +91,13 @@ export const allCourseContent: CourseContent[] = [
     steps: [
       {
         id: '1-1', type: 'lesson', title: 'Les articles en français', characterId: 'marie',
+        characterMessage: "Bonjour à tous ! Prêts pour une nouvelle leçon ?",
         content: `En français, chaque nom est accompagné d'un **article**. Il existe deux types principaux :\n\n🔵 **Articles définis** — on connaît la chose :\n- **le** (masculin singulier) → le livre\n- **la** (féminin singulier) → la table\n- **les** (pluriel) → les enfants\n- **l'** (devant voyelle) → l'école\n\n🟢 **Articles indéfinis** — on ne précise pas :\n- **un** (masculin singulier) → un chat\n- **une** (féminin singulier) → une fleur\n- **des** (pluriel) → des amis`,
         tip: `💡 Astuce : "le/la" = je sais de quoi je parle. "un/une" = n'importe lequel.`
       },
       {
         id: '1-2', type: 'qcm', title: 'Article défini ou indéfini ?', characterId: 'lucas',
+        characterMessage: "Cette question m'a piégé la première fois. Fais attention !",
         question: 'Complétez : « J\'aime ___ chocolat. »',
         options: ['un', 'le', 'des', 'la'],
         correctIndex: 1,
@@ -109,6 +111,7 @@ export const allCourseContent: CourseContent[] = [
       },
       {
         id: '1-4', type: 'qcm', title: 'Le bon article', characterId: 'omar',
+        characterMessage: "Au marché d'Antibes, on entend ce genre de questions tous les jours !",
         question: 'Quel article pour « ___ école » ?',
         options: ['le', 'la', 'l\'', 'un'],
         correctIndex: 2,
@@ -116,18 +119,21 @@ export const allCourseContent: CourseContent[] = [
       },
       {
         id: '1-5', type: 'fill-blank', title: 'Articles au pluriel', characterId: 'fatou',
+        characterMessage: "Au Sénégal, on apprend le français à l'école. C'est un exercice classique !",
         sentence: '___ enfants jouent dans le parc.',
         options: ['des', 'les', 'un', 'la'],
         correctAnswer: 'les'
       },
       {
         id: '1-6', type: 'drag-drop', title: 'Classez les articles', characterId: 'hans',
+        characterMessage: "Sujet, verbe, complément — c'est la structure de base en français.",
         instruction: 'Remettez ces mots dans l\'ordre pour former une phrase correcte :',
         items: ['mange', 'une', 'Marie', 'pomme'],
         correctOrder: ['Marie', 'mange', 'une', 'pomme']
       },
       {
         id: '1-7', type: 'listening', title: 'Compréhension orale', characterId: 'elena',
+        characterMessage: "Écoute attentivement ! En espagnol, ça sonnerait différemment.",
         text: 'Je vais à la boulangerie pour acheter un croissant et des pains au chocolat.',
         question: 'Que va acheter cette personne ?',
         options: ['Un croissant et des pains au chocolat', 'Le pain et la baguette', 'Une tarte et un gâteau', 'Des fruits et des légumes'],
@@ -135,6 +141,7 @@ export const allCourseContent: CourseContent[] = [
       },
       {
         id: '1-8', type: 'final-quiz', title: 'Quiz final — Les articles', characterId: 'marie',
+        characterMessage: "C'est l'heure du quiz ! Concentrez-vous, vous connaissez tout ça.",
         questions: [
           { question: '« ___ soleil brille. »', options: ['Un', 'Le', 'Des', 'La'], correctIndex: 1 },
           { question: '« Elle a ___ sœur. »', options: ['la', 'le', 'une', 'des'], correctIndex: 2 },
@@ -152,11 +159,13 @@ export const allCourseContent: CourseContent[] = [
     steps: [
       {
         id: '2-1', type: 'lesson', title: 'Se présenter en français', characterId: 'marie',
+        characterMessage: "Installez-vous confortablement, on commence !",
         content: `Pour se présenter, on utilise des phrases simples :\n\n👤 **Identité :**\n- Je m'appelle… / Mon nom est…\n- J'ai … ans\n- Je suis (nationalité)\n\n📍 **Lieu :**\n- J'habite à… / Je viens de…\n\n💼 **Profession :**\n- Je suis étudiant(e) / professeur / médecin…\n\n❤️ **Goûts :**\n- J'aime… / Je n'aime pas…\n- Mon hobby est…`,
         tip: '💡 En français, on dit "Je m\'appelle" (= I call myself), pas "Mon nom est" dans la conversation courante.'
       },
       {
         id: '2-2', type: 'flashcard', title: 'Vocabulaire clé', characterId: 'thomas',
+        characterMessage: "Ces mots font partie du patrimoine culturel français !",
         cards: [
           { front: 'Comment vous appelez-vous ?', back: 'What is your name? (formal)' },
           { front: 'J\'ai vingt ans', back: 'I am twenty years old' },
@@ -175,6 +184,7 @@ export const allCourseContent: CourseContent[] = [
       },
       {
         id: '2-4', type: 'qcm', title: 'Formule de présentation', characterId: 'elena',
+        characterMessage: "En espagnol, c'est un peu pareil, mais attention aux faux amis !",
         question: 'Comment dit-on "I am 30 years old" en français ?',
         options: ['Je suis 30 ans', 'J\'ai 30 ans', 'Je fais 30 ans', 'Mon âge est 30'],
         correctIndex: 1,
@@ -188,12 +198,14 @@ export const allCourseContent: CourseContent[] = [
       },
       {
         id: '2-6', type: 'drag-drop', title: 'Construisez la présentation', characterId: 'yuki',
+        characterMessage: "Remets les mots dans l'ordre ! C'est comme un puzzle linguistique.",
         instruction: 'Remettez dans l\'ordre pour former une présentation :',
         items: ['ans', 'J\'ai', 'et', 'vingt', 'je', 'suis', 'espagnol'],
         correctOrder: ['J\'ai', 'vingt', 'ans', 'et', 'je', 'suis', 'espagnol']
       },
       {
         id: '2-7', type: 'final-quiz', title: 'Quiz final — Se présenter', characterId: 'marie',
+        characterMessage: "Dernière étape ! Montrez-moi ce que vous avez appris.",
         questions: [
           { question: '« ___ vous appelez-vous ? »', options: ['Que', 'Comment', 'Où', 'Quand'], correctIndex: 1 },
           { question: '« J\'___ à Antibes. »', options: ['suis', 'ai', 'habite', 'appelle'], correctIndex: 2 },
@@ -211,11 +223,13 @@ export const allCourseContent: CourseContent[] = [
     steps: [
       {
         id: '3-1', type: 'lesson', title: 'Antibes et la Côte d\'Azur', characterId: 'thomas',
+        characterMessage: "Bienvenue ! Je vais vous faire découvrir la culture française.",
         content: `🏖️ **Antibes** est une ville du sud-est de la France, sur la **Côte d'Azur**.\n\n📍 **Géographie :**\n- Située entre Nice et Cannes\n- Au bord de la mer Méditerranée\n- Climat ensoleillé toute l'année\n\n🏛️ **Histoire :**\n- Fondée par les Grecs (Antipolis)\n- Remparts construits par Vauban\n- Le musée Picasso dans le château Grimaldi\n\n🎉 **Culture :**\n- Festival de jazz d'Antibes Juan-les-Pins\n- Le marché provençal (fruits, olives, lavande)\n- Le Cap d'Antibes et ses villas célèbres`,
         tip: '💡 "Antipolis" signifie "la ville d\'en face" en grec ancien — car Antibes est en face de Nice.'
       },
       {
         id: '3-2', type: 'qcm', title: 'Géographie', characterId: 'elena',
+        characterMessage: "Cette question est classique. Réfléchis bien avant de répondre.",
         question: 'Entre quelles deux villes se trouve Antibes ?',
         options: ['Paris et Lyon', 'Marseille et Toulon', 'Nice et Cannes', 'Bordeaux et Toulouse'],
         correctIndex: 2,
@@ -223,6 +237,7 @@ export const allCourseContent: CourseContent[] = [
       },
       {
         id: '3-3', type: 'qcm', title: 'Culture', characterId: 'hans',
+        characterMessage: "La rigueur allemande m'aide en grammaire française. Sois précis !",
         question: 'Quel artiste a un musée à Antibes ?',
         options: ['Monet', 'Picasso', 'Van Gogh', 'Matisse'],
         correctIndex: 1,
@@ -230,6 +245,7 @@ export const allCourseContent: CourseContent[] = [
       },
       {
         id: '3-4', type: 'flashcard', title: 'Vocabulaire provençal', characterId: 'thomas',
+        characterMessage: "À Antibes, tu entendras ces mots partout. Mémorise-les !",
         cards: [
           { front: 'La Côte d\'Azur', back: 'The French Riviera' },
           { front: 'La Méditerranée', back: 'The Mediterranean Sea' },
@@ -274,7 +290,8 @@ export const allCourseContent: CourseContent[] = [
         tip: '💡 Moyen mnémotechnique : "DR MRS VANDERTRAMP" pour les verbes conjugués avec être.'
       },
       {
-        id: '4-2', type: 'qcm', title: 'Avoir ou être ?',
+        id: '4-2', type: 'qcm', title: 'Avoir ou être ?', characterId: 'marie',
+        characterMessage: "Aujourd'hui, je vais vous expliquer quelque chose de très utile.",
         question: 'Quel auxiliaire pour « Elle ___ allée au cinéma » ?',
         options: ['a', 'est', 'va', 'fait'],
         correctIndex: 1,
@@ -287,7 +304,8 @@ export const allCourseContent: CourseContent[] = [
         correctAnswer: 'avons'
       },
       {
-        id: '4-4', type: 'fill-blank', title: 'Accord du participe',
+        id: '4-4', type: 'fill-blank', title: 'Accord du participe', characterId: 'fatou',
+        characterMessage: "Lis toute la phrase avant de choisir. Le contexte est la clé !",
         sentence: 'Marie et Sophie sont ___ au marché.',
         options: ['allé', 'allés', 'allée', 'allées'],
         correctAnswer: 'allées'
@@ -299,7 +317,8 @@ export const allCourseContent: CourseContent[] = [
         correctOrder: ['Il', 'est', 'parti', 'hier', 'matin']
       },
       {
-        id: '4-6', type: 'qcm', title: 'Participe passé',
+        id: '4-6', type: 'qcm', title: 'Participe passé', characterId: 'hans',
+        characterMessage: "Prends le temps de lire tous les mots avant de les placer.",
         question: 'Quel est le participe passé de « prendre » ?',
         options: ['prendu', 'prenu', 'pris', 'prené'],
         correctIndex: 2,
@@ -307,6 +326,7 @@ export const allCourseContent: CourseContent[] = [
       },
       {
         id: '4-7', type: 'listening', title: 'Compréhension orale', characterId: 'lucas',
+        characterMessage: "Écoute bien, je vais te lire quelque chose. C'est parti !",
         text: 'Ce matin, je me suis levé à sept heures. J\'ai pris mon petit déjeuner et je suis allé au travail.',
         question: 'À quelle heure s\'est-il levé ?',
         options: ['À six heures', 'À sept heures', 'À huit heures', 'À neuf heures'],
@@ -336,6 +356,7 @@ export const allCourseContent: CourseContent[] = [
       },
       {
         id: '5-2', type: 'listening', title: 'Au café', characterId: 'omar',
+        characterMessage: "Dans ma cuisine, j'écoute toujours la radio française. Ça aide !",
         text: 'Bonjour ! Je voudrais un café et un croissant, s\'il vous plaît. C\'est combien ? Trois euros cinquante. Voilà, merci !',
         question: 'Combien coûte la commande ?',
         options: ['2,50 €', '3,50 €', '4,00 €', '5,00 €'],
@@ -343,6 +364,7 @@ export const allCourseContent: CourseContent[] = [
       },
       {
         id: '5-3', type: 'listening', title: 'À la gare', characterId: 'fatou',
+        characterMessage: "Au Sénégal, le français est partout. Écoute bien !",
         text: 'Excusez-moi, à quelle heure part le train pour Nice ? Le prochain train part à quatorze heures trente, quai numéro trois.',
         question: 'À quelle heure part le train ?',
         options: ['13h00', '14h30', '15h00', '16h30'],
@@ -356,7 +378,8 @@ export const allCourseContent: CourseContent[] = [
         explanation: '« Je voudrais » est la forme polie pour exprimer un souhait = "I would like".'
       },
       {
-        id: '5-5', type: 'fill-blank', title: 'Dialogue au téléphone',
+        id: '5-5', type: 'fill-blank', title: 'Dialogue au téléphone', characterId: 'lucas',
+        characterMessage: "Réfléchis bien, la réponse est plus simple qu'on ne le pense.",
         sentence: 'Allô ? Bonjour, je ___ parler à Monsieur Dupont, s\'il vous plaît.',
         options: ['veux', 'voudrais', 'peux', 'dois'],
         correctAnswer: 'voudrais'
@@ -391,7 +414,8 @@ export const allCourseContent: CourseContent[] = [
         tip: '💡 CDI = Contrat à Durée Indéterminée (permanent). CDD = Contrat à Durée Déterminée (temporary).'
       },
       {
-        id: '6-2', type: 'flashcard', title: 'Vocabulaire du travail',
+        id: '6-2', type: 'flashcard', title: 'Vocabulaire du travail', characterId: 'marie',
+        characterMessage: "Bienvenue dans ma classe ! Aujourd'hui, on découvre ensemble un nouveau sujet.",
         cards: [
           { front: 'Un entretien d\'embauche', back: 'A job interview' },
           { front: 'Postuler', back: 'To apply (for a job)' },
@@ -411,7 +435,8 @@ export const allCourseContent: CourseContent[] = [
         explanation: '« Postuler » signifie envoyer sa candidature (CV + lettre de motivation) pour un poste.'
       },
       {
-        id: '6-4', type: 'fill-blank', title: 'Lettre de motivation',
+        id: '6-4', type: 'fill-blank', title: 'Lettre de motivation', characterId: 'lucas',
+        characterMessage: "J'ai fait cette erreur au début — ne tombe pas dans le piège !",
         sentence: 'Madame, Monsieur, je vous écris pour ___ au poste de commercial.',
         options: ['démissionner', 'postuler', 'travailler', 'partir'],
         correctAnswer: 'postuler'
@@ -430,7 +455,8 @@ export const allCourseContent: CourseContent[] = [
         correctOrder: ['Lire l\'offre d\'emploi', 'Envoyer le CV', 'Passer l\'entretien', 'Signer le contrat']
       },
       {
-        id: '6-7', type: 'final-quiz', title: 'Quiz final — Le monde du travail',
+        id: '6-7', type: 'final-quiz', title: 'Quiz final — Le monde du travail', characterId: 'hans',
+        characterMessage: "La logique française est différente de l'allemande. C'est un bon entraînement !",
         questions: [
           { question: 'Un « CDI » est un contrat…', options: ['Temporaire', 'Permanent', 'De stage', 'Saisonnier'], correctIndex: 1 },
           { question: '« Les congés payés » sont…', options: ['Des jours de travail', 'Des vacances rémunérées', 'Des heures supplémentaires', 'Des formations'], correctIndex: 1 },
@@ -452,7 +478,8 @@ export const allCourseContent: CourseContent[] = [
         tip: '💡 « Je pense que » est suivi de l\'indicatif. « Je ne pense pas que » est suivi du subjonctif !'
       },
       {
-        id: '7-2', type: 'qcm', title: 'Exprimer un avis',
+        id: '7-2', type: 'qcm', title: 'Exprimer un avis', characterId: 'marie',
+        characterMessage: "Bonjour à tous ! Prêts pour une nouvelle leçon ?",
         question: 'Quelle expression signifie "In my opinion" ?',
         options: ['En effet', 'À mon avis', 'Par conséquent', 'En revanche'],
         correctIndex: 1,
@@ -465,7 +492,8 @@ export const allCourseContent: CourseContent[] = [
         correctAnswer: 'parce que'
       },
       {
-        id: '7-4', type: 'listening', title: 'Débat',
+        id: '7-4', type: 'listening', title: 'Débat', characterId: 'fatou',
+        characterMessage: "Ne te précipite pas, réfléchis au sens de la phrase complète.",
         text: 'À mon avis, apprendre une langue étrangère est très important. D\'un côté, cela ouvre des opportunités professionnelles. De l\'autre, cela permet de comprendre d\'autres cultures.',
         question: 'Selon le locuteur, apprendre une langue est…',
         options: ['Inutile', 'Très important', 'Facile', 'Ennuyeux'],
@@ -478,7 +506,8 @@ export const allCourseContent: CourseContent[] = [
         correctOrder: ['Le français', 'est utile', 'c\'est pourquoi', 'j\'étudie', 'le français']
       },
       {
-        id: '7-6', type: 'qcm', title: 'Opposition',
+        id: '7-6', type: 'qcm', title: 'Opposition', characterId: 'hans',
+        characterMessage: "Cet exercice est excellent pour comprendre la syntaxe française.",
         question: 'Quel connecteur exprime l\'opposition ?',
         options: ['Parce que', 'Donc', 'Cependant', 'De plus'],
         correctIndex: 2,
@@ -507,7 +536,8 @@ export const allCourseContent: CourseContent[] = [
         tip: '💡 Les titres de presse française utilisent souvent des jeux de mots et des références culturelles.'
       },
       {
-        id: '8-2', type: 'qcm', title: 'Presse française',
+        id: '8-2', type: 'qcm', title: 'Presse française', characterId: 'marie',
+        characterMessage: "Installez-vous confortablement, on commence !",
         question: 'Quel journal est spécialisé en économie ?',
         options: ['Le Monde', 'Libération', 'Les Échos', 'Le Figaro'],
         correctIndex: 2,
@@ -518,7 +548,8 @@ export const allCourseContent: CourseContent[] = [
         content: `**Article :** « La transition écologique en France »\n\n*Le gouvernement français a annoncé un plan ambitieux de 50 milliards d'euros pour accélérer la transition écologique. Ce programme vise à réduire les émissions de gaz à effet de serre de 40% d'ici 2030. Parmi les mesures phares : le développement des énergies renouvelables, la rénovation thermique des bâtiments et le soutien aux transports en commun.\n\nLes associations environnementales saluent cette initiative tout en soulignant que les efforts restent insuffisants. « C'est un pas dans la bonne direction, mais il faut aller plus loin », déclare Marie Durand, présidente de France Nature.*`,
       },
       {
-        id: '8-4', type: 'qcm', title: 'Compréhension de l\'article',
+        id: '8-4', type: 'qcm', title: 'Compréhension de l\'article', characterId: 'marie',
+        characterMessage: "Aujourd'hui, je vais vous expliquer quelque chose de très utile.",
         question: 'Quel est le montant du plan annoncé ?',
         options: ['30 milliards', '40 milliards', '50 milliards', '60 milliards'],
         correctIndex: 2,
@@ -531,7 +562,8 @@ export const allCourseContent: CourseContent[] = [
         correctAnswer: 'saluent'
       },
       {
-        id: '8-6', type: 'flashcard', title: 'Vocabulaire journalistique',
+        id: '8-6', type: 'flashcard', title: 'Vocabulaire journalistique', characterId: 'fatou',
+        characterMessage: "Cet exercice entraîne ta grammaire et ton vocabulaire en même temps.",
         cards: [
           { front: 'Un éditorial', back: 'An editorial — opinion piece by the newspaper' },
           { front: 'Le chapeau', back: 'The lead paragraph — summary at top of article' },
@@ -547,7 +579,8 @@ export const allCourseContent: CourseContent[] = [
         correctAnswer: 'réduire'
       },
       {
-        id: '8-8', type: 'final-quiz', title: 'Quiz final — Presse française',
+        id: '8-8', type: 'final-quiz', title: 'Quiz final — Presse française', characterId: 'fatou',
+        characterMessage: "Complète la phrase ! C'est comme un puzzle — trouve la pièce manquante.",
         questions: [
           { question: 'Le « chapeau » d\'un article est…', options: ['Le titre', 'Le résumé introductif', 'La conclusion', 'Une photo'], correctIndex: 1 },
           { question: '« Le Monde » est un journal…', options: ['Économique', 'Sportif', 'Généraliste de référence', 'Régional'], correctIndex: 2 },
@@ -569,7 +602,8 @@ export const allCourseContent: CourseContent[] = [
         tip: '💡 Indicatif = certitude/réalité. Subjonctif = souhait/doute/émotion/obligation.'
       },
       {
-        id: '9-2', type: 'qcm', title: 'Indicatif ou subjonctif ?',
+        id: '9-2', type: 'qcm', title: 'Indicatif ou subjonctif ?', characterId: 'marie',
+        characterMessage: "C'est un sujet passionnant, vous allez voir !",
         question: '« Il faut que tu ___ tes devoirs. »',
         options: ['fais', 'fasses', 'fait', 'faire'],
         correctIndex: 1,
@@ -582,7 +616,8 @@ export const allCourseContent: CourseContent[] = [
         correctAnswer: 'soyez'
       },
       {
-        id: '9-4', type: 'drag-drop', title: 'Indicatif vs Subjonctif',
+        id: '9-4', type: 'drag-drop', title: 'Indicatif vs Subjonctif', characterId: 'fatou',
+        characterMessage: "Au Sénégal, on apprend le français à l'école. C'est un exercice classique !",
         instruction: 'Classez : quelles expressions déclenchent le subjonctif ?',
         items: ['Il faut que', 'Je sais que', 'Je doute que', 'Je pense que'],
         correctOrder: ['Il faut que', 'Je doute que', 'Je sais que', 'Je pense que']
@@ -595,7 +630,8 @@ export const allCourseContent: CourseContent[] = [
         explanation: '« Aller » au subjonctif : que j\'aille (irrégulier).'
       },
       {
-        id: '9-6', type: 'fill-blank', title: 'Conjonctions + subjonctif',
+        id: '9-6', type: 'fill-blank', title: 'Conjonctions + subjonctif', characterId: 'lucas',
+        characterMessage: "Quand je suis arrivé à Antibes, j'ai dû apprendre ça aussi !",
         sentence: 'Je t\'explique ___ tu comprennes bien.',
         options: ['parce que', 'pour que', 'car', 'puisque'],
         correctAnswer: 'pour que'
@@ -608,7 +644,8 @@ export const allCourseContent: CourseContent[] = [
         correctIndex: 1
       },
       {
-        id: '9-8', type: 'final-quiz', title: 'Quiz final — Le subjonctif',
+        id: '9-8', type: 'final-quiz', title: 'Quiz final — Le subjonctif', characterId: 'omar',
+        characterMessage: "Concentre-toi sur les mots que tu connais déjà.",
         questions: [
           { question: '« Bien que ce ___ difficile… »', options: ['est', 'soit', 'sera', 'serait'], correctIndex: 1 },
           { question: '« J\'aimerais que tu ___ venir. »', options: ['peux', 'puisses', 'pourras', 'pourrais'], correctIndex: 1 },
@@ -630,7 +667,8 @@ export const allCourseContent: CourseContent[] = [
         tip: '💡 Annie Ernaux, Prix Nobel 2022, est connue pour son « écriture plate » — un style volontairement simple et direct.'
       },
       {
-        id: '10-2', type: 'qcm', title: 'L\'existentialisme',
+        id: '10-2', type: 'qcm', title: 'L\'existentialisme', characterId: 'marie',
+        characterMessage: "Bienvenue dans ma classe ! Aujourd'hui, on découvre ensemble un nouveau sujet.",
         question: 'Quel auteur est associé à l\'existentialisme ?',
         options: ['Victor Hugo', 'Albert Camus', 'Gustave Flaubert', 'Marcel Proust'],
         correctIndex: 1,
@@ -654,7 +692,8 @@ export const allCourseContent: CourseContent[] = [
         explanation: 'Annie Ernaux a reçu le Prix Nobel de littérature en 2022 pour son œuvre autobiographique.'
       },
       {
-        id: '10-5', type: 'drag-drop', title: 'Chronologie littéraire',
+        id: '10-5', type: 'drag-drop', title: 'Chronologie littéraire', characterId: 'lucas',
+        characterMessage: "Moi aussi au début, je trouvais ça compliqué ! Mais on s'y habitue.",
         instruction: 'Classez ces mouvements dans l\'ordre chronologique :',
         items: ['Autofiction', 'Existentialisme', 'Nouveau Roman'],
         correctOrder: ['Existentialisme', 'Nouveau Roman', 'Autofiction']
@@ -666,7 +705,8 @@ export const allCourseContent: CourseContent[] = [
         correctAnswer: 'traditionnel'
       },
       {
-        id: '10-7', type: 'listening', title: 'Extrait',
+        id: '10-7', type: 'listening', title: 'Extrait', characterId: 'fatou',
+        characterMessage: "Lis toute la phrase avant de choisir. Le contexte est la clé !",
         text: 'Aujourd\'hui, maman est morte. Ou peut-être hier, je ne sais pas. C\'est le début du roman L\'Étranger d\'Albert Camus, publié en mille neuf cent quarante-deux.',
         question: 'De quel roman est tiré cet extrait ?',
         options: ['La Peste', 'L\'Étranger', 'Les Mots', 'La Nausée'],

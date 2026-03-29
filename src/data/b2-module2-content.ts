@@ -8,6 +8,7 @@ export const b2Module2Content: CourseContent[] = [
     steps: [
       {
         id: 'L161-1', type: 'lesson', title: 'La lettre de motivation avancée', characterId: 'marie',
+        characterMessage: "À ce niveau, vous maîtrisez déjà beaucoup. Allons plus loin ensemble.",
         content: `Au niveau B2, la lettre de motivation doit être **convaincante et personnalisée**.\n\n📐 **Structure :**\n\n1️⃣ **En-tête** — Vos coordonnées, celles de l'entreprise, date, objet\n2️⃣ **Paragraphe 1 — Vous** : Qui êtes-vous ? Formation, expérience clé.\n3️⃣ **Paragraphe 2 — L'entreprise** : Pourquoi cette entreprise ? Montrez que vous la connaissez.\n4️⃣ **Paragraphe 3 — Le projet commun** : Ce que vous apporterez.\n5️⃣ **Conclusion** : Demande d'entretien, formule de politesse.\n\n📝 **Formules clés :**\n- « Votre entreprise, reconnue pour… »\n- « Fort(e) de mon expérience en… »\n- « Je serais ravi(e) de mettre mes compétences au service de… »\n- « Dans l'attente de votre réponse, je vous prie d'agréer… »`,
         tip: '💡 Personnalisez TOUJOURS votre lettre. Les lettres génériques sont immédiatement repérées !'
       },
@@ -20,6 +21,7 @@ export const b2Module2Content: CourseContent[] = [
       },
       {
         id: 'L161-3', type: 'qcm', title: 'Formule de politesse', characterId: 'elena',
+        characterMessage: "Question subtile ! Même moi, j'ai dû réfléchir longtemps.",
         question: 'Quelle est la formule de politesse correcte ?',
         options: ['Salut, à bientôt !', 'Cordialement et à plus', 'Je vous prie d\'agréer l\'expression de mes salutations distinguées.', 'Merci beaucoup, au revoir.'],
         correctIndex: 2,
@@ -27,6 +29,7 @@ export const b2Module2Content: CourseContent[] = [
       },
       {
         id: 'L161-4', type: 'flashcard', title: 'Vocabulaire professionnel', characterId: 'thomas',
+        characterMessage: "Ce vocabulaire te rapproche du niveau d'un francophone cultivé.",
         cards: [
           { front: 'Fort(e) de mon expérience…', back: 'Building on my experience…' },
           { front: 'Mettre mes compétences au service de…', back: 'To put my skills at the service of…' },
@@ -38,18 +41,21 @@ export const b2Module2Content: CourseContent[] = [
       },
       {
         id: 'L161-5', type: 'fill-blank', title: 'Complétez la lettre', characterId: 'fatou',
+        characterMessage: "À ce niveau, les choix sont tous plausibles. La nuance fait la différence.",
         sentence: '___ de mon expérience en marketing digital, je souhaite rejoindre votre équipe.',
         options: ['Fort', 'Grâce', 'Malgré', 'Selon'],
         correctAnswer: 'Fort'
       },
       {
         id: 'L161-6', type: 'drag-drop', title: 'Ordre de la lettre', characterId: 'yuki',
+        characterMessage: "Ces phrases complexes reflètent le français écrit authentique.",
         instruction: 'Remettez les paragraphes dans l\'ordre :',
         items: ['Formule de politesse', 'Présentation de soi', 'Pourquoi cette entreprise', 'Ce que j\'apporterai'],
         correctOrder: ['Présentation de soi', 'Pourquoi cette entreprise', 'Ce que j\'apporterai', 'Formule de politesse']
       },
       {
         id: 'L161-7', type: 'qcm', title: 'Erreur à éviter', characterId: 'lucas',
+        characterMessage: "À ce niveau, les pièges sont plus subtils. Reste vigilant !",
         question: 'Qu\'est-ce qu\'un recruteur n\'aime PAS dans une lettre ?',
         options: ['La personnalisation', 'Les fautes d\'orthographe', 'La concision', 'Les exemples concrets'],
         correctIndex: 1,
@@ -57,6 +63,7 @@ export const b2Module2Content: CourseContent[] = [
       },
       {
         id: 'L161-8', type: 'final-quiz', title: 'Quiz final — La lettre de motivation', characterId: 'marie',
+        characterMessage: "Ce quiz exige précision et nuance. Vous en êtes capables !",
         questions: [
           { question: 'Longueur idéale d\'une lettre de motivation :', options: ['3 pages', '1 page', 'Un SMS', '5 pages'], correctIndex: 1 },
           { question: '« ___ de votre réponse, je vous prie d\'agréer… »', options: ['Dans l\'attente', 'En espérant', 'Grâce à', 'Malgré'], correctIndex: 0 },
@@ -74,6 +81,7 @@ export const b2Module2Content: CourseContent[] = [
     steps: [
       {
         id: 'L162-1', type: 'lesson', title: 'L\'entretien d\'embauche avancé', characterId: 'marie',
+        characterMessage: "Cette leçon exige de la nuance — c'est ça, le vrai français !",
         content: `L'entretien d'embauche au niveau B2 exige de savoir gérer les **questions pièges** et se vendre avec assurance.\n\n🎯 **Questions classiques :**\n- « Parlez-moi de vous. » → Résumez en 2 minutes\n- « Quels sont vos points forts / faibles ? »\n- « Pourquoi devrions-nous vous embaucher ? »\n- « Où vous voyez-vous dans 5 ans ? »\n- « Parlez-moi d'un échec professionnel. »\n\n💡 **Technique STAR pour répondre :**\n- **S**ituation — Contexte\n- **T**âche — Votre rôle\n- **A**ction — Ce que vous avez fait\n- **R**ésultat — Le résultat obtenu\n\n📝 **Formules :**\n- « Mon principal atout est… »\n- « J'ai su faire preuve de… »\n- « Cette expérience m'a permis de développer… »`,
         tip: '💡 Transformez toujours un « défaut » en qualité : « Je suis perfectionniste, ce qui me pousse à toujours améliorer mon travail. »'
       },
@@ -86,6 +94,7 @@ export const b2Module2Content: CourseContent[] = [
       },
       {
         id: 'L162-3', type: 'qcm', title: 'Question piège', characterId: 'elena',
+        characterMessage: "C'est le niveau où on comprend vraiment les nuances du français.",
         question: 'Comment répondre à « Quel est votre principal défaut ? »',
         options: ['Je n\'ai aucun défaut.', 'Je suis paresseux.', 'Je suis perfectionniste, ce qui me pousse à vérifier chaque détail.', 'Je déteste travailler en équipe.'],
         correctIndex: 2,
@@ -93,6 +102,7 @@ export const b2Module2Content: CourseContent[] = [
       },
       {
         id: 'L162-4', type: 'flashcard', title: 'Vocabulaire de l\'entretien', characterId: 'thomas',
+        characterMessage: "Ces termes sont essentiels pour comprendre la littérature française.",
         cards: [
           { front: 'Un atout', back: 'An asset / a strength' },
           { front: 'Faire preuve de…', back: 'To demonstrate / show…' },
@@ -104,18 +114,21 @@ export const b2Module2Content: CourseContent[] = [
       },
       {
         id: 'L162-5', type: 'fill-blank', title: 'Complétez la réponse', characterId: 'fatou',
+        characterMessage: "Pense au registre de langue — formel ou informel ?",
         sentence: 'Cette expérience m\'a ___ de développer mes compétences en leadership.',
         options: ['permis', 'fait', 'donné', 'laissé'],
         correctAnswer: 'permis'
       },
       {
         id: 'L162-6', type: 'drag-drop', title: 'Méthode STAR', characterId: 'yuki',
+        characterMessage: "L'ordre des mots peut changer la nuance. Sois précis !",
         instruction: 'Remettez les étapes STAR dans l\'ordre :',
         items: ['Résultat', 'Action', 'Situation', 'Tâche'],
         correctOrder: ['Situation', 'Tâche', 'Action', 'Résultat']
       },
       {
         id: 'L162-7', type: 'qcm', title: '« Parlez-moi de vous »', characterId: 'lucas',
+        characterMessage: "C'est le genre de question qu'on trouve dans les examens DELF B2.",
         question: 'Que doit contenir votre réponse à « Parlez-moi de vous » ?',
         options: ['Votre vie amoureuse', 'Votre parcours pro + motivations (2 min)', 'Votre signe astrologique', 'Votre opinion politique'],
         correctIndex: 1,
@@ -123,6 +136,7 @@ export const b2Module2Content: CourseContent[] = [
       },
       {
         id: 'L162-8', type: 'final-quiz', title: 'Quiz final — L\'entretien', characterId: 'marie',
+        characterMessage: "Questions avancées — faites appel à tout ce que vous savez.",
         questions: [
           { question: 'STAR signifie :', options: ['Style, Temps, Art, Réponse', 'Situation, Tâche, Action, Résultat', 'Savoir, Talent, Ambition, Rigueur', 'Stress, Travail, Analyse, Rendement'], correctIndex: 1 },
           { question: '« J\'ai su faire ___ de créativité. »', options: ['preuve', 'acte', 'montre', 'signe'], correctIndex: 0 },
@@ -140,6 +154,7 @@ export const b2Module2Content: CourseContent[] = [
     steps: [
       {
         id: 'L163-1', type: 'lesson', title: 'Animer une réunion', characterId: 'marie',
+        characterMessage: "On aborde un sujet qui demande une réflexion approfondie.",
         content: `Savoir **animer une réunion** est une compétence professionnelle essentielle.\n\n📐 **Structure d'une réunion :**\n\n1️⃣ **Ouverture :**\n- « Bonjour à tous, merci d'être présents. »\n- « L'ordre du jour comporte trois points… »\n\n2️⃣ **Distribution de la parole :**\n- « Qu'en pensez-vous, Marie ? »\n- « Quelqu'un souhaite-t-il ajouter quelque chose ? »\n\n3️⃣ **Recadrage :**\n- « Revenons au sujet, s'il vous plaît. »\n- « Nous nous éloignons du point principal. »\n\n4️⃣ **Synthèse :**\n- « Pour résumer les décisions prises… »\n\n5️⃣ **Clôture :**\n- « Je propose de fixer la prochaine réunion au… »\n- « Merci à tous pour votre participation. »`,
         tip: '💡 Un bon animateur écoute autant qu\'il parle. Veillez à donner la parole à chacun.'
       },
@@ -152,6 +167,7 @@ export const b2Module2Content: CourseContent[] = [
       },
       {
         id: 'L163-3', type: 'qcm', title: 'Donner la parole', characterId: 'elena',
+        characterMessage: "Analyse chaque option avec un œil critique.",
         question: 'Quelle formule pour donner la parole ?',
         options: ['Tais-toi et écoute.', 'Qu\'en pensez-vous, Jean ?', 'Personne ne parle !', 'C\'est mon tour.'],
         correctIndex: 1,
@@ -159,6 +175,7 @@ export const b2Module2Content: CourseContent[] = [
       },
       {
         id: 'L163-4', type: 'flashcard', title: 'Expressions de réunion', characterId: 'thomas',
+        characterMessage: "La richesse lexicale du français est l'une de ses plus grandes beautés.",
         cards: [
           { front: 'L\'ordre du jour', back: 'The agenda' },
           { front: 'Distribuer la parole', back: 'To give the floor / chair the discussion' },
@@ -170,18 +187,21 @@ export const b2Module2Content: CourseContent[] = [
       },
       {
         id: 'L163-5', type: 'fill-blank', title: 'Recadrez la discussion', characterId: 'fatou',
+        characterMessage: "La précision grammaticale est ce qui distingue un bon francophone.",
         sentence: 'Nous nous éloignons du sujet. ___ au point principal, s\'il vous plaît.',
         options: ['Revenons', 'Partons', 'Oublions', 'Passons'],
         correctAnswer: 'Revenons'
       },
       {
         id: 'L163-6', type: 'drag-drop', title: 'Étapes d\'une réunion', characterId: 'yuki',
+        characterMessage: "C'est un exercice exigeant mais très formateur.",
         instruction: 'Remettez les étapes dans l\'ordre :',
         items: ['Clôture', 'Ouverture', 'Discussion', 'Synthèse'],
         correctOrder: ['Ouverture', 'Discussion', 'Synthèse', 'Clôture']
       },
       {
         id: 'L163-7', type: 'qcm', title: 'Clôturer une réunion', characterId: 'lucas',
+        characterMessage: "La différence est fine mais cruciale. Analyse bien chaque option.",
         question: 'Comment clôturer une réunion ?',
         options: ['On s\'en va sans rien dire.', 'Je résume les décisions et fixe la prochaine date.', 'Allez, c\'est fini, salut !', 'On continue jusqu\'à épuisement.'],
         correctIndex: 1,
@@ -189,6 +209,7 @@ export const b2Module2Content: CourseContent[] = [
       },
       {
         id: 'L163-8', type: 'final-quiz', title: 'Quiz final — Animer une réunion', characterId: 'marie',
+        characterMessage: "C'est un vrai défi, mais vous avez le niveau pour réussir.",
         questions: [
           { question: '« L\'___ du jour comporte trois points. »', options: ['ordre', 'heure', 'endroit', 'objet'], correctIndex: 0 },
           { question: 'Pour recadrer, on dit :', options: ['Taisez-vous !', 'Revenons au sujet.', 'C\'est pas intéressant.', 'On s\'en fiche.'], correctIndex: 1 },
@@ -206,11 +227,13 @@ export const b2Module2Content: CourseContent[] = [
     steps: [
       {
         id: 'L164-1', type: 'lesson', title: 'Le discours indirect au passé', characterId: 'marie',
+        characterMessage: "Vous êtes presque bilingues ! Perfectionnons encore votre français.",
         content: `Le **discours indirect au passé** demande la **concordance des temps**.\n\n📐 **Transformations :**\n\n| Direct (présent) | Indirect (passé) |\n|---|---|\n| « Je **suis** fatigué. » | Il a dit qu'il **était** fatigué. |\n| « Je **vais** partir. » | Il a dit qu'il **allait** partir. |\n| « J'**ai fini**. » | Il a dit qu'il **avait fini**. |\n| « Je **partirai** demain. » | Il a dit qu'il **partirait** le lendemain. |\n\n🔄 **Changements de repères :**\n- aujourd'hui → ce jour-là\n- demain → le lendemain\n- hier → la veille\n- ici → là-bas\n- maintenant → à ce moment-là\n\n📝 **Verbes introducteurs :**\n- Il a dit que… / Elle a affirmé que…\n- Il a demandé si… / Elle a voulu savoir si…\n- Il a ordonné de… (+ infinitif)`,
         tip: '💡 Le verbe introducteur au passé déclenche la concordance des temps dans la subordonnée.'
       },
       {
         id: 'L164-2', type: 'listening', title: 'Écoute — Rapporter une conversation', characterId: 'omar',
+        characterMessage: "À ce niveau, tu peux suivre des conversations rapides et nuancées.",
         text: 'Marie m\'a dit qu\'elle était fatiguée et qu\'elle allait se coucher tôt. Elle a ajouté qu\'elle avait eu une longue journée au bureau. Elle m\'a demandé si je pourrais la remplacer le lendemain matin.',
         question: 'Que demande Marie ?',
         options: ['De la rejoindre', 'De la remplacer le lendemain', 'De l\'appeler', 'De venir au bureau'],
@@ -218,6 +241,7 @@ export const b2Module2Content: CourseContent[] = [
       },
       {
         id: 'L164-3', type: 'qcm', title: 'Concordance des temps', characterId: 'elena',
+        characterMessage: "Cette question teste ta compréhension profonde de la langue.",
         question: '« Je suis content. » → Il a dit qu\'il ___ content.',
         options: ['est', 'était', 'sera', 'serait'],
         correctIndex: 1,
@@ -225,6 +249,7 @@ export const b2Module2Content: CourseContent[] = [
       },
       {
         id: 'L164-4', type: 'flashcard', title: 'Changements de repères', characterId: 'thomas',
+        characterMessage: "Maîtriser ce vocabulaire, c'est accéder à la pensée française.",
         cards: [
           { front: 'aujourd\'hui → …', back: 'ce jour-là' },
           { front: 'demain → …', back: 'le lendemain' },
@@ -236,18 +261,21 @@ export const b2Module2Content: CourseContent[] = [
       },
       {
         id: 'L164-5', type: 'fill-blank', title: 'Transformez au discours indirect', characterId: 'fatou',
+        characterMessage: "Cet exercice te prépare à l'écrit académique et professionnel.",
         sentence: '« Je viendrai demain. » → Il a dit qu\'il ___ le lendemain.',
         options: ['viendrait', 'vient', 'viendra', 'venait'],
         correctAnswer: 'viendrait'
       },
       {
         id: 'L164-6', type: 'drag-drop', title: 'Reconstituez la phrase', characterId: 'yuki',
+        characterMessage: "Maîtriser la syntaxe, c'est la clé d'un français élégant.",
         instruction: 'Formez le discours indirect :',
         items: ['qu\'il', 'avait', 'Il a dit', 'faim'],
         correctOrder: ['Il a dit', 'qu\'il', 'avait', 'faim']
       },
       {
         id: 'L164-7', type: 'qcm', title: 'Futur → Conditionnel', characterId: 'lucas',
+        characterMessage: "J'ai appris cette nuance en lisant des articles de journaux français.",
         question: '« J\'irai au cinéma. » → Elle a dit qu\'elle ___ au cinéma.',
         options: ['ira', 'irait', 'allait', 'va'],
         correctIndex: 1,
@@ -255,6 +283,7 @@ export const b2Module2Content: CourseContent[] = [
       },
       {
         id: 'L164-8', type: 'final-quiz', title: 'Quiz final — Discours indirect au passé', characterId: 'marie',
+        characterMessage: "Quiz final de niveau avancé. Concentration maximale !",
         questions: [
           { question: '« Je suis fatigué. » → Il a dit qu\'il ___ fatigué.', options: ['est', 'était', 'sera', 'serait'], correctIndex: 1 },
           { question: '« demain » devient :', options: ['aujourd\'hui', 'hier', 'le lendemain', 'ce jour-là'], correctIndex: 2 },
@@ -272,6 +301,7 @@ export const b2Module2Content: CourseContent[] = [
     steps: [
       {
         id: 'L165-1', type: 'lesson', title: 'Rédiger un compte-rendu', characterId: 'marie',
+        characterMessage: "Aujourd'hui, on explore les subtilités de la langue française.",
         content: `Le **compte-rendu** est un document professionnel qui résume les échanges et décisions d'une réunion.\n\n📐 **Structure :**\n\n1️⃣ **En-tête :** Date, lieu, participants, objet\n2️⃣ **Points abordés :** Chaque sujet avec les décisions prises\n3️⃣ **Actions à mener :** Qui fait quoi, avec quelle échéance\n4️⃣ **Prochaine réunion :** Date et ordre du jour prévu\n\n📝 **Style :**\n- Ton neutre et objectif\n- Phrases courtes et claires\n- Utilisation du passé composé ou du présent\n- Pas d\'opinions personnelles\n\n💡 **Formules :**\n- « Il a été décidé que… »\n- « M. Dupont a souligné l'importance de… »\n- « La réunion a été levée à… »`,
         tip: '💡 Un bon compte-rendu permet à un absent de comprendre exactement ce qui s\'est passé.'
       },
@@ -284,6 +314,7 @@ export const b2Module2Content: CourseContent[] = [
       },
       {
         id: 'L165-3', type: 'qcm', title: 'Ton du compte-rendu', characterId: 'elena',
+        characterMessage: "En espagnol, on dirait ça différemment. Le français a sa logique !",
         question: 'Quel ton doit avoir un compte-rendu ?',
         options: ['Enthousiaste et émotionnel', 'Neutre et objectif', 'Humoristique', 'Poétique'],
         correctIndex: 1,
@@ -291,6 +322,7 @@ export const b2Module2Content: CourseContent[] = [
       },
       {
         id: 'L165-4', type: 'flashcard', title: 'Vocabulaire du compte-rendu', characterId: 'thomas',
+        characterMessage: "Avec ces mots, tu pourras apprécier les subtilités du français.",
         cards: [
           { front: 'Il a été décidé que…', back: 'It was decided that…' },
           { front: 'M. X a souligné…', back: 'Mr. X emphasized…' },
@@ -302,18 +334,21 @@ export const b2Module2Content: CourseContent[] = [
       },
       {
         id: 'L165-5', type: 'fill-blank', title: 'Formule de compte-rendu', characterId: 'fatou',
+        characterMessage: "Chaque détail compte. Le français est une langue de précision !",
         sentence: 'Il a été ___ de reporter le projet au mois prochain.',
         options: ['décidé', 'pensé', 'rêvé', 'oublié'],
         correctAnswer: 'décidé'
       },
       {
         id: 'L165-6', type: 'drag-drop', title: 'Structure du compte-rendu', characterId: 'yuki',
+        characterMessage: "Imagine que tu rédiges un article — chaque mot à sa place !",
         instruction: 'Remettez dans l\'ordre :',
         items: ['Prochaine réunion', 'En-tête', 'Actions à mener', 'Points abordés'],
         correctOrder: ['En-tête', 'Points abordés', 'Actions à mener', 'Prochaine réunion']
       },
       {
         id: 'L165-7', type: 'qcm', title: 'Ce qui n\'a PAS sa place', characterId: 'lucas',
+        characterMessage: "Même les natifs peuvent hésiter sur cette question !",
         question: 'Qu\'est-ce qui n\'a PAS sa place dans un compte-rendu ?',
         options: ['Les décisions prises', 'Les opinions personnelles du rédacteur', 'La date de la réunion', 'Les participants'],
         correctIndex: 1,
@@ -321,6 +356,7 @@ export const b2Module2Content: CourseContent[] = [
       },
       {
         id: 'L165-8', type: 'final-quiz', title: 'Quiz final — Le compte-rendu', characterId: 'marie',
+        characterMessage: "Montrez votre maîtrise du français. Je compte sur vous !",
         questions: [
           { question: 'Le compte-rendu est :', options: ['Subjectif', 'Objectif', 'Poétique', 'Familier'], correctIndex: 1 },
           { question: '« La réunion a été ___ à 17h. »', options: ['levée', 'ouverte', 'commencée', 'lancée'], correctIndex: 0 },
@@ -338,6 +374,7 @@ export const b2Module2Content: CourseContent[] = [
     steps: [
       {
         id: 'L166-1', type: 'lesson', title: 'Négocier en français', characterId: 'marie',
+        characterMessage: "À ce niveau, vous maîtrisez déjà beaucoup. Allons plus loin ensemble.",
         content: `La **négociation** est un art qui demande tact et stratégie.\n\n🎯 **Étapes de la négociation :**\n1. Exposer sa position\n2. Écouter la contre-proposition\n3. Trouver un terrain d'entente\n4. Conclure l'accord\n\n📝 **Expressions clés :**\n\n✅ **Proposer :**\n- « Je vous propose de… »\n- « Seriez-vous d'accord pour… ? »\n- « Que diriez-vous de… ? »\n\n🔄 **Contre-proposer :**\n- « C'est intéressant, mais je préférerais… »\n- « Je comprends votre position, toutefois… »\n\n🤝 **Compromis :**\n- « Trouvons un terrain d'entente. »\n- « Si vous acceptez X, nous pourrions envisager Y. »\n- « Faisons un compromis : … »`,
         tip: '💡 En négociation, écoutez d\'abord, proposez ensuite. Ne fermez jamais la porte !'
       },
@@ -350,6 +387,7 @@ export const b2Module2Content: CourseContent[] = [
       },
       {
         id: 'L166-3', type: 'qcm', title: 'Formule de compromis', characterId: 'elena',
+        characterMessage: "Question subtile ! Même moi, j'ai dû réfléchir longtemps.",
         question: 'Quelle formule propose un compromis ?',
         options: ['C\'est non, point final.', 'Trouvons un terrain d\'entente.', 'Je refuse de discuter.', 'C\'est à prendre ou à laisser.'],
         correctIndex: 1,
@@ -357,6 +395,7 @@ export const b2Module2Content: CourseContent[] = [
       },
       {
         id: 'L166-4', type: 'flashcard', title: 'Vocabulaire de la négociation', characterId: 'thomas',
+        characterMessage: "Ce vocabulaire te rapproche du niveau d'un francophone cultivé.",
         cards: [
           { front: 'Un terrain d\'entente', back: 'Common ground / middle ground' },
           { front: 'Contre-proposer', back: 'To make a counter-offer' },
@@ -368,18 +407,21 @@ export const b2Module2Content: CourseContent[] = [
       },
       {
         id: 'L166-5', type: 'fill-blank', title: 'Complétez la négociation', characterId: 'fatou',
+        characterMessage: "À ce niveau, les choix sont tous plausibles. La nuance fait la différence.",
         sentence: 'Si vous acceptez ce délai, nous ___ envisager une remise de 5%.',
         options: ['pourrions', 'pouvons', 'pourrons', 'pouvions'],
         correctAnswer: 'pourrions'
       },
       {
         id: 'L166-6', type: 'drag-drop', title: 'Étapes de la négociation', characterId: 'yuki',
+        characterMessage: "Ces phrases complexes reflètent le français écrit authentique.",
         instruction: 'Remettez dans l\'ordre :',
         items: ['Conclure l\'accord', 'Écouter la contre-proposition', 'Exposer sa position', 'Trouver un compromis'],
         correctOrder: ['Exposer sa position', 'Écouter la contre-proposition', 'Trouver un compromis', 'Conclure l\'accord']
       },
       {
         id: 'L166-7', type: 'qcm', title: 'Attitude en négociation', characterId: 'lucas',
+        characterMessage: "À ce niveau, les pièges sont plus subtils. Reste vigilant !",
         question: 'Quelle attitude favorise la négociation ?',
         options: ['L\'agressivité', 'L\'écoute active et le respect', 'L\'indifférence', 'La manipulation'],
         correctIndex: 1,
@@ -387,6 +429,7 @@ export const b2Module2Content: CourseContent[] = [
       },
       {
         id: 'L166-8', type: 'final-quiz', title: 'Quiz final — Négocier', characterId: 'marie',
+        characterMessage: "Ce quiz exige précision et nuance. Vous en êtes capables !",
         questions: [
           { question: '« Que ___ de baisser le prix de 10% ? »', options: ['dites-vous', 'diriez-vous', 'direz-vous', 'disiez-vous'], correctIndex: 1 },
           { question: '« Un terrain d\'entente » signifie :', options: ['Un terrain de sport', 'Un compromis', 'Un désaccord', 'Une propriété'], correctIndex: 1 },
@@ -404,11 +447,13 @@ export const b2Module2Content: CourseContent[] = [
     steps: [
       {
         id: 'L167-1', type: 'lesson', title: 'La culture d\'entreprise française', characterId: 'marie',
+        characterMessage: "Cette leçon exige de la nuance — c'est ça, le vrai français !",
         content: `Travailler en France implique de comprendre la **culture d'entreprise** locale.\n\n🏢 **Spécificités françaises :**\n\n⏰ **Horaires :**\n- La semaine de 35 heures\n- Pause déjeuner longue (1h-1h30)\n- Réunions souvent en fin de journée\n\n🏖️ **Congés :**\n- 5 semaines de congés payés minimum\n- RTT (Réduction du Temps de Travail)\n- Jours fériés nombreux (11 par an)\n\n👔 **Hiérarchie :**\n- Structure souvent pyramidale\n- Le vouvoiement avec les supérieurs\n- La « pause café » : moment de socialisation important\n\n🍽️ **Déjeuner :**\n- Le repas du midi est un moment social\n- Tickets restaurant / cantine d'entreprise\n- On ne mange pas devant son écran (en théorie !)`,
         tip: '💡 La pause café en France n\'est pas une perte de temps : c\'est là que se créent les liens professionnels.'
       },
       {
         id: 'L167-2', type: 'listening', title: 'Écoute — Témoignage d\'un expatrié', characterId: 'omar',
+        characterMessage: "Écoute les subtilités : ironie, humour, sous-entendus.",
         text: 'Quand je suis arrivé en France, j\'ai été surpris par la durée de la pause déjeuner. En Allemagne, on mange en trente minutes. Ici, c\'est minimum une heure ! Mais j\'ai compris que c\'est un moment de convivialité essentiel. Autre surprise : les cinq semaines de vacances. C\'est formidable !',
         question: 'Qu\'est-ce qui a surpris l\'expatrié ?',
         options: ['Les horaires matinaux', 'La pause déjeuner longue et les vacances', 'Le salaire élevé', 'Le travail le dimanche'],
@@ -416,6 +461,7 @@ export const b2Module2Content: CourseContent[] = [
       },
       {
         id: 'L167-3', type: 'qcm', title: 'Les 35 heures', characterId: 'elena',
+        characterMessage: "C'est le niveau où on comprend vraiment les nuances du français.",
         question: 'Quelle est la durée légale du travail en France ?',
         options: ['30 heures', '35 heures', '40 heures', '45 heures'],
         correctIndex: 1,
@@ -423,6 +469,7 @@ export const b2Module2Content: CourseContent[] = [
       },
       {
         id: 'L167-4', type: 'flashcard', title: 'Vocabulaire de l\'entreprise', characterId: 'thomas',
+        characterMessage: "Ces termes sont essentiels pour comprendre la littérature française.",
         cards: [
           { front: 'Les congés payés', back: 'Paid vacation / annual leave' },
           { front: 'RTT', back: 'Compensatory time off (Réduction du Temps de Travail)' },
@@ -434,18 +481,21 @@ export const b2Module2Content: CourseContent[] = [
       },
       {
         id: 'L167-5', type: 'fill-blank', title: 'Culture d\'entreprise', characterId: 'fatou',
+        characterMessage: "Pense au registre de langue — formel ou informel ?",
         sentence: 'En France, les salariés ont minimum ___ semaines de congés payés par an.',
         options: ['deux', 'trois', 'cinq', 'huit'],
         correctAnswer: 'cinq'
       },
       {
         id: 'L167-6', type: 'drag-drop', title: 'Associez les concepts', characterId: 'yuki',
+        characterMessage: "L'ordre des mots peut changer la nuance. Sois précis !",
         instruction: 'Du plus court au plus long congé :',
         items: ['Un jour férié', 'Un week-end', 'Les congés annuels (5 semaines)'],
         correctOrder: ['Un jour férié', 'Un week-end', 'Les congés annuels (5 semaines)']
       },
       {
         id: 'L167-7', type: 'qcm', title: 'Vouvoiement au travail', characterId: 'lucas',
+        characterMessage: "C'est le genre de question qu'on trouve dans les examens DELF B2.",
         question: 'Avec qui utilisez-vous le vouvoiement au bureau ?',
         options: ['Uniquement les clients', 'Les supérieurs et les personnes qu\'on ne connaît pas bien', 'Personne', 'Uniquement les stagiaires'],
         correctIndex: 1,
@@ -453,6 +503,7 @@ export const b2Module2Content: CourseContent[] = [
       },
       {
         id: 'L167-8', type: 'final-quiz', title: 'Quiz final — Culture d\'entreprise', characterId: 'marie',
+        characterMessage: "Questions avancées — faites appel à tout ce que vous savez.",
         questions: [
           { question: 'Durée de la semaine de travail en France :', options: ['30h', '35h', '40h', '48h'], correctIndex: 1 },
           { question: 'Nombre de semaines de congés payés minimum :', options: ['2', '3', '4', '5'], correctIndex: 3 },
@@ -470,11 +521,13 @@ export const b2Module2Content: CourseContent[] = [
     steps: [
       {
         id: 'L168-1', type: 'lesson', title: 'Les nominalisations', characterId: 'marie',
+        characterMessage: "On aborde un sujet qui demande une réflexion approfondie.",
         content: `La **nominalisation** consiste à transformer un verbe ou un adjectif en nom.\n\n📐 **Verbe → Nom :**\n- augmenter → une augmentation\n- réduire → une réduction\n- décider → une décision\n- développer → un développement\n- produire → une production\n- créer → une création\n\n📐 **Adjectif → Nom :**\n- riche → la richesse\n- pauvre → la pauvreté\n- important → l'importance\n- efficace → l'efficacité\n- libre → la liberté\n\n💡 **Utilité :**\n- Rendre le style plus **soutenu** et **académique**\n- Condenser l'information\n- Varier la syntaxe\n\n📝 **Exemple :**\n- « Les prix augmentent. » → « L'**augmentation** des prix… »\n- « Le gouvernement a décidé de… » → « La **décision** du gouvernement de… »`,
         tip: '💡 La nominalisation est très utilisée dans les titres de journaux : « Augmentation du chômage » au lieu de « Le chômage augmente ».'
       },
       {
         id: 'L168-2', type: 'listening', title: 'Écoute — Titres du journal', characterId: 'omar',
+        characterMessage: "Tu es presque comme un francophone maintenant. Bravo !",
         text: 'Les titres du jour : réduction des impôts annoncée par le gouvernement. Augmentation du tourisme sur la Côte d\'Azur. Création de mille emplois dans le secteur numérique. Amélioration de la qualité de l\'air à Antibes.',
         question: 'Quel est le titre sur Antibes ?',
         options: ['Réduction des impôts', 'Augmentation du tourisme', 'Création d\'emplois', 'Amélioration de la qualité de l\'air'],
@@ -482,6 +535,7 @@ export const b2Module2Content: CourseContent[] = [
       },
       {
         id: 'L168-3', type: 'qcm', title: 'Verbe → Nom', characterId: 'elena',
+        characterMessage: "Analyse chaque option avec un œil critique.",
         question: 'Quelle est la nominalisation de « produire » ?',
         options: ['Productivité', 'Production', 'Produit', 'Producteur'],
         correctIndex: 1,
@@ -489,6 +543,7 @@ export const b2Module2Content: CourseContent[] = [
       },
       {
         id: 'L168-4', type: 'flashcard', title: 'Nominalisations courantes', characterId: 'thomas',
+        characterMessage: "La richesse lexicale du français est l'une de ses plus grandes beautés.",
         cards: [
           { front: 'augmenter → …', back: 'une augmentation' },
           { front: 'réduire → …', back: 'une réduction' },
@@ -500,18 +555,21 @@ export const b2Module2Content: CourseContent[] = [
       },
       {
         id: 'L168-5', type: 'fill-blank', title: 'Nominalisez', characterId: 'fatou',
+        characterMessage: "La précision grammaticale est ce qui distingue un bon francophone.",
         sentence: 'La ___ des prix inquiète les consommateurs. (augmenter)',
         options: ['augmentation', 'augmente', 'augmenté', 'augmentant'],
         correctAnswer: 'augmentation'
       },
       {
         id: 'L168-6', type: 'drag-drop', title: 'Associez verbe et nom', characterId: 'yuki',
+        characterMessage: "C'est un exercice exigeant mais très formateur.",
         instruction: 'Classez ces mots du verbe au nom :',
         items: ['création', 'créer', 'développer', 'développement'],
         correctOrder: ['créer', 'création', 'développer', 'développement']
       },
       {
         id: 'L168-7', type: 'qcm', title: 'Adjectif → Nom', characterId: 'lucas',
+        characterMessage: "La différence est fine mais cruciale. Analyse bien chaque option.",
         question: 'La nominalisation de « libre » est :',
         options: ['Libéral', 'Librement', 'Liberté', 'Libération'],
         correctIndex: 2,
@@ -519,6 +577,7 @@ export const b2Module2Content: CourseContent[] = [
       },
       {
         id: 'L168-8', type: 'final-quiz', title: 'Quiz final — Les nominalisations', characterId: 'marie',
+        characterMessage: "C'est un vrai défi, mais vous avez le niveau pour réussir.",
         questions: [
           { question: '« décider » → …', options: ['décideur', 'décision', 'décisif', 'décidément'], correctIndex: 1 },
           { question: '« pauvre » → …', options: ['pauvrement', 'pauvreté', 'appauvrir', 'pauvresse'], correctIndex: 1 },
@@ -536,11 +595,13 @@ export const b2Module2Content: CourseContent[] = [
     steps: [
       {
         id: 'L169-1', type: 'lesson', title: 'Révision B2.2 — Le monde professionnel', characterId: 'marie',
+        characterMessage: "Vous êtes presque bilingues ! Perfectionnons encore votre français.",
         content: `Révisons le module B2.2 !\n\n📝 **Ce que vous avez appris :**\n\n1️⃣ **Lettre de motivation avancée** — Structure, formules, personnalisation\n2️⃣ **Entretien d'embauche** — Méthode STAR, questions pièges\n3️⃣ **Animer une réunion** — Ouverture, parole, synthèse, clôture\n4️⃣ **Discours indirect au passé** — Concordance des temps\n5️⃣ **Rédiger un compte-rendu** — Objectif, structuré, factuel\n6️⃣ **Négocier** — Proposer, contre-proposer, compromis\n7️⃣ **Culture d'entreprise** — 35h, congés, hiérarchie, pause café\n8️⃣ **Les nominalisations** — Verbe/adjectif → nom`,
         tip: '💡 Révisez les formules de la lettre de motivation et les expressions de négociation !'
       },
       {
         id: 'L169-2', type: 'qcm', title: 'Révision — Lettre de motivation', characterId: 'elena',
+        characterMessage: "Cette question teste ta compréhension profonde de la langue.",
         question: '« ___ de mon expérience en gestion, je souhaite intégrer votre équipe. »',
         options: ['Fort', 'Grâce', 'Malgré', 'Sans'],
         correctIndex: 0,
@@ -548,12 +609,14 @@ export const b2Module2Content: CourseContent[] = [
       },
       {
         id: 'L169-3', type: 'fill-blank', title: 'Révision — Discours indirect', characterId: 'fatou',
+        characterMessage: "Cet exercice te prépare à l'écrit académique et professionnel.",
         sentence: '« Je viendrai. » → Elle a dit qu\'elle ___.',
         options: ['viendra', 'viendrait', 'venait', 'vient'],
         correctAnswer: 'viendrait'
       },
       {
         id: 'L169-4', type: 'qcm', title: 'Révision — Négociation', characterId: 'lucas',
+        characterMessage: "J'ai appris cette nuance en lisant des articles de journaux français.",
         question: '« Trouvons un ___ d\'entente. »',
         options: ['terrain', 'champ', 'sol', 'espace'],
         correctIndex: 0,
@@ -561,18 +624,21 @@ export const b2Module2Content: CourseContent[] = [
       },
       {
         id: 'L169-5', type: 'fill-blank', title: 'Révision — Nominalisation', characterId: 'fatou',
+        characterMessage: "Chaque détail compte. Le français est une langue de précision !",
         sentence: 'La ___ du gouvernement a surpris tout le monde. (décider)',
         options: ['décision', 'décideur', 'décisif', 'décidément'],
         correctAnswer: 'décision'
       },
       {
         id: 'L169-6', type: 'drag-drop', title: 'Révision — Méthode STAR', characterId: 'yuki',
+        characterMessage: "Maîtriser la syntaxe, c'est la clé d'un français élégant.",
         instruction: 'Ordonnez STAR :',
         items: ['Tâche', 'Résultat', 'Action', 'Situation'],
         correctOrder: ['Situation', 'Tâche', 'Action', 'Résultat']
       },
       {
         id: 'L169-7', type: 'qcm', title: 'Révision — Culture d\'entreprise', characterId: 'elena',
+        characterMessage: "En espagnol, on dirait ça différemment. Le français a sa logique !",
         question: 'Combien de semaines de congés payés en France ?',
         options: ['2', '3', '4', '5'],
         correctIndex: 3,
@@ -580,6 +646,7 @@ export const b2Module2Content: CourseContent[] = [
       },
       {
         id: 'L169-8', type: 'final-quiz', title: 'Quiz récapitulatif B2.2', characterId: 'marie',
+        characterMessage: "Quiz final de niveau avancé. Concentration maximale !",
         questions: [
           { question: 'STAR : S = Situation, T = Tâche, A = Action, R = ?', options: ['Raisonnement', 'Résultat', 'Réponse', 'Réflexion'], correctIndex: 1 },
           { question: '« aujourd\'hui » au discours indirect passé :', options: ['demain', 'hier', 'ce jour-là', 'maintenant'], correctIndex: 2 },
@@ -599,11 +666,13 @@ export const b2Module2Content: CourseContent[] = [
     steps: [
       {
         id: 'L170-1', type: 'lesson', title: 'Examen B2.2 — Le monde professionnel', characterId: 'marie',
+        characterMessage: "Aujourd'hui, on explore les subtilités de la langue française.",
         content: `🏆 **Examen du module B2.2 — Le monde professionnel**\n\nCet examen teste toutes les compétences acquises :\n- Lettre de motivation et entretien\n- Animation de réunion\n- Discours indirect au passé\n- Compte-rendu\n- Négociation\n- Culture d'entreprise\n- Nominalisations\n\n👔 Badge à débloquer : **Manager**\n\nBonne chance !`,
         tip: '💡 Prenez votre temps et réfléchissez bien à chaque réponse.'
       },
       {
         id: 'L170-2', type: 'final-quiz', title: 'Examen final B2.2', characterId: 'marie',
+        characterMessage: "Montrez votre maîtrise du français. Je compte sur vous !",
         questions: [
           { question: '« Dans l\'___ de votre réponse, veuillez agréer… »', options: ['attente', 'espoir', 'envie', 'idée'], correctIndex: 0 },
           { question: '« Je ___ ravi de rejoindre votre entreprise. »', options: ['suis', 'serais', 'serai', 'étais'], correctIndex: 1 },

@@ -12,7 +12,8 @@ export const a1Module2Content: CourseContent[] = [
         tip: '💡 En français, « parent » peut signifier "relative" (un parent = a relative) ou "parent" (les parents = mother & father).'
       },
       {
-        id: 'L11-2', type: 'flashcard', title: 'La famille — Vocabulaire',
+        id: 'L11-2', type: 'flashcard', title: 'La famille — Vocabulaire', characterId: 'marie',
+        characterMessage: "Bienvenue dans ma classe ! Aujourd'hui, on découvre ensemble un nouveau sujet.",
         cards: [
           { front: 'Le père', back: 'Father (papa)' },
           { front: 'La mère', back: 'Mother (maman)' },
@@ -32,7 +33,8 @@ export const a1Module2Content: CourseContent[] = [
         correctIndex: 2
       },
       {
-        id: 'L11-4', type: 'qcm', title: 'Le bon mot',
+        id: 'L11-4', type: 'qcm', title: 'Le bon mot', characterId: 'omar',
+        characterMessage: "Écoute bien ! Je vais te parler comme au marché d'Antibes.",
         question: 'La mère de ma mère, c\'est ma…',
         options: ['Tante', 'Cousine', 'Grand-mère', 'Sœur'],
         correctIndex: 2,
@@ -45,7 +47,8 @@ export const a1Module2Content: CourseContent[] = [
         correctAnswer: 'père'
       },
       {
-        id: 'L11-6', type: 'drag-drop', title: 'L\'arbre généalogique',
+        id: 'L11-6', type: 'drag-drop', title: 'L\'arbre généalogique', characterId: 'fatou',
+        characterMessage: "Complète la phrase ! C'est comme un puzzle — trouve la pièce manquante.",
         instruction: 'Remettez dans l\'ordre du plus âgé au plus jeune :',
         items: ['Le bébé', 'La grand-mère', 'La mère', 'La fille'],
         correctOrder: ['La grand-mère', 'La mère', 'La fille', 'Le bébé']
@@ -58,7 +61,8 @@ export const a1Module2Content: CourseContent[] = [
         explanation: 'En français, cousin → cousine. On ajoute un « e » pour le féminin.'
       },
       {
-        id: 'L11-8', type: 'final-quiz', title: 'Quiz final — Ma famille',
+        id: 'L11-8', type: 'final-quiz', title: 'Quiz final — Ma famille', characterId: 'lucas',
+        characterMessage: "Moi aussi au début, je trouvais ça compliqué ! Mais on s'y habitue.",
         questions: [
           { question: 'Le frère de ma mère est mon…', options: ['Cousin', 'Oncle', 'Grand-père', 'Père'], correctIndex: 1 },
           { question: '« La fille » signifie…', options: ['The son', 'The mother', 'The daughter', 'The sister'], correctIndex: 2 },
@@ -80,7 +84,8 @@ export const a1Module2Content: CourseContent[] = [
         tip: '💡 La plupart des adjectifs prennent un « e » au féminin. Certains sont irréguliers : beau → belle, roux → rousse.'
       },
       {
-        id: 'L12-2', type: 'flashcard', title: 'Les adjectifs — Masculin / Féminin',
+        id: 'L12-2', type: 'flashcard', title: 'Les adjectifs — Masculin / Féminin', characterId: 'marie',
+        characterMessage: "Bonjour à tous ! Prêts pour une nouvelle leçon ?",
         cards: [
           { front: 'grand → ?', back: 'grande (tall, f.)' },
           { front: 'petit → ?', back: 'petite (short, f.)' },
@@ -98,7 +103,8 @@ export const a1Module2Content: CourseContent[] = [
         explanation: 'Marie est féminin singulier, donc l\'adjectif prend un « e » : grande.'
       },
       {
-        id: 'L12-4', type: 'fill-blank', title: 'Décrivez le personnage',
+        id: 'L12-4', type: 'fill-blank', title: 'Décrivez le personnage', characterId: 'lucas',
+        characterMessage: "Cette question m'a piégé la première fois. Fais attention !",
         sentence: 'Lucas est ___ et brun. (tall)',
         options: ['grande', 'grand', 'grands', 'petit'],
         correctAnswer: 'grand'
@@ -111,7 +117,8 @@ export const a1Module2Content: CourseContent[] = [
         correctIndex: 1
       },
       {
-        id: 'L12-6', type: 'drag-drop', title: 'Construisez une description',
+        id: 'L12-6', type: 'drag-drop', title: 'Construisez une description', characterId: 'omar',
+        characterMessage: "Dans ma cuisine, j'écoute toujours la radio française. Ça aide !",
         instruction: 'Remettez les mots dans l\'ordre :',
         items: ['est', 'Elle', 'et', 'grande', 'blonde'],
         correctOrder: ['Elle', 'est', 'grande', 'et', 'blonde']
@@ -139,7 +146,8 @@ export const a1Module2Content: CourseContent[] = [
         tip: '💡 « Marron » et « orange » ne changent jamais : des chaussures marron, des fleurs orange.'
       },
       {
-        id: 'L13-2', type: 'flashcard', title: 'Les couleurs — Vocabulaire',
+        id: 'L13-2', type: 'flashcard', title: 'Les couleurs — Vocabulaire', characterId: 'marie',
+        characterMessage: "Installez-vous confortablement, on commence !",
         cards: [
           { front: '🔴', back: 'rouge (red)' },
           { front: '🔵', back: 'bleu / bleue (blue)' },
@@ -159,7 +167,8 @@ export const a1Module2Content: CourseContent[] = [
         explanation: 'La lavande est violette. C\'est une fleur emblématique de la Provence !'
       },
       {
-        id: 'L13-4', type: 'fill-blank', title: 'Complétez avec la couleur',
+        id: 'L13-4', type: 'fill-blank', title: 'Complétez avec la couleur', characterId: 'lucas',
+        characterMessage: "Réfléchis bien, la réponse est plus simple qu'on ne le pense.",
         sentence: 'La mer Méditerranée est ___ .',
         options: ['verte', 'bleue', 'rouge', 'noire'],
         correctAnswer: 'bleue'
@@ -172,7 +181,8 @@ export const a1Module2Content: CourseContent[] = [
         explanation: '« Marron » est invariable — il ne change jamais, même au pluriel ou au féminin.'
       },
       {
-        id: 'L13-6', type: 'listening', title: 'Écoute — Au marché de Provence',
+        id: 'L13-6', type: 'listening', title: 'Écoute — Au marché de Provence', characterId: 'lucas',
+        characterMessage: "J'ai fait cette erreur au début — ne tombe pas dans le piège !",
         text: 'Regardez ces belles tomates rouges ! Et là, des olives noires et vertes. Les citrons sont jaunes et les aubergines sont violettes.',
         question: 'De quelle couleur sont les olives ?',
         options: ['Rouges et jaunes', 'Noires et vertes', 'Bleues et blanches', 'Violettes et roses'],
@@ -201,7 +211,8 @@ export const a1Module2Content: CourseContent[] = [
         tip: '💡 Pour savoir si un mot est masculin ou féminin, apprenez-le avec son article : « un livre », « une clé ».'
       },
       {
-        id: 'L14-2', type: 'flashcard', title: 'Les objets — Vocabulaire',
+        id: 'L14-2', type: 'flashcard', title: 'Les objets — Vocabulaire', characterId: 'marie',
+        characterMessage: "Aujourd'hui, je vais vous expliquer quelque chose de très utile.",
         cards: [
           { front: '📱', back: 'un téléphone (a phone)' },
           { front: '🔑', back: 'une clé (a key)' },
@@ -219,7 +230,8 @@ export const a1Module2Content: CourseContent[] = [
         explanation: '« Clé » est féminin : une clé.'
       },
       {
-        id: 'L14-4', type: 'fill-blank', title: 'Complétez',
+        id: 'L14-4', type: 'fill-blank', title: 'Complétez', characterId: 'lucas',
+        characterMessage: "Quand je suis arrivé à Antibes, j'ai dû apprendre ça aussi !",
         sentence: 'C\'est ___ livre de français.',
         options: ['une', 'un', 'la', 'des'],
         correctAnswer: 'un'
@@ -232,7 +244,8 @@ export const a1Module2Content: CourseContent[] = [
         correctIndex: 1
       },
       {
-        id: 'L14-6', type: 'drag-drop', title: 'Classez : masculin ou féminin',
+        id: 'L14-6', type: 'drag-drop', title: 'Classez : masculin ou féminin', characterId: 'omar',
+        characterMessage: "Concentre-toi sur les mots que tu connais déjà.",
         instruction: 'Remettez cette phrase dans l\'ordre :',
         items: ['c\'est', 'Qu\'est-ce que', '?', 'C\'est', 'un stylo.'],
         correctOrder: ['Qu\'est-ce que', 'c\'est', '?', 'C\'est', 'un stylo.']
@@ -260,7 +273,8 @@ export const a1Module2Content: CourseContent[] = [
         tip: '💡 70 = soixante-dix (60+10), 80 = quatre-vingts (4×20), 90 = quatre-vingt-dix (4×20+10). La logique française !'
       },
       {
-        id: 'L15-2', type: 'flashcard', title: 'Les dizaines — Flashcards',
+        id: 'L15-2', type: 'flashcard', title: 'Les dizaines — Flashcards', characterId: 'marie',
+        characterMessage: "C'est un sujet passionnant, vous allez voir !",
         cards: [
           { front: '30', back: 'trente' },
           { front: '50', back: 'cinquante' },
@@ -278,7 +292,8 @@ export const a1Module2Content: CourseContent[] = [
         explanation: '70 = soixante-dix en français standard (en Belgique et en Suisse, on dit « septante »).'
       },
       {
-        id: 'L15-4', type: 'fill-blank', title: 'Écrivez le nombre',
+        id: 'L15-4', type: 'fill-blank', title: 'Écrivez le nombre', characterId: 'lucas',
+        characterMessage: "Moi aussi au début, je trouvais ça compliqué ! Mais on s'y habitue.",
         sentence: '85 en lettres : ___',
         options: ['quatre-vingt-cinq', 'huitante-cinq', 'quatre-vingt-quinze', 'soixante-vingt-cinq'],
         correctAnswer: 'quatre-vingt-cinq'
@@ -291,7 +306,8 @@ export const a1Module2Content: CourseContent[] = [
         correctIndex: 1
       },
       {
-        id: 'L15-6', type: 'qcm', title: 'Le bon nombre',
+        id: 'L15-6', type: 'qcm', title: 'Le bon nombre', characterId: 'omar',
+        characterMessage: "Au Maroc aussi, on apprend en écoutant. C'est la meilleure méthode !",
         question: 'Comment écrit-on « 91 » en lettres ?',
         options: ['Nonante et un', 'Quatre-vingt-onze', 'Neuf-un', 'Quatre-vingt-un'],
         correctIndex: 1,
@@ -320,7 +336,8 @@ export const a1Module2Content: CourseContent[] = [
         tip: '💡 En français, on dit « J\'ai faim » (I HAVE hunger), pas « Je suis faim ».'
       },
       {
-        id: 'L16-2', type: 'qcm', title: 'Conjugaison d\'avoir',
+        id: 'L16-2', type: 'qcm', title: 'Conjugaison d\'avoir', characterId: 'marie',
+        characterMessage: "Bienvenue dans ma classe ! Aujourd'hui, on découvre ensemble un nouveau sujet.",
         question: 'Complétez : « Nous ___ trois chats. »',
         options: ['a', 'as', 'avons', 'avez'],
         correctIndex: 2,
@@ -333,7 +350,8 @@ export const a1Module2Content: CourseContent[] = [
         correctAnswer: 'n\'ai'
       },
       {
-        id: 'L16-4', type: 'flashcard', title: 'Expressions avec AVOIR',
+        id: 'L16-4', type: 'flashcard', title: 'Expressions avec AVOIR', characterId: 'fatou',
+        characterMessage: "Au Sénégal, on apprend le français à l'école. C'est un exercice classique !",
         cards: [
           { front: 'J\'ai faim', back: 'I\'m hungry' },
           { front: 'J\'ai soif', back: 'I\'m thirsty' },
@@ -351,7 +369,8 @@ export const a1Module2Content: CourseContent[] = [
         correctIndex: 3
       },
       {
-        id: 'L16-6', type: 'drag-drop', title: 'Formez la négation',
+        id: 'L16-6', type: 'drag-drop', title: 'Formez la négation', characterId: 'omar',
+        characterMessage: "Pas de panique si tu ne comprends pas tout. L'important, c'est les mots-clés !",
         instruction: 'Remettez les mots dans l\'ordre :',
         items: ['n\'ai', 'Je', 'de', 'pas', 'frère'],
         correctOrder: ['Je', 'n\'ai', 'pas', 'de', 'frère']
@@ -379,7 +398,8 @@ export const a1Module2Content: CourseContent[] = [
         tip: '💡 Devant un mot féminin qui commence par une voyelle, on dit « mon/ton/son » pour éviter le « hiatus » (deux voyelles).'
       },
       {
-        id: 'L17-2', type: 'flashcard', title: 'Les possessifs — Tableau',
+        id: 'L17-2', type: 'flashcard', title: 'Les possessifs — Tableau', characterId: 'marie',
+        characterMessage: "Bonjour à tous ! Prêts pour une nouvelle leçon ?",
         cards: [
           { front: 'my (masc.)', back: 'mon' },
           { front: 'my (fem.)', back: 'ma' },
@@ -397,7 +417,8 @@ export const a1Module2Content: CourseContent[] = [
         explanation: '« Sac » est masculin, donc on utilise « mon ».'
       },
       {
-        id: 'L17-4', type: 'fill-blank', title: 'Complétez la phrase',
+        id: 'L17-4', type: 'fill-blank', title: 'Complétez la phrase', characterId: 'lucas',
+        characterMessage: "Cette question m'a piégé la première fois. Fais attention !",
         sentence: 'Où est ___ clé ? (your, informal)',
         options: ['ton', 'ta', 'tes', 'ma'],
         correctAnswer: 'ta'
@@ -410,7 +431,8 @@ export const a1Module2Content: CourseContent[] = [
         explanation: 'Devant une voyelle, on utilise « mon » même pour le féminin : mon amie.'
       },
       {
-        id: 'L17-6', type: 'listening', title: 'Écoute — Les affaires de Lucas',
+        id: 'L17-6', type: 'listening', title: 'Écoute — Les affaires de Lucas', characterId: 'lucas',
+        characterMessage: "Réfléchis bien, la réponse est plus simple qu'on ne le pense.",
         text: 'Voilà mon sac. Dans mon sac, il y a mes livres, ma trousse et mon téléphone. Et toi, où est ton sac ?',
         question: 'Qu\'est-ce qu\'il y a dans le sac de Lucas ?',
         options: ['Des vêtements', 'Des livres, une trousse et un téléphone', 'De la nourriture', 'Un ordinateur'],
@@ -439,7 +461,8 @@ export const a1Module2Content: CourseContent[] = [
         tip: '💡 « Chez moi » signifie "at my place" / "at home". « Chez » + personne = at someone\'s place.'
       },
       {
-        id: 'L18-2', type: 'flashcard', title: 'Le logement — Vocabulaire',
+        id: 'L18-2', type: 'flashcard', title: 'Le logement — Vocabulaire', characterId: 'marie',
+        characterMessage: "Installez-vous confortablement, on commence !",
         cards: [
           { front: 'le salon', back: 'living room' },
           { front: 'la cuisine', back: 'kitchen' },
@@ -457,7 +480,8 @@ export const a1Module2Content: CourseContent[] = [
         explanation: 'On prépare les repas dans la cuisine.'
       },
       {
-        id: 'L18-4', type: 'fill-blank', title: 'Décrivez l\'appartement',
+        id: 'L18-4', type: 'fill-blank', title: 'Décrivez l\'appartement', characterId: 'lucas',
+        characterMessage: "J'ai fait cette erreur au début — ne tombe pas dans le piège !",
         sentence: 'Mon appartement a un ___, une cuisine et deux chambres.',
         options: ['jardin', 'salon', 'balcon', 'garage'],
         correctAnswer: 'salon'
@@ -470,7 +494,8 @@ export const a1Module2Content: CourseContent[] = [
         correctIndex: 1
       },
       {
-        id: 'L18-6', type: 'drag-drop', title: 'Décrivez le logement',
+        id: 'L18-6', type: 'drag-drop', title: 'Décrivez le logement', characterId: 'omar',
+        characterMessage: "Écoute bien ! Je vais te parler comme au marché d'Antibes.",
         instruction: 'Remettez les mots dans l\'ordre :',
         items: ['a', 'Mon', 'trois', 'appartement', 'chambres'],
         correctOrder: ['Mon', 'appartement', 'a', 'trois', 'chambres']
@@ -498,7 +523,8 @@ export const a1Module2Content: CourseContent[] = [
         tip: '💡 Ce quiz couvre toutes les leçons du Module A1.2. Prenez votre temps !'
       },
       {
-        id: 'L19-2', type: 'qcm', title: 'Révision — Famille',
+        id: 'L19-2', type: 'qcm', title: 'Révision — Famille', characterId: 'marie',
+        characterMessage: "Aujourd'hui, je vais vous expliquer quelque chose de très utile.",
         question: 'La sœur de mon père est ma…',
         options: ['Cousine', 'Grand-mère', 'Tante', 'Mère'],
         correctIndex: 2,
@@ -511,7 +537,8 @@ export const a1Module2Content: CourseContent[] = [
         correctAnswer: 'blonde'
       },
       {
-        id: 'L19-4', type: 'qcm', title: 'Révision — Couleurs',
+        id: 'L19-4', type: 'qcm', title: 'Révision — Couleurs', characterId: 'fatou',
+        characterMessage: "Lis toute la phrase avant de choisir. Le contexte est la clé !",
         question: '« Des chaussures orange » → pas d\'accord car…',
         options: ['C\'est pluriel', 'Orange est invariable', 'C\'est féminin', 'C\'est un adverbe'],
         correctIndex: 1,
@@ -524,7 +551,8 @@ export const a1Module2Content: CourseContent[] = [
         correctAnswer: 'n\'avons'
       },
       {
-        id: 'L19-6', type: 'qcm', title: 'Révision — Nombres',
+        id: 'L19-6', type: 'qcm', title: 'Révision — Nombres', characterId: 'fatou',
+        characterMessage: "Ne te précipite pas, réfléchis au sens de la phrase complète.",
         question: 'Comment dit-on 95 ?',
         options: ['Quatre-vingt-cinq', 'Quatre-vingt-quinze', 'Nonante-cinq', 'Soixante-quinze'],
         correctIndex: 1,
@@ -553,7 +581,8 @@ export const a1Module2Content: CourseContent[] = [
         tip: '💡 Prenez votre temps, relisez bien chaque question. Vous avez tout révisé, vous êtes prêt(e) !'
       },
       {
-        id: 'L20-2', type: 'final-quiz', title: '🎓 Examen Module A1.2 — Mon monde quotidien',
+        id: 'L20-2', type: 'final-quiz', title: '🎓 Examen Module A1.2 — Mon monde quotidien', characterId: 'marie',
+        characterMessage: "C'est un sujet passionnant, vous allez voir !",
         questions: [
           { question: 'Le fils de ma tante est mon…', options: ['Frère', 'Oncle', 'Cousin', 'Neveu'], correctIndex: 2 },
           { question: '« Elle est ___ . » (small, fem.)', options: ['petit', 'petite', 'petits', 'petites'], correctIndex: 1 },

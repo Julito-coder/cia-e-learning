@@ -8,11 +8,13 @@ export const a2Module2Content: CourseContent[] = [
     steps: [
       {
         id: 'L61-1', type: 'lesson', title: 'On sort ce soir ?', characterId: 'marie',
+        characterMessage: "Vous progressez bien ! Cette leçon va enrichir votre français.",
         content: `Apprenons à **proposer, accepter et refuser** une sortie ! 🎉\n\n📝 **Proposer :**\n- On va au cinéma ce soir ?\n- Tu veux venir au restaurant ?\n- Ça te dit d'aller à la plage ?\n- Si on allait au marché ?\n\n✅ **Accepter :**\n- Oui, avec plaisir !\n- Bonne idée ! / Super !\n- D'accord, pourquoi pas ?\n- Ça me dit bien !\n\n❌ **Refuser poliment :**\n- Désolé(e), je ne peux pas.\n- Merci, mais j'ai déjà quelque chose.\n- C'est gentil, mais je suis fatigué(e).\n- Peut-être une autre fois ?`,
         tip: '💡 « Ça te dit ? » est une expression très courante pour proposer quelque chose de manière informelle.'
       },
       {
         id: 'L61-2', type: 'listening', title: 'Écoute — Invitation', characterId: 'lucas',
+        characterMessage: "Concentre-toi sur les mots-clés, pas besoin de tout comprendre.",
         text: 'Salut Yuki ! Ça te dit d\'aller au restaurant ce soir ? Il y a un super restaurant de poissons sur le port d\'Antibes. Oui, avec plaisir ! On se retrouve à quelle heure ? À vingt heures, devant le restaurant. D\'accord, à ce soir !',
         question: 'Où veulent-ils aller ?',
         options: ['Au cinéma', 'Au restaurant', 'À la plage', 'Au musée'],
@@ -20,6 +22,7 @@ export const a2Module2Content: CourseContent[] = [
       },
       {
         id: 'L61-3', type: 'qcm', title: 'Proposer une sortie', characterId: 'elena',
+        characterMessage: "C'est plus facile quand on parle déjà une langue latine !",
         question: 'Quelle phrase sert à PROPOSER ?',
         options: ['Désolé, je ne peux pas.', 'Avec plaisir !', 'Ça te dit d\'aller au cinéma ?', 'Merci beaucoup.'],
         correctIndex: 2,
@@ -27,6 +30,7 @@ export const a2Module2Content: CourseContent[] = [
       },
       {
         id: 'L61-4', type: 'flashcard', title: 'Expressions sociales', characterId: 'thomas',
+        characterMessage: "Le français est riche de mots qui n'existent pas dans d'autres langues.",
         cards: [
           { front: 'Ça te dit ?', back: 'Do you feel like it? / How about it?' },
           { front: 'Avec plaisir !', back: 'With pleasure!' },
@@ -38,18 +42,21 @@ export const a2Module2Content: CourseContent[] = [
       },
       {
         id: 'L61-5', type: 'fill-blank', title: 'Complétez le dialogue', characterId: 'fatou',
+        characterMessage: "La grammaire française, c'est comme une recette : il faut les bons ingrédients !",
         sentence: '— Tu veux aller au cinéma ? — Oui, ___ !',
         options: ['désolé', 'avec plaisir', 'je ne peux pas', 'peut-être'],
         correctAnswer: 'avec plaisir'
       },
       {
         id: 'L61-6', type: 'drag-drop', title: 'Ordonnez le dialogue', characterId: 'yuki',
+        characterMessage: "Les phrases sont plus longues maintenant. Lis d'abord tous les mots !",
         instruction: 'Remettez ce dialogue dans l\'ordre :',
         items: ['D\'accord, à ce soir !', 'Ça te dit d\'aller au restaurant ?', 'À vingt heures.', 'Oui, avec plaisir ! À quelle heure ?'],
         correctOrder: ['Ça te dit d\'aller au restaurant ?', 'Oui, avec plaisir ! À quelle heure ?', 'À vingt heures.', 'D\'accord, à ce soir !']
       },
       {
         id: 'L61-7', type: 'qcm', title: 'Refuser poliment', characterId: 'omar',
+        characterMessage: "Cette question me rappelle mes premiers mois en France.",
         question: 'Quelle est une façon POLIE de refuser ?',
         options: ['Non !', 'Pas question !', 'C\'est gentil, mais je suis fatigué(e).', 'Jamais !'],
         correctIndex: 2,
@@ -57,6 +64,7 @@ export const a2Module2Content: CourseContent[] = [
       },
       {
         id: 'L61-8', type: 'final-quiz', title: 'Quiz final — Invitations', characterId: 'marie',
+        characterMessage: "Ce quiz est un peu plus long, mais vous êtes prêts !",
         questions: [
           { question: '« ___ d\'aller à la plage ? » (proposer)', options: ['Merci', 'Ça te dit', 'Désolé', 'Au revoir'], correctIndex: 1 },
           { question: 'Pour accepter, on dit…', options: ['Non merci', 'Avec plaisir !', 'Je ne peux pas', 'Peut-être'], correctIndex: 1 },
@@ -74,11 +82,13 @@ export const a2Module2Content: CourseContent[] = [
     steps: [
       {
         id: 'L62-1', type: 'lesson', title: 'Qu\'est-ce que tu en penses ?', characterId: 'marie',
+        characterMessage: "Bravo pour votre travail ! Continuons avec un nouveau thème.",
         content: `Apprenons à **donner une opinion** en français ! 💭\n\n📝 **Demander une opinion :**\n- Qu'est-ce que tu en penses ?\n- Tu trouves ça comment ?\n- Quel est ton avis ?\n\n👍 **Donner une opinion positive :**\n- Je trouve que c'est bien / génial / intéressant.\n- À mon avis, c'est super.\n- Je pense que c'est une bonne idée.\n\n👎 **Donner une opinion négative :**\n- Je ne trouve pas ça bien.\n- À mon avis, ce n'est pas terrible.\n- Je pense que c'est ennuyeux.\n\n🤷 **Être neutre :**\n- Je ne sais pas trop.\n- Ça dépend.\n- Bof… (indifférence)`,
         tip: '💡 « Je trouve que… » et « Je pense que… » sont suivis de l\'indicatif en français.'
       },
       {
         id: 'L62-2', type: 'listening', title: 'Écoute — Au café', characterId: 'elena',
+        characterMessage: "Les sons du français sont parfois trompeurs pour nous, Espagnols !",
         text: 'Qu\'est-ce que tu penses du nouveau restaurant sur le port ? Je trouve que c\'est très bon, mais un peu cher. Et toi ? À mon avis, la pizza était excellente. Je pense qu\'on devrait y retourner !',
         question: 'Que pense la première personne du restaurant ?',
         options: ['C\'est mauvais', 'C\'est bon mais cher', 'C\'est pas cher', 'C\'est ennuyeux'],
@@ -86,6 +96,7 @@ export const a2Module2Content: CourseContent[] = [
       },
       {
         id: 'L62-3', type: 'qcm', title: 'Expression d\'opinion', characterId: 'lucas',
+        characterMessage: "Au Brésil, on n'a pas cette règle. J'ai mis du temps à comprendre !",
         question: 'Complétez : « ___ mon avis, c\'est un bon film. »',
         options: ['Dans', 'À', 'Pour', 'En'],
         correctIndex: 1,
@@ -93,6 +104,7 @@ export const a2Module2Content: CourseContent[] = [
       },
       {
         id: 'L62-4', type: 'flashcard', title: 'Donner son opinion', characterId: 'thomas',
+        characterMessage: "Ces expressions colorent la langue française. Apprends-les par cœur !",
         cards: [
           { front: 'Je pense que…', back: 'I think that…' },
           { front: 'À mon avis…', back: 'In my opinion…' },
@@ -104,18 +116,21 @@ export const a2Module2Content: CourseContent[] = [
       },
       {
         id: 'L62-5', type: 'fill-blank', title: 'Complétez', characterId: 'fatou',
+        characterMessage: "À Dakar, mes professeurs nous faisaient faire beaucoup de ces exercices.",
         sentence: 'Je ___ que ce film est très intéressant.',
         options: ['vais', 'trouve', 'fais', 'veux'],
         correctAnswer: 'trouve'
       },
       {
         id: 'L62-6', type: 'drag-drop', title: 'Formez une opinion', characterId: 'yuki',
+        characterMessage: "La structure française est plus souple qu'on ne le pense.",
         instruction: 'Construisez une phrase d\'opinion :',
         items: ['que', 'pense', 'bonne idée', 'Je', 'c\'est', 'une'],
         correctOrder: ['Je', 'pense', 'que', 'c\'est', 'une', 'bonne idée']
       },
       {
         id: 'L62-7', type: 'qcm', title: 'Registre', characterId: 'omar',
+        characterMessage: "Cette question me rappelle mes premiers mois en France.",
         question: '« Bof… » exprime…',
         options: ['L\'enthousiasme', 'L\'indifférence', 'La colère', 'La surprise'],
         correctIndex: 1,
@@ -123,6 +138,7 @@ export const a2Module2Content: CourseContent[] = [
       },
       {
         id: 'L62-8', type: 'final-quiz', title: 'Quiz final — Opinions', characterId: 'marie',
+        characterMessage: "Montrez-moi tout ce que vous avez appris. Je crois en vous !",
         questions: [
           { question: '« ___ mon avis, c\'est trop cher. »', options: ['En', 'À', 'Dans', 'Pour'], correctIndex: 1 },
           { question: 'Pour demander un avis : « Qu\'est-ce que tu ___ ? »', options: ['fais', 'en penses', 'veux', 'dis'], correctIndex: 1 },
@@ -140,11 +156,13 @@ export const a2Module2Content: CourseContent[] = [
     steps: [
       {
         id: 'L63-1', type: 'lesson', title: 'Les émotions', characterId: 'marie',
+        characterMessage: "Aujourd'hui, on approfondit vos connaissances. C'est parti !",
         content: `Apprenons le vocabulaire des **émotions** ! 😊😢😡\n\n😊 **Positif :**\n- Content(e) / Heureux(se) → Happy\n- Ravi(e) → Delighted\n- Excité(e) → Excited\n- Fier / Fière → Proud\n\n😢 **Négatif :**\n- Triste → Sad\n- Déçu(e) → Disappointed\n- Inquiet / Inquiète → Worried\n- En colère → Angry\n\n😮 **Autres :**\n- Surpris(e) → Surprised\n- Fatigué(e) → Tired\n- Stressé(e) → Stressed\n- Jaloux / Jalouse → Jealous\n\n📐 **Structure :**\n- Je suis + adjectif → Je suis content(e)\n- Il/Elle est + adjectif → Elle est triste\n- Ça me rend + adjectif → Ça me rend heureux`,
         tip: '💡 N\'oubliez pas l\'accord : « il est content » mais « elle est contente » (ajoutez -e au féminin).'
       },
       {
         id: 'L63-2', type: 'listening', title: 'Écoute — Comment tu te sens ?', characterId: 'omar',
+        characterMessage: "Au marché de Forville à Cannes, j'entends ces conversations chaque jour.",
         text: 'Aujourd\'hui, je suis très content parce que j\'ai réussi mon examen de français ! Mais ma copine est un peu triste parce qu\'elle a raté le sien. Je suis aussi un peu fatigué après toutes ces révisions.',
         question: 'Pourquoi est-il content ?',
         options: ['Il a trouvé un travail', 'Il a réussi son examen', 'Il part en vacances', 'C\'est son anniversaire'],
@@ -152,6 +170,7 @@ export const a2Module2Content: CourseContent[] = [
       },
       {
         id: 'L63-3', type: 'qcm', title: 'Vocabulaire des émotions', characterId: 'elena',
+        characterMessage: "Attention, le français a des pièges que l'espagnol n'a pas.",
         question: 'Comment dit-on "worried" en français ?',
         options: ['Fatigué', 'Stressé', 'Inquiet', 'Surpris'],
         correctIndex: 2,
@@ -159,6 +178,7 @@ export const a2Module2Content: CourseContent[] = [
       },
       {
         id: 'L63-4', type: 'flashcard', title: 'Les émotions', characterId: 'thomas',
+        characterMessage: "En tant que guide, j'utilise ces mots tous les jours avec les touristes.",
         cards: [
           { front: 'Content(e)', back: 'Happy / Glad' },
           { front: 'Triste', back: 'Sad' },
@@ -171,18 +191,21 @@ export const a2Module2Content: CourseContent[] = [
       },
       {
         id: 'L63-5', type: 'fill-blank', title: 'Complétez', characterId: 'fatou',
+        characterMessage: "Pense à la conjugaison et à l'accord — c'est souvent la clé.",
         sentence: 'Elle est ___ parce qu\'elle a raté son examen.',
         options: ['contente', 'triste', 'fière', 'ravie'],
         correctAnswer: 'triste'
       },
       {
         id: 'L63-6', type: 'drag-drop', title: 'Associez', characterId: 'yuki',
+        characterMessage: "Commence par trouver le sujet, puis le verbe. Le reste suivra !",
         instruction: 'Formez une phrase avec une émotion :',
         items: ['suis', 'parce que', 'Je', 'content', 'c\'est les vacances'],
         correctOrder: ['Je', 'suis', 'content', 'parce que', 'c\'est les vacances']
       },
       {
         id: 'L63-7', type: 'qcm', title: 'Accord', characterId: 'lucas',
+        characterMessage: "C'est une question classique d'examen. Prends ton temps.",
         question: '« Marie est ___ de son résultat. » (fier)',
         options: ['fier', 'fière', 'fiers', 'fières'],
         correctIndex: 1,
@@ -190,6 +213,7 @@ export const a2Module2Content: CourseContent[] = [
       },
       {
         id: 'L63-8', type: 'final-quiz', title: 'Quiz final — Les émotions', characterId: 'marie',
+        characterMessage: "Quiz final ! Prenez votre temps, relisez bien chaque question.",
         questions: [
           { question: '« Happy » en français = …', options: ['Triste', 'Content', 'Surpris', 'Fatigué'], correctIndex: 1 },
           { question: '« En ___ » = Angry', options: ['colère', 'retard', 'avance', 'forme'], correctIndex: 0 },
@@ -207,11 +231,13 @@ export const a2Module2Content: CourseContent[] = [
     steps: [
       {
         id: 'L64-1', type: 'lesson', title: 'Comparer', characterId: 'marie',
+        characterMessage: "Vous êtes prêts pour un défi un peu plus grand ? Allons-y !",
         content: `Apprenons à **comparer** en français ! ⚖️\n\n📐 **Le comparatif :**\n\n🔼 **Supériorité :** plus + adjectif + que\n- Paris est **plus grand que** Nice.\n- Ce film est **plus intéressant que** l'autre.\n\n🔽 **Infériorité :** moins + adjectif + que\n- Antibes est **moins grand que** Paris.\n- Ce livre est **moins ennuyeux que** le premier.\n\n🟰 **Égalité :** aussi + adjectif + que\n- Marie est **aussi grande que** Sophie.\n- Ce café est **aussi bon que** l'autre.\n\n⚠️ **Irrégulier :**\n- bon → **meilleur** (pas « plus bon »)\n- bien → **mieux** (pas « plus bien »)\n- mauvais → **pire** (ou « plus mauvais »)`,
         tip: '💡 Ne dites JAMAIS « plus bon » ! Le comparatif de « bon » est toujours « meilleur ».'
       },
       {
         id: 'L64-2', type: 'listening', title: 'Écoute — Comparer les villes', characterId: 'lucas',
+        characterMessage: "Concentre-toi sur les mots-clés, pas besoin de tout comprendre.",
         text: 'Antibes est plus petite que Nice, mais elle est aussi belle. La plage d\'Antibes est meilleure que celle de Cannes, à mon avis. Et le marché d\'Antibes est moins cher que celui de Nice.',
         question: 'Selon lui, quelle plage est meilleure ?',
         options: ['Celle de Nice', 'Celle de Cannes', 'Celle d\'Antibes', 'Celle de Marseille'],
@@ -219,6 +245,7 @@ export const a2Module2Content: CourseContent[] = [
       },
       {
         id: 'L64-3', type: 'qcm', title: 'Le comparatif', characterId: 'elena',
+        characterMessage: "J'ai compris cette règle en comparant avec l'espagnol.",
         question: 'Complétez : « Ce restaurant est ___ que l\'autre. » (= better)',
         options: ['plus bon', 'meilleur', 'moins bon', 'aussi bon'],
         correctIndex: 1,
@@ -226,6 +253,7 @@ export const a2Module2Content: CourseContent[] = [
       },
       {
         id: 'L64-4', type: 'flashcard', title: 'Le comparatif', characterId: 'thomas',
+        characterMessage: "Le vocabulaire français reflète l'art de vivre à la française.",
         cards: [
           { front: 'plus + adj + que', back: 'more … than (supériorité)' },
           { front: 'moins + adj + que', back: 'less … than (infériorité)' },
@@ -237,18 +265,21 @@ export const a2Module2Content: CourseContent[] = [
       },
       {
         id: 'L64-5', type: 'fill-blank', title: 'Complétez', characterId: 'fatou',
+        characterMessage: "Le français a des règles précises. Cet exercice t'aide à les maîtriser.",
         sentence: 'Antibes est ___ grande que Paris.',
         options: ['plus', 'moins', 'aussi', 'meilleure'],
         correctAnswer: 'moins'
       },
       {
         id: 'L64-6', type: 'drag-drop', title: 'Formez une comparaison', characterId: 'yuki',
+        characterMessage: "Cet exercice entraîne ta pensée à fonctionner en français.",
         instruction: 'Construisez une phrase comparative :',
         items: ['est', 'que', 'Marie', 'grande', 'plus', 'Sophie'],
         correctOrder: ['Marie', 'est', 'plus', 'grande', 'que', 'Sophie']
       },
       {
         id: 'L64-7', type: 'qcm', title: 'Irrégulier', characterId: 'omar',
+        characterMessage: "Cette question me rappelle mes premiers mois en France.",
         question: '« Il parle ___ que moi. » (= better)',
         options: ['plus bien', 'mieux', 'meilleur', 'plus bon'],
         correctIndex: 1,
@@ -256,6 +287,7 @@ export const a2Module2Content: CourseContent[] = [
       },
       {
         id: 'L64-8', type: 'final-quiz', title: 'Quiz final — Le comparatif', characterId: 'marie',
+        characterMessage: "Vous avez bien travaillé, ce quiz va le prouver !",
         questions: [
           { question: '« Nice est ___ grande que Paris. »', options: ['plus', 'moins', 'aussi', 'meilleure'], correctIndex: 1 },
           { question: '« Ce gâteau est ___ que l\'autre. » (better)', options: ['plus bon', 'meilleur', 'mieux', 'aussi bon'], correctIndex: 1 },
@@ -273,11 +305,13 @@ export const a2Module2Content: CourseContent[] = [
     steps: [
       {
         id: 'L65-1', type: 'lesson', title: 'Le superlatif', characterId: 'marie',
+        characterMessage: "Cette leçon vous sera très utile dans la vie quotidienne.",
         content: `Le **superlatif** exprime le degré le plus élevé ! 🏆\n\n📐 **Formation :**\n\n🔼 **Superlatif de supériorité :**\nle/la/les + plus + adjectif\n- Paris est **la plus grande** ville de France.\n- C'est **le plus beau** paysage.\n\n🔽 **Superlatif d'infériorité :**\nle/la/les + moins + adjectif\n- C'est **le moins cher** des hôtels.\n\n⚠️ **Irréguliers :**\n- bon → **le meilleur / la meilleure**\n- mauvais → **le pire / la pire**\n\n📍 **Exemples à Antibes :**\n- La socca est **la meilleure** spécialité !\n- Le Fort Carré est **le plus ancien** monument.\n- C'est **le plus bel** endroit de la Côte d'Azur.`,
         tip: '💡 Attention à la place de l\'adjectif ! « le plus beau paysage » (avant le nom) mais « la ville la plus grande » (après le nom).'
       },
       {
         id: 'L65-2', type: 'listening', title: 'Écoute — Les records', characterId: 'omar',
+        characterMessage: "Écoute le rythme de la phrase, pas seulement les mots.",
         text: 'Antibes est l\'une des plus belles villes de la Côte d\'Azur. Le marché provençal est le plus coloré de la région. Et la socca ? C\'est la meilleure spécialité ! Le Cap d\'Antibes est l\'endroit le plus chic.',
         question: 'Quel est l\'endroit le plus chic ?',
         options: ['Le vieux port', 'Le marché', 'Le Cap d\'Antibes', 'Le Fort Carré'],
@@ -285,6 +319,7 @@ export const a2Module2Content: CourseContent[] = [
       },
       {
         id: 'L65-3', type: 'qcm', title: 'Le superlatif', characterId: 'elena',
+        characterMessage: "Ne traduis pas mot à mot — pense directement en français !",
         question: '« C\'est ___ restaurant de la ville. » (the best)',
         options: ['le plus bon', 'le meilleur', 'le mieux', 'le bon'],
         correctIndex: 1,
@@ -292,6 +327,7 @@ export const a2Module2Content: CourseContent[] = [
       },
       {
         id: 'L65-4', type: 'flashcard', title: 'Le superlatif', characterId: 'thomas',
+        characterMessage: "Chaque nouveau mot te rapproche de la culture française.",
         cards: [
           { front: 'le/la plus + adj', back: 'the most + adj (superlative)' },
           { front: 'le/la moins + adj', back: 'the least + adj' },
@@ -302,18 +338,21 @@ export const a2Module2Content: CourseContent[] = [
       },
       {
         id: 'L65-5', type: 'fill-blank', title: 'Complétez', characterId: 'fatou',
+        characterMessage: "Lis la phrase à voix haute avec chaque option — tu entendras la bonne !",
         sentence: 'C\'est la ville ___ belle de France.',
         options: ['la plus', 'le plus', 'la moins', 'plus'],
         correctAnswer: 'la plus'
       },
       {
         id: 'L65-6', type: 'drag-drop', title: 'Formez un superlatif', characterId: 'yuki',
+        characterMessage: "En japonais, le verbe est à la fin. En français, il est au milieu !",
         instruction: 'Construisez une phrase superlative :',
         items: ['est', 'C\'', 'restaurant', 'le meilleur', 'd\'Antibes'],
         correctOrder: ['C\'', 'est', 'le meilleur', 'restaurant', 'd\'Antibes']
       },
       {
         id: 'L65-7', type: 'qcm', title: 'Place de l\'adjectif', characterId: 'lucas',
+        characterMessage: "J'ai posé cette question à Marie hier en classe. Maintenant je sais !",
         question: 'Quelle phrase est correcte ?',
         options: ['La plus grande ville', 'La grande plus ville', 'La ville grande plus', 'Plus la grande ville'],
         correctIndex: 0,
@@ -321,6 +360,7 @@ export const a2Module2Content: CourseContent[] = [
       },
       {
         id: 'L65-8', type: 'final-quiz', title: 'Quiz final — Le superlatif', characterId: 'marie',
+        characterMessage: "C'est le moment de briller ! Bonne chance !",
         questions: [
           { question: '« C\'est ___ film de l\'année. » (the best)', options: ['le plus bon', 'le meilleur', 'le mieux', 'le bon'], correctIndex: 1 },
           { question: '« Paris est la ville ___ de France. »', options: ['la plus grande', 'le plus grand', 'plus grande', 'la grande'], correctIndex: 0 },
@@ -338,11 +378,13 @@ export const a2Module2Content: CourseContent[] = [
     steps: [
       {
         id: 'L66-1', type: 'lesson', title: 'Raconter un film', characterId: 'marie',
+        characterMessage: "Vous progressez bien ! Cette leçon va enrichir votre français.",
         content: `Apprenons à **résumer un film** en français ! 🎬\n\n📝 **Structure d'un résumé :**\n1. Le titre et le genre\n2. L'histoire (au présent ou au passé)\n3. Les personnages principaux\n4. Votre opinion\n\n🎥 **Vocabulaire :**\n- Une comédie / un drame / un thriller\n- Un film d'action / d'horreur / romantique\n- Le personnage principal / le héros\n- L'histoire se passe à… / en…\n- Le film raconte l'histoire de…\n- À la fin, le héros…\n\n💬 **Donner son avis :**\n- J'ai adoré / J'ai détesté\n- C'est un film émouvant / drôle / ennuyeux\n- Je recommande ce film !`,
         tip: '💡 Pour résumer un film, on peut utiliser le présent de narration : « Le héros arrive à Paris et rencontre une femme mystérieuse… »'
       },
       {
         id: 'L66-2', type: 'listening', title: 'Écoute — Résumé de film', characterId: 'lucas',
+        characterMessage: "Concentre-toi sur les mots-clés, pas besoin de tout comprendre.",
         text: 'J\'ai vu le film « Intouchables ». C\'est une comédie dramatique. L\'histoire raconte l\'amitié entre un riche homme paralysé et son aide-soignant. C\'est un film très émouvant et drôle. Je le recommande !',
         question: 'Quel est le genre du film ?',
         options: ['Un thriller', 'Un film d\'horreur', 'Une comédie dramatique', 'Un film d\'action'],
@@ -350,6 +392,7 @@ export const a2Module2Content: CourseContent[] = [
       },
       {
         id: 'L66-3', type: 'qcm', title: 'Vocabulaire du cinéma', characterId: 'elena',
+        characterMessage: "Cette structure est différente en espagnol. Fais attention !",
         question: 'Un film qui fait rire est…',
         options: ['Un drame', 'Une comédie', 'Un thriller', 'Un documentaire'],
         correctIndex: 1,
@@ -357,6 +400,7 @@ export const a2Module2Content: CourseContent[] = [
       },
       {
         id: 'L66-4', type: 'flashcard', title: 'Genres de films', characterId: 'thomas',
+        characterMessage: "Le français est riche de mots qui n'existent pas dans d'autres langues.",
         cards: [
           { front: 'Une comédie', back: 'A comedy' },
           { front: 'Un drame', back: 'A drama' },
@@ -368,18 +412,21 @@ export const a2Module2Content: CourseContent[] = [
       },
       {
         id: 'L66-5', type: 'fill-blank', title: 'Complétez', characterId: 'fatou',
+        characterMessage: "La grammaire française, c'est comme une recette : il faut les bons ingrédients !",
         sentence: 'L\'histoire ___ passe à Paris dans les années 1960.',
         options: ['se', 'a', 'en', 'est'],
         correctAnswer: 'se'
       },
       {
         id: 'L66-6', type: 'drag-drop', title: 'Structure d\'un résumé', characterId: 'yuki',
+        characterMessage: "Les phrases sont plus longues maintenant. Lis d'abord tous les mots !",
         instruction: 'Ordonnez les éléments d\'un résumé de film :',
         items: ['Mon opinion : j\'ai adoré !', 'Le titre : « Amélie »', 'L\'histoire : une jeune femme aide les gens.', 'Le genre : une comédie romantique.'],
         correctOrder: ['Le titre : « Amélie »', 'Le genre : une comédie romantique.', 'L\'histoire : une jeune femme aide les gens.', 'Mon opinion : j\'ai adoré !']
       },
       {
         id: 'L66-7', type: 'qcm', title: 'Expression', characterId: 'omar',
+        characterMessage: "Cette question me rappelle mes premiers mois en France.",
         question: '« Émouvant » signifie…',
         options: ['Funny', 'Moving / Touching', 'Boring', 'Scary'],
         correctIndex: 1,
@@ -387,6 +434,7 @@ export const a2Module2Content: CourseContent[] = [
       },
       {
         id: 'L66-8', type: 'final-quiz', title: 'Quiz final — Raconter un film', characterId: 'marie',
+        characterMessage: "Ce quiz est un peu plus long, mais vous êtes prêts !",
         questions: [
           { question: '« Un film qui fait peur » est…', options: ['Une comédie', 'Un drame', 'Un film d\'horreur', 'Un documentaire'], correctIndex: 2 },
           { question: '« L\'histoire ___ passe à Nice. »', options: ['a', 'se', 'en', 'est'], correctIndex: 1 },
@@ -404,11 +452,13 @@ export const a2Module2Content: CourseContent[] = [
     steps: [
       {
         id: 'L67-1', type: 'lesson', title: 'Écrire un avis en ligne', characterId: 'marie',
+        characterMessage: "Bravo pour votre travail ! Continuons avec un nouveau thème.",
         content: `Apprenons à **rédiger un avis** sur un restaurant ou un hôtel ! ⭐\n\n📝 **Structure d'un avis :**\n1. **Contexte** : Quand ? Avec qui ?\n2. **Positif** : Ce que vous avez aimé\n3. **Négatif** : Ce que vous n'avez pas aimé\n4. **Recommandation** : Note et conclusion\n\n✅ **Expressions positives :**\n- Le service était excellent.\n- La nourriture était délicieuse.\n- L'ambiance était agréable.\n- Le personnel était accueillant.\n\n❌ **Expressions négatives :**\n- L'attente était trop longue.\n- C'était un peu cher.\n- La chambre n'était pas propre.\n\n⭐ **Conclusion :**\n- Je recommande cet endroit !\n- Je n'y retournerai pas.\n- 4 étoiles sur 5.`,
         tip: '💡 Un bon avis est équilibré : mentionnez les points positifs ET négatifs.'
       },
       {
         id: 'L67-2', type: 'listening', title: 'Écoute — Avis restaurant', characterId: 'elena',
+        characterMessage: "Les sons du français sont parfois trompeurs pour nous, Espagnols !",
         text: 'Nous avons dîné dans ce restaurant samedi soir. La nourriture était excellente, surtout le poisson. Le service était rapide et le personnel était très sympa. Par contre, c\'était un peu bruyant. Je recommande quand même ! Quatre étoiles sur cinq.',
         question: 'Quel était le point négatif ?',
         options: ['La nourriture', 'Le service', 'Le bruit', 'Le prix'],
@@ -416,6 +466,7 @@ export const a2Module2Content: CourseContent[] = [
       },
       {
         id: 'L67-3', type: 'qcm', title: 'Vocabulaire des avis', characterId: 'lucas',
+        characterMessage: "Souviens-toi de ce qu'on a vu dans la leçon, ça va t'aider.",
         question: '« Accueillant » signifie…',
         options: ['Expensive', 'Welcoming', 'Noisy', 'Clean'],
         correctIndex: 1,
@@ -423,6 +474,7 @@ export const a2Module2Content: CourseContent[] = [
       },
       {
         id: 'L67-4', type: 'flashcard', title: 'Avis et critiques', characterId: 'thomas',
+        characterMessage: "Ces expressions colorent la langue française. Apprends-les par cœur !",
         cards: [
           { front: 'Le service était excellent.', back: 'The service was excellent.' },
           { front: 'La nourriture était délicieuse.', back: 'The food was delicious.' },
@@ -434,18 +486,21 @@ export const a2Module2Content: CourseContent[] = [
       },
       {
         id: 'L67-5', type: 'fill-blank', title: 'Complétez l\'avis', characterId: 'fatou',
+        characterMessage: "À Dakar, mes professeurs nous faisaient faire beaucoup de ces exercices.",
         sentence: 'La chambre était propre, ___ le petit déjeuner n\'était pas bon.',
         options: ['et', 'par contre', 'aussi', 'donc'],
         correctAnswer: 'par contre'
       },
       {
         id: 'L67-6', type: 'drag-drop', title: 'Structure d\'un avis', characterId: 'yuki',
+        characterMessage: "La structure française est plus souple qu'on ne le pense.",
         instruction: 'Ordonnez cet avis :',
         items: ['Je recommande ! 4/5.', 'Nous avons dîné samedi.', 'Par contre, c\'était cher.', 'La nourriture était excellente.'],
         correctOrder: ['Nous avons dîné samedi.', 'La nourriture était excellente.', 'Par contre, c\'était cher.', 'Je recommande ! 4/5.']
       },
       {
         id: 'L67-7', type: 'qcm', title: 'Expression', characterId: 'omar',
+        characterMessage: "Cette question me rappelle mes premiers mois en France.",
         question: '« Par contre » introduit…',
         options: ['Un point positif', 'Un point négatif / contraste', 'Une conclusion', 'Un exemple'],
         correctIndex: 1,
@@ -453,6 +508,7 @@ export const a2Module2Content: CourseContent[] = [
       },
       {
         id: 'L67-8', type: 'final-quiz', title: 'Quiz final — Écrire un avis', characterId: 'marie',
+        characterMessage: "Montrez-moi tout ce que vous avez appris. Je crois en vous !",
         questions: [
           { question: '« Le personnel ___ accueillant. »', options: ['a été', 'était', 'sera', 'est'], correctIndex: 1 },
           { question: '« ___ » introduit un contraste.', options: ['Et', 'Aussi', 'Par contre', 'Donc'], correctIndex: 2 },
@@ -470,11 +526,13 @@ export const a2Module2Content: CourseContent[] = [
     steps: [
       {
         id: 'L68-1', type: 'lesson', title: 'Les pronoms COD', characterId: 'marie',
+        characterMessage: "Aujourd'hui, on approfondit vos connaissances. C'est parti !",
         content: `Les **pronoms COD** (Complément d'Objet Direct) remplacent un nom déjà mentionné. 🔄\n\n📐 **Les pronoms COD :**\n- **me** (m') → me\n- **te** (t') → you (informal)\n- **le** (l') → him / it (masc.)\n- **la** (l') → her / it (fem.)\n- **nous** → us\n- **vous** → you (formal/plural)\n- **les** → them\n\n📍 **Position :** AVANT le verbe\n- Tu aimes **le chocolat** ? → Tu **l'**aimes ?\n- Je regarde **le film**. → Je **le** regarde.\n- Elle connaît **Marie**. → Elle **la** connaît.\n\n⚠️ **Au passé composé :** avant l'auxiliaire\n- J'ai vu **le film**. → Je **l'**ai vu.\n- Elle a lu **les livres**. → Elle **les** a lus.`,
         tip: '💡 Le pronom COD se place toujours AVANT le verbe conjugué (ou l\'auxiliaire au passé composé).'
       },
       {
         id: 'L68-2', type: 'listening', title: 'Écoute — Conversation', characterId: 'omar',
+        characterMessage: "Quand je suis arrivé en France, je comprenais rien. Maintenant, tout va bien !",
         text: 'Tu as vu le nouveau film de Luc Besson ? Oui, je l\'ai vu hier. Et la bande-annonce du prochain ? Non, je ne l\'ai pas encore regardée. Tu devrais la regarder, elle est super !',
         question: 'A-t-il vu la bande-annonce ?',
         options: ['Oui, il l\'a vue', 'Non, pas encore', 'Oui, deux fois', 'Il ne sait pas'],
@@ -482,6 +540,7 @@ export const a2Module2Content: CourseContent[] = [
       },
       {
         id: 'L68-3', type: 'qcm', title: 'Pronom COD', characterId: 'elena',
+        characterMessage: "C'est plus facile quand on parle déjà une langue latine !",
         question: '« Je mange la pizza. » → « Je ___ mange. »',
         options: ['le', 'la', 'les', 'lui'],
         correctIndex: 1,
@@ -489,6 +548,7 @@ export const a2Module2Content: CourseContent[] = [
       },
       {
         id: 'L68-4', type: 'flashcard', title: 'Les pronoms COD', characterId: 'thomas',
+        characterMessage: "En tant que guide, j'utilise ces mots tous les jours avec les touristes.",
         cards: [
           { front: 'me / m\'', back: 'me (Il me regarde.)' },
           { front: 'te / t\'', back: 'you — informal (Je te connais.)' },
@@ -500,18 +560,21 @@ export const a2Module2Content: CourseContent[] = [
       },
       {
         id: 'L68-5', type: 'fill-blank', title: 'Remplacez par un pronom', characterId: 'fatou',
+        characterMessage: "Pense à la conjugaison et à l'accord — c'est souvent la clé.",
         sentence: 'Tu connais Marie ? — Oui, je ___ connais bien.',
         options: ['le', 'la', 'les', 'lui'],
         correctAnswer: 'la'
       },
       {
         id: 'L68-6', type: 'drag-drop', title: 'Ordre des mots', characterId: 'yuki',
+        characterMessage: "Commence par trouver le sujet, puis le verbe. Le reste suivra !",
         instruction: 'Remettez dans l\'ordre avec le pronom COD :',
         items: ['ai', 'Je', 'vu', 'l\''],
         correctOrder: ['Je', 'l\'', 'ai', 'vu']
       },
       {
         id: 'L68-7', type: 'qcm', title: 'Au passé composé', characterId: 'lucas',
+        characterMessage: "Cette règle est importante — on l'utilise tous les jours !",
         question: '« J\'ai acheté les fleurs. » → « Je ___ ai achetées. »',
         options: ['le', 'la', 'les', 'lui'],
         correctIndex: 2,
@@ -519,6 +582,7 @@ export const a2Module2Content: CourseContent[] = [
       },
       {
         id: 'L68-8', type: 'final-quiz', title: 'Quiz final — Pronoms COD', characterId: 'marie',
+        characterMessage: "Quiz final ! Prenez votre temps, relisez bien chaque question.",
         questions: [
           { question: '« Je regarde le film. » → « Je ___ regarde. »', options: ['le', 'la', 'les', 'lui'], correctIndex: 0 },
           { question: '« Elle aime les chats. » → « Elle ___ aime. »', options: ['le', 'la', 'les', 'leur'], correctIndex: 2 },
@@ -536,11 +600,13 @@ export const a2Module2Content: CourseContent[] = [
     steps: [
       {
         id: 'L69-1', type: 'lesson', title: 'Révision — La vie sociale', characterId: 'marie',
+        characterMessage: "Vous êtes prêts pour un défi un peu plus grand ? Allons-y !",
         content: `📚 **Révision du Module A2.2** — La vie sociale\n\n✅ **Proposer / Accepter / Refuser :**\nÇa te dit ? — Avec plaisir ! — Désolé, je ne peux pas.\n\n✅ **Donner une opinion :**\nJe pense que… / À mon avis… / Je trouve que…\n\n✅ **Les émotions :**\nContent, triste, en colère, surpris, fatigué, déçu…\n\n✅ **Le comparatif :**\nPlus… que / Moins… que / Aussi… que\nBon → meilleur / Bien → mieux\n\n✅ **Le superlatif :**\nLe/la plus + adj / Le meilleur / Le pire\n\n✅ **Raconter un film et écrire un avis**\n\n✅ **Les pronoms COD :**\nme, te, le, la, nous, vous, les (avant le verbe)`,
         tip: '💡 Révisez bien les comparatifs irréguliers : bon → meilleur, bien → mieux !'
       },
       {
         id: 'L69-2', type: 'qcm', title: 'Révision — Invitation', characterId: 'lucas',
+        characterMessage: "Au Brésil, on n'a pas cette règle. J'ai mis du temps à comprendre !",
         question: '« Ça te ___ d\'aller au cinéma ? »',
         options: ['fait', 'dit', 'va', 'prend'],
         correctIndex: 1,
@@ -548,12 +614,14 @@ export const a2Module2Content: CourseContent[] = [
       },
       {
         id: 'L69-3', type: 'fill-blank', title: 'Révision — Comparatif', characterId: 'fatou',
+        characterMessage: "Le français a des règles précises. Cet exercice t'aide à les maîtriser.",
         sentence: 'Ce restaurant est ___ que l\'autre. (better)',
         options: ['plus bon', 'meilleur', 'mieux', 'le meilleur'],
         correctAnswer: 'meilleur'
       },
       {
         id: 'L69-4', type: 'qcm', title: 'Révision — Émotions', characterId: 'elena',
+        characterMessage: "Attention, le français a des pièges que l'espagnol n'a pas.",
         question: '« Disappointed » en français = …',
         options: ['Surpris', 'Déçu', 'Inquiet', 'Fatigué'],
         correctIndex: 1,
@@ -561,6 +629,7 @@ export const a2Module2Content: CourseContent[] = [
       },
       {
         id: 'L69-5', type: 'drag-drop', title: 'Révision — Pronom COD', characterId: 'yuki',
+        characterMessage: "Cet exercice entraîne ta pensée à fonctionner en français.",
         instruction: 'Remettez dans l\'ordre :',
         items: ['la', 'connais', 'Je', 'bien'],
         correctOrder: ['Je', 'la', 'connais', 'bien']
@@ -573,6 +642,7 @@ export const a2Module2Content: CourseContent[] = [
       },
       {
         id: 'L69-7', type: 'qcm', title: 'Révision — Superlatif', characterId: 'lucas',
+        characterMessage: "C'est une question classique d'examen. Prends ton temps.",
         question: '« C\'est ___ film de l\'année. » (the best)',
         options: ['le plus bon', 'le meilleur', 'le mieux', 'le bon'],
         correctIndex: 1,
@@ -580,6 +650,7 @@ export const a2Module2Content: CourseContent[] = [
       },
       {
         id: 'L69-8', type: 'final-quiz', title: 'Quiz de révision A2.2', characterId: 'marie',
+        characterMessage: "Vous avez bien travaillé, ce quiz va le prouver !",
         questions: [
           { question: 'Pour proposer : « ___ te dit ? »', options: ['Ça', 'Ce', 'Il', 'On'], correctIndex: 0 },
           { question: '« Par contre » introduit…', options: ['Un accord', 'Un contraste', 'Une conclusion', 'Un exemple'], correctIndex: 1 },
@@ -597,6 +668,7 @@ export const a2Module2Content: CourseContent[] = [
     steps: [
       {
         id: 'L70-1', type: 'lesson', title: 'Examen Module A2.2 — La vie sociale', characterId: 'marie',
+        characterMessage: "Cette leçon vous sera très utile dans la vie quotidienne.",
         content: `🎓 **Examen du Module A2.2**\n\nVous allez passer l'examen final du module « La vie sociale ».\n\n📋 **Ce qui sera évalué :**\n- Proposer / Accepter / Refuser\n- Donner une opinion\n- Les émotions\n- Le comparatif et le superlatif\n- Raconter un film / Écrire un avis\n- Les pronoms COD\n\n💪 Bonne chance ! Badge « Social Butterfly » 🦋 à débloquer !`,
         tip: '💡 Lisez attentivement chaque question. Vous avez toutes les connaissances nécessaires !'
       },
@@ -641,6 +713,7 @@ export const a2Module2Content: CourseContent[] = [
       },
       {
         id: 'L70-8', type: 'final-quiz', title: 'Examen final A2.2', characterId: 'marie',
+        characterMessage: "C'est le moment de briller ! Bonne chance !",
         questions: [
           { question: '« Je ___ que c\'est intéressant. »', options: ['vais', 'trouve', 'fais', 'sais'], correctIndex: 1 },
           { question: '« Avec plaisir ! » est pour…', options: ['Refuser', 'Proposer', 'Accepter', 'Demander'], correctIndex: 2 },
