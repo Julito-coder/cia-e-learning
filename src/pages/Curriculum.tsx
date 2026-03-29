@@ -5,7 +5,8 @@ import { Lock, Star } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { curriculum } from '@/data/curriculum';
 import { CECR_LEVELS, type CECRLevel } from '@/data/demo-courses';
-import { useUserProgress, isLevelAccessible } from '@/hooks/useUserProgress';
+import { useUserProgress } from '@/hooks/useUserProgress';
+import { isModuleUnlocked } from '@/hooks/useModuleUnlock';
 import { LearningPath } from '@/components/courses/LearningPath';
 
 const levelEmojis: Record<string, string> = { A0: '🌰', A1: '🌱', A2: '🌿', B1: '🌊', B2: '⚡', C1: '🔥', C2: '👑' };
@@ -86,7 +87,7 @@ export default function CurriculumPage() {
       {/* Visual path per level */}
       <div className="space-y-8">
         {filteredLevels.map((levelData) => {
-          const locked = !isLevelAccessible(levelData.level, cecrLevel);
+          const locked = !levelData.modules.some(m => isModuleUnlocked(m.id));
           const isCurrentLevel = levelData.level === cecrLevel;
 
           return (
@@ -114,7 +115,7 @@ export default function CurriculumPage() {
               </div>
 
               {/* Module path */}
-              <LearningPath modules={levelData.modules} locked={locked} />
+              <LearningPath modules={levelData.modules} />
             </div>
           );
         })}
