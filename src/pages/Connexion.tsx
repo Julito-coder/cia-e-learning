@@ -10,6 +10,7 @@ import { useUserProgress } from '@/hooks/useUserProgress';
 import { AvatarUpload } from '@/components/profile/AvatarUpload';
 import { Progress } from '@/components/ui/progress';
 import { supabase } from '@/integrations/supabase/client';
+import { getEarnedBadges } from '@/hooks/useModuleUnlock';
 import { toast } from 'sonner';
 
 export default function Connexion() {
@@ -31,6 +32,8 @@ export default function Connexion() {
       .then(({ data }) => { if (data?.avatar_url) setAvatarUrl(data.avatar_url); });
   }, [user]);
 
+  const earnedBadges = getEarnedBadges();
+
   if (user) {
     return (
       <div className="min-h-[80vh] flex items-center justify-center px-4 py-12 animate-fade-in">
@@ -51,6 +54,21 @@ export default function Connexion() {
                 {xpProgress.current} / {xpProgress.needed} XP vers le niveau suivant
               </p>
             </div>
+
+            {/* Earned badges */}
+            {earnedBadges.length > 0 && (
+              <div className="space-y-2">
+                <p className="text-sm font-bold">🏅 Badges obtenus ({earnedBadges.length})</p>
+                <div className="flex flex-wrap gap-2">
+                  {earnedBadges.map(b => (
+                    <div key={b.moduleId} className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-accent/10 border border-accent/20 text-xs font-semibold">
+                      <span>{b.badgeEmoji}</span>
+                      <span>{b.badge}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {isAdmin && (
               <Link to="/admin">

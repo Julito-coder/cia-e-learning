@@ -9,9 +9,10 @@ import { Separator } from '@/components/ui/separator';
 import { LevelBadge } from '@/components/courses/LevelBadge';
 import { demoCourses } from '@/data/demo-courses';
 import { getCourseContent } from '@/data/course-content';
-import { getLessonById } from '@/data/curriculum';
+import { getLessonById, curriculum } from '@/data/curriculum';
 import { CoursePlayer } from '@/components/course-player/CoursePlayer';
 import { useUserProgress, isLevelAccessible } from '@/hooks/useUserProgress';
+import { getNewlyUnlockedModules, isModuleComplete, computeLevelFromProgress } from '@/hooks/useModuleUnlock';
 import { toast } from 'sonner';
 
 const contentTypeLabels: Record<string, { label: string; icon: React.ElementType }> = {
@@ -38,7 +39,7 @@ export default function CourseDetail() {
   const [playing, setPlaying] = useState(false);
   const [completed, setCompleted] = useState(false);
   const [finalScore, setFinalScore] = useState(0);
-  const { cecrLevel, addXP } = useUserProgress();
+  const { cecrLevel, addXP, setLevel } = useUserProgress();
 
   // Build a virtual course object for curriculum lessons
   const displayCourse = course || (curriculumData ? {
@@ -84,13 +85,33 @@ export default function CourseDetail() {
           localStorage.setItem('course-progress', JSON.stringify(progress));
 
           // Award XP based on score
-          const xpEarned = Math.round(score * 5); // 0-500 XP per course
+          const xpEarned = Math.round(score * 5);
           const { leveledUp, newLevel } = await addXP(xpEarned);
-
-          if (leveledUp) {
-            toast.success(`🎉 Niveau supérieur ! Vous êtes maintenant ${newLevel} !`, { duration: 5000 });
-          }
           toast.success(`+${xpEarned} XP gagnés !`);
+
+          // Check if a module was just completed and unlock notifications
+          if (curriculumData) {
+            const mod = curriculumData.module;
+            if (isModuleComplete(mod)) {
+              // Badge earned toast
+              toast.success(`🏅 Badge obtenu : ${mod.badgeEmoji} ${mod.badge}`, { duration: 5000 });
+
+              // Check newly unlocked modules
+              const unlocked = getNewlyUnlockedModules(mod.id);
+              for (const u of unlocked) {
+                setTimeout(() => {
+                  toast(`🔓 Module débloqué : ${u.badgeEmoji} ${u.id} — ${u.title}`, { duration: 6000 });
+                }, 1500);
+              }
+
+              // Update CECR level based on progress
+              const newComputedLevel = computeLevelFromProgress();
+              if (newComputedLevel !== cecrLevel) {
+                await setLevel(newComputedLevel as any);
+                toast.success(`🎉 Niveau supérieur ! Vous êtes maintenant ${newComputedLevel} !`, { duration: 5000 });
+              }
+            }
+          }
         }}
       />
     );
