@@ -228,7 +228,7 @@ export default function Index() {
             {/* Learning path preview */}
             <div className="card-duo p-5">
               <h3 className="font-display text-base mb-2">{t('sections.path')}</h3>
-              <LearningPath modules={pathModules} />
+              <LearningPath modules={pathModules} cecrLevel={cecrLevel} />
             </div>
           </div>
         </div>
