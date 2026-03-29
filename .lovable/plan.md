@@ -1,56 +1,67 @@
 
 
-## Plan : Sections séparées, personnages intégrés aux cours, progression persistante
+## Plan : Restructurer le layout — Personnages à gauche, optimiser le responsive
 
-### 1. Séparer CharacterShowcase et LearningPath en sections distinctes
+### Probleme actuel
 
-**Fichier : `src/pages/Index.tsx`**
-- Retirer le CharacterShowcase du bloc `card-duo` qui contient le LearningPath (lignes 229-242)
-- Créer une section pleine largeur dédiée "Nos personnages" **au-dessus** de la section parcours, avec un titre et les 8 avatars en ligne horizontale scrollable
-- La section LearningPath reste dans sa propre card séparée
-- Sur mobile : CharacterShowcase en grille 2x4 ou scroll horizontal, puis LearningPath en dessous
-- Sur desktop : CharacterShowcase en ligne de 8 avatars, puis LearningPath en dessous
+CharacterShowcase et LearningPath sont empilés dans la sidebar droite (1/3 de largeur). Les 2/3 gauches de la page sont vides sous les cours — un énorme espace gris perdu.
 
-### 2. Intégrer les personnages dans tous les types de steps des cours
+### Solution
 
-**Fichier : `src/data/course-content.ts`**
-- Ajouter `characterId?: string` à TOUS les types de steps (LessonStep, QCMStep, FillBlankStep, etc.), pas seulement ListeningStep
-- Permet d'afficher quel personnage "parle" ou "pose la question" dans chaque exercice
+Créer une nouvelle section pleine largeur **sous les cours** avec un layout 2 colonnes :
+- **Gauche** : CharacterShowcase (sticky, les personnages restent visibles pendant le scroll du parcours)
+- **Droite** : LearningPath
 
-**Fichiers : `src/components/course-player/LessonStep.tsx`, `QCMStep.tsx`, `FillBlankStep.tsx`, `DragDropStep.tsx`, `FlashcardStep.tsx`, `FinalQuizStep.tsx`**
-- Importer `CharacterBubble` et `useUserProgress`
-- Si le step a un `characterId`, afficher la bulle du personnage en haut du step (avatar + nom + catchphrase)
-- Cela donne l'impression que le personnage guide/enseigne/questionne l'apprenant
+Les retirer de la sidebar droite actuelle. Sur mobile/tablette, les personnages passent en ligne horizontale scrollable au-dessus du parcours.
 
-**Fichiers de contenu : `src/data/a1-module1-content.ts`, `src/data/a1-module2-content.ts`, `src/data/course-content.ts`**
-- Ajouter des `characterId` à tous les steps existants, en répartissant les 8 personnages selon leur rôle :
-  - `marie` → lessons (c'est la prof)
-  - `lucas`, `yuki`, `omar`, `elena`, `fatou`, `hans` → exercices variés (les étudiants posent des questions, font des dialogues)
-  - `thomas` → culture, flashcards (c'est le barman/local)
+### Fichier : `src/pages/Index.tsx`
 
-### 3. Persister la progression par module/cours (correctCount + step)
+1. **Retirer** le `CharacterShowcase` et `LearningPath` de la sidebar droite (lignes 229-239)
+2. **Ajouter** une nouvelle section pleine largeur après le bloc `grid grid-cols-1 lg:grid-cols-3` :
 
-**Fichier : `src/components/course-player/CoursePlayer.tsx`**
-- Actuellement : `correctCount` et `totalQuestions` sont en mémoire (state) et se perdent quand on quitte
-- **Fix** : sauvegarder `correctCount` et `totalQuestions` dans localStorage en plus du `currentStep`
-- Clé : `course-progress-state-${courseId}` → `{ step, correctCount, totalQuestions }`
-- Au montage, restaurer les 3 valeurs
-- À la complétion, nettoyer cette clé
-- Cela permet de passer d'un cours à un autre et de retrouver sa progression exacte
+```text
+┌─────────────────────────────────────────────────┐
+│  Nouvelle section pleine largeur                │
+│                                                 │
+│  Mobile/Tablette:                               │
+│  ┌─────────────────────────────────────────┐    │
+│  │ Personnages (scroll horizontal)          │    │
+│  └─────────────────────────────────────────┘    │
+│  ┌─────────────────────────────────────────┐    │
+│  │ Parcours d'apprentissage                 │    │
+│  └─────────────────────────────────────────┘    │
+│                                                 │
+│  Desktop (lg+):                                 │
+│  ┌──────────┐  ┌───────────────────────────┐    │
+│  │Personnages│  │ Parcours d'apprentissage  │    │
+│  │ (sticky)  │  │ (scrollable)              │    │
+│  │ 2x4 grid │  │                           │    │
+│  │           │  │                           │    │
+│  └──────────┘  └───────────────────────────┘    │
+└─────────────────────────────────────────────────┘
+```
+
+Layout : `flex flex-col lg:flex-row gap-6`
+- Gauche : `lg:w-64 lg:sticky lg:top-20 lg:self-start` — les personnages en grille 2x4, compacte
+- Droite : `flex-1` — le parcours prend tout l'espace restant
+
+### Fichier : `src/components/characters/CharacterShowcase.tsx`
+
+Ajouter un mode responsive :
+- **Mobile** (`< lg`) : grille horizontale scrollable `flex overflow-x-auto gap-4` avec les 8 personnages en ligne
+- **Desktop** (`lg+`) : grille `grid-cols-2` verticale comme actuellement mais plus espacée
+
+### Responsive global des cartes
+
+Optimiser les grilles existantes dans Index.tsx :
+- Stats row : `grid-cols-2 sm:grid-cols-4` (au lieu de `lg:grid-cols-4`) pour remplir mieux sur tablette
+- Courses : `sm:grid-cols-2 md:grid-cols-3` au lieu de `lg:grid-cols-3`
+- Sidebar cards sur tablette : passer en `md:grid-cols-2 lg:grid-cols-1` pour que les cards s'étalent sur 2 colonnes en tablette au lieu de s'empiler
 
 ### Fichiers modifiés
 
 | Fichier | Action |
 |---------|--------|
-| `src/pages/Index.tsx` | Séparer showcase et path en 2 sections |
-| `src/data/course-content.ts` | Ajouter `characterId?` à tous les types |
-| `src/components/course-player/CoursePlayer.tsx` | Persister correctCount/totalQuestions |
-| `src/components/course-player/LessonStep.tsx` | Afficher CharacterBubble si characterId |
-| `src/components/course-player/QCMStep.tsx` | Idem |
-| `src/components/course-player/FillBlankStep.tsx` | Idem |
-| `src/components/course-player/DragDropStep.tsx` | Idem |
-| `src/components/course-player/FlashcardStep.tsx` | Idem |
-| `src/components/course-player/FinalQuizStep.tsx` | Idem |
-| `src/data/a1-module1-content.ts` | Ajouter characterId à tous les steps |
-| `src/data/a1-module2-content.ts` | Idem |
+| `src/pages/Index.tsx` | Restructurer layout : personnages+parcours en section séparée, optimiser breakpoints |
+| `src/components/characters/CharacterShowcase.tsx` | Ajouter mode horizontal scrollable sur mobile |
 
