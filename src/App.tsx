@@ -49,6 +49,8 @@ const App = () => {
               <Route path="/cours/:id" element={<CourseDetail />} />
               <Route path="/test-niveau" element={<TestNiveau />} />
               <Route path="/connexion" element={<Connexion />} />
+              <Route path="/mot-de-passe-oublie" element={<ForgotPassword />} />
+              <Route path="/reinitialiser-mot-de-passe" element={<ResetPassword />} />
               <Route path="/favoris" element={<Catalogue />} />
             </Route>
 
