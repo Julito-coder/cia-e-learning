@@ -164,19 +164,7 @@ export function LearningPath({ modules }: LearningPathProps) {
                 onClick={() => state !== 'locked' && setExpandedModule(isExpanded ? null : mod.id)}
                 className={`relative w-16 h-16 md:w-20 md:h-20 rounded-full border-4 flex items-center justify-center transition-all duration-300 ${stateStyles[state]}`}
               >
-                {state !== 'locked' && progress > 0 && (
-                  <svg className="absolute inset-0 w-16 h-16 md:w-20 md:h-20 -rotate-90" viewBox="0 0 80 80">
-                    <circle cx="40" cy="40" r="36" fill="none" stroke="hsl(var(--border))" strokeWidth="4" />
-                    <circle
-                      cx="40" cy="40" r="36" fill="none"
-                      stroke={state === 'complete' ? 'hsl(var(--cia-success))' : 'hsl(var(--accent-foreground))'}
-                      strokeWidth="4"
-                      strokeLinecap="round"
-                      strokeDasharray={`${2 * Math.PI * 36}`}
-                      strokeDashoffset={`${2 * Math.PI * 36 * (1 - progress / 100)}`}
-                    />
-                  </svg>
-                )}
+                
                 <span className="text-xl md:text-2xl relative z-10">
                   {state === 'complete' ? <Check className="h-5 w-5 md:h-7 md:w-7" strokeWidth={3} /> :
                    state === 'active' ? <Play className="h-5 w-5 md:h-6 md:w-6 ml-0.5" fill="currentColor" /> :
@@ -189,9 +177,7 @@ export function LearningPath({ modules }: LearningPathProps) {
               <div className="mt-1.5 md:mt-2 text-center w-24 md:w-28 mx-auto">
                 <Badge variant="outline" className="text-[9px] md:text-[10px] font-bold mb-0.5">{mod.id}</Badge>
                 <p className="text-[11px] md:text-xs font-bold leading-tight line-clamp-2">{mod.title}</p>
-                {state !== 'locked' && progress > 0 && (
-                  <p className={`text-[10px] font-bold mt-0.5 ${state === 'complete' ? 'text-cia-success' : 'text-accent'}`}>{progress}%</p>
-                )}
+                
               </div>
 
               {/* Module popup */}
