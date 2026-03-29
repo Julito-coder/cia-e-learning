@@ -39,7 +39,7 @@ export default function CourseDetail() {
   const [playing, setPlaying] = useState(false);
   const [completed, setCompleted] = useState(false);
   const [finalScore, setFinalScore] = useState(0);
-  const { cecrLevel, addXP } = useUserProgress();
+  const { cecrLevel, addXP, setLevel } = useUserProgress();
 
   // Build a virtual course object for curriculum lessons
   const displayCourse = course || (curriculumData ? {
