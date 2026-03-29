@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Clock, FileText, Headphones, Video, BookOpen, Mic, Play, Trophy, Lock } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -28,6 +28,7 @@ const contentTypeLabels: Record<string, { label: string; icon: React.ElementType
 
 export default function CourseDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
   
   // Check if this is a curriculum lesson (lesson-N) or a legacy demo course
   const isCurriculumLesson = id?.startsWith('lesson-');
@@ -76,7 +77,6 @@ export default function CourseDetail() {
         onExit={() => setPlaying(false)}
         onComplete={async (score) => {
           setFinalScore(score);
-          setCompleted(true);
           setPlaying(false);
 
           // Save progress
@@ -112,6 +112,12 @@ export default function CourseDetail() {
               }
             }
           }
+
+          // Redirect to programme after completion
+          const moduleId = curriculumData?.module?.id;
+          setTimeout(() => {
+            navigate(moduleId ? `/programme?module=${moduleId}` : '/programme');
+          }, 1500);
         }}
       />
     );
@@ -131,8 +137,8 @@ export default function CourseDetail() {
         <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/40 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 p-6 text-primary-foreground">
           <div className="container">
-            <Link to="/catalogue" className="inline-flex items-center gap-1 text-sm opacity-80 hover:opacity-100 mb-3">
-              <ArrowLeft className="h-4 w-4" /> Catalogue
+            <Link to="/programme" className="inline-flex items-center gap-1 text-sm opacity-80 hover:opacity-100 mb-3">
+              <ArrowLeft className="h-4 w-4" /> Programme
             </Link>
             <div className="flex items-center gap-2 mb-2">
               <LevelBadge level={displayCourse.level} />
