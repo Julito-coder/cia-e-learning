@@ -83,38 +83,38 @@ export const allCourseContent: CourseContent[] = [
     courseId: '1',
     steps: [
       {
-        id: '1-1', type: 'lesson', title: 'Les articles en français',
+        id: '1-1', type: 'lesson', title: 'Les articles en français', characterId: 'marie',
         content: `En français, chaque nom est accompagné d'un **article**. Il existe deux types principaux :\n\n🔵 **Articles définis** — on connaît la chose :\n- **le** (masculin singulier) → le livre\n- **la** (féminin singulier) → la table\n- **les** (pluriel) → les enfants\n- **l'** (devant voyelle) → l'école\n\n🟢 **Articles indéfinis** — on ne précise pas :\n- **un** (masculin singulier) → un chat\n- **une** (féminin singulier) → une fleur\n- **des** (pluriel) → des amis`,
         tip: `💡 Astuce : "le/la" = je sais de quoi je parle. "un/une" = n'importe lequel.`
       },
       {
-        id: '1-2', type: 'qcm', title: 'Article défini ou indéfini ?',
+        id: '1-2', type: 'qcm', title: 'Article défini ou indéfini ?', characterId: 'lucas',
         question: 'Complétez : « J\'aime ___ chocolat. »',
         options: ['un', 'le', 'des', 'la'],
         correctIndex: 1,
         explanation: 'On utilise "le" car on parle du chocolat en général (sens général = article défini).'
       },
       {
-        id: '1-3', type: 'fill-blank', title: 'Complétez la phrase',
+        id: '1-3', type: 'fill-blank', title: 'Complétez la phrase', characterId: 'yuki',
         sentence: 'Il y a ___ chat dans le jardin.',
         options: ['le', 'un', 'la', 'des'],
         correctAnswer: 'un'
       },
       {
-        id: '1-4', type: 'qcm', title: 'Le bon article',
+        id: '1-4', type: 'qcm', title: 'Le bon article', characterId: 'omar',
         question: 'Quel article pour « ___ école » ?',
         options: ['le', 'la', 'l\'', 'un'],
         correctIndex: 2,
         explanation: '« École » commence par une voyelle, donc on utilise l\' (élision).'
       },
       {
-        id: '1-5', type: 'fill-blank', title: 'Articles au pluriel',
+        id: '1-5', type: 'fill-blank', title: 'Articles au pluriel', characterId: 'fatou',
         sentence: '___ enfants jouent dans le parc.',
         options: ['des', 'les', 'un', 'la'],
         correctAnswer: 'les'
       },
       {
-        id: '1-6', type: 'drag-drop', title: 'Classez les articles',
+        id: '1-6', type: 'drag-drop', title: 'Classez les articles', characterId: 'hans',
         instruction: 'Remettez ces mots dans l\'ordre pour former une phrase correcte :',
         items: ['mange', 'une', 'Marie', 'pomme'],
         correctOrder: ['Marie', 'mange', 'une', 'pomme']
@@ -127,7 +127,7 @@ export const allCourseContent: CourseContent[] = [
         correctIndex: 0
       },
       {
-        id: '1-8', type: 'final-quiz', title: 'Quiz final — Les articles',
+        id: '1-8', type: 'final-quiz', title: 'Quiz final — Les articles', characterId: 'marie',
         questions: [
           { question: '« ___ soleil brille. »', options: ['Un', 'Le', 'Des', 'La'], correctIndex: 1 },
           { question: '« Elle a ___ sœur. »', options: ['la', 'le', 'une', 'des'], correctIndex: 2 },
