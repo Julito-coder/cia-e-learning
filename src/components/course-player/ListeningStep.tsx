@@ -84,7 +84,7 @@ export function ListeningStep({ step, onNext }: Props) {
       setLoading(false);
       setHasListened(true);
     }
-  }, [playing, loading, step.text]);
+  }, [playing, loading, step.text, character?.voiceId, evolution?.voiceSettings]);
 
   const handleSelect = (index: number) => {
     if (answered) return;
@@ -100,6 +100,10 @@ export function ListeningStep({ step, onNext }: Props) {
         </div>
         <h2 className="text-xl font-bold font-display">{step.title}</h2>
       </div>
+      {/* Character info */}
+      {character && evolution && (
+        <CharacterBubble character={character} evolution={evolution} showBio />
+      )}
 
       {/* Audio player */}
       <Card className="border-2">
