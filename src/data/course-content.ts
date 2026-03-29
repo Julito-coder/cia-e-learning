@@ -5,6 +5,7 @@ export interface LessonStep {
   title: string;
   content: string;
   tip?: string;
+  characterId?: string;
 }
 
 export interface QCMStep {
@@ -15,6 +16,7 @@ export interface QCMStep {
   options: string[];
   correctIndex: number;
   explanation: string;
+  characterId?: string;
 }
 
 export interface FillBlankStep {
@@ -24,6 +26,7 @@ export interface FillBlankStep {
   sentence: string; // use ___ for blank
   options: string[];
   correctAnswer: string;
+  characterId?: string;
 }
 
 export interface DragDropStep {
@@ -33,6 +36,7 @@ export interface DragDropStep {
   instruction: string;
   items: string[];
   correctOrder: string[];
+  characterId?: string;
 }
 
 export interface FlashcardStep {
@@ -40,6 +44,7 @@ export interface FlashcardStep {
   type: 'flashcard';
   title: string;
   cards: { front: string; back: string }[];
+  characterId?: string;
 }
 
 export interface ListeningStep {
@@ -62,6 +67,7 @@ export interface FinalQuizStep {
     options: string[];
     correctIndex: number;
   }[];
+  characterId?: string;
 }
 
 export type CourseStep = LessonStep | QCMStep | FillBlankStep | DragDropStep | FlashcardStep | ListeningStep | FinalQuizStep;
