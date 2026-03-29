@@ -19,30 +19,56 @@ interface Props {
   onComplete: (score: number) => void;
 }
 
+interface SavedProgress {
+  step: number;
+  correctCount: number;
+  totalQuestions: number;
+}
+
+function loadProgress(courseId: string): SavedProgress {
+  try {
+    const raw = localStorage.getItem(`course-progress-${courseId}`);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      return {
+        step: parsed.step ?? 0,
+        correctCount: parsed.correctCount ?? 0,
+        totalQuestions: parsed.totalQuestions ?? 0,
+      };
+    }
+  } catch {}
+  return { step: 0, correctCount: 0, totalQuestions: 0 };
+}
+
+function saveProgress(courseId: string, progress: SavedProgress) {
+  localStorage.setItem(`course-progress-${courseId}`, JSON.stringify(progress));
+}
+
 export function CoursePlayer({ content, courseTitle, onExit, onComplete }: Props) {
-  const [currentStep, setCurrentStep] = useState(() => {
-    const saved = localStorage.getItem(`course-step-${content.courseId}`);
-    return saved ? Math.min(parseInt(saved), content.steps.length - 1) : 0;
-  });
-  const [correctCount, setCorrectCount] = useState(0);
-  const [totalQuestions, setTotalQuestions] = useState(0);
+  const saved = loadProgress(content.courseId);
+  const [currentStep, setCurrentStep] = useState(Math.min(saved.step, content.steps.length - 1));
+  const [correctCount, setCorrectCount] = useState(saved.correctCount);
+  const [totalQuestions, setTotalQuestions] = useState(saved.totalQuestions);
 
   const step = content.steps[currentStep];
   const progressPct = ((currentStep + 1) / content.steps.length) * 100;
 
   useEffect(() => {
-    localStorage.setItem(`course-step-${content.courseId}`, String(currentStep));
-  }, [currentStep, content.courseId]);
+    saveProgress(content.courseId, { step: currentStep, correctCount, totalQuestions });
+  }, [currentStep, correctCount, totalQuestions, content.courseId]);
 
   const handleNext = (correct?: boolean) => {
+    const newCorrect = correctCount + (correct === true ? 1 : 0);
+    const newTotal = totalQuestions + (correct !== undefined ? 1 : 0);
+
     if (correct !== undefined) {
-      setTotalQuestions(t => t + 1);
-      if (correct) setCorrectCount(c => c + 1);
+      setTotalQuestions(newTotal);
+      if (correct) setCorrectCount(newCorrect);
     }
 
     if (currentStep + 1 >= content.steps.length) {
-      const score = totalQuestions > 0 ? Math.round((correctCount + (correct ? 1 : 0)) / (totalQuestions + 1) * 100) : 100;
-      localStorage.removeItem(`course-step-${content.courseId}`);
+      const score = newTotal > 0 ? Math.round(newCorrect / newTotal * 100) : 100;
+      localStorage.removeItem(`course-progress-${content.courseId}`);
       onComplete(score);
       return;
     }
@@ -50,7 +76,6 @@ export function CoursePlayer({ content, courseTitle, onExit, onComplete }: Props
   };
 
   const renderStep = (s: CourseStep) => {
-    // Key includes step id to force remount
     switch (s.type) {
       case 'lesson': return <LessonStep key={s.id} step={s} onNext={() => handleNext()} />;
       case 'qcm': return <QCMStep key={s.id} step={s} onNext={(c) => handleNext(c)} />;
