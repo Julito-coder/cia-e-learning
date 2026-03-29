@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Headphones, Play, CheckCircle2, XCircle, Volume2 } from 'lucide-react';
+import { Headphones, Play, CheckCircle2, XCircle, Volume2, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { ListeningStep as ListeningStepType } from '@/data/course-content';
 
@@ -11,60 +11,68 @@ interface Props {
   onNext: (correct: boolean) => void;
 }
 
-function getNaturalFrenchVoice(): SpeechSynthesisVoice | undefined {
-  const voices = speechSynthesis.getVoices();
-  const frVoices = voices.filter(v => v.lang.startsWith('fr'));
-  if (frVoices.length === 0) return undefined;
-
-  // Prioritize premium/natural voices
-  const premium = frVoices.find(v =>
-    /Google|Microsoft|Natural|Enhanced|Premium|Amelie|Thomas|Audrey/i.test(v.name) &&
-    !/compact|espeak/i.test(v.name)
-  );
-  if (premium) return premium;
-
-  // Fallback: prefer non-compact voices
-  const nonCompact = frVoices.find(v => !/compact|espeak/i.test(v.name));
-  return nonCompact || frVoices[0];
-}
-
 export function ListeningStep({ step, onNext }: Props) {
   const { t } = useTranslation();
   const [playing, setPlaying] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [hasListened, setHasListened] = useState(false);
   const [selected, setSelected] = useState<number | null>(null);
   const [answered, setAnswered] = useState(false);
-  const [voicesReady, setVoicesReady] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const audioBlobUrlRef = useRef<string | null>(null);
   const isCorrect = selected === step.correctIndex;
 
-  useEffect(() => {
-    const loadVoices = () => {
-      if (speechSynthesis.getVoices().length > 0) {
-        setVoicesReady(true);
+  const handlePlay = useCallback(async () => {
+    if (playing || loading) return;
+
+    // If we already have the audio cached, just replay it
+    if (audioBlobUrlRef.current) {
+      const audio = new Audio(audioBlobUrlRef.current);
+      audioRef.current = audio;
+      audio.onplay = () => setPlaying(true);
+      audio.onended = () => { setPlaying(false); setHasListened(true); };
+      audio.onerror = () => { setPlaying(false); setHasListened(true); };
+      await audio.play();
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/elevenlabs-tts`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+            Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+          },
+          body: JSON.stringify({ text: step.text }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`TTS request failed: ${response.status}`);
       }
-    };
-    loadVoices();
-    speechSynthesis.onvoiceschanged = loadVoices;
-    return () => { speechSynthesis.onvoiceschanged = null; };
-  }, []);
 
-  const handlePlay = () => {
-    if (playing) return;
-    const utterance = new SpeechSynthesisUtterance(step.text);
-    utterance.lang = 'fr-FR';
-    utterance.rate = 0.85;
-    utterance.pitch = 1.0;
-    utterance.volume = 1.0;
+      const audioBlob = await response.blob();
+      const audioUrl = URL.createObjectURL(audioBlob);
+      audioBlobUrlRef.current = audioUrl;
 
-    const voice = getNaturalFrenchVoice();
-    if (voice) utterance.voice = voice;
+      const audio = new Audio(audioUrl);
+      audioRef.current = audio;
+      audio.onplay = () => setPlaying(true);
+      audio.onended = () => { setPlaying(false); setHasListened(true); };
+      audio.onerror = () => { setPlaying(false); setHasListened(true); };
 
-    utterance.onstart = () => setPlaying(true);
-    utterance.onend = () => { setPlaying(false); setHasListened(true); };
-    utterance.onerror = () => { setPlaying(false); setHasListened(true); };
-    speechSynthesis.cancel();
-    speechSynthesis.speak(utterance);
-  };
+      setLoading(false);
+      await audio.play();
+    } catch (error) {
+      console.error('ElevenLabs TTS error:', error);
+      setLoading(false);
+      setHasListened(true);
+    }
+  }, [playing, loading, step.text]);
 
   const handleSelect = (index: number) => {
     if (answered) return;
@@ -87,22 +95,32 @@ export function ListeningStep({ step, onNext }: Props) {
           <div className="flex flex-col items-center gap-4">
             <button
               onClick={handlePlay}
-              disabled={playing}
+              disabled={playing || loading}
               className={cn(
                 'h-20 w-20 rounded-full flex items-center justify-center transition-all',
-                playing
-                  ? 'bg-primary/20 animate-pulse'
-                  : 'bg-primary hover:bg-primary/90 cursor-pointer',
+                loading
+                  ? 'bg-muted animate-pulse'
+                  : playing
+                    ? 'bg-primary/20 animate-pulse'
+                    : 'bg-primary hover:bg-primary/90 cursor-pointer',
               )}
             >
-              {playing ? (
+              {loading ? (
+                <Loader2 className="h-8 w-8 text-muted-foreground animate-spin" />
+              ) : playing ? (
                 <Volume2 className="h-8 w-8 text-primary" />
               ) : (
                 <Play className="h-8 w-8 text-primary-foreground ml-1" />
               )}
             </button>
             <p className="text-sm text-muted-foreground">
-              {playing ? t('player.listening') : hasListened ? t('player.clickToReplay') : t('player.clickToListen')}
+              {loading
+                ? t('player.generating', 'Génération de l\'audio...')
+                : playing
+                  ? t('player.listening')
+                  : hasListened
+                    ? t('player.clickToReplay')
+                    : t('player.clickToListen')}
             </p>
           </div>
         </CardContent>
