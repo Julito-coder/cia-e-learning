@@ -6,18 +6,16 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import type { Module } from '@/data/curriculum';
 import { getCourseContent } from '@/data/course-content';
-import type { CECRLevel } from '@/data/demo-courses';
+import { isModuleUnlocked } from '@/hooks/useModuleUnlock';
 
 interface LearningPathProps {
   modules: Module[];
-  locked?: boolean;
-  cecrLevel?: CECRLevel;
 }
 
 type NodeState = 'complete' | 'active' | 'available' | 'locked';
 
-function getModuleState(mod: Module, locked: boolean): NodeState {
-  if (locked) return 'locked';
+function getModuleState(mod: Module): NodeState {
+  if (!isModuleUnlocked(mod.id)) return 'locked';
   try {
     const savedProgress = JSON.parse(localStorage.getItem('course-progress') || '{}');
     const completed = mod.lessons.filter(l => savedProgress[`lesson-${l.id}`]?.completed).length;
@@ -131,13 +129,13 @@ function PopupContent({ mod, state, progress, saved, onClose }: {
   );
 }
 
-export function LearningPath({ modules, locked = false, cecrLevel = 'A1' }: LearningPathProps) {
+export function LearningPath({ modules }: LearningPathProps) {
   const [expandedModule, setExpandedModule] = useState<string | null>(null);
 
   return (
     <div className="relative flex flex-col items-center py-2 pb-16">
       {modules.map((mod, i) => {
-        const state = getModuleState(mod, locked);
+        const state = getModuleState(mod);
         const progress = getModuleProgress(mod);
         const offset = i % 2 === 0 ? 'md:-translate-x-12 lg:-translate-x-16' : 'md:translate-x-12 lg:translate-x-16';
         const isExpanded = expandedModule === mod.id;
