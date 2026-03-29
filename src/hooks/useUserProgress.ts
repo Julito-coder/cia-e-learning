@@ -41,14 +41,17 @@ export function useUserProgress() {
   const [cecrLevel, setCecrLevel] = useState<CECRLevel>('A1');
   const [loading, setLoading] = useState(true);
 
-  // Listen for XP updates from other hook instances
+  // Listen for XP updates from other hook instances (cross-component sync)
   useEffect(() => {
+    const id = Math.random();
     const handler = (e: Event) => {
-      const { xp, level } = (e as CustomEvent).detail;
-      setTotalXP(xp);
-      setCecrLevel(level);
+      const detail = (e as CustomEvent).detail;
+      if (detail._src === id) return; // ignore own emit
+      setTotalXP(detail.xp);
+      setCecrLevel(detail.level);
     };
     window.addEventListener(XP_UPDATE_EVENT, handler);
+    (window as any).__xpSrcId = id;
     return () => window.removeEventListener(XP_UPDATE_EVENT, handler);
   }, []);
 
