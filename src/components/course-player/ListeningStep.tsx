@@ -5,6 +5,9 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Headphones, Play, CheckCircle2, XCircle, Volume2, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { ListeningStep as ListeningStepType } from '@/data/course-content';
+import { getCharacter, getCharacterEvolution } from '@/data/characters';
+import { CharacterBubble } from './CharacterBubble';
+import { useUserProgress } from '@/hooks/useUserProgress';
 
 interface Props {
   step: ListeningStepType;
@@ -13,6 +16,7 @@ interface Props {
 
 export function ListeningStep({ step, onNext }: Props) {
   const { t } = useTranslation();
+  const { cecrLevel } = useUserProgress();
   const [playing, setPlaying] = useState(false);
   const [loading, setLoading] = useState(false);
   const [hasListened, setHasListened] = useState(false);
@@ -21,6 +25,10 @@ export function ListeningStep({ step, onNext }: Props) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const audioBlobUrlRef = useRef<string | null>(null);
   const isCorrect = selected === step.correctIndex;
+
+  // Resolve character for this step
+  const character = step.characterId ? getCharacter(step.characterId) : undefined;
+  const evolution = character ? getCharacterEvolution(character, cecrLevel) : undefined;
 
   const handlePlay = useCallback(async () => {
     if (playing || loading) return;
@@ -47,7 +55,11 @@ export function ListeningStep({ step, onNext }: Props) {
             apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
             Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
           },
-          body: JSON.stringify({ text: step.text }),
+          body: JSON.stringify({
+            text: step.text,
+            voiceId: character?.voiceId,
+            voiceSettings: evolution?.voiceSettings,
+          }),
         }
       );
 
@@ -72,7 +84,7 @@ export function ListeningStep({ step, onNext }: Props) {
       setLoading(false);
       setHasListened(true);
     }
-  }, [playing, loading, step.text]);
+  }, [playing, loading, step.text, character?.voiceId, evolution?.voiceSettings]);
 
   const handleSelect = (index: number) => {
     if (answered) return;
@@ -88,6 +100,10 @@ export function ListeningStep({ step, onNext }: Props) {
         </div>
         <h2 className="text-xl font-bold font-display">{step.title}</h2>
       </div>
+      {/* Character info */}
+      {character && evolution && (
+        <CharacterBubble character={character} evolution={evolution} showBio />
+      )}
 
       {/* Audio player */}
       <Card className="border-2">

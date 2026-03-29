@@ -46,7 +46,8 @@ export interface ListeningStep {
   id: string;
   type: 'listening';
   title: string;
-  text: string; // text read by SpeechSynthesis
+  text: string; // text read by TTS
+  characterId?: string; // ID of the speaking character
   question: string;
   options: string[];
   correctIndex: number;
@@ -113,7 +114,7 @@ export const allCourseContent: CourseContent[] = [
         correctOrder: ['Marie', 'mange', 'une', 'pomme']
       },
       {
-        id: '1-7', type: 'listening', title: 'Compréhension orale',
+        id: '1-7', type: 'listening', title: 'Compréhension orale', characterId: 'elena',
         text: 'Je vais à la boulangerie pour acheter un croissant et des pains au chocolat.',
         question: 'Que va acheter cette personne ?',
         options: ['Un croissant et des pains au chocolat', 'Le pain et la baguette', 'Une tarte et un gâteau', 'Des fruits et des légumes'],
@@ -153,7 +154,7 @@ export const allCourseContent: CourseContent[] = [
         ]
       },
       {
-        id: '2-3', type: 'listening', title: 'Écoute — Présentation',
+        id: '2-3', type: 'listening', title: 'Écoute — Présentation', characterId: 'marie',
         text: 'Bonjour, je m\'appelle Sophie. J\'ai vingt-cinq ans. J\'habite à Nice et je suis professeur de français.',
         question: 'Quel est le métier de Sophie ?',
         options: ['Étudiante', 'Médecin', 'Professeur de français', 'Avocate'],
@@ -231,7 +232,7 @@ export const allCourseContent: CourseContent[] = [
         correctOrder: ['Antibes', 'est', 'sur', 'la', 'Côte d\'Azur']
       },
       {
-        id: '3-6', type: 'listening', title: 'Compréhension orale',
+        id: '3-6', type: 'listening', title: 'Compréhension orale', characterId: 'thomas',
         text: 'Antibes est une belle ville sur la Côte d\'Azur. On peut visiter le musée Picasso et le marché provençal.',
         question: 'Que peut-on visiter à Antibes ?',
         options: ['Le Louvre', 'Le musée Picasso et le marché', 'La tour Eiffel', 'Le château de Versailles'],
@@ -292,7 +293,7 @@ export const allCourseContent: CourseContent[] = [
         explanation: '« Prendre » → « pris ». C\'est un participe passé irrégulier qu\'il faut mémoriser.'
       },
       {
-        id: '4-7', type: 'listening', title: 'Compréhension orale',
+        id: '4-7', type: 'listening', title: 'Compréhension orale', characterId: 'lucas',
         text: 'Ce matin, je me suis levé à sept heures. J\'ai pris mon petit déjeuner et je suis allé au travail.',
         question: 'À quelle heure s\'est-il levé ?',
         options: ['À six heures', 'À sept heures', 'À huit heures', 'À neuf heures'],
@@ -321,14 +322,14 @@ export const allCourseContent: CourseContent[] = [
         tip: '💡 Ne paniquez pas si vous ne comprenez pas tout. Concentrez-vous sur les mots-clés !'
       },
       {
-        id: '5-2', type: 'listening', title: 'Au café',
+        id: '5-2', type: 'listening', title: 'Au café', characterId: 'omar',
         text: 'Bonjour ! Je voudrais un café et un croissant, s\'il vous plaît. C\'est combien ? Trois euros cinquante. Voilà, merci !',
         question: 'Combien coûte la commande ?',
         options: ['2,50 €', '3,50 €', '4,00 €', '5,00 €'],
         correctIndex: 1
       },
       {
-        id: '5-3', type: 'listening', title: 'À la gare',
+        id: '5-3', type: 'listening', title: 'À la gare', characterId: 'fatou',
         text: 'Excusez-moi, à quelle heure part le train pour Nice ? Le prochain train part à quatorze heures trente, quai numéro trois.',
         question: 'À quelle heure part le train ?',
         options: ['13h00', '14h30', '15h00', '16h30'],
@@ -348,7 +349,7 @@ export const allCourseContent: CourseContent[] = [
         correctAnswer: 'voudrais'
       },
       {
-        id: '5-6', type: 'listening', title: 'Au supermarché',
+        id: '5-6', type: 'listening', title: 'Au supermarché', characterId: 'yuki',
         text: 'Bonjour madame, vous avez des tomates ? Oui, elles sont à deux euros le kilo. J\'en prends un kilo, s\'il vous plaît.',
         question: 'Quel est le prix des tomates ?',
         options: ['1 €/kg', '2 €/kg', '3 €/kg', '4 €/kg'],
@@ -403,7 +404,7 @@ export const allCourseContent: CourseContent[] = [
         correctAnswer: 'postuler'
       },
       {
-        id: '6-5', type: 'listening', title: 'Entretien d\'embauche',
+        id: '6-5', type: 'listening', title: 'Entretien d\'embauche', characterId: 'hans',
         text: 'Bonjour, asseyez-vous. Parlez-moi de votre expérience professionnelle. J\'ai travaillé pendant trois ans comme assistant marketing dans une entreprise à Lyon.',
         question: 'Combien de temps a duré l\'expérience du candidat ?',
         options: ['Un an', 'Deux ans', 'Trois ans', 'Cinq ans'],
