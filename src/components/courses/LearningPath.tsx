@@ -1,4 +1,5 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
 import { Check, Lock, Play, X } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
@@ -49,28 +50,28 @@ function ModulePopup({ mod, state, progress, onClose, index }: {
     catch { return {}; }
   }, []);
 
-  return (
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = prev; };
+  }, []);
+
+  if (typeof document === 'undefined') return null;
+
+  return createPortal(
     <>
-      {/* Backdrop — always fixed full-screen */}
-      <div className="fixed inset-0 z-40 bg-black/20" onClick={onClose} />
+      <div className="fixed inset-0 z-[110] bg-black/30 backdrop-blur-sm" onClick={onClose} />
 
-      {/* Mobile/Tablet: bottom sheet */}
-      <div className="fixed inset-x-0 bottom-0 z-50 lg:hidden animate-slide-up">
-        <div className="bg-card border-t-2 border-border rounded-t-3xl p-5 pb-8 shadow-2xl max-h-[70vh] overflow-y-auto">
-          <PopupContent mod={mod} state={state} progress={progress} saved={saved} onClose={onClose} />
-        </div>
-      </div>
-
-      {/* Desktop: fixed centered dialog */}
-      <div className="hidden lg:flex fixed inset-0 z-50 items-center justify-center p-6 pointer-events-none">
-        <div className="card-duo p-5 w-full max-w-sm max-h-[70vh] overflow-y-auto pointer-events-auto animate-scale-in relative">
-          <button onClick={onClose} className="absolute top-3 right-3 h-7 w-7 rounded-full bg-muted flex items-center justify-center hover:bg-muted/80">
-            <X className="h-3.5 w-3.5" />
+      <div className="fixed inset-0 z-[111] flex items-end sm:items-center justify-center p-0 sm:p-4 md:p-6">
+        <div className="bg-card border border-border rounded-t-3xl sm:rounded-3xl p-4 sm:p-5 shadow-2xl w-full sm:max-w-sm max-h-[85vh] overflow-y-auto animate-enter relative">
+          <button onClick={onClose} className="absolute top-3 right-3 h-8 w-8 rounded-full bg-muted flex items-center justify-center hover:bg-muted/80">
+            <X className="h-4 w-4" />
           </button>
           <PopupContent mod={mod} state={state} progress={progress} saved={saved} onClose={onClose} />
         </div>
       </div>
-    </>
+    </>,
+    document.body
   );
 }
 
