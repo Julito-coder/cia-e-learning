@@ -144,12 +144,12 @@ export const allCourseContent: CourseContent[] = [
     courseId: '2',
     steps: [
       {
-        id: '2-1', type: 'lesson', title: 'Se présenter en français',
+        id: '2-1', type: 'lesson', title: 'Se présenter en français', characterId: 'marie',
         content: `Pour se présenter, on utilise des phrases simples :\n\n👤 **Identité :**\n- Je m'appelle… / Mon nom est…\n- J'ai … ans\n- Je suis (nationalité)\n\n📍 **Lieu :**\n- J'habite à… / Je viens de…\n\n💼 **Profession :**\n- Je suis étudiant(e) / professeur / médecin…\n\n❤️ **Goûts :**\n- J'aime… / Je n'aime pas…\n- Mon hobby est…`,
         tip: '💡 En français, on dit "Je m\'appelle" (= I call myself), pas "Mon nom est" dans la conversation courante.'
       },
       {
-        id: '2-2', type: 'flashcard', title: 'Vocabulaire clé',
+        id: '2-2', type: 'flashcard', title: 'Vocabulaire clé', characterId: 'thomas',
         cards: [
           { front: 'Comment vous appelez-vous ?', back: 'What is your name? (formal)' },
           { front: 'J\'ai vingt ans', back: 'I am twenty years old' },
@@ -167,26 +167,26 @@ export const allCourseContent: CourseContent[] = [
         correctIndex: 2
       },
       {
-        id: '2-4', type: 'qcm', title: 'Formule de présentation',
+        id: '2-4', type: 'qcm', title: 'Formule de présentation', characterId: 'elena',
         question: 'Comment dit-on "I am 30 years old" en français ?',
         options: ['Je suis 30 ans', 'J\'ai 30 ans', 'Je fais 30 ans', 'Mon âge est 30'],
         correctIndex: 1,
         explanation: 'En français on utilise le verbe AVOIR pour l\'âge : "J\'ai 30 ans" (littéralement "I have 30 years").'
       },
       {
-        id: '2-5', type: 'fill-blank', title: 'Complétez le dialogue',
+        id: '2-5', type: 'fill-blank', title: 'Complétez le dialogue', characterId: 'lucas',
         sentence: '— Bonjour, je ___ Maria. Et vous ?',
         options: ['suis', 'm\'appelle', 'ai', 'habite'],
         correctAnswer: 'm\'appelle'
       },
       {
-        id: '2-6', type: 'drag-drop', title: 'Construisez la présentation',
+        id: '2-6', type: 'drag-drop', title: 'Construisez la présentation', characterId: 'yuki',
         instruction: 'Remettez dans l\'ordre pour former une présentation :',
         items: ['ans', 'J\'ai', 'et', 'vingt', 'je', 'suis', 'espagnol'],
         correctOrder: ['J\'ai', 'vingt', 'ans', 'et', 'je', 'suis', 'espagnol']
       },
       {
-        id: '2-7', type: 'final-quiz', title: 'Quiz final — Se présenter',
+        id: '2-7', type: 'final-quiz', title: 'Quiz final — Se présenter', characterId: 'marie',
         questions: [
           { question: '« ___ vous appelez-vous ? »', options: ['Que', 'Comment', 'Où', 'Quand'], correctIndex: 1 },
           { question: '« J\'___ à Antibes. »', options: ['suis', 'ai', 'habite', 'appelle'], correctIndex: 2 },
@@ -203,26 +203,26 @@ export const allCourseContent: CourseContent[] = [
     courseId: '3',
     steps: [
       {
-        id: '3-1', type: 'lesson', title: 'Antibes et la Côte d\'Azur',
+        id: '3-1', type: 'lesson', title: 'Antibes et la Côte d\'Azur', characterId: 'thomas',
         content: `🏖️ **Antibes** est une ville du sud-est de la France, sur la **Côte d'Azur**.\n\n📍 **Géographie :**\n- Située entre Nice et Cannes\n- Au bord de la mer Méditerranée\n- Climat ensoleillé toute l'année\n\n🏛️ **Histoire :**\n- Fondée par les Grecs (Antipolis)\n- Remparts construits par Vauban\n- Le musée Picasso dans le château Grimaldi\n\n🎉 **Culture :**\n- Festival de jazz d'Antibes Juan-les-Pins\n- Le marché provençal (fruits, olives, lavande)\n- Le Cap d'Antibes et ses villas célèbres`,
         tip: '💡 "Antipolis" signifie "la ville d\'en face" en grec ancien — car Antibes est en face de Nice.'
       },
       {
-        id: '3-2', type: 'qcm', title: 'Géographie',
+        id: '3-2', type: 'qcm', title: 'Géographie', characterId: 'elena',
         question: 'Entre quelles deux villes se trouve Antibes ?',
         options: ['Paris et Lyon', 'Marseille et Toulon', 'Nice et Cannes', 'Bordeaux et Toulouse'],
         correctIndex: 2,
         explanation: 'Antibes est située entre Nice (à l\'est) et Cannes (à l\'ouest) sur la Côte d\'Azur.'
       },
       {
-        id: '3-3', type: 'qcm', title: 'Culture',
+        id: '3-3', type: 'qcm', title: 'Culture', characterId: 'hans',
         question: 'Quel artiste a un musée à Antibes ?',
         options: ['Monet', 'Picasso', 'Van Gogh', 'Matisse'],
         correctIndex: 1,
         explanation: 'Le musée Picasso est installé dans le château Grimaldi à Antibes.'
       },
       {
-        id: '3-4', type: 'flashcard', title: 'Vocabulaire provençal',
+        id: '3-4', type: 'flashcard', title: 'Vocabulaire provençal', characterId: 'thomas',
         cards: [
           { front: 'La Côte d\'Azur', back: 'The French Riviera' },
           { front: 'La Méditerranée', back: 'The Mediterranean Sea' },
@@ -232,7 +232,7 @@ export const allCourseContent: CourseContent[] = [
         ]
       },
       {
-        id: '3-5', type: 'drag-drop', title: 'Associez les éléments',
+        id: '3-5', type: 'drag-drop', title: 'Associez les éléments', characterId: 'omar',
         instruction: 'Remettez cette phrase dans l\'ordre :',
         items: ['est', 'la', 'Antibes', 'sur', 'Côte d\'Azur'],
         correctOrder: ['Antibes', 'est', 'sur', 'la', 'Côte d\'Azur']
@@ -245,7 +245,7 @@ export const allCourseContent: CourseContent[] = [
         correctIndex: 1
       },
       {
-        id: '3-7', type: 'final-quiz', title: 'Quiz final — Antibes',
+        id: '3-7', type: 'final-quiz', title: 'Quiz final — Antibes', characterId: 'thomas',
         questions: [
           { question: 'Antibes est au bord de quelle mer ?', options: ['Atlantique', 'Méditerranée', 'Manche', 'Mer du Nord'], correctIndex: 1 },
           { question: 'Quel festival a lieu à Juan-les-Pins ?', options: ['Festival de cinéma', 'Festival de jazz', 'Festival de théâtre', 'Festival de danse'], correctIndex: 1 },
