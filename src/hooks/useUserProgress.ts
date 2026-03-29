@@ -6,6 +6,13 @@ import type { CECRLevel } from '@/data/demo-courses';
 const LEVEL_ORDER: CECRLevel[] = ['A0', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 const XP_PER_LEVEL = 5000;
 
+// Global event for cross-component XP sync
+const XP_UPDATE_EVENT = 'xp-update';
+
+function emitXPUpdate(xp: number, level: CECRLevel) {
+  window.dispatchEvent(new CustomEvent(XP_UPDATE_EVENT, { detail: { xp, level } }));
+}
+
 export function getLevelFromXP(xp: number): CECRLevel {
   const idx = Math.min(Math.floor(xp / XP_PER_LEVEL), LEVEL_ORDER.length - 1);
   return LEVEL_ORDER[idx];
@@ -33,6 +40,17 @@ export function useUserProgress() {
   const [totalXP, setTotalXP] = useState(0);
   const [cecrLevel, setCecrLevel] = useState<CECRLevel>('A1');
   const [loading, setLoading] = useState(true);
+
+  // Listen for XP updates from other hook instances
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const { xp, level } = (e as CustomEvent).detail;
+      setTotalXP(xp);
+      setCecrLevel(level);
+    };
+    window.addEventListener(XP_UPDATE_EVENT, handler);
+    return () => window.removeEventListener(XP_UPDATE_EVENT, handler);
+  }, []);
 
   useEffect(() => {
     if (!user) {
@@ -74,6 +92,7 @@ export function useUserProgress() {
 
     setTotalXP(newXP);
     setCecrLevel(newLevel);
+    emitXPUpdate(newXP, newLevel);
 
     if (user) {
       await supabase
@@ -92,6 +111,7 @@ export function useUserProgress() {
     const xp = getXPForLevel(level);
     setTotalXP(xp);
     setCecrLevel(level);
+    emitXPUpdate(xp, level);
 
     if (user) {
       await supabase
