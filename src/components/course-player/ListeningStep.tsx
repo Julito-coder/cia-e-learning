@@ -16,6 +16,7 @@ interface Props {
 
 export function ListeningStep({ step, onNext }: Props) {
   const { t } = useTranslation();
+  const { cecrLevel } = useUserProgress();
   const [playing, setPlaying] = useState(false);
   const [loading, setLoading] = useState(false);
   const [hasListened, setHasListened] = useState(false);
@@ -24,6 +25,10 @@ export function ListeningStep({ step, onNext }: Props) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const audioBlobUrlRef = useRef<string | null>(null);
   const isCorrect = selected === step.correctIndex;
+
+  // Resolve character for this step
+  const character = step.characterId ? getCharacter(step.characterId) : undefined;
+  const evolution = character ? getCharacterEvolution(character, cecrLevel) : undefined;
 
   const handlePlay = useCallback(async () => {
     if (playing || loading) return;
