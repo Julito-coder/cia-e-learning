@@ -1,68 +1,56 @@
 
 
-## Plan : Avatars 3D interactifs sur le parcours d'apprentissage
+## Plan : Avatars plein pied dans l'espace gauche de la page d'accueil
 
-### Objectif
-Ajouter les 8 personnages récurrents sous forme d'avatars 3D interactifs le long du parcours d'apprentissage sur la page d'accueil. En cliquant sur un avatar, une fiche détaillée s'affiche (histoire, raison de sa venue au CIA). L'avatar sélectionné a une légère animation de marche/mouvement 3D (style Mii).
+### Ce qui change
 
-### Approche technique
+1. **Supprimer les avatars du LearningPath** : Retirer toute la logique Character3DAvatar et CharacterStoryModal du composant `LearningPath.tsx` (lignes 8-10, 140-144, 153-155, 178-197, 248-255). Le parcours redevient un simple chemin de modules.
 
-Plutôt que d'utiliser React Three Fiber (lourd, nécessite des modèles 3D .glb), on utilisera une approche **CSS 3D transforms** combinée à des animations CSS pour un effet 3D convaincant et performant :
+2. **Créer `src/components/characters/CharacterShowcase.tsx`** : Nouveau composant affichant les 8 personnages en pied dans un espace vertical. Chaque avatar :
+   - Occupe une zone de ~120x200px avec une image stylisée (silhouette/avatar arrondi)
+   - **Au hover** : tourne sur lui-même (rotation Y 360° en CSS 3D, `rotateY` animé)
+   - **Au clic** : ouvre le CharacterStoryModal existant (bio, histoire CIA, evolution)
+   - Disposition en grille 2x4 ou en colonne scrollable
+   - Animations staggerées à l'apparition (fade-in décalé)
 
-- Les avatars sont rendus dans un conteneur avec `perspective` CSS
-- Au survol/sélection, l'avatar effectue une rotation 3D légère et un balancement (animation de marche)
-- Le drag (pointeur) permet de faire pivoter légèrement l'avatar dans l'espace (rotateX/rotateY basés sur la position du curseur)
+3. **Modifier `src/pages/Index.tsx`** : Restructurer la section "Parcours" pour qu'elle prenne toute la largeur (full-width section en bas) avec un layout 2 colonnes :
+   - **Gauche** : `CharacterShowcase` avec les 8 personnages interactifs
+   - **Droite** : `LearningPath` (le parcours actuel, sans avatars)
 
-### Fichiers à créer/modifier
+4. **Modifier `src/index.css`** : Ajouter `@keyframes character-spin` (rotation Y 0->360°, 0.8s) pour l'effet de tour sur soi au hover.
 
-1. **Créer `src/components/characters/Character3DAvatar.tsx`**
-   - Composant affichant l'avatar du personnage dans un conteneur CSS 3D (`perspective`, `transform-style: preserve-3d`)
-   - Gestion du `onPointerMove` pour rotation interactive (±15° max)
-   - Animation de balancement/marche au clic (keyframes CSS : translation Y + rotation alternée)
-   - Ombre portée dynamique qui suit la rotation
-   - Props : `character`, `level`, `isSelected`, `onClick`, `size`
+5. **Mettre à jour `Character3DAvatar.tsx`** : Adapter pour un mode "full body" plus grand (taille ~180px), avec l'animation de marche idle par défaut et spin au hover.
 
-2. **Créer `src/components/characters/CharacterStoryModal.tsx`**
-   - Dialog/Sheet affichant au clic : avatar agrandi, nom, nationalité, âge, rôle, bio du niveau actuel, catchphrase, et l'évolution narrative à travers les niveaux (timeline visuelle)
-   - Responsive : bottom sheet sur mobile, dialog centré sur desktop
-
-3. **Modifier `src/components/courses/LearningPath.tsx`**
-   - Ajouter un avatar 3D à côté de chaque nœud du parcours (en alternant gauche/droite comme les cartes)
-   - Associer les personnages aux modules de façon cyclique (8 personnages, répartis sur les modules)
-   - L'avatar apparaît avec un léger décalage d'animation (stagger)
-
-4. **Modifier `src/pages/Index.tsx`**
-   - Passer le `cecrLevel` au composant `LearningPath` pour que les personnages affichent la bonne évolution
-
-5. **Ajouter les keyframes CSS dans `src/index.css`**
-   - `@keyframes character-walk` : balancement gauche-droite + translation Y pour simuler la marche
-   - `@keyframes character-idle` : respiration subtile (scale léger)
-
-### Détail de l'interaction 3D
+### Disposition visuelle
 
 ```text
-┌──────────────────────────────┐
-│  perspective: 800px          │
-│  ┌────────────────────────┐  │
-│  │  transform-style: 3d   │  │
-│  │  ┌──────────────────┐  │  │
-│  │  │   Avatar image    │  │  │
-│  │  │   rotateX/Y via   │  │  │
-│  │  │   pointer move    │  │  │
-│  │  └──────────────────┘  │  │
-│  │  ┌──────────────────┐  │  │
-│  │  │   Shadow (blur)   │  │  │
-│  │  └──────────────────┘  │  │
-│  └────────────────────────┘  │
-└──────────────────────────────┘
+┌──────────────────────────────────────────────┐
+│  Parcours (full-width section)               │
+│  ┌──────────────┐  ┌─────────────────────┐   │
+│  │  Personnages  │  │   Learning Path     │   │
+│  │  ┌────┐┌────┐ │  │   (zigzag nodes)    │   │
+│  │  │Marie││Luca│ │  │                     │   │
+│  │  └────┘└────┘ │  │   ○ A1.1            │   │
+│  │  ┌────┐┌────┐ │  │     ╲               │   │
+│  │  │Yuki││Omar│ │  │      ○ A1.2         │   │
+│  │  └────┘└────┘ │  │     ╱               │   │
+│  │  ┌────┐┌────┐ │  │   ○ A1.3            │   │
+│  │  │Elen││Thom│ │  │                     │   │
+│  │  └────┘└────┘ │  │                     │   │
+│  │  ┌────┐┌────┐ │  │                     │   │
+│  │  │Fato││Hans│ │  │                     │   │
+│  │  └────┘└────┘ │  │                     │   │
+│  └──────────────┘  └─────────────────────┘   │
+└──────────────────────────────────────────────┘
 ```
 
-- **Idle** : respiration subtile (scale 1.0 → 1.02, 3s ease-in-out)
-- **Hover** : léger soulèvement + ombre plus prononcée
-- **Sélectionné** : animation de marche (balancement + bob Y) + rotation interactive au pointeur
-- **Drag/move** : rotateX = (mouseY - center) / 10, rotateY = (mouseX - center) / 10, clamped à ±15°
+### Fichiers modifiés
 
-### Disposition dans le parcours
-
-Les avatars apparaissent à gauche des nœuds pairs et à droite des nœuds impairs (suivant le zigzag existant), positionnés en absolu par rapport au nœud.
+| Fichier | Action |
+|---------|--------|
+| `src/components/courses/LearningPath.tsx` | Supprimer imports et code des avatars |
+| `src/components/characters/CharacterShowcase.tsx` | Nouveau - grille des 8 personnages |
+| `src/components/characters/Character3DAvatar.tsx` | Adapter pour mode large + spin hover |
+| `src/pages/Index.tsx` | Restructurer section parcours (2 colonnes) |
+| `src/index.css` | Ajouter keyframes `character-spin` |
 
