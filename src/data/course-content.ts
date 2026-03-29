@@ -692,6 +692,11 @@ import { b1Module2Content } from './b1-module2-content';
 import { b1Module3Content } from './b1-module3-content';
 import { b1Module4Content } from './b1-module4-content';
 import { b1Module5Content } from './b1-module5-content';
+import { b2Module1Content } from './b2-module1-content';
+import { b2Module2Content } from './b2-module2-content';
+import { b2Module3Content } from './b2-module3-content';
+import { b2Module4Content } from './b2-module4-content';
+import { b2Module5Content } from './b2-module5-content';
 
 // Merge all content: legacy demo courses + curriculum lessons
 const allContent = [
