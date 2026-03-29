@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Trophy, Heart, CheckCircle2, XCircle, Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { FinalQuizStep as FinalQuizStepType } from '@/data/course-content';
+import { StepCharacterBubble } from './StepCharacterBubble';
 
 interface Props {
   step: FinalQuizStepType;
@@ -80,6 +81,7 @@ export function FinalQuizStep({ step, onNext }: Props) {
 
   return (
     <div className="max-w-2xl mx-auto space-y-6 animate-fade-in">
+      <StepCharacterBubble characterId={step.characterId} />
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-3">
           <div className="h-10 w-10 rounded-xl bg-accent/20 flex items-center justify-center">

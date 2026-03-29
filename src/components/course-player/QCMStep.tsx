@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { CheckCircle2, XCircle, HelpCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { QCMStep as QCMStepType } from '@/data/course-content';
+import { StepCharacterBubble } from './StepCharacterBubble';
 
 interface Props {
   step: QCMStepType;
@@ -25,6 +26,7 @@ export function QCMStep({ step, onNext }: Props) {
 
   return (
     <div className="max-w-2xl mx-auto space-y-6 animate-fade-in">
+      <StepCharacterBubble characterId={step.characterId} />
       <div className="flex items-center gap-3 mb-2">
         <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
           <HelpCircle className="h-5 w-5 text-primary" />

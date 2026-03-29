@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, ArrowRight, RotateCcw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { FlashcardStep as FlashcardStepType } from '@/data/course-content';
+import { StepCharacterBubble } from './StepCharacterBubble';
 
 interface Props {
   step: FlashcardStepType;
@@ -27,6 +28,7 @@ export function FlashcardStep({ step, onNext }: Props) {
 
   return (
     <div className="max-w-2xl mx-auto space-y-6 animate-fade-in">
+      <StepCharacterBubble characterId={step.characterId} />
       <div className="flex items-center justify-between mb-2">
         <h2 className="text-xl font-bold font-display">{step.title}</h2>
         <span className="text-sm text-muted-foreground font-mono">{index + 1}/{step.cards.length}</span>

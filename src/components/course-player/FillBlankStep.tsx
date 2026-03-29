@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { PenLine, CheckCircle2, XCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { FillBlankStep as FillBlankStepType } from '@/data/course-content';
+import { StepCharacterBubble } from './StepCharacterBubble';
 
 interface Props {
   step: FillBlankStepType;
@@ -27,6 +28,7 @@ export function FillBlankStep({ step, onNext }: Props) {
 
   return (
     <div className="max-w-2xl mx-auto space-y-6 animate-fade-in">
+      <StepCharacterBubble characterId={step.characterId} />
       <div className="flex items-center gap-3 mb-2">
         <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
           <PenLine className="h-5 w-5 text-primary" />
