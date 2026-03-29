@@ -682,9 +682,23 @@ export const allCourseContent: CourseContent[] = [
 // Import curriculum-based content
 import { a1Module1Content } from './a1-module1-content';
 import { a1Module2Content } from './a1-module2-content';
+import { a2Module1Content } from './a2-module1-content';
+import { a2Module2Content } from './a2-module2-content';
+import { a2Module3Content } from './a2-module3-content';
+import { a2Module4Content } from './a2-module4-content';
+import { a2Module5Content } from './a2-module5-content';
 
 // Merge all content: legacy demo courses + curriculum lessons
-const allContent = [...allCourseContent, ...a1Module1Content, ...a1Module2Content];
+const allContent = [
+  ...allCourseContent,
+  ...a1Module1Content,
+  ...a1Module2Content,
+  ...a2Module1Content,
+  ...a2Module2Content,
+  ...a2Module3Content,
+  ...a2Module4Content,
+  ...a2Module5Content,
+];
 
 export function getCourseContent(courseId: string): CourseContent | undefined {
   return allContent.find(c => c.courseId === courseId);
