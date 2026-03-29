@@ -1,67 +1,53 @@
 
 
-## Plan : Restructurer le layout — Personnages à gauche, optimiser le responsive
+## Plan : Créer le contenu des cours A2.1 à A2.5 (leçons 51-100)
 
-### Probleme actuel
+### Structure
 
-CharacterShowcase et LearningPath sont empilés dans la sidebar droite (1/3 de largeur). Les 2/3 gauches de la page sont vides sous les cours — un énorme espace gris perdu.
+5 nouveaux fichiers de contenu, un par module, suivant exactement le même format que `a1-module1-content.ts` et `a1-module2-content.ts`. Chaque leçon contient ~8 steps variés (lesson, qcm, fill-blank, drag-drop, flashcard, listening, final-quiz) avec des `characterId` assignés.
 
-### Solution
+### Fichiers à créer
 
-Créer une nouvelle section pleine largeur **sous les cours** avec un layout 2 colonnes :
-- **Gauche** : CharacterShowcase (sticky, les personnages restent visibles pendant le scroll du parcours)
-- **Droite** : LearningPath
+| Fichier | Module | Leçons | Thème |
+|---------|--------|--------|-------|
+| `src/data/a2-module1-content.ts` | A2.1 | 51-60 | Raconter au passé (passé composé, imparfait) |
+| `src/data/a2-module2-content.ts` | A2.2 | 61-70 | La vie sociale (opinions, émotions, comparatif) |
+| `src/data/a2-module3-content.ts` | A2.3 | 71-80 | Le monde du travail (CV, entretien, futur proche) |
+| `src/data/a2-module4-content.ts` | A2.4 | 81-90 | Santé et bien-être (corps, sport, impératif) |
+| `src/data/a2-module5-content.ts` | A2.5 | 91-100 | Découvrir la France (régions, culture, PC vs imparfait) |
 
-Les retirer de la sidebar droite actuelle. Sur mobile/tablette, les personnages passent en ligne horizontale scrollable au-dessus du parcours.
-
-### Fichier : `src/pages/Index.tsx`
-
-1. **Retirer** le `CharacterShowcase` et `LearningPath` de la sidebar droite (lignes 229-239)
-2. **Ajouter** une nouvelle section pleine largeur après le bloc `grid grid-cols-1 lg:grid-cols-3` :
-
-```text
-┌─────────────────────────────────────────────────┐
-│  Nouvelle section pleine largeur                │
-│                                                 │
-│  Mobile/Tablette:                               │
-│  ┌─────────────────────────────────────────┐    │
-│  │ Personnages (scroll horizontal)          │    │
-│  └─────────────────────────────────────────┘    │
-│  ┌─────────────────────────────────────────┐    │
-│  │ Parcours d'apprentissage                 │    │
-│  └─────────────────────────────────────────┘    │
-│                                                 │
-│  Desktop (lg+):                                 │
-│  ┌──────────┐  ┌───────────────────────────┐    │
-│  │Personnages│  │ Parcours d'apprentissage  │    │
-│  │ (sticky)  │  │ (scrollable)              │    │
-│  │ 2x4 grid │  │                           │    │
-│  │           │  │                           │    │
-│  └──────────┘  └───────────────────────────┘    │
-└─────────────────────────────────────────────────┘
-```
-
-Layout : `flex flex-col lg:flex-row gap-6`
-- Gauche : `lg:w-64 lg:sticky lg:top-20 lg:self-start` — les personnages en grille 2x4, compacte
-- Droite : `flex-1` — le parcours prend tout l'espace restant
-
-### Fichier : `src/components/characters/CharacterShowcase.tsx`
-
-Ajouter un mode responsive :
-- **Mobile** (`< lg`) : grille horizontale scrollable `flex overflow-x-auto gap-4` avec les 8 personnages en ligne
-- **Desktop** (`lg+`) : grille `grid-cols-2` verticale comme actuellement mais plus espacée
-
-### Responsive global des cartes
-
-Optimiser les grilles existantes dans Index.tsx :
-- Stats row : `grid-cols-2 sm:grid-cols-4` (au lieu de `lg:grid-cols-4`) pour remplir mieux sur tablette
-- Courses : `sm:grid-cols-2 md:grid-cols-3` au lieu de `lg:grid-cols-3`
-- Sidebar cards sur tablette : passer en `md:grid-cols-2 lg:grid-cols-1` pour que les cards s'étalent sur 2 colonnes en tablette au lieu de s'empiler
-
-### Fichiers modifiés
+### Fichier à modifier
 
 | Fichier | Action |
 |---------|--------|
-| `src/pages/Index.tsx` | Restructurer layout : personnages+parcours en section séparée, optimiser breakpoints |
-| `src/components/characters/CharacterShowcase.tsx` | Ajouter mode horizontal scrollable sur mobile |
+| `src/data/course-content.ts` | Importer les 5 nouveaux fichiers et les ajouter au `allContent` |
+
+### Format de chaque leçon
+
+Chaque `CourseContent` a un `courseId: 'lesson-{id}'` et ~8 steps :
+1. **lesson** — introduction du thème (characterId: `marie`)
+2. **listening** — compréhension orale (characterId: personnage varié)
+3. **qcm** — question à choix multiples
+4. **flashcard** — vocabulaire clé (characterId: `thomas`)
+5. **fill-blank** — compléter la phrase
+6. **drag-drop** — remettre dans l'ordre
+7. **qcm** — 2e question
+8. **final-quiz** — quiz final de 5 questions (characterId: `marie`)
+
+Les leçons 9 et 10 de chaque module sont des révisions/examens avec davantage de questions de quiz.
+
+### Répartition des personnages
+
+- `marie` → leçons introductives, quiz finaux (professeure)
+- `lucas` → exercices passé composé, vie sociale
+- `yuki` → exercices de vocabulaire, drag-drop
+- `omar` → listening, interactions culturelles
+- `elena` → qcm, comparatif, opinions
+- `fatou` → fill-blank, exercices de grammaire
+- `hans` → monde du travail, exercices formels
+- `thomas` → flashcards, culture française
+
+### Contenu pédagogique
+
+Le contenu suit exactement le curriculum défini dans `curriculum.ts` (titres, compétences, descriptions). Chaque step est contextualisé à Antibes/Côte d'Azur quand c'est pertinent, avec un niveau de langue A2 (phrases plus complexes qu'en A1, passé composé, imparfait, comparatif, etc.).
 
