@@ -177,3 +177,32 @@
     @apply flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-bold;
   }
 }
+
+/* Character 3D avatar animations */
+@keyframes character-idle {
+  0%, 100% { transform: scale(1) translateY(0); }
+  50% { transform: scale(1.02) translateY(-1px); }
+}
+@keyframes character-walk {
+  0% { transform: translateY(0) rotate(0deg); }
+  15% { transform: translateY(-6px) rotate(-2deg); }
+  30% { transform: translateY(-2px) rotate(1deg); }
+  45% { transform: translateY(-8px) rotate(-1.5deg); }
+  60% { transform: translateY(-3px) rotate(2deg); }
+  75% { transform: translateY(-7px) rotate(-1deg); }
+  100% { transform: translateY(0) rotate(0deg); }
+}
+@keyframes slide-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.animate-character-idle {
+  animation: character-idle 3s ease-in-out infinite;
+}
+.animate-character-walk {
+  animation: character-walk 1.2s ease-in-out infinite;
+}
+.animate-slide-up {
+  animation: slide-up 0.3s ease-out;
+}
