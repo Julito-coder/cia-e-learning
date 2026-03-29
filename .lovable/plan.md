@@ -1,54 +1,41 @@
 
 
-## Plan : 3 corrections
+## Plan : Emails d'authentification (inscription + mot de passe oublié)
 
-### 1. Espacement parcours / footer
+### Contexte
 
-**Fichier : `src/pages/Curriculum.tsx`**
-- Ajouter `pb-24` (ou `pb-32`) au container principal pour créer un espace suffisant entre le dernier noeud du parcours et le footer.
+Actuellement, le projet n'a pas de domaine email configuré ni de page de réinitialisation de mot de passe. Le lien "Mot de passe oublié ?" sur `/connexion` pointe vers `/mot-de-passe-oublie` qui n'existe pas.
 
-### 2. Voix naturelle via Web Speech API améliorée
+### Étapes
 
-**Fichier : `src/components/course-player/ListeningStep.tsx`**
-- Remplacer la sélection de voix par défaut par une recherche intelligente de voix françaises naturelles disponibles dans le navigateur.
-- Prioriser les voix premium/naturelles (filtrer par `voice.name` contenant "Google", "Microsoft", "Enhanced", "Natural", "Premium") et éviter celles contenant "compact" ou "espeak".
-- Ajouter un `speechSynthesis.onvoiceschanged` pour charger les voix de manière asynchrone (nécessaire sur Chrome).
-- Ajuster les paramètres : `pitch = 1.0`, `rate = 0.85`, `volume = 1.0`.
+#### 1. Configurer un domaine email
 
-### 3. Traduction de l'interface des cours (UI, pas le contenu français)
+Un domaine d'envoi est nécessaire pour personnaliser les emails (vérification de compte, réinitialisation de mot de passe). La première étape est de configurer votre domaine email via le panneau de configuration.
 
-Tous les textes d'interface dans les composants de cours sont actuellement en français en dur. Il faut les passer par `useTranslation()`.
+#### 2. Créer les templates d'emails d'authentification
 
-**Fichier : `src/i18n/locales/fr.json` + en/es/de/it/ru.json**
-- Ajouter une section `"player"` avec toutes les clés UI des cours :
-  - `continue`, `next`, `previous`, `check`, `correct`, `incorrect`, `clickToListen`, `listening`, `clickToReplay`, `clickToFlip`, `goodAnswer`, `correctAnswerWas`, `perfect`, `clickWordsBelow`, `congratulations`, `courseNotPassed`, `score`, `validated`, `keepPracticing`, `finishCourse`, `backToCourse`, `nextQuestion`, `seeResult`, `question`
+Une fois le domaine configuré, les 6 templates email seront créés automatiquement (inscription, magic link, récupération de mot de passe, invitation, changement d'email, ré-authentification) avec le branding du CIA :
+- Couleurs : bleu marine CIA (`hsl(207, 52%, 23%)`) + bleu ciel accent (`hsl(199, 78%, 55%)`)
+- Police : Nunito / Source Sans 3
+- Logo si disponible dans `/public`
 
-**Fichiers modifiés (composants cours) :**
-- `LessonStep.tsx` — bouton "Continuer"
-- `QCMStep.tsx` — "Correct !", "Incorrect", "Continuer"
-- `FillBlankStep.tsx` — "Bonne réponse !", "La bonne réponse était...", "Continuer"
-- `DragDropStep.tsx` — "Cliquez sur les mots", "Parfait !", "Vérifier", "Continuer"
-- `FlashcardStep.tsx` — "Précédent", "Suivant", "Cliquez pour retourner", "Continuer"
-- `ListeningStep.tsx` — "Écoute en cours", "Cliquez pour écouter/réécouter", "Continuer"
-- `FinalQuizStep.tsx` — "Félicitations !", "Cours non validé", "Score", "Terminer le cours", etc.
-- `CoursePlayer.tsx` — bouton "Quitter" si applicable
+#### 3. Créer la page "Mot de passe oublié" (`/mot-de-passe-oublie`)
 
-Chaque composant : ajouter `const { t } = useTranslation()` et remplacer les chaînes françaises par `t('player.xxx')`.
+Formulaire simple avec un champ email qui appelle `resetPasswordForEmail()` avec redirection vers `/reinitialiser-mot-de-passe`. Affiche un message de confirmation après envoi.
 
-### Fichiers modifiés
-- `src/pages/Curriculum.tsx` — padding bottom
-- `src/components/course-player/ListeningStep.tsx` — voix naturelle + i18n
-- `src/components/course-player/LessonStep.tsx` — i18n
-- `src/components/course-player/QCMStep.tsx` — i18n
-- `src/components/course-player/FillBlankStep.tsx` — i18n
-- `src/components/course-player/DragDropStep.tsx` — i18n
-- `src/components/course-player/FlashcardStep.tsx` — i18n
-- `src/components/course-player/FinalQuizStep.tsx` — i18n
-- `src/components/course-player/CoursePlayer.tsx` — i18n
-- `src/i18n/locales/fr.json` — section `player`
-- `src/i18n/locales/en.json` — section `player`
-- `src/i18n/locales/es.json` — section `player`
-- `src/i18n/locales/de.json` — section `player`
-- `src/i18n/locales/it.json` — section `player`
-- `src/i18n/locales/ru.json` — section `player`
+#### 4. Créer la page de réinitialisation (`/reinitialiser-mot-de-passe`)
+
+Page qui détecte le token `type=recovery` dans l'URL, puis affiche un formulaire pour saisir un nouveau mot de passe. Appelle `updateUser({ password })` pour finaliser.
+
+#### 5. Ajouter les routes dans App.tsx
+
+- `/mot-de-passe-oublie` → composant ForgotPassword
+- `/reinitialiser-mot-de-passe` → composant ResetPassword
+
+### Fichiers modifiés / créés
+
+- `src/pages/ForgotPassword.tsx` — nouveau
+- `src/pages/ResetPassword.tsx` — nouveau
+- `src/App.tsx` — ajout des 2 routes
+- Templates email d'authentification (via outil interne)
 
