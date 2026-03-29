@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { X, MapPin, Briefcase, Quote, ChevronRight } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import type { Character } from '@/data/characters';
@@ -16,21 +18,22 @@ export function CharacterStoryModal({ character, currentLevel, onClose }: Charac
   const currentEvo = getCharacterEvolution(character, currentLevel);
   const currentIdx = LEVEL_ORDER.indexOf(currentLevel);
 
-  return (
+  useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, []);
+
+  if (typeof document === 'undefined') return null;
+
+  return createPortal(
     <>
-      {/* Backdrop */}
-      <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm" onClick={onClose} />
+      <div className="fixed inset-0 z-[110] bg-black/40 backdrop-blur-sm" onClick={onClose} />
 
-      {/* Mobile: bottom sheet */}
-      <div className="fixed inset-x-0 bottom-0 z-50 md:hidden animate-slide-up">
-        <div className="bg-card border-t-2 border-border rounded-t-3xl p-5 pb-8 shadow-2xl max-h-[85vh] overflow-y-auto">
-          <ModalContent character={character} currentEvo={currentEvo} currentLevel={currentLevel} currentIdx={currentIdx} onClose={onClose} />
-        </div>
-      </div>
-
-      {/* Desktop: centered dialog */}
-      <div className="hidden md:flex fixed inset-0 z-50 items-center justify-center p-6 pointer-events-none">
-        <div className="card-duo p-6 w-full max-w-md max-h-[80vh] overflow-y-auto pointer-events-auto animate-scale-in relative">
+      <div className="fixed inset-0 z-[111] flex items-end sm:items-center justify-center p-0 sm:p-4 md:p-6">
+        <div className="bg-card border border-border rounded-t-3xl sm:rounded-3xl p-4 sm:p-5 md:p-6 shadow-2xl w-full sm:max-w-md md:max-w-lg max-h-[88vh] overflow-y-auto animate-enter relative">
           <button
             onClick={onClose}
             className="absolute top-3 right-3 h-8 w-8 rounded-full bg-muted flex items-center justify-center hover:bg-muted/80 transition-colors"
@@ -40,7 +43,8 @@ export function CharacterStoryModal({ character, currentLevel, onClose }: Charac
           <ModalContent character={character} currentEvo={currentEvo} currentLevel={currentLevel} currentIdx={currentIdx} onClose={onClose} />
         </div>
       </div>
-    </>
+    </>,
+    document.body
   );
 }
 
@@ -58,26 +62,26 @@ function ModalContent({
   onClose: () => void;
 }) {
   return (
-    <div className="space-y-5">
+    <div className="space-y-4 sm:space-y-5">
       {/* Header */}
-      <div className="flex items-start gap-4">
+      <div className="flex items-start gap-3 sm:gap-4">
         <div className="relative">
           <img
             src={character.avatarPath}
             alt={character.name}
-            className="w-20 h-20 rounded-2xl object-cover border-2 border-accent shadow-lg"
+            className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover border-2 border-accent shadow-lg"
           />
           <Badge className="absolute -bottom-2 -right-2 bg-accent text-accent-foreground text-[10px] font-bold">
             {currentLevel}
           </Badge>
         </div>
         <div className="flex-1 min-w-0">
-          <h3 className="font-display text-lg leading-tight">{character.name}</h3>
-          <div className="flex items-center gap-1.5 text-sm text-muted-foreground mt-1">
+          <h3 className="font-display text-base sm:text-lg leading-tight">{character.name}</h3>
+          <div className="flex items-center gap-1.5 text-xs sm:text-sm text-muted-foreground mt-1">
             <Briefcase className="h-3.5 w-3.5" />
             <span className="font-semibold">{character.role}</span>
           </div>
-          <div className="flex items-center gap-1.5 text-sm text-muted-foreground mt-0.5">
+          <div className="flex items-center gap-1.5 text-xs sm:text-sm text-muted-foreground mt-0.5">
             <MapPin className="h-3.5 w-3.5" />
             <span>{character.nationality} · {character.age} ans</span>
           </div>
@@ -85,10 +89,10 @@ function ModalContent({
       </div>
 
       {/* Catchphrase */}
-      <div className="bg-accent/10 border border-accent/20 rounded-2xl p-4">
+      <div className="bg-accent/10 border border-accent/20 rounded-2xl p-3 sm:p-4">
         <div className="flex items-start gap-2">
           <Quote className="h-4 w-4 text-accent flex-shrink-0 mt-0.5" />
-          <p className="text-sm font-semibold italic text-foreground">
+          <p className="text-xs sm:text-sm font-semibold italic text-foreground">
             « {currentEvo.catchphrase} »
           </p>
         </div>
@@ -96,15 +100,15 @@ function ModalContent({
 
       {/* Bio */}
       <div>
-        <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">
+        <h4 className="text-[11px] sm:text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">
           Son histoire au CIA
         </h4>
-        <p className="text-sm leading-relaxed">{currentEvo.bio}</p>
+        <p className="text-xs sm:text-sm leading-relaxed">{currentEvo.bio}</p>
       </div>
 
       {/* Level evolution timeline */}
       <div>
-        <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">
+        <h4 className="text-[11px] sm:text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">
           Évolution par niveau
         </h4>
         <div className="space-y-0">
@@ -148,7 +152,7 @@ function ModalContent({
                     )}
                   </div>
                   {isActive && (
-                    <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                    <p className="text-[11px] sm:text-xs text-muted-foreground mt-1 leading-relaxed">
                       {evo.bio}
                     </p>
                   )}
