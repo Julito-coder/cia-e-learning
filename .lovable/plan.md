@@ -1,53 +1,76 @@
 
 
-## Plan : Créer le contenu des cours A2.1 à A2.5 (leçons 51-100)
+## Plan : Intégrer les personnages avec du storytelling dans tous les niveaux
 
-### Structure
+### Constat actuel
 
-5 nouveaux fichiers de contenu, un par module, suivant exactement le même format que `a1-module1-content.ts` et `a1-module2-content.ts`. Chaque leçon contient ~8 steps variés (lesson, qcm, fill-blank, drag-drop, flashcard, listening, final-quiz) avec des `characterId` assignés.
+- **Infrastructure OK** : `StepCharacterBubble` et `CharacterBubble` fonctionnent, tous les types de steps supportent `characterId`
+- **A2 à B2** : les `characterId` sont déjà présents sur la plupart des steps
+- **A1 modules 1 et 2** : seuls les steps `listening` ont un `characterId` — les lesson, qcm, fill-blank, drag-drop, flashcard et final-quiz n'en ont pas
+- **Problème principal** : le `CharacterBubble` affiche seulement le nom + catchphrase générique du niveau. Il n'y a pas de **dialogue contextuel** par step — le personnage ne "parle" pas en lien avec l'exercice
 
-### Fichiers à créer
+### Ce qui sera fait
 
-| Fichier | Module | Leçons | Thème |
-|---------|--------|--------|-------|
-| `src/data/a2-module1-content.ts` | A2.1 | 51-60 | Raconter au passé (passé composé, imparfait) |
-| `src/data/a2-module2-content.ts` | A2.2 | 61-70 | La vie sociale (opinions, émotions, comparatif) |
-| `src/data/a2-module3-content.ts` | A2.3 | 71-80 | Le monde du travail (CV, entretien, futur proche) |
-| `src/data/a2-module4-content.ts` | A2.4 | 81-90 | Santé et bien-être (corps, sport, impératif) |
-| `src/data/a2-module5-content.ts` | A2.5 | 91-100 | Découvrir la France (régions, culture, PC vs imparfait) |
+#### 1. Ajouter un champ `characterMessage` aux types de steps
 
-### Fichier à modifier
+Dans `src/data/course-content.ts`, ajouter un champ optionnel `characterMessage?: string` à chaque interface de step (LessonStep, QCMStep, FillBlankStep, DragDropStep, FlashcardStep, FinalQuizStep). Ce message est une réplique contextuelle du personnage liée à l'exercice.
+
+#### 2. Afficher le message contextuel dans `CharacterBubble`
+
+Modifier `StepCharacterBubble` pour accepter un prop `message?: string`. Modifier `CharacterBubble` pour afficher ce message à la place du catchphrase quand il est fourni. Le message apparaît dans une bulle de dialogue stylisée (type "speech bubble").
+
+#### 3. Ajouter les `characterId` manquants dans A1 modules 1 et 2
+
+Parcourir les ~20 leçons A1 et assigner un personnage à chaque step qui n'en a pas, en suivant la répartition existante :
+- `marie` → lesson introductives, final-quiz
+- `lucas` → qcm, scènes sociales
+- `yuki` → flashcard, vocabulaire
+- `omar` → listening (déjà fait), cuisine
+- `elena` → qcm, opinions
+- `fatou` → fill-blank, grammaire
+- `hans` → drag-drop, exercices structurés
+- `thomas` → flashcard, culture
+
+#### 4. Ajouter des `characterMessage` narratifs dans tous les modules
+
+Pour chaque step, ajouter un `characterMessage` court (1-2 phrases) en rapport avec l'exercice et le personnage. Exemples :
+
+| Step | Personnage | characterMessage |
+|------|-----------|-----------------|
+| Lesson "Bonjour" | marie | "Bienvenue dans ma classe ! Aujourd'hui, on apprend à se saluer." |
+| QCM salutations | lucas | "Moi aussi au début, je confondais bonjour et bonsoir !" |
+| Flashcard famille | yuki | "Au Japon, la famille c'est très important aussi !" |
+| Fill-blank passé composé | fatou | "Le passé composé, c'est comme une recette : sujet + avoir + participe !" |
+| Final quiz | marie | "Voyons ce que vous avez retenu. Je suis sûre que vous allez réussir !" |
+
+Cela concerne les fichiers suivants :
+- `src/data/a1-module1-content.ts` (leçons 1-10)
+- `src/data/a1-module2-content.ts` (leçons 11-20)
+- `src/data/a2-module1-content.ts` à `a2-module5-content.ts` (leçons 51-100)
+- `src/data/b1-module1-content.ts` à `b1-module5-content.ts` (leçons 101-150)
+- `src/data/b2-module1-content.ts` à `b2-module5-content.ts` (leçons 151-200)
+
+### Fichiers modifiés
 
 | Fichier | Action |
 |---------|--------|
-| `src/data/course-content.ts` | Importer les 5 nouveaux fichiers et les ajouter au `allContent` |
+| `src/data/course-content.ts` | Ajouter `characterMessage?: string` à toutes les interfaces de step |
+| `src/components/course-player/CharacterBubble.tsx` | Afficher `message` en priorité sur `catchphrase`, style bulle de dialogue |
+| `src/components/course-player/StepCharacterBubble.tsx` | Passer le `characterMessage` du step au `CharacterBubble` |
+| `src/data/a1-module1-content.ts` | Ajouter `characterId` + `characterMessage` à tous les steps |
+| `src/data/a1-module2-content.ts` | Idem |
+| `src/data/a2-module1-content.ts` à `a2-module5-content.ts` | Ajouter `characterMessage` (characterId déjà présent) |
+| `src/data/b1-module1-content.ts` à `b1-module5-content.ts` | Idem |
+| `src/data/b2-module1-content.ts` à `b2-module5-content.ts` | Idem |
+| `src/data/course-content.ts` (allCourseContent) | Ajouter `characterMessage` aux cours existants dans le fichier |
 
-### Format de chaque leçon
+### Approche storytelling
 
-Chaque `CourseContent` a un `courseId: 'lesson-{id}'` et ~8 steps :
-1. **lesson** — introduction du thème (characterId: `marie`)
-2. **listening** — compréhension orale (characterId: personnage varié)
-3. **qcm** — question à choix multiples
-4. **flashcard** — vocabulaire clé (characterId: `thomas`)
-5. **fill-blank** — compléter la phrase
-6. **drag-drop** — remettre dans l'ordre
-7. **qcm** — 2e question
-8. **final-quiz** — quiz final de 5 questions (characterId: `marie`)
+Les messages des personnages suivent leur arc narratif défini dans `characters.ts` :
+- **Niveau A1** : phrases simples, encouragements, le personnage se présente
+- **Niveau A2** : le personnage partage ses expériences à Antibes, fait des comparaisons culturelles
+- **Niveau B1** : le personnage donne son opinion, utilise des expressions idiomatiques
+- **Niveau B2** : le personnage argumente, utilise un registre plus soutenu
 
-Les leçons 9 et 10 de chaque module sont des révisions/examens avec davantage de questions de quiz.
-
-### Répartition des personnages
-
-- `marie` → leçons introductives, quiz finaux (professeure)
-- `lucas` → exercices passé composé, vie sociale
-- `yuki` → exercices de vocabulaire, drag-drop
-- `omar` → listening, interactions culturelles
-- `elena` → qcm, comparatif, opinions
-- `fatou` → fill-blank, exercices de grammaire
-- `hans` → monde du travail, exercices formels
-- `thomas` → flashcards, culture française
-
-### Contenu pédagogique
-
-Le contenu suit exactement le curriculum défini dans `curriculum.ts` (titres, compétences, descriptions). Chaque step est contextualisé à Antibes/Côte d'Azur quand c'est pertinent, avec un niveau de langue A2 (phrases plus complexes qu'en A1, passé composé, imparfait, comparatif, etc.).
+Le ton et le vocabulaire de chaque message correspondent au niveau CECR du module.
 
