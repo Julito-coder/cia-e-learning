@@ -17,8 +17,8 @@ export function CharacterShowcase({ cecrLevel }: CharacterShowcaseProps) {
 
   return (
     <div className="space-y-3">
-      <h3 className="font-display text-base text-center">Nos personnages</h3>
-      <div className="grid grid-cols-2 gap-3">
+      {/* Mobile/Tablet: horizontal scroll — Desktop: 2-col grid */}
+      <div className="flex gap-3 overflow-x-auto pb-2 lg:grid lg:grid-cols-2 lg:overflow-visible lg:pb-0 snap-x snap-mandatory">
         {CHARACTERS.map((char, i) => {
           const evo = getCharacterEvolution(char, cecrLevel);
           const isHovered = hoveredId === char.id;
@@ -27,7 +27,7 @@ export function CharacterShowcase({ cecrLevel }: CharacterShowcaseProps) {
           return (
             <button
               key={char.id}
-              className="flex flex-col items-center gap-1.5 p-2 rounded-2xl transition-all duration-200 hover:bg-accent/10 cursor-pointer select-none animate-fade-in"
+              className="flex flex-col items-center gap-1.5 p-2 rounded-2xl transition-all duration-200 hover:bg-accent/10 cursor-pointer select-none animate-fade-in flex-shrink-0 snap-center w-20 lg:w-auto"
               style={{ animationDelay: `${i * 80}ms`, perspective: 600 }}
               onClick={() => setSelectedCharacterId(isSelected ? null : char.id)}
               onPointerEnter={() => setHoveredId(char.id)}
@@ -39,8 +39,8 @@ export function CharacterShowcase({ cecrLevel }: CharacterShowcaseProps) {
                 style={{
                   transformStyle: 'preserve-3d',
                   transform: isHovered ? 'rotateY(360deg)' : 'rotateY(0deg)',
-                  width: 72,
-                  height: 72,
+                  width: 64,
+                  height: 64,
                 }}
               >
                 <img
@@ -57,7 +57,6 @@ export function CharacterShowcase({ cecrLevel }: CharacterShowcaseProps) {
                   }}
                   draggable={false}
                 />
-                {/* Idle breathing animation overlay */}
                 {!isHovered && (
                   <div
                     className="absolute inset-0 rounded-full animate-character-idle"
@@ -66,24 +65,21 @@ export function CharacterShowcase({ cecrLevel }: CharacterShowcaseProps) {
                 )}
               </div>
 
-              {/* Name */}
               <span className={`text-[11px] font-bold leading-tight text-center transition-colors ${
                 isSelected ? 'text-accent' : 'text-foreground'
               }`}>
                 {char.name.split(' ')[0]}
               </span>
 
-              {/* Role */}
               <span className="text-[9px] text-muted-foreground leading-tight text-center line-clamp-1">
                 {char.role}
               </span>
 
-              {/* Dynamic shadow */}
               <div
                 className="rounded-full bg-foreground/10 transition-all duration-300"
                 style={{
-                  width: 40,
-                  height: 5,
+                  width: 36,
+                  height: 4,
                   filter: `blur(${isHovered ? 5 : 2}px)`,
                   transform: `scaleX(${isHovered ? 0.6 : 1})`,
                   marginTop: -2,
@@ -94,7 +90,6 @@ export function CharacterShowcase({ cecrLevel }: CharacterShowcaseProps) {
         })}
       </div>
 
-      {/* Story modal */}
       {selectedCharacter && (
         <CharacterStoryModal
           character={selectedCharacter}
