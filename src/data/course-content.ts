@@ -687,6 +687,11 @@ import { a2Module2Content } from './a2-module2-content';
 import { a2Module3Content } from './a2-module3-content';
 import { a2Module4Content } from './a2-module4-content';
 import { a2Module5Content } from './a2-module5-content';
+import { b1Module1Content } from './b1-module1-content';
+import { b1Module2Content } from './b1-module2-content';
+import { b1Module3Content } from './b1-module3-content';
+import { b1Module4Content } from './b1-module4-content';
+import { b1Module5Content } from './b1-module5-content';
 
 // Merge all content: legacy demo courses + curriculum lessons
 const allContent = [
@@ -698,6 +703,11 @@ const allContent = [
   ...a2Module3Content,
   ...a2Module4Content,
   ...a2Module5Content,
+  ...b1Module1Content,
+  ...b1Module2Content,
+  ...b1Module3Content,
+  ...b1Module4Content,
+  ...b1Module5Content,
 ];
 
 export function getCourseContent(courseId: string): CourseContent | undefined {
