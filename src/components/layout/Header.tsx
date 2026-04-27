@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Menu, X, User, BookOpen, Heart, Globe, Flame, GraduationCap, ClipboardCheck, Home, LogOut } from 'lucide-react';
+import { Menu, X, User, BookOpen, Heart, Globe, Flame, GraduationCap, ClipboardCheck, Home, LogOut, Trophy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -41,6 +41,7 @@ export function Header() {
     { label: 'Programme', href: '/programme', icon: BookOpen },
     { label: t('nav.catalogue'), href: '/catalogue', icon: GraduationCap },
     { label: t('nav.test'), href: '/test-niveau', icon: ClipboardCheck },
+    { label: 'Classement', href: '/classement', icon: Trophy },
     { label: t('nav.favorites'), href: '/favoris', icon: Heart },
   ];
 
