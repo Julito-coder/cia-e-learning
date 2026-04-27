@@ -1,74 +1,56 @@
-## Plan : Classement des utilisateurs (Leaderboard compétitif)
+## Plan : Test de vitesse par niveau (Speed Test 1:30)
 
 ### Objectif
-Créer une page **Classement** qui affiche tous les utilisateurs de la plateforme classés par XP, avec leur niveau CECR, avatar et un design compétitif (podium, badges, position de l'utilisateur courant mise en avant).
+Ajouter, pour chaque niveau CECR (A1 → C2), une leçon spéciale **"⚡ Test de vitesse"** : un challenge chronométré de **90 secondes** où l'apprenant doit répondre à un maximum de questions correctes. Score = nombre de bonnes réponses, classement et XP bonus à la clé.
 
-### Ce qui sera créé
+### Fonctionnement du jeu
 
-**1. Nouvelle page `/classement` (`src/pages/Classement.tsx`)**
-- **Podium top 3** : 3 cartes mises en valeur (or, argent, bronze) avec avatars, XP et niveau CECR
-- **Liste classée du rang 4 à 50** : tableau/cartes avec rang, avatar, prénom, niveau, XP
-- **Carte "Ma position"** sticky en haut ou en bas : montre le rang de l'utilisateur connecté même s'il n'est pas dans le top 50
-- **Filtres** : 
-  - Onglets : "Global" / "Mon niveau CECR" (filtre sur les utilisateurs au même niveau)
-  - Période : "All-time" (V1 — XP cumulé total)
-- **Animations** : flammes/couronne pour le #1, podium animé, mise en avant de la ligne courant utilisateur
-- **Design Duolingo-like** : cohérent avec le reste (couleurs cia-xp, cia-streak, badges arrondis)
+- **Durée fixe** : 90 secondes (chronomètre visible en haut, change de couleur sous 30s puis 10s)
+- **Banque de questions** : ~50 questions QCM rapides par niveau (vocabulaire, grammaire, conjugaison, conjugaisons-éclair) — choisies au hasard à chaque tentative
+- **Format question** : QCM 1 question + 4 options, validation **automatique** au clic (pas de bouton "Vérifier")
+- **Feedback ultra-rapide** : flash vert/rouge pendant 400ms puis question suivante
+- **Pénalité** : mauvaise réponse = +1 erreur (pas de retrait de temps, on garde la pression du timer)
+- **Fin** : timer à 0 → écran de résultats avec score final, précision %, meilleur score perso, XP gagné
+- **XP** : `bonnesRéponses × 10 XP` + bonus de **+50 XP** si record personnel battu
+- **Score sauvegardé** dans localStorage par niveau (`speed-test-best:A1`, etc.)
 
-**2. Lien dans la navigation**
-- Ajouter "Classement" dans `src/components/layout/Header.tsx` (nav desktop, menu mobile, bottom nav mobile)
-- Icône : `Trophy` de lucide-react
-- Clé i18n : `nav.leaderboard` ajoutée dans les 6 fichiers `src/i18n/locales/*.json`
+### Où ça vit dans l'UI
 
-**3. Route**
-- Ajouter `<Route path="/classement" element={<Classement />} />` dans `src/App.tsx`
+1. **Une "leçon" virtuelle par niveau** dans le Programme : insérée comme dernière carte de chaque niveau dans `LearningPath`, avec un visuel distinct (badge ⚡, fond doré dégradé, libellé "TEST DE VITESSE").
+2. **Route dédiée** : `/test-vitesse/:level` (ex : `/test-vitesse/A1`) — ne passe pas par `CourseDetail` car le format est différent (pas d'étapes, juste le challenge + écran de résultat).
+3. **Déverrouillage** : disponible uniquement si **au moins un module du niveau** est terminé (sinon carte verrouillée avec message "Termine ton premier module pour débloquer le test de vitesse").
 
-### Source des données
+### Synchro avec les autres systèmes
 
-La table `profiles` contient déjà tout ce qu'il faut : `user_id`, `first_name`, `last_name`, `avatar_url`, `total_xp`, `cecr_level`, `is_active`.
+- **XP gagné** → utilise `addXP()` du hook `useUserProgress` → met à jour automatiquement Header + Profil + Classement (déjà branché via `xp-update` event).
+- **Classement** : l'XP gagné fait monter dans le leaderboard global. (Une V2 pourrait ajouter un classement spécifique "meilleur score speed-test" — hors périmètre.)
 
-**Requête** (côté client via le SDK Supabase) :
-```ts
-supabase
-  .from('profiles')
-  .select('user_id, first_name, last_name, avatar_url, total_xp, cecr_level')
-  .eq('is_active', true)
-  .order('total_xp', { ascending: false })
-  .limit(50)
-```
+### Fichiers créés
 
-Pour la position de l'utilisateur courant hors top 50, une seconde requête comptera le nombre de profils avec un XP supérieur :
-```ts
-supabase.from('profiles').select('*', { count: 'exact', head: true }).gt('total_xp', myXP)
-```
-→ rang = count + 1.
+- `src/data/speed-test-questions.ts` — banque de ~50 questions par niveau (300+ questions au total). Format simple :
+  ```ts
+  { question: string; options: string[]; correctIndex: number }
+  ```
+- `src/pages/SpeedTest.tsx` — page complète du jeu :
+  - Écran 1 : intro avec règles + bouton "Commencer" + meilleur score
+  - Écran 2 : jeu (timer, question courante, score live, barre de temps)
+  - Écran 3 : résultats (score, précision, XP gagné, "Rejouer" / "Retour au programme")
 
-### Sécurité (RLS)
+### Fichiers modifiés
 
-Les politiques actuelles sur `profiles` permettent à un utilisateur de voir **uniquement son propre profil**. Pour un classement, il faut autoriser la lecture publique d'un sous-ensemble de champs.
+- `src/App.tsx` — ajout de la route `/test-vitesse/:level`
+- `src/components/courses/LearningPath.tsx` — ajout d'une carte "Test de vitesse" en fin de chaque niveau, avec icône `Zap` et lien vers `/test-vitesse/{level}`
 
-**Migration** : ajout d'une politique RLS qui permet aux utilisateurs authentifiés de voir les champs nécessaires au classement de tous les profils actifs :
-```sql
-CREATE POLICY "Authenticated users can view leaderboard data"
-ON public.profiles
-FOR SELECT
-TO authenticated
-USING (is_active = true);
-```
+### Détails techniques (UI/UX)
 
-Cette politique s'ajoute aux existantes (les utilisateurs gardent l'accès complet à leur propre profil). Comme RLS combine les politiques en OR, les utilisateurs connectés pourront lire tous les profils actifs — ce qui est nécessaire pour le classement. Les champs sensibles (email, nationality) ne seront simplement **pas sélectionnés** côté front pour le leaderboard.
+- Composant utilise `useEffect` + `setInterval` pour le timer décrémenté chaque 100ms (pour fluidité de la barre de progression)
+- Questions tirées aléatoirement avec `Array.sort(() => Math.random() - 0.5).slice(0, 100)` (pool large pour éviter la répétition durant la même partie)
+- Ordre des options aussi randomisé à chaque question
+- Animation : pulse rouge quand timer < 10s, scale du score à chaque bonne réponse
+- Bouton "Stop" pour arrêter avant la fin (compte le score actuel)
+- Mobile-friendly : boutons de réponse pleine largeur, gros texte
 
-### Synchronisation temps réel
-Le leaderboard se rafraîchit automatiquement toutes les 30s via `setInterval` + une écoute de l'événement `xp-update` (déjà émis par `useUserProgress`) pour rafraîchir immédiatement quand l'utilisateur courant gagne de l'XP.
-
-### Fichiers modifiés / créés
-- **Créé** : `src/pages/Classement.tsx`
-- **Modifié** : `src/App.tsx` (route)
-- **Modifié** : `src/components/layout/Header.tsx` (nav + bottom nav)
-- **Modifié** : `src/i18n/locales/{fr,en,es,de,it,ru}.json` (clé `nav.leaderboard`)
-- **Migration SQL** : politique RLS de lecture publique du leaderboard sur `profiles`
-
-### Hors périmètre (V2 possible)
-- Classements hebdomadaires/mensuels (nécessiterait une table `xp_events` avec horodatage)
-- Ligues à la Duolingo (Bronze/Argent/Or… avec promotion/relégation)
-- Notifications push quand un ami te dépasse
+### Hors périmètre (V2)
+- Leaderboard dédié speed-test
+- Modes (vocabulaire only / grammaire only)
+- Multi-joueur en temps réel
