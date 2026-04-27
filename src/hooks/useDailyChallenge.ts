@@ -72,10 +72,14 @@ export function useDailyChallenge(initialLevel?: CECRLevel) {
     setStreak(newStreak);
     setLastDate(today);
     if (user) {
-      await supabase
+      const { error } = await supabase
         .from('profiles')
         .update({ daily_streak: newStreak, last_daily_completed_at: today })
         .eq('user_id', user.id);
+      if (error) {
+        console.error('[markDoneToday] update profile failed', error);
+        return { awarded: false, xp: 0, newStreak: streak };
+      }
     } else {
       localStorage.setItem(LS_STREAK, String(newStreak));
       localStorage.setItem(LS_LAST, today);
