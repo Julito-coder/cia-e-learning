@@ -95,13 +95,20 @@ export default function CourseDetail() {
           const { leveledUp, newLevel } = await addXP(xpEarned);
           toast.success(`+${xpEarned} XP gagnés !`);
 
-          // Daily challenge bonus
+          // Daily challenge bonus :
+          // - soit la leçon ouverte EST la leçon du jour pour son niveau (entrée naturelle depuis le programme),
+          // - soit elle a été lancée explicitement via le défi du jour (?daily=1), peu importe le niveau choisi.
           const daily = getDailyLesson(displayCourse.level);
-          if (daily && daily.lessonId === displayCourse.id) {
+          const isDailyMatch = daily && daily.lessonId === displayCourse.id;
+          if (isDailyChallenge || isDailyMatch) {
             const res = await markDoneToday();
             if (res.awarded) {
               setTimeout(() => {
                 toast.success(`🔥 Défi du jour validé ! Série : ${res.newStreak} jour${res.newStreak > 1 ? 's' : ''} (+${res.xp} XP)`, { duration: 5000 });
+              }, 600);
+            } else if (isDailyChallenge) {
+              setTimeout(() => {
+                toast(`✅ Défi du jour déjà validé aujourd'hui — pas de bonus supplémentaire.`, { duration: 4000 });
               }, 600);
             }
           }
