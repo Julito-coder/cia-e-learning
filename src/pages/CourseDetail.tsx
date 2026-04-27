@@ -15,6 +15,7 @@ import { useUserProgress, isLevelAccessible } from '@/hooks/useUserProgress';
 import { getNewlyUnlockedModules, isModuleComplete, computeLevelFromProgress } from '@/hooks/useModuleUnlock';
 import { useDailyChallenge } from '@/hooks/useDailyChallenge';
 import { getDailyLesson } from '@/lib/dailyChallenge';
+import { readCourseProgressMap, writeCourseProgressMap } from '@/lib/courseProgress';
 import { toast } from 'sonner';
 
 const contentTypeLabels: Record<string, { label: string; icon: React.ElementType }> = {
@@ -87,9 +88,9 @@ export default function CourseDetail() {
           setPlaying(false);
 
           // Save progress
-          const progress = JSON.parse(localStorage.getItem('course-progress') || '{}');
+          const progress = readCourseProgressMap();
           progress[displayCourse.id] = { score, completed: true, date: new Date().toISOString() };
-          localStorage.setItem('course-progress', JSON.stringify(progress));
+          writeCourseProgressMap(progress);
 
           // Award XP based on score
           const xpEarned = Math.max(5, Math.round(score * 5));
@@ -155,7 +156,7 @@ export default function CourseDetail() {
   }
 
   // Check saved progress
-  const savedProgress = JSON.parse(localStorage.getItem('course-progress') || '{}');
+  const savedProgress = readCourseProgressMap();
   const courseProgress = savedProgress[displayCourse.id];
   const displayScore = completed ? finalScore : courseProgress?.score;
   const isCompleted = completed || courseProgress?.completed;

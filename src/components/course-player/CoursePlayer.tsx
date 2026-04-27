@@ -11,6 +11,7 @@ import { DragDropStep } from './DragDropStep';
 import { FlashcardStep } from './FlashcardStep';
 import { ListeningStep } from './ListeningStep';
 import { FinalQuizStep } from './FinalQuizStep';
+import { readCoursePlayerProgress, writeCoursePlayerProgress, clearCoursePlayerProgress } from '@/lib/courseProgress';
 
 interface Props {
   content: CourseContent;
@@ -26,22 +27,19 @@ interface SavedProgress {
 }
 
 function loadProgress(courseId: string): SavedProgress {
-  try {
-    const raw = localStorage.getItem(`course-progress-${courseId}`);
-    if (raw) {
-      const parsed = JSON.parse(raw);
-      return {
-        step: parsed.step ?? 0,
-        correctCount: parsed.correctCount ?? 0,
-        totalQuestions: parsed.totalQuestions ?? 0,
-      };
-    }
-  } catch {}
+  const parsed = readCoursePlayerProgress(courseId);
+  if (parsed) {
+    return {
+      step: parsed.step ?? 0,
+      correctCount: parsed.correctCount ?? 0,
+      totalQuestions: parsed.totalQuestions ?? 0,
+    };
+  }
   return { step: 0, correctCount: 0, totalQuestions: 0 };
 }
 
 function saveProgress(courseId: string, progress: SavedProgress) {
-  localStorage.setItem(`course-progress-${courseId}`, JSON.stringify(progress));
+  writeCoursePlayerProgress(courseId, progress);
 }
 
 export function CoursePlayer({ content, courseTitle, onExit, onComplete }: Props) {
@@ -68,7 +66,7 @@ export function CoursePlayer({ content, courseTitle, onExit, onComplete }: Props
 
     if (currentStep + 1 >= content.steps.length) {
       const score = newTotal > 0 ? Math.round(newCorrect / newTotal * 100) : 100;
-      localStorage.removeItem(`course-progress-${content.courseId}`);
+      clearCoursePlayerProgress(content.courseId);
       onComplete(score);
       return;
     }

@@ -1,14 +1,11 @@
 import { useMemo } from 'react';
 import { curriculum, type Module } from '@/data/curriculum';
+import { readCourseProgressMap } from '@/lib/courseProgress';
 
 const LEVEL_ORDER = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 
 function getSavedProgress(): Record<string, any> {
-  try {
-    return JSON.parse(localStorage.getItem('course-progress') || '{}');
-  } catch {
-    return {};
-  }
+  return readCourseProgressMap();
 }
 
 export function getModuleCompletionPercent(mod: Module): number {
