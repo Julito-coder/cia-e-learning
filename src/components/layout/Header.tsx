@@ -61,10 +61,9 @@ export function Header() {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2.5 flex-shrink-0">
             <img
-              src="/cia-logo-2.jpg"
+              src="/cia-logo-2.png"
               alt="CIA"
               className="h-10 w-auto select-none"
-              style={{ mixBlendMode: 'multiply', filter: 'contrast(1.05)' }}
               draggable={false}
             />
             <div className="hidden sm:block">
