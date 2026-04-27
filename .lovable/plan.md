@@ -1,76 +1,74 @@
+## Plan : Classement des utilisateurs (Leaderboard compétitif)
 
+### Objectif
+Créer une page **Classement** qui affiche tous les utilisateurs de la plateforme classés par XP, avec leur niveau CECR, avatar et un design compétitif (podium, badges, position de l'utilisateur courant mise en avant).
 
-## Plan : Intégrer les personnages avec du storytelling dans tous les niveaux
+### Ce qui sera créé
 
-### Constat actuel
+**1. Nouvelle page `/classement` (`src/pages/Classement.tsx`)**
+- **Podium top 3** : 3 cartes mises en valeur (or, argent, bronze) avec avatars, XP et niveau CECR
+- **Liste classée du rang 4 à 50** : tableau/cartes avec rang, avatar, prénom, niveau, XP
+- **Carte "Ma position"** sticky en haut ou en bas : montre le rang de l'utilisateur connecté même s'il n'est pas dans le top 50
+- **Filtres** : 
+  - Onglets : "Global" / "Mon niveau CECR" (filtre sur les utilisateurs au même niveau)
+  - Période : "All-time" (V1 — XP cumulé total)
+- **Animations** : flammes/couronne pour le #1, podium animé, mise en avant de la ligne courant utilisateur
+- **Design Duolingo-like** : cohérent avec le reste (couleurs cia-xp, cia-streak, badges arrondis)
 
-- **Infrastructure OK** : `StepCharacterBubble` et `CharacterBubble` fonctionnent, tous les types de steps supportent `characterId`
-- **A2 à B2** : les `characterId` sont déjà présents sur la plupart des steps
-- **A1 modules 1 et 2** : seuls les steps `listening` ont un `characterId` — les lesson, qcm, fill-blank, drag-drop, flashcard et final-quiz n'en ont pas
-- **Problème principal** : le `CharacterBubble` affiche seulement le nom + catchphrase générique du niveau. Il n'y a pas de **dialogue contextuel** par step — le personnage ne "parle" pas en lien avec l'exercice
+**2. Lien dans la navigation**
+- Ajouter "Classement" dans `src/components/layout/Header.tsx` (nav desktop, menu mobile, bottom nav mobile)
+- Icône : `Trophy` de lucide-react
+- Clé i18n : `nav.leaderboard` ajoutée dans les 6 fichiers `src/i18n/locales/*.json`
 
-### Ce qui sera fait
+**3. Route**
+- Ajouter `<Route path="/classement" element={<Classement />} />` dans `src/App.tsx`
 
-#### 1. Ajouter un champ `characterMessage` aux types de steps
+### Source des données
 
-Dans `src/data/course-content.ts`, ajouter un champ optionnel `characterMessage?: string` à chaque interface de step (LessonStep, QCMStep, FillBlankStep, DragDropStep, FlashcardStep, FinalQuizStep). Ce message est une réplique contextuelle du personnage liée à l'exercice.
+La table `profiles` contient déjà tout ce qu'il faut : `user_id`, `first_name`, `last_name`, `avatar_url`, `total_xp`, `cecr_level`, `is_active`.
 
-#### 2. Afficher le message contextuel dans `CharacterBubble`
+**Requête** (côté client via le SDK Supabase) :
+```ts
+supabase
+  .from('profiles')
+  .select('user_id, first_name, last_name, avatar_url, total_xp, cecr_level')
+  .eq('is_active', true)
+  .order('total_xp', { ascending: false })
+  .limit(50)
+```
 
-Modifier `StepCharacterBubble` pour accepter un prop `message?: string`. Modifier `CharacterBubble` pour afficher ce message à la place du catchphrase quand il est fourni. Le message apparaît dans une bulle de dialogue stylisée (type "speech bubble").
+Pour la position de l'utilisateur courant hors top 50, une seconde requête comptera le nombre de profils avec un XP supérieur :
+```ts
+supabase.from('profiles').select('*', { count: 'exact', head: true }).gt('total_xp', myXP)
+```
+→ rang = count + 1.
 
-#### 3. Ajouter les `characterId` manquants dans A1 modules 1 et 2
+### Sécurité (RLS)
 
-Parcourir les ~20 leçons A1 et assigner un personnage à chaque step qui n'en a pas, en suivant la répartition existante :
-- `marie` → lesson introductives, final-quiz
-- `lucas` → qcm, scènes sociales
-- `yuki` → flashcard, vocabulaire
-- `omar` → listening (déjà fait), cuisine
-- `elena` → qcm, opinions
-- `fatou` → fill-blank, grammaire
-- `hans` → drag-drop, exercices structurés
-- `thomas` → flashcard, culture
+Les politiques actuelles sur `profiles` permettent à un utilisateur de voir **uniquement son propre profil**. Pour un classement, il faut autoriser la lecture publique d'un sous-ensemble de champs.
 
-#### 4. Ajouter des `characterMessage` narratifs dans tous les modules
+**Migration** : ajout d'une politique RLS qui permet aux utilisateurs authentifiés de voir les champs nécessaires au classement de tous les profils actifs :
+```sql
+CREATE POLICY "Authenticated users can view leaderboard data"
+ON public.profiles
+FOR SELECT
+TO authenticated
+USING (is_active = true);
+```
 
-Pour chaque step, ajouter un `characterMessage` court (1-2 phrases) en rapport avec l'exercice et le personnage. Exemples :
+Cette politique s'ajoute aux existantes (les utilisateurs gardent l'accès complet à leur propre profil). Comme RLS combine les politiques en OR, les utilisateurs connectés pourront lire tous les profils actifs — ce qui est nécessaire pour le classement. Les champs sensibles (email, nationality) ne seront simplement **pas sélectionnés** côté front pour le leaderboard.
 
-| Step | Personnage | characterMessage |
-|------|-----------|-----------------|
-| Lesson "Bonjour" | marie | "Bienvenue dans ma classe ! Aujourd'hui, on apprend à se saluer." |
-| QCM salutations | lucas | "Moi aussi au début, je confondais bonjour et bonsoir !" |
-| Flashcard famille | yuki | "Au Japon, la famille c'est très important aussi !" |
-| Fill-blank passé composé | fatou | "Le passé composé, c'est comme une recette : sujet + avoir + participe !" |
-| Final quiz | marie | "Voyons ce que vous avez retenu. Je suis sûre que vous allez réussir !" |
+### Synchronisation temps réel
+Le leaderboard se rafraîchit automatiquement toutes les 30s via `setInterval` + une écoute de l'événement `xp-update` (déjà émis par `useUserProgress`) pour rafraîchir immédiatement quand l'utilisateur courant gagne de l'XP.
 
-Cela concerne les fichiers suivants :
-- `src/data/a1-module1-content.ts` (leçons 1-10)
-- `src/data/a1-module2-content.ts` (leçons 11-20)
-- `src/data/a2-module1-content.ts` à `a2-module5-content.ts` (leçons 51-100)
-- `src/data/b1-module1-content.ts` à `b1-module5-content.ts` (leçons 101-150)
-- `src/data/b2-module1-content.ts` à `b2-module5-content.ts` (leçons 151-200)
+### Fichiers modifiés / créés
+- **Créé** : `src/pages/Classement.tsx`
+- **Modifié** : `src/App.tsx` (route)
+- **Modifié** : `src/components/layout/Header.tsx` (nav + bottom nav)
+- **Modifié** : `src/i18n/locales/{fr,en,es,de,it,ru}.json` (clé `nav.leaderboard`)
+- **Migration SQL** : politique RLS de lecture publique du leaderboard sur `profiles`
 
-### Fichiers modifiés
-
-| Fichier | Action |
-|---------|--------|
-| `src/data/course-content.ts` | Ajouter `characterMessage?: string` à toutes les interfaces de step |
-| `src/components/course-player/CharacterBubble.tsx` | Afficher `message` en priorité sur `catchphrase`, style bulle de dialogue |
-| `src/components/course-player/StepCharacterBubble.tsx` | Passer le `characterMessage` du step au `CharacterBubble` |
-| `src/data/a1-module1-content.ts` | Ajouter `characterId` + `characterMessage` à tous les steps |
-| `src/data/a1-module2-content.ts` | Idem |
-| `src/data/a2-module1-content.ts` à `a2-module5-content.ts` | Ajouter `characterMessage` (characterId déjà présent) |
-| `src/data/b1-module1-content.ts` à `b1-module5-content.ts` | Idem |
-| `src/data/b2-module1-content.ts` à `b2-module5-content.ts` | Idem |
-| `src/data/course-content.ts` (allCourseContent) | Ajouter `characterMessage` aux cours existants dans le fichier |
-
-### Approche storytelling
-
-Les messages des personnages suivent leur arc narratif défini dans `characters.ts` :
-- **Niveau A1** : phrases simples, encouragements, le personnage se présente
-- **Niveau A2** : le personnage partage ses expériences à Antibes, fait des comparaisons culturelles
-- **Niveau B1** : le personnage donne son opinion, utilise des expressions idiomatiques
-- **Niveau B2** : le personnage argumente, utilise un registre plus soutenu
-
-Le ton et le vocabulaire de chaque message correspondent au niveau CECR du module.
-
+### Hors périmètre (V2 possible)
+- Classements hebdomadaires/mensuels (nécessiterait une table `xp_events` avec horodatage)
+- Ligues à la Duolingo (Bronze/Argent/Or… avec promotion/relégation)
+- Notifications push quand un ami te dépasse
