@@ -92,6 +92,17 @@ export default function CourseDetail() {
           const { leveledUp, newLevel } = await addXP(xpEarned);
           toast.success(`+${xpEarned} XP gagnés !`);
 
+          // Daily challenge bonus
+          const daily = getDailyLesson(displayCourse.level);
+          if (daily && daily.lessonId === displayCourse.id) {
+            const res = await markDoneToday();
+            if (res.awarded) {
+              setTimeout(() => {
+                toast.success(`🔥 Défi du jour validé ! Série : ${res.newStreak} jour${res.newStreak > 1 ? 's' : ''} (+${res.xp} XP)`, { duration: 5000 });
+              }, 600);
+            }
+          }
+
           // Check if a module was just completed and unlock notifications
           if (curriculumData) {
             const mod = curriculumData.module;
