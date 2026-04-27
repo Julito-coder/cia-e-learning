@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ArrowRight, BookOpen, Star, Trophy, Users, Zap } from 'lucide-react';
+import { ArrowRight, BookOpen, Star, Trophy, Users, Zap, Flame, Play, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { CourseCard } from '@/components/courses/CourseCard';
 import { CircularProgress } from '@/components/gamification/CircularProgress';
 import { AnimatedCounter } from '@/components/gamification/AnimatedCounter';
-import { DailyGoal } from '@/components/gamification/DailyGoal';
+import { useDailyChallenge } from '@/hooks/useDailyChallenge';
 import { Achievements } from '@/components/gamification/Achievements';
 import { LearningPath } from '@/components/courses/LearningPath';
 import { CharacterShowcase } from '@/components/characters/CharacterShowcase';
@@ -28,6 +28,7 @@ export default function Index() {
   const { t } = useTranslation();
   const { user } = useAuth();
   const { totalXP, cecrLevel, xpProgress } = useUserProgress();
+  const { dailyLesson, streak, isDoneToday } = useDailyChallenge();
 
   const userName = user?.user_metadata?.first_name || user?.email?.split('@')[0] || 'Apprenant';
   const recentCourses = demoCourses.filter((c) => c.progress && c.progress > 0).slice(0, 3);
@@ -128,8 +129,43 @@ export default function Index() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Main column */}
           <div className="lg:col-span-2 space-y-8">
-            {/* Daily goal */}
-            <DailyGoal completed={0} goal={5} streak={0} />
+            {/* Daily challenge highlight */}
+            <Link to="/defi-du-jour" className="block">
+              <div className={`card-duo p-5 transition-all hover:scale-[1.01] ${
+                isDoneToday
+                  ? 'bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/20 border-green-300'
+                  : 'bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-950/30 dark:to-red-950/20 border-orange-300'
+              }`}>
+                <div className="flex items-start gap-4">
+                  <div className={`h-12 w-12 rounded-2xl flex items-center justify-center flex-shrink-0 ${
+                    isDoneToday ? 'bg-green-500 text-white' : 'bg-gradient-to-br from-orange-400 to-red-500 text-white shadow-lg'
+                  }`}>
+                    {isDoneToday ? <Check className="h-6 w-6" /> : <Flame className="h-6 w-6" />}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Badge className={isDoneToday ? 'bg-green-500 text-white' : 'bg-orange-500 text-white'}>
+                        DÉFI DU JOUR
+                      </Badge>
+                      <span className="text-xs font-bold text-cia-streak inline-flex items-center gap-1">
+                        <Flame className="h-3.5 w-3.5" /> {streak} {streak > 1 ? 'jours' : 'jour'}
+                      </span>
+                    </div>
+                    <h3 className="font-display text-base leading-tight">
+                      {dailyLesson ? dailyLesson.title : 'Pas de leçon disponible'}
+                    </h3>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {isDoneToday ? '🎉 Bravo ! Reviens demain.' : `Niveau ${cecrLevel} · +25 XP bonus`}
+                    </p>
+                  </div>
+                  {!isDoneToday && (
+                    <button className="hidden sm:flex h-10 w-10 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 text-white items-center justify-center shadow-md flex-shrink-0">
+                      <Play className="h-4 w-4 ml-0.5" fill="currentColor" />
+                    </button>
+                  )}
+                </div>
+              </div>
+            </Link>
 
             {/* Continue courses */}
             {recentCourses.length > 0 && (

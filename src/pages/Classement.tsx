@@ -14,7 +14,10 @@ type LeaderboardEntry = {
   avatar_url: string | null;
   total_xp: number;
   cecr_level: string | null;
+  daily_streak?: number;
 };
+
+type Mode = 'global' | 'level' | 'streak';
 
 const displayName = (e: LeaderboardEntry) => {
   const fn = (e.first_name || '').trim();
@@ -36,7 +39,7 @@ const Avatar = ({ entry, size = 'md' }: { entry: LeaderboardEntry; size?: 'sm' |
   );
 };
 
-const PodiumCard = ({ entry, rank, isMe }: { entry: LeaderboardEntry; rank: 1 | 2 | 3; isMe: boolean }) => {
+const PodiumCard = ({ entry, rank, isMe, mode }: { entry: LeaderboardEntry; rank: 1 | 2 | 3; isMe: boolean; mode: Mode }) => {
   const config = {
     1: { icon: Crown, color: 'text-yellow-500', bg: 'bg-gradient-to-b from-yellow-100 to-yellow-50 dark:from-yellow-900/30 dark:to-yellow-900/10', border: 'border-yellow-400', height: 'md:h-64', label: 'OR' },
     2: { icon: Medal, color: 'text-slate-400', bg: 'bg-gradient-to-b from-slate-100 to-slate-50 dark:from-slate-800/40 dark:to-slate-800/10', border: 'border-slate-300', height: 'md:h-56', label: 'ARGENT' },
@@ -51,14 +54,16 @@ const PodiumCard = ({ entry, rank, isMe }: { entry: LeaderboardEntry; rank: 1 | 
       <p className="font-bold text-sm mt-2 text-center truncate max-w-full">{displayName(entry)}</p>
       <p className="text-xs text-muted-foreground">{entry.cecr_level || 'A1'}</p>
       <div className="mt-2 px-3 py-1 rounded-full bg-cia-xp/15 text-cia-xp text-xs font-bold">
-        ⚡ {entry.total_xp.toLocaleString()} XP
+        {mode === 'streak'
+          ? <span className="inline-flex items-center gap-1 text-cia-streak">🔥 {entry.daily_streak ?? 0} j</span>
+          : <>⚡ {entry.total_xp.toLocaleString()} XP</>}
       </div>
       <p className={`mt-1 text-[10px] font-extrabold tracking-wider ${config.color}`}>#{rank} • {config.label}</p>
     </Card>
   );
 };
 
-const Row = ({ entry, rank, isMe }: { entry: LeaderboardEntry; rank: number; isMe: boolean }) => (
+const Row = ({ entry, rank, isMe, mode }: { entry: LeaderboardEntry; rank: number; isMe: boolean; mode: Mode }) => (
   <div className={`flex items-center gap-3 p-3 rounded-2xl transition-all ${isMe ? 'bg-primary/10 border-2 border-primary ring-2 ring-primary/20' : 'bg-card hover:bg-muted/50 border border-border/40'}`}>
     <div className={`w-9 text-center font-extrabold ${rank <= 10 ? 'text-primary' : 'text-muted-foreground'}`}>
       #{rank}
@@ -68,9 +73,15 @@ const Row = ({ entry, rank, isMe }: { entry: LeaderboardEntry; rank: number; isM
       <p className="font-bold text-sm truncate">{displayName(entry)} {isMe && <span className="text-xs text-primary">(vous)</span>}</p>
       <p className="text-xs text-muted-foreground">Niveau {entry.cecr_level || 'A1'}</p>
     </div>
-    <div className="px-3 py-1.5 rounded-full bg-cia-xp/15 text-cia-xp text-xs font-bold flex items-center gap-1">
-      ⚡ {entry.total_xp.toLocaleString()}
-    </div>
+    {mode === 'streak' ? (
+      <div className="px-3 py-1.5 rounded-full bg-cia-streak/15 text-cia-streak text-xs font-bold flex items-center gap-1">
+        🔥 {entry.daily_streak ?? 0}
+      </div>
+    ) : (
+      <div className="px-3 py-1.5 rounded-full bg-cia-xp/15 text-cia-xp text-xs font-bold flex items-center gap-1">
+        ⚡ {entry.total_xp.toLocaleString()}
+      </div>
+    )}
   </div>
 );
 
@@ -79,29 +90,36 @@ export default function Classement() {
   const { totalXP, cecrLevel } = useUserProgress();
   const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
-  const [tab, setTab] = useState<'global' | 'level'>('global');
+  const [tab, setTab] = useState<Mode>('global');
   const [myRank, setMyRank] = useState<number | null>(null);
 
   const fetchLeaderboard = useCallback(async () => {
+    const orderField = tab === 'streak' ? 'daily_streak' : 'total_xp';
     let q = supabase
       .from('profiles')
-      .select('user_id, first_name, last_name, avatar_url, total_xp, cecr_level')
+      .select('user_id, first_name, last_name, avatar_url, total_xp, cecr_level, daily_streak')
       .eq('is_active', true)
-      .order('total_xp', { ascending: false })
+      .order(orderField, { ascending: false })
       .limit(50);
     if (tab === 'level') q = q.eq('cecr_level', cecrLevel);
+    if (tab === 'streak') q = q.gt('daily_streak', 0);
     const { data } = await q;
     setEntries((data as LeaderboardEntry[]) || []);
 
     if (user) {
-      let countQ = supabase
-        .from('profiles')
-        .select('*', { count: 'exact', head: true })
-        .eq('is_active', true)
-        .gt('total_xp', totalXP);
-      if (tab === 'level') countQ = countQ.eq('cecr_level', cecrLevel);
-      const { count } = await countQ;
-      setMyRank((count ?? 0) + 1);
+      if (tab === 'streak') {
+        // We don't compute "my rank" for streak (kept simple); leaderboard shows all top users with streak > 0
+        setMyRank(null);
+      } else {
+        let countQ = supabase
+          .from('profiles')
+          .select('*', { count: 'exact', head: true })
+          .eq('is_active', true)
+          .gt('total_xp', totalXP);
+        if (tab === 'level') countQ = countQ.eq('cecr_level', cecrLevel);
+        const { count } = await countQ;
+        setMyRank((count ?? 0) + 1);
+      }
     }
     setLoading(false);
   }, [tab, cecrLevel, totalXP, user]);
@@ -132,10 +150,11 @@ export default function Classement() {
         <p className="text-muted-foreground text-sm">Affrontez les autres apprenants et grimpez dans le classement !</p>
       </div>
 
-      <Tabs value={tab} onValueChange={(v) => setTab(v as 'global' | 'level')} className="mb-6">
-        <TabsList className="grid w-full grid-cols-2 rounded-2xl">
+      <Tabs value={tab} onValueChange={(v) => setTab(v as Mode)} className="mb-6">
+        <TabsList className="grid w-full grid-cols-3 rounded-2xl">
           <TabsTrigger value="global" className="rounded-xl font-bold">🌍 Global</TabsTrigger>
-          <TabsTrigger value="level" className="rounded-xl font-bold">🎯 Niveau {cecrLevel}</TabsTrigger>
+          <TabsTrigger value="level" className="rounded-xl font-bold">🎯 {cecrLevel}</TabsTrigger>
+          <TabsTrigger value="streak" className="rounded-xl font-bold">🔥 Streak</TabsTrigger>
         </TabsList>
       </Tabs>
 
@@ -155,13 +174,13 @@ export default function Classement() {
           {top3.length >= 3 && (
             <div className="grid grid-cols-3 gap-3 mb-8 items-end">
               <div className="order-1">
-                <PodiumCard entry={top3[1]} rank={2} isMe={user?.id === top3[1].user_id} />
+                <PodiumCard entry={top3[1]} rank={2} isMe={user?.id === top3[1].user_id} mode={tab} />
               </div>
               <div className="order-2">
-                <PodiumCard entry={top3[0]} rank={1} isMe={user?.id === top3[0].user_id} />
+                <PodiumCard entry={top3[0]} rank={1} isMe={user?.id === top3[0].user_id} mode={tab} />
               </div>
               <div className="order-3">
-                <PodiumCard entry={top3[2]} rank={3} isMe={user?.id === top3[2].user_id} />
+                <PodiumCard entry={top3[2]} rank={3} isMe={user?.id === top3[2].user_id} mode={tab} />
               </div>
             </div>
           )}
@@ -169,10 +188,10 @@ export default function Classement() {
           {/* Rest */}
           <div className="space-y-2">
             {rest.map((e, i) => (
-              <Row key={e.user_id} entry={e} rank={i + 4} isMe={user?.id === e.user_id} />
+              <Row key={e.user_id} entry={e} rank={i + 4} isMe={user?.id === e.user_id} mode={tab} />
             ))}
             {top3.length > 0 && top3.length < 3 && top3.map((e, i) => (
-              <Row key={e.user_id} entry={e} rank={i + 1} isMe={user?.id === e.user_id} />
+              <Row key={e.user_id} entry={e} rank={i + 1} isMe={user?.id === e.user_id} mode={tab} />
             ))}
           </div>
 

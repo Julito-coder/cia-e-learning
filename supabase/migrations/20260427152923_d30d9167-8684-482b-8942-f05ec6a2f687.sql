@@ -1,0 +1,3 @@
+ALTER TABLE public.profiles
+  ADD COLUMN IF NOT EXISTS daily_streak integer NOT NULL DEFAULT 0,
+  ADD COLUMN IF NOT EXISTS last_daily_completed_at date;

@@ -141,12 +141,14 @@ export type Database = {
           avatar_url: string | null
           cecr_level: string | null
           created_at: string
+          daily_streak: number
           email: string | null
           first_name: string | null
           id: string
           interface_language: string | null
           is_active: boolean | null
           is_cia_student: boolean | null
+          last_daily_completed_at: string | null
           last_name: string | null
           nationality: string | null
           total_xp: number
@@ -157,12 +159,14 @@ export type Database = {
           avatar_url?: string | null
           cecr_level?: string | null
           created_at?: string
+          daily_streak?: number
           email?: string | null
           first_name?: string | null
           id?: string
           interface_language?: string | null
           is_active?: boolean | null
           is_cia_student?: boolean | null
+          last_daily_completed_at?: string | null
           last_name?: string | null
           nationality?: string | null
           total_xp?: number
@@ -173,12 +177,14 @@ export type Database = {
           avatar_url?: string | null
           cecr_level?: string | null
           created_at?: string
+          daily_streak?: number
           email?: string | null
           first_name?: string | null
           id?: string
           interface_language?: string | null
           is_active?: boolean | null
           is_cia_student?: boolean | null
+          last_daily_completed_at?: string | null
           last_name?: string | null
           nationality?: string | null
           total_xp?: number
