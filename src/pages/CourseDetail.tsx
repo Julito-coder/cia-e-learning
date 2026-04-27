@@ -137,10 +137,15 @@ export default function CourseDetail() {
             }
           }
 
-          // Redirect to programme after completion
+          // Redirect after completion : retour au défi du jour si on y vient,
+          // sinon retour au programme/module concerné.
           const moduleId = curriculumData?.module?.id;
           setTimeout(() => {
-            navigate(moduleId ? `/programme?module=${moduleId}` : '/programme');
+            if (isDailyChallenge) {
+              navigate('/defi-du-jour');
+            } else {
+              navigate(moduleId ? `/programme?module=${moduleId}` : '/programme');
+            }
           }, 1500);
         }}
       />
