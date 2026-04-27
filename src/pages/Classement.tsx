@@ -97,6 +97,7 @@ export default function Classement() {
   const fetchLeaderboard = useCallback(async () => {
     if (tab === 'league') {
       setLoading(false);
+      setEntries([]);
       return;
     }
     const orderField = tab === 'streak' ? 'daily_streak' : 'total_xp';
@@ -108,7 +109,10 @@ export default function Classement() {
       .limit(50);
     if (tab === 'level') q = q.eq('cecr_level', cecrLevel);
     if (tab === 'streak') q = q.gt('daily_streak', 0);
-    const { data } = await q;
+    const { data, error } = await q;
+    if (error) {
+      console.error('[Classement] fetch error', error);
+    }
     setEntries((data as LeaderboardEntry[]) || []);
 
     if (user) {
@@ -129,8 +133,12 @@ export default function Classement() {
     setLoading(false);
   }, [tab, cecrLevel, totalXP, user]);
 
+  // Show skeleton only on tab switch / initial mount, not on every refresh.
   useEffect(() => {
     setLoading(true);
+  }, [tab]);
+
+  useEffect(() => {
     fetchLeaderboard();
     const interval = setInterval(fetchLeaderboard, 30000);
     const onXPUpdate = () => fetchLeaderboard();
