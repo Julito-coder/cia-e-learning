@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ArrowRight, BookOpen, Star, Trophy, Users, Zap, Flame, Play, Check } from 'lucide-react';
+import { ArrowRight, BookOpen, Star, Trophy, Users, Zap, Flame, Play, Check, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { CourseCard } from '@/components/courses/CourseCard';
@@ -39,64 +39,97 @@ export default function Index() {
 
   return (
     <div className="animate-fade-in pb-24 md:pb-0">
-      {/* Hero section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary/90 to-accent/70 text-primary-foreground">
-        {/* Modern geometric pattern */}
-        <div className="absolute inset-0 opacity-[0.04] pointer-events-none" aria-hidden="true">
-          <div className="absolute -top-20 -right-20 w-80 h-80 rounded-full border border-primary-foreground/30" />
-          <div className="absolute -bottom-32 -left-16 w-96 h-96 rounded-full border border-primary-foreground/20" />
-          <div className="absolute top-1/2 right-1/4 w-48 h-48 rounded-full border border-primary-foreground/20" />
+      {/* Hero — moderne, clair et minimaliste */}
+      <section className="relative overflow-hidden border-b border-border/40 bg-card">
+        {/* Décor : halos de couleur très doux */}
+        <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+          <div className="absolute -top-32 -right-24 h-80 w-80 rounded-full bg-primary/10 blur-3xl" />
+          <div className="absolute -bottom-40 -left-20 h-96 w-96 rounded-full bg-accent/10 blur-3xl" />
+          <div
+            className="absolute inset-0 opacity-[0.04]"
+            style={{
+              backgroundImage:
+                'radial-gradient(circle at 1px 1px, hsl(var(--foreground)) 1px, transparent 0)',
+              backgroundSize: '28px 28px',
+            }}
+          />
         </div>
+
         <div className="container relative py-10 md:py-14">
-          <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
-            <div className="flex-1">
-              <div className="flex items-center gap-3 mb-3">
-                <span className="text-3xl animate-float">👋</span>
-                <Badge className="bg-primary-foreground/20 text-primary-foreground border-0 font-bold">
-                  {t('hero.level', { level: cecrLevel })}
-                </Badge>
+          <div className="grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
+            <div>
+              <div className="inline-flex items-center gap-2 mb-4 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold">
+                <Sparkles className="h-3.5 w-3.5" />
+                {t('hero.level', { level: cecrLevel })}
               </div>
-              <h1 className="font-display text-3xl md:text-4xl mb-2">
-                {t('hero.greeting', { name: userName })}
+              <h1 className="font-display text-3xl md:text-5xl leading-[1.05] tracking-tight mb-3">
+                {t('hero.greeting', { name: userName })}{' '}
+                <span className="text-3xl md:text-5xl">👋</span>
               </h1>
-              <p className="text-lg opacity-90 mb-3 max-w-lg">
+              <p className="text-base md:text-lg text-muted-foreground max-w-xl mb-6">
                 {t('hero.subtitle')}
               </p>
-              {/* XP progress bar */}
-              <div className="max-w-sm mb-5">
-                <div className="flex justify-between text-xs opacity-80 mb-1">
-                  <span>{cecrLevel}</span>
-                  <span>{xpProgress.current} / {xpProgress.needed} XP</span>
+
+              {/* XP progress */}
+              <div className="max-w-md mb-6">
+                <div className="flex justify-between text-xs font-semibold text-muted-foreground mb-1.5">
+                  <span>Progression {cecrLevel}</span>
+                  <span className="tabular-nums">
+                    {xpProgress.current} / {xpProgress.needed} XP
+                  </span>
                 </div>
-                <div className="h-2.5 bg-primary-foreground/20 rounded-full overflow-hidden">
-                  <div className="h-full bg-primary-foreground/60 rounded-full transition-all duration-700" style={{ width: `${xpProgress.progress}%` }} />
+                <div className="h-2 bg-muted rounded-full overflow-hidden">
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-primary to-accent transition-all duration-700"
+                    style={{ width: `${xpProgress.progress}%` }}
+                  />
                 </div>
               </div>
+
               <div className="flex flex-wrap gap-3">
                 <Link to="/catalogue">
-                  <Button size="lg" className="btn-duo gap-2 bg-destructive text-destructive-foreground hover:bg-destructive/90 font-bold">
+                  <Button size="lg" className="btn-duo gap-2 font-bold">
                     <BookOpen className="h-4 w-4" />
                     {t('hero.explore')}
                   </Button>
                 </Link>
                 <Link to="/test-niveau">
-                  <Button size="lg" variant="outline" className="btn-duo gap-2 border-2 border-primary-foreground/40 text-primary font-bold bg-primary-foreground hover:bg-primary-foreground/90">
+                  <Button size="lg" variant="outline" className="btn-duo gap-2 font-bold border-2">
                     <Star className="h-4 w-4" />
                     {t('hero.test')}
                   </Button>
                 </Link>
+                <Link to="/classement">
+                  <Button size="lg" variant="ghost" className="btn-duo gap-2 font-bold">
+                    <Trophy className="h-4 w-4" />
+                    Classement
+                  </Button>
+                </Link>
               </div>
             </div>
-            {/* Stats bubbles */}
-            <div className="flex md:flex-col gap-3">
-              <div className="card-duo !bg-primary-foreground/15 !border-primary-foreground/20 p-3 text-center min-w-[80px]">
-                <p className="text-2xl font-bold"><AnimatedCounter target={totalXP} /></p>
-                <p className="text-[10px] font-semibold mt-1 opacity-80">{t('hero.xpTotal')}</p>
+
+            {/* Stat cards — glass minimal */}
+            <div className="grid grid-cols-2 md:grid-cols-1 gap-3 md:w-44">
+              <div className="rounded-2xl border border-border bg-background/60 backdrop-blur p-4 text-center">
+                <p className="text-3xl font-bold text-cia-xp tabular-nums">
+                  <AnimatedCounter target={totalXP} />
+                </p>
+                <p className="text-[10px] font-semibold mt-1 text-muted-foreground uppercase tracking-wide">
+                  {t('hero.xpTotal')}
+                </p>
               </div>
-              <div className="card-duo !bg-primary-foreground/15 !border-primary-foreground/20 p-3 text-center min-w-[80px]">
-                <p className="text-2xl font-bold">{cecrLevel}</p>
-                <p className="text-[10px] font-semibold opacity-80">Niveau</p>
-              </div>
+              <Link
+                to="/classement"
+                className="rounded-2xl border border-border bg-background/60 backdrop-blur p-4 text-center hover:border-primary/50 hover:bg-primary/5 transition-colors group"
+              >
+                <p className="text-3xl font-bold text-primary inline-flex items-center gap-1.5 justify-center">
+                  <Trophy className="h-5 w-5" />
+                  {cecrLevel}
+                </p>
+                <p className="text-[10px] font-semibold mt-1 text-muted-foreground uppercase tracking-wide group-hover:text-primary">
+                  Mon niveau
+                </p>
+              </Link>
             </div>
           </div>
         </div>
@@ -235,11 +268,13 @@ export default function Index() {
               </div>
             </div>
 
-            {/* Mini leaderboard */}
-            <div className="card-duo p-5">
+            {/* Mini leaderboard → lien vers /classement */}
+            <Link to="/classement" className="card-duo p-5 block hover:border-primary/40 transition-colors">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-display text-base">{t('sections.leaderboard')}</h3>
-                <Users className="h-4 w-4 text-muted-foreground" />
+                <span className="text-xs font-bold text-primary inline-flex items-center gap-1">
+                  Voir tout <ArrowRight className="h-3 w-3" />
+                </span>
               </div>
               <div className="space-y-2">
                 {leaderboard.map((u, i) => (
@@ -258,7 +293,7 @@ export default function Index() {
                   </div>
                 ))}
               </div>
-            </div>
+            </Link>
 
             {/* Achievements */}
             <Achievements />

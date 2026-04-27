@@ -60,7 +60,12 @@ export function Header() {
         <div className="container flex h-16 items-center justify-between gap-2">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2.5 flex-shrink-0">
-            <img src="/cia-logo-2.jpg" alt="CIA" className="h-9" style={{ mixBlendMode: 'multiply' }} />
+            <img
+              src="/cia-logo-2.png"
+              alt="CIA"
+              className="h-10 w-auto select-none"
+              draggable={false}
+            />
             <div className="hidden sm:block">
               <p className="font-display text-sm leading-tight text-primary">CIA</p>
               <p className="text-[10px] text-muted-foreground font-semibold">E-Learning</p>
