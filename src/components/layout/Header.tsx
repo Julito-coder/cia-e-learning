@@ -40,6 +40,7 @@ export function Header() {
     { label: t('nav.home'), href: '/', icon: Home },
     { label: 'Programme', href: '/programme', icon: BookOpen },
     { label: t('nav.catalogue'), href: '/catalogue', icon: GraduationCap },
+    { label: 'Défi du jour', href: '/defi-du-jour', icon: Flame },
     { label: t('nav.test'), href: '/test-niveau', icon: ClipboardCheck },
     { label: 'Classement', href: '/classement', icon: Trophy },
     { label: t('nav.favorites'), href: '/favoris', icon: Heart },
