@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ArrowRight, BookOpen, Star, Trophy, Users, Zap } from 'lucide-react';
+import { ArrowRight, BookOpen, Star, Trophy, Users, Zap, Flame, Play, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { CourseCard } from '@/components/courses/CourseCard';
 import { CircularProgress } from '@/components/gamification/CircularProgress';
 import { AnimatedCounter } from '@/components/gamification/AnimatedCounter';
-import { DailyGoal } from '@/components/gamification/DailyGoal';
+import { useDailyChallenge } from '@/hooks/useDailyChallenge';
 import { Achievements } from '@/components/gamification/Achievements';
 import { LearningPath } from '@/components/courses/LearningPath';
 import { CharacterShowcase } from '@/components/characters/CharacterShowcase';
@@ -28,6 +28,7 @@ export default function Index() {
   const { t } = useTranslation();
   const { user } = useAuth();
   const { totalXP, cecrLevel, xpProgress } = useUserProgress();
+  const { dailyLesson, streak, isDoneToday } = useDailyChallenge();
 
   const userName = user?.user_metadata?.first_name || user?.email?.split('@')[0] || 'Apprenant';
   const recentCourses = demoCourses.filter((c) => c.progress && c.progress > 0).slice(0, 3);
