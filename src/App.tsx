@@ -16,6 +16,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import CourseDetail from "./pages/CourseDetail";
 import TestNiveau from "./pages/TestNiveau";
+import Classement from "./pages/Classement";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminCourses from "./pages/admin/AdminCourses";
@@ -48,6 +49,7 @@ const App = () => {
               <Route path="/glossaire" element={<Glossaire />} />
               <Route path="/cours/:id" element={<CourseDetail />} />
               <Route path="/test-niveau" element={<TestNiveau />} />
+              <Route path="/classement" element={<Classement />} />
               <Route path="/connexion" element={<Connexion />} />
               <Route path="/mot-de-passe-oublie" element={<ForgotPassword />} />
               <Route path="/reinitialiser-mot-de-passe" element={<ResetPassword />} />
