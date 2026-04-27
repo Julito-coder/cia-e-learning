@@ -14,21 +14,28 @@ import { demoCourses, CECR_LEVELS } from '@/data/demo-courses';
 import { curriculum } from '@/data/curriculum';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserProgress } from '@/hooks/useUserProgress';
+import { useLeague } from '@/hooks/useLeague';
 import { Progress } from '@/components/ui/progress';
 
-const leaderboard = [
-  { name: 'Lucas', xp: 2100, avatar: '👨‍🎓' },
-  { name: 'Marie', xp: 1250, avatar: '👩‍🎓' },
-  { name: 'Yuki', xp: 1180, avatar: '🧑‍🎓' },
-  { name: 'Sofia', xp: 980, avatar: '👩‍💻' },
-  { name: 'Ahmed', xp: 870, avatar: '👨‍💻' },
-];
+const LEAGUE_META: Record<'bronze' | 'argent' | 'or', { label: string; emoji: string; ring: string; chip: string }> = {
+  bronze: { label: 'Bronze',  emoji: '🥉', ring: 'ring-amber-700/30',  chip: 'bg-amber-700/10 text-amber-700' },
+  argent: { label: 'Argent', emoji: '🥈', ring: 'ring-slate-400/40',  chip: 'bg-slate-400/15 text-slate-500' },
+  or:     { label: 'Or',     emoji: '🥇', ring: 'ring-yellow-400/40', chip: 'bg-yellow-400/15 text-yellow-600' },
+};
 
 export default function Index() {
   const { t } = useTranslation();
   const { user } = useAuth();
   const { totalXP, cecrLevel, xpProgress } = useUserProgress();
   const { dailyLesson, streak, isDoneToday } = useDailyChallenge();
+  const { myLeague, myWeeklyXP, members } = useLeague();
+
+  const myRank = (() => {
+    if (!user) return null;
+    const idx = members.findIndex((m) => m.user_id === user.id);
+    return idx >= 0 ? idx + 1 : null;
+  })();
+  const leagueMeta = LEAGUE_META[myLeague];
 
   const userName = user?.user_metadata?.first_name || user?.email?.split('@')[0] || 'Apprenant';
   const recentCourses = demoCourses.filter((c) => c.progress && c.progress > 0).slice(0, 3);
