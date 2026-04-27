@@ -150,7 +150,7 @@ export default function Classement() {
         <p className="text-muted-foreground text-sm">Affrontez les autres apprenants et grimpez dans le classement !</p>
       </div>
 
-      <Tabs value={tab} onValueChange={(v) => setTab(v as 'global' | 'level')} className="mb-6">
+      <Tabs value={tab} onValueChange={(v) => setTab(v as Mode)} className="mb-6">
         <TabsList className="grid w-full grid-cols-3 rounded-2xl">
           <TabsTrigger value="global" className="rounded-xl font-bold">🌍 Global</TabsTrigger>
           <TabsTrigger value="level" className="rounded-xl font-bold">🎯 {cecrLevel}</TabsTrigger>
