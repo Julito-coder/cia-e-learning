@@ -71,21 +71,19 @@ export function Header() {
           <nav className="hidden lg:flex items-center gap-0.5">
             {navItems.map((item) => {
               const active = location.pathname === item.href;
-              const isIconOnly = item.iconOnly;
               return (
                 <Link
                   key={item.href}
                   to={item.href}
                   aria-label={item.label}
-                  title={isIconOnly ? item.label : undefined}
-                  className={`story-link flex items-center gap-1.5 ${isIconOnly ? 'px-2.5' : 'px-3'} py-2 rounded-xl text-sm font-bold whitespace-nowrap transition-all duration-200 ${
+                  className={`story-link flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-bold whitespace-nowrap transition-all duration-200 ${
                     active
                       ? 'bg-primary text-primary-foreground'
                       : 'text-muted-foreground hover:text-foreground'
                   }`}
                 >
-                  <item.icon className={`${isIconOnly ? 'h-5 w-5' : 'h-4 w-4'}`} />
-                  {!isIconOnly && item.label}
+                  <item.icon className="h-4 w-4" />
+                  {item.label}
                 </Link>
               );
             })}
