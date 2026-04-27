@@ -2,6 +2,7 @@ import { useState, useEffect, createContext, useContext } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import type { Session, User } from '@supabase/supabase-js';
 import { setActiveProgressUser } from '@/lib/courseProgress';
+import { toast } from 'sonner';
 
 interface AuthContextType {
   session: Session | null;
@@ -79,7 +80,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.error('[signOut] error', error);
+        toast.error(`Erreur déconnexion: ${error.message}`);
+      }
+    } catch (e: any) {
+      console.error('[signOut] exception', e);
+    } finally {
+      // Force local cleanup even if the network call failed
+      setSession(null);
+      setIsAdmin(false);
+      setActiveProgressUser(undefined);
+      try {
+        Object.keys(localStorage)
+          .filter((k) => k.startsWith('sb-') && k.endsWith('-auth-token'))
+          .forEach((k) => localStorage.removeItem(k));
+      } catch {}
+      // Hard redirect ensures every page resets its state
+      window.location.href = '/connexion';
+    }
   };
 
   return (
