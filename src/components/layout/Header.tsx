@@ -36,6 +36,7 @@ export function Header() {
       .then(({ data }) => { if (data?.avatar_url) setAvatarUrl(data.avatar_url); });
   }, [user]);
 
+  // iconOnly = collapsed to a single icon on desktop to save horizontal space.
   const navItems = [
     { label: t('nav.home'), href: '/', icon: Home },
     { label: 'Programme', href: '/programme', icon: BookOpen },
@@ -43,7 +44,7 @@ export function Header() {
     { label: 'Défi du jour', href: '/defi-du-jour', icon: Flame },
     { label: t('nav.test'), href: '/test-niveau', icon: ClipboardCheck },
     { label: 'Classement', href: '/classement', icon: Trophy },
-    { label: t('nav.favorites'), href: '/favoris', icon: Heart },
+    { label: t('nav.favorites'), href: '/favoris', icon: Heart, iconOnly: true },
   ];
 
   const changeLang = (code: string) => {
@@ -63,22 +64,25 @@ export function Header() {
             </div>
           </Link>
 
-          {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-0.5">
+          {/* Desktop nav (≥ lg only — tablette utilise le burger) */}
+          <nav className="hidden lg:flex items-center gap-0.5">
             {navItems.map((item) => {
               const active = location.pathname === item.href;
+              const isIconOnly = item.iconOnly;
               return (
                 <Link
                   key={item.href}
                   to={item.href}
-                  className={`story-link flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-bold transition-all duration-200 ${
+                  aria-label={item.label}
+                  title={isIconOnly ? item.label : undefined}
+                  className={`story-link flex items-center gap-1.5 ${isIconOnly ? 'px-2.5' : 'px-3'} py-2 rounded-xl text-sm font-bold whitespace-nowrap transition-all duration-200 ${
                     active
                       ? 'bg-primary text-primary-foreground'
                       : 'text-muted-foreground hover:text-foreground'
                   }`}
                 >
-                  <item.icon className="h-4 w-4" />
-                  {item.label}
+                  <item.icon className={`${isIconOnly ? 'h-5 w-5' : 'h-4 w-4'}`} />
+                  {!isIconOnly && item.label}
                 </Link>
               );
             })}
@@ -87,7 +91,7 @@ export function Header() {
           {/* Right actions */}
           <div className="flex items-center gap-1.5">
             {/* Gamification stats */}
-            <div className="hidden lg:flex items-center gap-1.5">
+            <div className="hidden xl:flex items-center gap-1.5">
               <div className="stat-bubble bg-cia-streak/15 text-cia-streak">
                 <Flame className="h-3.5 w-3.5" />
                 <span className="text-xs">{cecrLevel}</span>
@@ -143,7 +147,8 @@ export function Header() {
             <Button
               variant="ghost"
               size="icon"
-              className="md:hidden rounded-xl"
+              className="lg:hidden rounded-xl"
+              aria-label="Menu"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -151,9 +156,9 @@ export function Header() {
           </div>
         </div>
 
-        {/* Mobile nav */}
+        {/* Mobile / Tablette nav (burger) — pas de slide latéral, panneau plein largeur */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-t bg-card p-4 animate-slide-up relative">
+          <div className="lg:hidden border-t bg-card p-4 animate-fade-in relative">
             <div className="flex gap-2 mb-4 pb-4 border-b">
               <div className="stat-bubble bg-cia-streak/15 text-cia-streak text-xs">
                 <Flame className="h-3.5 w-3.5" /> {cecrLevel}
@@ -162,26 +167,28 @@ export function Header() {
                 ⚡ {totalXP} XP
               </div>
             </div>
-            <nav className="flex flex-col gap-1">
+            <nav className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
                   to={item.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-bold transition-all ${
+                  className={`flex items-center gap-2.5 px-3 py-3 rounded-xl text-sm font-bold transition-all ${
                     location.pathname === item.href
                       ? 'bg-primary text-primary-foreground'
                       : 'text-muted-foreground hover:bg-muted'
                   }`}
                 >
                   <item.icon className="h-5 w-5" />
-                  {item.label}
+                  <span className="truncate">{item.label}</span>
                 </Link>
               ))}
+            </nav>
+            <div className="mt-3 pt-3 border-t">
               {user ? (
                 <button
                   onClick={() => { signOut(); setMobileMenuOpen(false); }}
-                  className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-bold text-muted-foreground hover:bg-muted mt-2 border-t pt-4"
+                  className="w-full flex items-center justify-center gap-2 px-3 py-3 rounded-xl text-sm font-bold text-muted-foreground hover:bg-muted"
                 >
                   <LogOut className="h-5 w-5" />
                   Déconnexion
@@ -190,37 +197,16 @@ export function Header() {
                 <Link
                   to="/connexion"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-bold text-muted-foreground hover:bg-muted mt-2 border-t pt-4"
+                  className="w-full flex items-center justify-center gap-2 px-3 py-3 rounded-xl text-sm font-bold text-muted-foreground hover:bg-muted"
                 >
                   <User className="h-5 w-5" />
                   {t('nav.login')}
                 </Link>
               )}
-            </nav>
+            </div>
           </div>
         )}
       </header>
-
-      {/* Mobile bottom nav */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 border-t-2 bg-card/95 backdrop-blur safe-bottom">
-        <div className="flex justify-around py-1.5">
-          {navItems.slice(0, 5).map((item) => {
-            const active = location.pathname === item.href;
-            return (
-              <Link
-                key={item.href}
-                to={item.href}
-                className={`flex flex-col items-center gap-0.5 px-2 py-1 rounded-lg text-[10px] font-bold transition-all ${
-                  active ? 'text-primary' : 'text-muted-foreground'
-                }`}
-              >
-                <item.icon className={`h-5 w-5 ${active ? 'text-primary' : ''}`} />
-                {item.label}
-              </Link>
-            );
-          })}
-        </div>
-      </nav>
     </>
   );
 }
