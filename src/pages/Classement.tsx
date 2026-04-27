@@ -151,9 +151,10 @@ export default function Classement() {
       </div>
 
       <Tabs value={tab} onValueChange={(v) => setTab(v as 'global' | 'level')} className="mb-6">
-        <TabsList className="grid w-full grid-cols-2 rounded-2xl">
+        <TabsList className="grid w-full grid-cols-3 rounded-2xl">
           <TabsTrigger value="global" className="rounded-xl font-bold">🌍 Global</TabsTrigger>
-          <TabsTrigger value="level" className="rounded-xl font-bold">🎯 Niveau {cecrLevel}</TabsTrigger>
+          <TabsTrigger value="level" className="rounded-xl font-bold">🎯 {cecrLevel}</TabsTrigger>
+          <TabsTrigger value="streak" className="rounded-xl font-bold">🔥 Streak</TabsTrigger>
         </TabsList>
       </Tabs>
 
@@ -173,13 +174,13 @@ export default function Classement() {
           {top3.length >= 3 && (
             <div className="grid grid-cols-3 gap-3 mb-8 items-end">
               <div className="order-1">
-                <PodiumCard entry={top3[1]} rank={2} isMe={user?.id === top3[1].user_id} />
+                <PodiumCard entry={top3[1]} rank={2} isMe={user?.id === top3[1].user_id} mode={tab} />
               </div>
               <div className="order-2">
-                <PodiumCard entry={top3[0]} rank={1} isMe={user?.id === top3[0].user_id} />
+                <PodiumCard entry={top3[0]} rank={1} isMe={user?.id === top3[0].user_id} mode={tab} />
               </div>
               <div className="order-3">
-                <PodiumCard entry={top3[2]} rank={3} isMe={user?.id === top3[2].user_id} />
+                <PodiumCard entry={top3[2]} rank={3} isMe={user?.id === top3[2].user_id} mode={tab} />
               </div>
             </div>
           )}
@@ -187,10 +188,10 @@ export default function Classement() {
           {/* Rest */}
           <div className="space-y-2">
             {rest.map((e, i) => (
-              <Row key={e.user_id} entry={e} rank={i + 4} isMe={user?.id === e.user_id} />
+              <Row key={e.user_id} entry={e} rank={i + 4} isMe={user?.id === e.user_id} mode={tab} />
             ))}
             {top3.length > 0 && top3.length < 3 && top3.map((e, i) => (
-              <Row key={e.user_id} entry={e} rank={i + 1} isMe={user?.id === e.user_id} />
+              <Row key={e.user_id} entry={e} rank={i + 1} isMe={user?.id === e.user_id} mode={tab} />
             ))}
           </div>
 
