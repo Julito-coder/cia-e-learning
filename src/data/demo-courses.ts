@@ -1,4 +1,5 @@
 import { curriculum, type Module } from './curriculum';
+import { readCourseProgressMap } from '@/lib/courseProgress';
 
 export type CECRLevel = 'A0' | 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
 
@@ -90,18 +91,14 @@ const moduleImages: Record<string, string> = {
 };
 
 function getModuleProgress(mod: Module): { progress: number; score?: number } {
-  try {
-    const savedProgress = JSON.parse(localStorage.getItem('course-progress') || '{}');
-    const completedLessons = mod.lessons.filter(l => savedProgress[`lesson-${l.id}`]?.completed).length;
-    const progress = Math.round((completedLessons / mod.lessons.length) * 100);
-    const scores = mod.lessons
-      .map(l => savedProgress[`lesson-${l.id}`]?.score)
-      .filter((s): s is number => s !== undefined);
-    const avgScore = scores.length > 0 ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : undefined;
-    return { progress, score: avgScore };
-  } catch {
-    return { progress: 0 };
-  }
+  const savedProgress = readCourseProgressMap();
+  const completedLessons = mod.lessons.filter(l => savedProgress[`lesson-${l.id}`]?.completed).length;
+  const progress = Math.round((completedLessons / mod.lessons.length) * 100);
+  const scores = mod.lessons
+    .map(l => savedProgress[`lesson-${l.id}`]?.score)
+    .filter((s): s is number => s !== undefined);
+  const avgScore = scores.length > 0 ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : undefined;
+  return { progress, score: avgScore };
 }
 
 function mapTheme(theme: string): CourseTheme {

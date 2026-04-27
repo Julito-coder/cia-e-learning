@@ -1,6 +1,7 @@
 import { useState, useEffect, createContext, useContext } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import type { Session, User } from '@supabase/supabase-js';
+import { setActiveProgressUser } from '@/lib/courseProgress';
 
 interface AuthContextType {
   session: Session | null;
@@ -30,6 +31,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       setSession(session);
+      setActiveProgressUser(session?.user?.id);
       if (session?.user) {
         const { data } = await supabase
           .from('user_roles')
@@ -46,6 +48,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
+      setActiveProgressUser(session?.user?.id);
       if (session?.user) {
         supabase
           .from('user_roles')
