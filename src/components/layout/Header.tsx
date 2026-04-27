@@ -44,8 +44,11 @@ export function Header() {
     { label: 'Défi du jour', href: '/defi-du-jour', icon: Flame },
     { label: t('nav.test'), href: '/test-niveau', icon: ClipboardCheck },
     { label: 'Classement', href: '/classement', icon: Trophy },
-    { label: t('nav.favorites'), href: '/favoris', icon: Heart, iconOnly: true },
   ];
+
+  // Favoris : affiché comme bulle compacte (cœur) à côté des stats sur desktop/laptop,
+  // et inclus dans le menu burger en mobile/tablette.
+  const favoritesItem = { label: t('nav.favorites'), href: '/favoris', icon: Heart };
 
   const changeLang = (code: string) => {
     i18n.changeLanguage(code);
@@ -68,21 +71,19 @@ export function Header() {
           <nav className="hidden lg:flex items-center gap-0.5">
             {navItems.map((item) => {
               const active = location.pathname === item.href;
-              const isIconOnly = item.iconOnly;
               return (
                 <Link
                   key={item.href}
                   to={item.href}
                   aria-label={item.label}
-                  title={isIconOnly ? item.label : undefined}
-                  className={`story-link flex items-center gap-1.5 ${isIconOnly ? 'px-2.5' : 'px-3'} py-2 rounded-xl text-sm font-bold whitespace-nowrap transition-all duration-200 ${
+                  className={`story-link flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-bold whitespace-nowrap transition-all duration-200 ${
                     active
                       ? 'bg-primary text-primary-foreground'
                       : 'text-muted-foreground hover:text-foreground'
                   }`}
                 >
-                  <item.icon className={`${isIconOnly ? 'h-5 w-5' : 'h-4 w-4'}`} />
-                  {!isIconOnly && item.label}
+                  <item.icon className="h-4 w-4" />
+                  {item.label}
                 </Link>
               );
             })}
@@ -90,13 +91,25 @@ export function Header() {
 
           {/* Right actions */}
           <div className="flex items-center gap-1.5">
-            {/* Gamification stats */}
-            <div className="hidden xl:flex items-center gap-1.5">
+            {/* Gamification stats + favoris (desktop / laptop) */}
+            <div className="hidden lg:flex items-center gap-1.5">
+              <Link
+                to="/favoris"
+                aria-label={favoritesItem.label}
+                title={favoritesItem.label}
+                className={`stat-bubble transition-colors ${
+                  location.pathname === '/favoris'
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-cia-coral/15 text-cia-coral hover:bg-cia-coral/25'
+                }`}
+              >
+                <Heart className="h-3.5 w-3.5" />
+              </Link>
               <div className="stat-bubble bg-cia-streak/15 text-cia-streak">
                 <Flame className="h-3.5 w-3.5" />
                 <span className="text-xs">{cecrLevel}</span>
               </div>
-              <div className="stat-bubble bg-cia-xp/15 text-cia-xp">
+              <div className="hidden xl:flex stat-bubble bg-cia-xp/15 text-cia-xp">
                 <span className="text-xs">⚡ {totalXP}</span>
               </div>
             </div>
@@ -168,7 +181,7 @@ export function Header() {
               </div>
             </div>
             <nav className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-              {navItems.map((item) => (
+              {[...navItems, favoritesItem].map((item) => (
                 <Link
                   key={item.href}
                   to={item.href}
