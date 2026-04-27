@@ -275,30 +275,68 @@ export default function Index() {
               </div>
             </div>
 
-            {/* Mini leaderboard → lien vers /classement */}
+            {/* Mini ligue → vraie ligue de l'utilisateur */}
             <Link to="/classement" className="card-duo p-5 block hover:border-primary/40 transition-colors">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="font-display text-base">{t('sections.leaderboard')}</h3>
+                <h3 className="font-display text-base">Ma ligue</h3>
                 <span className="text-xs font-bold text-primary inline-flex items-center gap-1">
                   Voir tout <ArrowRight className="h-3 w-3" />
                 </span>
               </div>
-              <div className="space-y-2">
-                {leaderboard.map((u, i) => (
-                  <div
-                    key={u.name}
-                    className={`flex items-center gap-3 p-2 rounded-xl transition-all ${
-                      u.name === 'Marie' ? 'bg-accent/10 border border-accent/20' : ''
-                    }`}
-                  >
-                    <span className="text-sm font-bold w-5 text-center">
-                      {i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}`}
-                    </span>
-                    <span className="text-xl">{u.avatar}</span>
-                    <span className="flex-1 text-sm font-bold">{u.name}</span>
-                    <span className="text-xs font-bold text-cia-xp">{u.xp} XP</span>
-                  </div>
-                ))}
+
+              {/* Ma carte ligue */}
+              <div className={`flex items-center gap-3 p-3 rounded-2xl bg-muted/40 ring-1 ${leagueMeta.ring} mb-3`}>
+                <div className="text-3xl leading-none">{leagueMeta.emoji}</div>
+                <div className="flex-1 min-w-0">
+                  <p className="font-display text-base leading-tight">Ligue {leagueMeta.label}</p>
+                  <p className="text-[11px] text-muted-foreground font-semibold">
+                    {user
+                      ? myRank
+                        ? <>Rang <span className="text-foreground font-bold">#{myRank}</span> · {myWeeklyXP} XP cette semaine</>
+                        : <>{myWeeklyXP} XP cette semaine</>
+                      : 'Connecte-toi pour participer'}
+                  </p>
+                </div>
+                <span className={`px-2.5 py-1 rounded-full text-[10px] font-extrabold ${leagueMeta.chip}`}>
+                  {leagueMeta.label.toUpperCase()}
+                </span>
+              </div>
+
+              {/* Top 5 de ma ligue */}
+              <div className="space-y-1.5">
+                {members.slice(0, 5).map((m, i) => {
+                  const isMe = user?.id === m.user_id;
+                  const name = (m.first_name || m.last_name)
+                    ? `${m.first_name || ''} ${m.last_name ? m.last_name[0] + '.' : ''}`.trim()
+                    : 'Apprenant';
+                  const initial = (m.first_name?.[0] || m.last_name?.[0] || '?').toUpperCase();
+                  return (
+                    <div
+                      key={m.user_id}
+                      className={`flex items-center gap-3 p-2 rounded-xl transition-all ${
+                        isMe ? 'bg-primary/10 border border-primary/30' : ''
+                      }`}
+                    >
+                      <span className="text-sm font-bold w-5 text-center">
+                        {i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}`}
+                      </span>
+                      {m.avatar_url ? (
+                        <img src={m.avatar_url} alt="" className="h-7 w-7 rounded-full object-cover" />
+                      ) : (
+                        <div className="h-7 w-7 rounded-full bg-primary/10 text-primary text-xs font-bold flex items-center justify-center">{initial}</div>
+                      )}
+                      <span className="flex-1 text-sm font-bold truncate">
+                        {name}{isMe && <span className="ml-1 text-[10px] text-primary">(vous)</span>}
+                      </span>
+                      <span className="text-xs font-bold text-cia-xp tabular-nums">{m.weekly_xp} XP</span>
+                    </div>
+                  );
+                })}
+                {members.length === 0 && (
+                  <p className="text-xs text-muted-foreground text-center py-3">
+                    Termine des leçons pour entrer dans le classement de la semaine 🚀
+                  </p>
+                )}
               </div>
             </Link>
 
