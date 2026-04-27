@@ -88,29 +88,61 @@ export function useUserProgress() {
   }, [user]);
 
   const addXP = useCallback(async (amount: number): Promise<{ leveledUp: boolean; newLevel: CECRLevel }> => {
-    const newXP = totalXP + amount;
-    const newLevel = getLevelFromXP(newXP);
-    const leveledUp = newLevel !== cecrLevel;
-
-    setTotalXP(newXP);
-    setCecrLevel(newLevel);
-    emitXPUpdate(newXP, newLevel);
+    if (!Number.isFinite(amount) || amount === 0) {
+      return { leveledUp: false, newLevel: cecrLevel };
+    }
 
     if (user) {
-      await supabase
+      // Atomic-ish update: re-read DB to avoid stale closure overwrites,
+      // then write back. Logs any error so silent failures (RLS, network) become visible.
+      const { data: fresh, error: readErr } = await supabase
+        .from('profiles')
+        .select('total_xp, cecr_level')
+        .eq('user_id', user.id)
+        .maybeSingle();
+      if (readErr) console.error('[addXP] read profile failed', readErr);
+
+      const baseXP = fresh?.total_xp ?? totalXP ?? 0;
+      const newXP = Math.max(0, baseXP + amount);
+      const newLevel = getLevelFromXP(newXP);
+      const prevLevel = (fresh?.cecr_level as CECRLevel) ?? cecrLevel;
+      const leveledUp = newLevel !== prevLevel;
+
+      const { error: updErr } = await supabase
         .from('profiles')
         .update({ total_xp: newXP, cecr_level: newLevel })
         .eq('user_id', user.id);
-      // Track weekly XP for league standings (atomic + lazy reset)
+      if (updErr) {
+        console.error('[addXP] update profile failed', updErr);
+        // Do not optimistically update UI when persistence fails
+        return { leveledUp: false, newLevel: prevLevel };
+      }
+
+      setTotalXP(newXP);
+      setCecrLevel(newLevel);
+      emitXPUpdate(newXP, newLevel);
+
       if (amount > 0) {
-        await supabase.rpc('add_weekly_xp', { _user_id: user.id, _amount: amount });
+        const { error: weeklyErr } = await supabase.rpc('add_weekly_xp', {
+          _user_id: user.id,
+          _amount: amount,
+        });
+        if (weeklyErr) console.error('[addXP] add_weekly_xp failed', weeklyErr);
         window.dispatchEvent(new CustomEvent('weekly-xp-update'));
       }
-    } else {
-      localStorage.setItem('user-xp', String(newXP));
-      localStorage.setItem('user-cecr-level', newLevel);
+
+      return { leveledUp, newLevel };
     }
 
+    // Anonymous (no user) — keep purely local
+    const newXP = Math.max(0, totalXP + amount);
+    const newLevel = getLevelFromXP(newXP);
+    const leveledUp = newLevel !== cecrLevel;
+    setTotalXP(newXP);
+    setCecrLevel(newLevel);
+    emitXPUpdate(newXP, newLevel);
+    localStorage.setItem('user-xp', String(newXP));
+    localStorage.setItem('user-cecr-level', newLevel);
     return { leveledUp, newLevel };
   }, [totalXP, cecrLevel, user]);
 
