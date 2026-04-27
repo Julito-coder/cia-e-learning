@@ -56,10 +56,12 @@ export default function DailyChallenge() {
 
       {/* Header */}
       <div className="text-center mb-6">
-        <div className="inline-flex items-center justify-center h-16 w-16 rounded-2xl bg-gradient-to-br from-orange-400 to-red-500 mb-3 shadow-lg">
-          <Flame className="h-9 w-9 text-white" />
+        <div className="flex items-center justify-center gap-3 mb-3">
+          <div className="inline-flex items-center justify-center h-16 w-16 rounded-2xl bg-gradient-to-br from-orange-400 to-red-500 shadow-lg">
+            <Flame className="h-9 w-9 text-white" />
+          </div>
+          <Badge className="bg-orange-500 text-white">DÉFI DU JOUR</Badge>
         </div>
-        <Badge className="mb-2 bg-orange-500 text-white">DÉFI DU JOUR</Badge>
         <h1 className="font-display text-3xl md:text-4xl text-primary mb-1">Leçon du jour</h1>
         <p className="text-muted-foreground text-sm flex items-center justify-center gap-2">
           <Calendar className="h-4 w-4" /> {todayLabel()}
