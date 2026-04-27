@@ -13,6 +13,8 @@ import { getLessonById, curriculum } from '@/data/curriculum';
 import { CoursePlayer } from '@/components/course-player/CoursePlayer';
 import { useUserProgress, isLevelAccessible } from '@/hooks/useUserProgress';
 import { getNewlyUnlockedModules, isModuleComplete, computeLevelFromProgress } from '@/hooks/useModuleUnlock';
+import { useDailyChallenge } from '@/hooks/useDailyChallenge';
+import { getDailyLesson } from '@/lib/dailyChallenge';
 import { toast } from 'sonner';
 
 const contentTypeLabels: Record<string, { label: string; icon: React.ElementType }> = {
@@ -41,6 +43,7 @@ export default function CourseDetail() {
   const [completed, setCompleted] = useState(false);
   const [finalScore, setFinalScore] = useState(0);
   const { cecrLevel, addXP, setLevel } = useUserProgress();
+  const { markDoneToday } = useDailyChallenge();
 
   // Build a virtual course object for curriculum lessons
   const displayCourse = course || (curriculumData ? {
