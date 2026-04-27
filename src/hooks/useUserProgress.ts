@@ -43,15 +43,14 @@ export function useUserProgress() {
 
   // Listen for XP updates from other hook instances (cross-component sync)
   useEffect(() => {
-    const id = Math.random();
     const handler = (e: Event) => {
       const detail = (e as CustomEvent).detail;
-      if (detail._src === id) return; // ignore own emit
-      setTotalXP(detail.xp);
-      setCecrLevel(detail.level);
+      if (!detail) return;
+      // Use functional updates to avoid stale closures and skip identical values
+      setTotalXP((prev) => (prev === detail.xp ? prev : detail.xp));
+      setCecrLevel((prev) => (prev === detail.level ? prev : detail.level));
     };
     window.addEventListener(XP_UPDATE_EVENT, handler);
-    (window as any).__xpSrcId = id;
     return () => window.removeEventListener(XP_UPDATE_EVENT, handler);
   }, []);
 
