@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, Clock, FileText, Headphones, Video, BookOpen, Mic, Play, Trophy, Lock } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -31,6 +31,9 @@ const contentTypeLabels: Record<string, { label: string; icon: React.ElementType
 export default function CourseDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  // Le défi du jour autorise tous les niveaux, sans restriction d'accès.
+  const isDailyChallenge = searchParams.get('daily') === '1';
   
   // Check if this is a curriculum lesson (lesson-N) or a legacy demo course
   const isCurriculumLesson = id?.startsWith('lesson-');
@@ -70,7 +73,7 @@ export default function CourseDetail() {
     );
   }
 
-  const locked = !isLevelAccessible(displayCourse.level, cecrLevel);
+  const locked = !isDailyChallenge && !isLevelAccessible(displayCourse.level, cecrLevel);
 
   if (playing && content && !locked) {
     return (
