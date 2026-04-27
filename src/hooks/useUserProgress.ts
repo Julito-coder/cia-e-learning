@@ -102,6 +102,11 @@ export function useUserProgress() {
         .from('profiles')
         .update({ total_xp: newXP, cecr_level: newLevel })
         .eq('user_id', user.id);
+      // Track weekly XP for league standings (atomic + lazy reset)
+      if (amount > 0) {
+        await supabase.rpc('add_weekly_xp', { _user_id: user.id, _amount: amount });
+        window.dispatchEvent(new CustomEvent('weekly-xp-update'));
+      }
     } else {
       localStorage.setItem('user-xp', String(newXP));
       localStorage.setItem('user-cecr-level', newLevel);
