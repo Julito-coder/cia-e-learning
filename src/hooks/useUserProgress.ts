@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { toast } from 'sonner';
 import type { CECRLevel } from '@/data/demo-courses';
 
 const LEVEL_ORDER: CECRLevel[] = ['A0', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
@@ -92,6 +93,8 @@ export function useUserProgress() {
       return { leveledUp: false, newLevel: cecrLevel };
     }
 
+    console.log('[addXP] called with amount=', amount, 'user?', user?.id);
+
     if (user) {
       // Atomic-ish update: re-read DB to avoid stale closure overwrites,
       // then write back. Logs any error so silent failures (RLS, network) become visible.
@@ -100,7 +103,10 @@ export function useUserProgress() {
         .select('total_xp, cecr_level')
         .eq('user_id', user.id)
         .maybeSingle();
-      if (readErr) console.error('[addXP] read profile failed', readErr);
+      if (readErr) {
+        console.error('[addXP] read profile failed', readErr);
+        toast.error(`Erreur lecture profil: ${readErr.message}`);
+      }
 
       const baseXP = fresh?.total_xp ?? totalXP ?? 0;
       const newXP = Math.max(0, baseXP + amount);
@@ -114,9 +120,11 @@ export function useUserProgress() {
         .eq('user_id', user.id);
       if (updErr) {
         console.error('[addXP] update profile failed', updErr);
+        toast.error(`Erreur sauvegarde XP: ${updErr.message}`);
         // Do not optimistically update UI when persistence fails
         return { leveledUp: false, newLevel: prevLevel };
       }
+      console.log('[addXP] updated profile to', newXP, newLevel);
 
       setTotalXP(newXP);
       setCecrLevel(newLevel);
@@ -127,7 +135,10 @@ export function useUserProgress() {
           _user_id: user.id,
           _amount: amount,
         });
-        if (weeklyErr) console.error('[addXP] add_weekly_xp failed', weeklyErr);
+        if (weeklyErr) {
+          console.error('[addXP] add_weekly_xp failed', weeklyErr);
+          toast.error(`Erreur XP hebdo: ${weeklyErr.message}`);
+        }
         window.dispatchEvent(new CustomEvent('weekly-xp-update'));
       }
 

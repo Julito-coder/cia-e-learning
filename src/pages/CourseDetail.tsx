@@ -82,6 +82,7 @@ export default function CourseDetail() {
         courseTitle={displayCourse.title}
         onExit={() => setPlaying(false)}
         onComplete={async (score) => {
+          console.log('[CourseDetail] onComplete fired, score=', score, 'isDailyChallenge=', isDailyChallenge);
           setFinalScore(score);
           setPlaying(false);
 
@@ -91,7 +92,8 @@ export default function CourseDetail() {
           localStorage.setItem('course-progress', JSON.stringify(progress));
 
           // Award XP based on score
-          const xpEarned = Math.round(score * 5);
+          const xpEarned = Math.max(5, Math.round(score * 5));
+          console.log('[CourseDetail] awarding XP=', xpEarned);
           const { leveledUp, newLevel } = await addXP(xpEarned);
           toast.success(`+${xpEarned} XP gagnés !`);
 
