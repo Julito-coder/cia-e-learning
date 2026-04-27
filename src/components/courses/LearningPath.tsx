@@ -7,6 +7,7 @@ import { Progress } from '@/components/ui/progress';
 import type { Module } from '@/data/curriculum';
 import { getCourseContent } from '@/data/course-content';
 import { isModuleUnlocked, isModuleComplete } from '@/hooks/useModuleUnlock';
+import { readCourseProgressMap } from '@/lib/courseProgress';
 
 interface LearningPathProps {
   modules: Module[];
@@ -16,21 +17,17 @@ type NodeState = 'complete' | 'active' | 'available' | 'locked';
 
 function getModuleState(mod: Module): NodeState {
   if (!isModuleUnlocked(mod.id)) return 'locked';
-  try {
-    const savedProgress = JSON.parse(localStorage.getItem('course-progress') || '{}');
-    const completed = mod.lessons.filter(l => savedProgress[`lesson-${l.id}`]?.completed).length;
-    if (completed === mod.lessons.length) return 'complete';
-    if (completed > 0) return 'active';
-  } catch { /* noop */ }
+  const savedProgress = readCourseProgressMap();
+  const completed = mod.lessons.filter(l => savedProgress[`lesson-${l.id}`]?.completed).length;
+  if (completed === mod.lessons.length) return 'complete';
+  if (completed > 0) return 'active';
   return 'available';
 }
 
 function getModuleProgress(mod: Module): number {
-  try {
-    const savedProgress = JSON.parse(localStorage.getItem('course-progress') || '{}');
-    const completed = mod.lessons.filter(l => savedProgress[`lesson-${l.id}`]?.completed).length;
-    return Math.round((completed / mod.lessons.length) * 100);
-  } catch { return 0; }
+  const savedProgress = readCourseProgressMap();
+  const completed = mod.lessons.filter(l => savedProgress[`lesson-${l.id}`]?.completed).length;
+  return Math.round((completed / mod.lessons.length) * 100);
 }
 
 const stateStyles = {
@@ -44,8 +41,7 @@ function ModulePopup({ mod, state, progress, onClose, index }: {
   mod: Module; state: NodeState; progress: number; onClose: () => void; index: number;
 }) {
   const saved = useMemo(() => {
-    try { return JSON.parse(localStorage.getItem('course-progress') || '{}'); }
-    catch { return {}; }
+    return readCourseProgressMap();
   }, []);
 
   useEffect(() => {
