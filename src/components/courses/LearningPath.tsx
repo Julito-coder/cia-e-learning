@@ -1,12 +1,12 @@
 import { useState, useMemo, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
-import { Check, Lock, Play, X } from 'lucide-react';
+import { Check, Lock, Play, X, Zap } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import type { Module } from '@/data/curriculum';
 import { getCourseContent } from '@/data/course-content';
-import { isModuleUnlocked } from '@/hooks/useModuleUnlock';
+import { isModuleUnlocked, isModuleComplete } from '@/hooks/useModuleUnlock';
 
 interface LearningPathProps {
   modules: Module[];
@@ -131,6 +131,15 @@ function PopupContent({ mod, state, progress, saved, onClose }: {
 
 export function LearningPath({ modules }: LearningPathProps) {
   const [expandedModule, setExpandedModule] = useState<string | null>(null);
+  const level = modules[0]?.level;
+  const speedTestUnlocked = modules.some((m) => isModuleComplete(m));
+  const speedTestBest = (() => {
+    if (!level) return 0;
+    const v = localStorage.getItem(`speed-test-best:${level}`);
+    return v ? parseInt(v, 10) : 0;
+  })();
+  const totalIndex = modules.length;
+  const speedOffset = totalIndex % 2 === 0 ? 'md:-translate-x-12 lg:-translate-x-16' : 'md:translate-x-12 lg:translate-x-16';
 
   return (
     <div className="relative flex flex-col items-center py-2 pb-16">
@@ -194,6 +203,44 @@ export function LearningPath({ modules }: LearningPathProps) {
           </div>
         );
       })}
+
+      {/* Speed Test node */}
+      {level && (
+        <div className="relative flex flex-col items-center">
+          <svg className="w-32 md:w-40 h-8 md:h-10 -mt-1 mb-0" viewBox="0 0 160 40" fill="none">
+            <path
+              d={totalIndex % 2 === 0
+                ? 'M 120 0 C 120 20, 40 20, 40 40'
+                : 'M 40 0 C 40 20, 120 20, 120 40'
+              }
+              stroke="hsl(var(--border))"
+              strokeWidth="3"
+              strokeDasharray={speedTestUnlocked ? 'none' : '6 4'}
+              strokeLinecap="round"
+            />
+          </svg>
+          <div className={`${speedOffset} relative transition-transform duration-300`}>
+            <Link
+              to={speedTestUnlocked ? `/test-vitesse/${level}` : '#'}
+              onClick={(e) => { if (!speedTestUnlocked) e.preventDefault(); }}
+              className={`relative w-16 h-16 md:w-20 md:h-20 rounded-full border-4 flex items-center justify-center transition-all duration-300 ${
+                speedTestUnlocked
+                  ? 'border-yellow-400 bg-gradient-to-br from-yellow-400 to-orange-500 text-white shadow-lg shadow-yellow-400/40 hover:scale-110 cursor-pointer'
+                  : 'border-muted bg-muted text-muted-foreground cursor-not-allowed'
+              }`}
+            >
+              {speedTestUnlocked ? <Zap className="h-7 w-7 md:h-8 md:w-8" fill="currentColor" /> : <Lock className="h-5 w-5 md:h-6 md:w-6" />}
+            </Link>
+            <div className="mt-1.5 md:mt-2 text-center w-24 md:w-28 mx-auto">
+              <Badge variant="outline" className="text-[9px] md:text-[10px] font-bold mb-0.5 border-yellow-400 text-yellow-600 dark:text-yellow-400">⚡ {level}</Badge>
+              <p className="text-[11px] md:text-xs font-bold leading-tight line-clamp-2">Test de vitesse</p>
+              {speedTestBest > 0 && (
+                <p className="text-[10px] text-muted-foreground mt-0.5">🏆 {speedTestBest}</p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
