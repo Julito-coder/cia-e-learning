@@ -136,6 +136,42 @@ export type Database = {
         }
         Relationships: []
       }
+      league_history: {
+        Row: {
+          created_at: string
+          final_rank: number
+          id: string
+          league_after: string
+          league_before: string
+          outcome: string
+          user_id: string
+          week_start: string
+          weekly_xp_total: number
+        }
+        Insert: {
+          created_at?: string
+          final_rank: number
+          id?: string
+          league_after: string
+          league_before: string
+          outcome: string
+          user_id: string
+          week_start: string
+          weekly_xp_total?: number
+        }
+        Update: {
+          created_at?: string
+          final_rank?: number
+          id?: string
+          league_after?: string
+          league_before?: string
+          outcome?: string
+          user_id?: string
+          week_start?: string
+          weekly_xp_total?: number
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -150,10 +186,13 @@ export type Database = {
           is_cia_student: boolean | null
           last_daily_completed_at: string | null
           last_name: string | null
+          league: string
           nationality: string | null
           total_xp: number
           updated_at: string
           user_id: string
+          weekly_period_start: string | null
+          weekly_xp: number
         }
         Insert: {
           avatar_url?: string | null
@@ -168,10 +207,13 @@ export type Database = {
           is_cia_student?: boolean | null
           last_daily_completed_at?: string | null
           last_name?: string | null
+          league?: string
           nationality?: string | null
           total_xp?: number
           updated_at?: string
           user_id: string
+          weekly_period_start?: string | null
+          weekly_xp?: number
         }
         Update: {
           avatar_url?: string | null
@@ -186,10 +228,13 @@ export type Database = {
           is_cia_student?: boolean | null
           last_daily_completed_at?: string | null
           last_name?: string | null
+          league?: string
           nationality?: string | null
           total_xp?: number
           updated_at?: string
           user_id?: string
+          weekly_period_start?: string | null
+          weekly_xp?: number
         }
         Relationships: []
       }
@@ -335,6 +380,11 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      add_weekly_xp: {
+        Args: { _amount: number; _user_id: string }
+        Returns: undefined
+      }
+      current_week_monday: { Args: never; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

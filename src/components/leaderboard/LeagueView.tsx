@@ -1,0 +1,183 @@
+import { useEffect, useMemo, useState } from 'react';
+import { ArrowUp, ArrowDown, Clock, Sparkles, ShieldCheck } from 'lucide-react';
+import { Card } from '@/components/ui/card';
+import { useAuth } from '@/hooks/useAuth';
+import { useLeague, type League, type LeagueMember } from '@/hooks/useLeague';
+import { LeagueBadge, leagueLabel } from './LeagueBadge';
+
+const LEAGUES: League[] = ['bronze', 'argent', 'or'];
+
+function useCountdown(target: Date) {
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    const i = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(i);
+  }, []);
+  const diff = Math.max(0, target.getTime() - now);
+  const d = Math.floor(diff / 86_400_000);
+  const h = Math.floor((diff % 86_400_000) / 3_600_000);
+  const m = Math.floor((diff % 3_600_000) / 60_000);
+  const s = Math.floor((diff % 60_000) / 1000);
+  return { d, h, m, s };
+}
+
+const displayName = (e: LeagueMember) => {
+  const fn = (e.first_name || '').trim();
+  const ln = (e.last_name || '').trim();
+  if (!fn && !ln) return 'Apprenant';
+  return `${fn}${ln ? ' ' + ln[0] + '.' : ''}`;
+};
+
+const Avatar = ({ entry }: { entry: LeagueMember }) => {
+  const initial = (entry.first_name?.[0] || entry.last_name?.[0] || '?').toUpperCase();
+  if (entry.avatar_url) {
+    return <img src={entry.avatar_url} alt={displayName(entry)} className="h-10 w-10 rounded-full object-cover border-2 border-primary/30" />;
+  }
+  return (
+    <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center font-bold text-primary border-2 border-primary/30">
+      {initial}
+    </div>
+  );
+};
+
+function MemberRow({ entry, rank, zone, isMe }: { entry: LeagueMember; rank: number; zone: 'promo' | 'safe' | 'releg'; isMe: boolean }) {
+  const zoneStyle =
+    zone === 'promo'
+      ? 'border-l-4 border-l-emerald-500'
+      : zone === 'releg'
+      ? 'border-l-4 border-l-red-500'
+      : 'border-l-4 border-l-transparent';
+  return (
+    <div className={`flex items-center gap-3 p-3 rounded-2xl ${zoneStyle} ${isMe ? 'bg-primary/10 ring-2 ring-primary' : 'bg-card hover:bg-muted/50'} border border-border/40`}>
+      <div className={`w-8 text-center font-extrabold ${rank <= 3 ? 'text-emerald-600' : 'text-muted-foreground'}`}>#{rank}</div>
+      <Avatar entry={entry} />
+      <div className="flex-1 min-w-0">
+        <p className="font-bold text-sm truncate">
+          {displayName(entry)} {isMe && <span className="text-xs text-primary">(vous)</span>}
+        </p>
+        <p className="text-xs text-muted-foreground">Niveau {entry.cecr_level || 'A1'}</p>
+      </div>
+      {zone === 'promo' && <ArrowUp className="h-4 w-4 text-emerald-600" />}
+      {zone === 'releg' && <ArrowDown className="h-4 w-4 text-red-500" />}
+      <div className="px-3 py-1.5 rounded-full bg-cia-xp/15 text-cia-xp text-xs font-bold">⚡ {entry.weekly_xp.toLocaleString()}</div>
+    </div>
+  );
+}
+
+export function LeagueView() {
+  const { user } = useAuth();
+  const [viewedLeague, setViewedLeague] = useState<League | undefined>(undefined);
+  const { myLeague, myWeeklyXP, members, lastResult, loading, weekEnd } = useLeague(viewedLeague);
+  const cd = useCountdown(weekEnd);
+
+  const activeLeague = viewedLeague || myLeague;
+  const n = members.length;
+  const promoteCount = activeLeague === 'or' ? 0 : n >= 6 ? 3 : n >= 2 ? 1 : 0;
+  const demoteCount = activeLeague === 'bronze' ? 0 : n >= 6 ? 3 : n >= 2 ? 1 : 0;
+
+  const myRank = useMemo(() => {
+    if (!user) return null;
+    const idx = members.findIndex((m) => m.user_id === user.id);
+    return idx >= 0 ? idx + 1 : null;
+  }, [members, user]);
+
+  return (
+    <div className="space-y-5">
+      {/* Header card */}
+      <Card className="p-5 rounded-3xl bg-gradient-to-br from-card to-muted/40 border-2">
+        <div className="flex items-center gap-4">
+          <LeagueBadge league={activeLeague} size="lg" />
+          <div className="flex-1 min-w-0">
+            <p className="text-xs font-bold text-muted-foreground tracking-wider">VOTRE LIGUE</p>
+            <h2 className="font-display text-2xl text-primary">Ligue {leagueLabel(activeLeague)}</h2>
+            <div className="flex items-center gap-1.5 text-xs text-muted-foreground mt-1">
+              <Clock className="h-3.5 w-3.5" />
+              <span>Fin dans {cd.d}j {String(cd.h).padStart(2, '0')}h {String(cd.m).padStart(2, '0')}m {String(cd.s).padStart(2, '0')}s</span>
+            </div>
+          </div>
+          {user && (
+            <div className="text-right shrink-0">
+              <p className="text-xs text-muted-foreground">Cette semaine</p>
+              <p className="font-extrabold text-cia-xp text-lg">⚡ {myWeeklyXP.toLocaleString()}</p>
+              {myRank && <p className="text-xs font-bold">Rang #{myRank}</p>}
+            </div>
+          )}
+        </div>
+      </Card>
+
+      {/* Result of previous week */}
+      {lastResult && (
+        <Card className={`p-4 rounded-2xl border-2 ${lastResult.outcome === 'promoted' ? 'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-300' : lastResult.outcome === 'demoted' ? 'bg-red-50 dark:bg-red-950/30 border-red-300' : 'bg-muted/30 border-border'}`}>
+          <div className="flex items-center gap-3">
+            {lastResult.outcome === 'promoted' && <Sparkles className="h-5 w-5 text-emerald-600" />}
+            {lastResult.outcome === 'demoted' && <ArrowDown className="h-5 w-5 text-red-500" />}
+            {lastResult.outcome === 'stayed' && <ShieldCheck className="h-5 w-5 text-muted-foreground" />}
+            <p className="text-sm font-bold">
+              {lastResult.outcome === 'promoted' && `🎉 Promu en Ligue ${leagueLabel(lastResult.league_after)} la semaine dernière !`}
+              {lastResult.outcome === 'demoted' && `Relégué en Ligue ${leagueLabel(lastResult.league_after)} — courage, à vous de remonter !`}
+              {lastResult.outcome === 'stayed' && `Maintenu en Ligue ${leagueLabel(lastResult.league_after)} (rang #${lastResult.final_rank})`}
+            </p>
+          </div>
+        </Card>
+      )}
+
+      {/* League selector */}
+      <div className="grid grid-cols-3 gap-2">
+        {LEAGUES.map((l) => (
+          <button
+            key={l}
+            onClick={() => setViewedLeague(l)}
+            className={`p-3 rounded-2xl border-2 transition-all flex flex-col items-center gap-1 ${activeLeague === l ? 'border-primary bg-primary/5' : 'border-border/40 bg-card hover:bg-muted/50'}`}
+          >
+            <LeagueBadge league={l} size="sm" />
+            <span className="text-[11px] font-extrabold tracking-wider">{leagueLabel(l)}</span>
+          </button>
+        ))}
+      </div>
+
+      {/* Members list */}
+      {loading ? (
+        <p className="text-center text-sm text-muted-foreground py-8">Chargement…</p>
+      ) : members.length === 0 ? (
+        <Card className="p-10 text-center rounded-3xl">
+          <p className="text-muted-foreground font-bold">Aucun apprenant dans cette ligue.</p>
+          <p className="text-xs text-muted-foreground mt-2">Gagnez de l'XP cette semaine pour apparaître ici !</p>
+        </Card>
+      ) : (
+        <div className="space-y-2">
+          {members.map((m, i) => {
+            const rank = i + 1;
+            const zone: 'promo' | 'safe' | 'releg' =
+              i < promoteCount ? 'promo' : i >= n - demoteCount ? 'releg' : 'safe';
+            const isMe = !!user && m.user_id === user.id;
+            const showPromoHeader = i === 0 && promoteCount > 0;
+            const showRelegHeader = i === n - demoteCount && demoteCount > 0;
+            return (
+              <div key={m.user_id}>
+                {showPromoHeader && (
+                  <div className="flex items-center gap-2 px-2 pt-2 pb-1">
+                    <ArrowUp className="h-3.5 w-3.5 text-emerald-600" />
+                    <span className="text-[11px] font-extrabold tracking-wider text-emerald-600">ZONE PROMOTION</span>
+                  </div>
+                )}
+                {showRelegHeader && (
+                  <div className="flex items-center gap-2 px-2 pt-3 pb-1">
+                    <ArrowDown className="h-3.5 w-3.5 text-red-500" />
+                    <span className="text-[11px] font-extrabold tracking-wider text-red-500">ZONE RELÉGATION</span>
+                  </div>
+                )}
+                {i === promoteCount && promoteCount > 0 && i < n - demoteCount && (
+                  <div className="flex items-center gap-2 px-2 pt-3 pb-1">
+                    <ShieldCheck className="h-3.5 w-3.5 text-muted-foreground" />
+                    <span className="text-[11px] font-extrabold tracking-wider text-muted-foreground">ZONE SAFE</span>
+                  </div>
+                )}
+                <MemberRow entry={m} rank={rank} zone={zone} isMe={isMe} />
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
