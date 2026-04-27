@@ -6,6 +6,7 @@ import { useUserProgress } from '@/hooks/useUserProgress';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/ui/skeleton';
+import { LeagueView } from '@/components/leaderboard/LeagueView';
 
 type LeaderboardEntry = {
   user_id: string;
@@ -17,7 +18,7 @@ type LeaderboardEntry = {
   daily_streak?: number;
 };
 
-type Mode = 'global' | 'level' | 'streak';
+type Mode = 'league' | 'global' | 'level' | 'streak';
 
 const displayName = (e: LeaderboardEntry) => {
   const fn = (e.first_name || '').trim();
@@ -90,10 +91,14 @@ export default function Classement() {
   const { totalXP, cecrLevel } = useUserProgress();
   const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
-  const [tab, setTab] = useState<Mode>('global');
+  const [tab, setTab] = useState<Mode>('league');
   const [myRank, setMyRank] = useState<number | null>(null);
 
   const fetchLeaderboard = useCallback(async () => {
+    if (tab === 'league') {
+      setLoading(false);
+      return;
+    }
     const orderField = tab === 'streak' ? 'daily_streak' : 'total_xp';
     let q = supabase
       .from('profiles')
@@ -151,14 +156,17 @@ export default function Classement() {
       </div>
 
       <Tabs value={tab} onValueChange={(v) => setTab(v as Mode)} className="mb-6">
-        <TabsList className="grid w-full grid-cols-3 rounded-2xl">
+        <TabsList className="grid w-full grid-cols-4 rounded-2xl">
+          <TabsTrigger value="league" className="rounded-xl font-bold">🏆 Ligue</TabsTrigger>
           <TabsTrigger value="global" className="rounded-xl font-bold">🌍 Global</TabsTrigger>
           <TabsTrigger value="level" className="rounded-xl font-bold">🎯 {cecrLevel}</TabsTrigger>
           <TabsTrigger value="streak" className="rounded-xl font-bold">🔥 Streak</TabsTrigger>
         </TabsList>
       </Tabs>
 
-      {loading ? (
+      {tab === 'league' ? (
+        <LeagueView />
+      ) : loading ? (
         <div className="space-y-3">
           {Array.from({ length: 8 }).map((_, i) => <Skeleton key={i} className="h-16 rounded-2xl" />)}
         </div>
