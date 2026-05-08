@@ -188,6 +188,7 @@ export type Database = {
           last_name: string | null
           league: string
           nationality: string | null
+          placement_test_taken_at: string | null
           total_xp: number
           updated_at: string
           user_id: string
@@ -209,6 +210,7 @@ export type Database = {
           last_name?: string | null
           league?: string
           nationality?: string | null
+          placement_test_taken_at?: string | null
           total_xp?: number
           updated_at?: string
           user_id: string
@@ -230,6 +232,7 @@ export type Database = {
           last_name?: string | null
           league?: string
           nationality?: string | null
+          placement_test_taken_at?: string | null
           total_xp?: number
           updated_at?: string
           user_id?: string
@@ -375,6 +378,39 @@ export type Database = {
         }
         Relationships: []
       }
+      xp_audit_log: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          source: string
+          source_ref: string | null
+          user_id: string
+          xp_after: number
+          xp_before: number
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          id?: string
+          source: string
+          source_ref?: string | null
+          user_id: string
+          xp_after: number
+          xp_before: number
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          source?: string
+          source_ref?: string | null
+          user_id?: string
+          xp_after?: number
+          xp_before?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -384,6 +420,10 @@ export type Database = {
         Args: { _amount: number; _user_id: string }
         Returns: undefined
       }
+      award_xp: {
+        Args: { _amount: number; _source: string; _source_ref?: string }
+        Returns: Json
+      }
       current_week_monday: { Args: never; Returns: string }
       has_role: {
         Args: {
@@ -392,6 +432,9 @@ export type Database = {
         }
         Returns: boolean
       }
+      mark_daily_done: { Args: never; Returns: Json }
+      set_cecr_level: { Args: { _level: string }; Returns: Json }
+      set_placement_level: { Args: { _level: string }; Returns: Json }
     }
     Enums: {
       app_role: "admin" | "manager" | "learner"
