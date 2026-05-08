@@ -19,7 +19,7 @@ export function OnboardingFlow() {
   const navigate = useNavigate();
   const location = useLocation();
   const { needsOnboarding, markDone, skipForNow, loading } = useOnboarding();
-  const { setLevel, setPlacementLevel } = useUserProgress();
+  const { setLevel } = useUserProgress();
   const [phase, setPhase] = useState<Phase>('welcome');
   const [open, setOpen] = useState(false);
   const [profile, setProfile] = useState<Profile | null>(null);
