@@ -1,170 +1,145 @@
 
-# Batch 9 — Profil & Vitrine d'achievements
+# Batch 10 — Auth Polish
 
-Refonte du profil utilisateur en page dédiée `/profil`, avec édition
-des infos perso, sync de la langue d'interface (DB ↔ i18n ↔ localStorage),
-et vitrine complète des achievements (déjà calculés par `useAchievements`).
+Refonte visuelle et UX cohérente des 3 pages d'authentification
+(`/connexion`, `/mot-de-passe-oublie`, `/reinitialiser-mot-de-passe`) :
+mêmes transitions, même hiérarchie, validation temps réel, feedback
+animé. Aucune logique métier modifiée — juste polish + sécurité de
+saisie + petits correctifs.
 
-## 1. Nouvelle page `/profil`
+## 1. Layout commun `AuthShell`
 
-Route ajoutée à `App.tsx` (`<Route path="/profil" element={<Profil />}/>`).
+Nouveau composant `src/components/auth/AuthShell.tsx` qui factorise :
+- Fond doux (gradient `from-background to-muted/30`)
+- Logo CIA + titre + sous-titre animés (`scale-in`)
+- Card centrée max-w-md, ombre élevée, rounded-2xl
+- Footer "Centre International d'Antibes — depuis 1985"
+- Respect `prefers-reduced-motion`
 
-Structure mobile-first, 4 sections empilées (sticky header avec onglets sur
-desktop ≥1024px) :
+Toutes les pages auth s'enveloppent dans `<AuthShell title="..." subtitle="...">`.
+
+## 2. `Connexion.tsx` — Tabs animés Login / Signup
 
 ```
-┌─────────── Identité ─────────────┐
-│ Avatar XL (128px) + camera FAB   │
-│ "Prénom Nom"  ·  badge niveau    │
-│ XP total · Streak · Ligue        │
-│ Barre XP vers niveau suivant     │
-└──────────────────────────────────┘
-┌─────────── Infos perso ──────────┐
-│ Prénom / Nom (inline edit)       │
-│ Nationalité (Select pays)        │
-│ Email (lecture seule)            │
-│ Langue d'interface (6 drapeaux)  │
-│ [Enregistrer] sticky bas mobile  │
-└──────────────────────────────────┘
-┌─────────── Achievements ─────────┐
-│ Header : "X/14 débloqués · 64%"  │
-│ Barre de progression globale     │
-│ Filtres : Tous · Débloqués ·     │
-│   Verrouillés · par rareté       │
-│ Grid 2-col mobile / 4 desktop :  │
-│   - icône (cercle dégradé rareté)│
-│   - titre + desc                 │
-│   - état (✓ ou cadenas)          │
-│   - tap → modal détail           │
-└──────────────────────────────────┘
-┌─────────── Compte ───────────────┐
-│ Lien admin (si admin)            │
-│ Refaire le tour d'introduction   │
-│ Refaire le test de placement     │
-│ Déconnexion (destructive)        │
-└──────────────────────────────────┘
+┌─────────────────────────────┐
+│  Logo CIA + tagline         │
+│  ┌──────────┬──────────┐    │
+│  │ Connexion│ Inscription│   │  ← Tabs avec layoutId
+│  └──────────┴──────────┘    │
+│  AnimatePresence mode="wait"│
+│  ┌─ Form login ──────────┐  │
+│  │ Email   [👁]          │  │
+│  │ Mot de passe          │  │
+│  │ ↳ "Oublié ?"          │  │
+│  │ [ Se connecter ]      │  │
+│  └───────────────────────┘  │
+└─────────────────────────────┘
 ```
 
-Si non-loggé : redirige vers `/connexion`.
+Améliorations :
+- **Tabs login/signup** au lieu du bouton "S'inscrire" textuel.
+  Animation `layoutId="auth-tab"` pour l'indicateur actif.
+- **Transition entre formulaires** via `AnimatePresence mode="wait"`
+  (slide horizontal léger).
+- **Validation zod** côté client : email valide, password min 6, prénom
+  ≤ 50, nom ≤ 50. Erreurs affichées sous chaque champ avec
+  `aria-invalid` + `text-destructive`.
+- **Password strength meter** sur le formulaire signup (4 segments :
+  faible / correct / bon / fort) basé sur longueur + variété
+  caractères. Composant `PasswordStrength.tsx`.
+- **Toggle visibilité mot de passe** déjà présent — conservé.
+- **emailRedirectTo** ajouté à `signUp` pour pointer vers `/?welcome=1`
+  (corrige lien de confirmation email).
+- **Bouton submit** : spinner pendant loading, label dynamique selon
+  l'état, animation tactile (whileTap scale 0.98).
+- **Toasts** uniformisés (sonner) — succès / erreurs traduites.
 
-## 2. Édition des infos perso (DB)
+## 3. `ForgotPassword.tsx` — feedback visuel
 
-- Hook `useProfile()` : `{ profile, loading, update(patch) }` — lit
-  `profiles` (filtré par `user_id`), expose les colonnes éditables et
-  un `update()` qui appelle `supabase.from('profiles').update(...)`.
-- Champs éditables : `first_name`, `last_name`, `nationality`,
-  `interface_language`, `avatar_url`.
-- Champs non-éditables : `email`, `cecr_level`, `total_xp`, `league`,
-  `daily_streak`, `placement_test_taken_at`, `onboarding_completed_at`
-  (déjà protégés par `protect_gameplay_columns`).
-- Validation client : prénom/nom ≤ 50 chars, nationality dans la liste
-  prédéfinie (~30 pays courants).
-- Toast succès/erreur, bouton "Enregistrer" dégrisé seulement si dirty.
+- Wrappé dans `AuthShell`.
+- État "envoyé" : icône enveloppe animée (`motion` rebond) + message
+  rassurant + bouton retour stylé.
+- Validation zod email avant envoi, désactive le bouton si invalide.
+- **Anti-spam** : si `loading` ou déjà `sent`, le re-submit est ignoré.
+- Transition `AnimatePresence` entre formulaire ↔ état "envoyé".
 
-## 3. Sync langue interface
+## 4. `ResetPassword.tsx` — qualité saisie
 
-Aujourd'hui : i18n stockée seulement en `localStorage`
-(`cia-interface-lang`) via `LanguageSwitcher`.
+- Wrappé dans `AuthShell`.
+- **PasswordStrength meter** réutilisé.
+- **Indicateur de correspondance** temps réel sous "Confirmer le mot de
+  passe" : ✓ vert "Identique" ou ✗ rouge "Ne correspond pas".
+- Bouton submit dégrisé seulement si :
+  - longueur ≥ 6,
+  - confirmation == password,
+  - non `loading`.
+- État succès : icône check animée + countdown visuel "Redirection dans
+  3, 2, 1…" puis `navigate('/connexion')`.
+- État "lien invalide" : design plus chaleureux dans `AuthShell`.
 
-Plan : la `Profil` page écrit dans `profiles.interface_language` ET met
-à jour `i18n.changeLanguage()` + `localStorage`. Au login, un effet dans
-`useAuth` (ou dans `useProfile`) lit `interface_language` depuis la DB et
-applique côté i18n si différent.
+## 5. Composant `PasswordStrength.tsx`
 
-→ Nouveau hook `useInterfaceLanguage()` qui orchestre :
-- au mount user : DB → i18n + localStorage
-- changement utilisateur : i18n + localStorage + DB (debounce 500 ms)
+```tsx
+export function PasswordStrength({ value }: { value: string }) {
+  // calcule un score 0-4 selon longueur + diversité (maj/min/chiffre/spécial)
+  // 4 barres horizontales, couleur dégradée (destructive → warn → success)
+  // label "Trop court" / "Faible" / "Correct" / "Bon" / "Fort"
+}
+```
 
-`LanguageSwitcher` continue de marcher pour anonymes (localStorage seul).
+Utilisé sur signup + reset.
 
-## 4. Vitrine d'achievements
+## 6. Validation centralisée
 
-Composant `AchievementsShowcase` :
+Nouveau `src/lib/validators/auth.ts` :
+- `emailSchema` (z.string().trim().email().max(255))
+- `passwordSchema` (z.string().min(6).max(72))
+- `nameSchema` (z.string().trim().max(50))
+- `signUpSchema`, `signInSchema`, `resetSchema`
 
-- Grille responsive avec animation `staggerChildren`.
-- Carte achievement (`AchievementCard`) :
-  - Icône Lucide selon `icon` (mapping commun avec `AchievementToast`).
-  - Cercle dégradé selon rareté (common: muted, rare: blue, epic: violet,
-    legendary: gold) — réutilise les tokens de `AchievementToast`.
-  - État verrouillé : icône grayscale + opacité 40 % + cadenas overlay.
-  - Tap → `AchievementDetailModal` (Dialog/BottomSheet via Portal selon
-    breakpoint, conforme à mem://style/ui-modals-and-popups).
-- Filtres : `Tabs` shadcn (Tous / Débloqués / Verrouillés) + Toggle group
-  rareté optionnel sur desktop.
-- Compteur en haut + `Progress` global.
-
-## 5. Avatar upload — léger lifting
-
-`AvatarUpload` existe déjà et fonctionne (bucket `avatars` public).
-Améliorations minimales :
-- Crop carré côté client via `<canvas>` (centré, pas d'éditeur — juste un
-  recadrage automatique pour cohérence).
-- Compression JPEG qualité 0.85 si > 500 Ko avant upload.
-- Suppression de l'ancienne photo après upload réussi (best effort).
-
-## 6. Refactor Connexion
-
-`Connexion.tsx` contient aujourd'hui le profil (vue logged-in). On
-extrait tout le bloc "logged-in" vers `/profil`. `Connexion` devient
-strictement le formulaire login/signup. Si `user` détecté, redirige
-vers `/profil` (au lieu d'afficher la mini-card).
-
-Le menu utilisateur (Header dropdown) → "Mon profil" pointe sur `/profil`
-(au lieu de `/connexion`).
+Réutilisés sur les 3 pages.
 
 ## 7. i18n
 
-Section `profile.*` ajoutée à `fr.json` + `en.json` (les autres
-fallback FR) :
-- `profile.title`, `profile.identity`, `profile.personal_info`,
-  `profile.account`, `profile.firstName`, `profile.lastName`,
-  `profile.nationality`, `profile.email`, `profile.interfaceLanguage`,
-  `profile.save`, `profile.saved`, `profile.error`,
-  `profile.redoOnboarding`, `profile.redoPlacement`, `profile.logout`,
-  `profile.adminAccess`,
-  `profile.achievements.title`, `profile.achievements.unlocked`,
-  `profile.achievements.locked`, `profile.achievements.all`,
-  `profile.achievements.empty`, `profile.achievements.howToUnlock`,
-- Liste de pays : si déjà traduits ailleurs, on réutilise ; sinon on
-  garde la version FR par défaut.
+Nouvelle section `auth.*` (FR + EN) couvrant :
+- titres, sous-titres, labels, placeholders
+- messages d'erreur ("invalid_email", "password_too_short", "passwords_no_match")
+- états ("sending", "sent_title", "sent_desc", "spam_hint")
+- "Connexion réussie", "Bienvenue !", "Lien envoyé"
+- libellés password strength
 
-## 8. Accessibilité & motion
+`Connexion`, `ForgotPassword`, `ResetPassword` passent en `useTranslation`.
 
-- Form semantique `<form>`, labels associés, `aria-invalid` sur erreurs.
-- `prefers-reduced-motion` désactive le stagger des cartes achievement.
-- Modal achievement : focus trap natif via shadcn `Dialog`.
+## 8. Hors scope
 
-## 9. Hors scope
+- Pas de Google / OAuth ajouté ici — sera un batch séparé si demandé.
+- Pas de migration DB.
+- Pas de scaffolding d'emails auth personnalisés (les templates
+  Lovable par défaut suffisent pour l'instant).
+- Pas de modification de `useAuth.tsx` (sauf si nécessaire pour
+  `emailRedirectTo` — passé en option dans signUp).
 
-- Pas de gestion des abonnements ici (le bloc subscription reste au
-  back-office admin pour cette itération).
-- Pas de suppression de compte (RGPD viendra plus tard).
-- Pas d'historique XP (`xp_audit_log`) affiché — réservé pour un futur
-  écran "Activité".
-- Pas d'édition du `cecr_level` (modifiable seulement via test ou
-  admin — déjà bloqué côté DB par `protect_gameplay_columns`).
-
-## 10. Fichiers touchés
+## 9. Fichiers touchés
 
 **Nouveaux**
-- `src/pages/Profil.tsx`
-- `src/hooks/useProfile.ts`
-- `src/hooks/useInterfaceLanguage.ts`
-- `src/components/profile/PersonalInfoForm.tsx`
-- `src/components/profile/AchievementsShowcase.tsx`
-- `src/components/profile/AchievementCard.tsx`
-- `src/components/profile/AchievementDetailModal.tsx`
-- `src/components/profile/CountrySelect.tsx`
-- `src/components/profile/AccountActions.tsx`
+- `src/components/auth/AuthShell.tsx`
+- `src/components/auth/PasswordStrength.tsx`
+- `src/components/auth/AuthTabs.tsx` (tab indicator animé)
+- `src/lib/validators/auth.ts`
 
 **Modifiés**
-- `src/App.tsx` — route `/profil`
-- `src/pages/Connexion.tsx` — supprime le bloc logged-in, redirige
-- `src/components/layout/Header.tsx` — menu pointe `/profil`
-- `src/components/layout/MobileDrawer.tsx` — entrée "Mon profil"
-- `src/components/profile/AvatarUpload.tsx` — crop + compression légère
-- `src/i18n/locales/fr.json` + `en.json`
+- `src/pages/Connexion.tsx` — tabs, zod, AnimatePresence, strength meter
+- `src/pages/ForgotPassword.tsx` — AuthShell + anim succès + zod
+- `src/pages/ResetPassword.tsx` — AuthShell + strength + match indicator
+- `src/hooks/useAuth.tsx` — `signUp` accepte un `emailRedirectTo`
+  optionnel (ou hardcode `${origin}/?welcome=1`)
+- `src/i18n/locales/fr.json` + `en.json` — bloc `auth.*`
 
-**Pas de migration DB** — toutes les colonnes nécessaires existent déjà
-(`first_name`, `last_name`, `nationality`, `interface_language`,
-`avatar_url`).
+## 10. Critères de validation
+
+- Bascule login ↔ signup fluide (slide + fade).
+- Strength meter réagit à chaque frappe.
+- Erreurs de validation s'affichent sans recharger ni soumettre.
+- Forgot password : envoi → écran enveloppe en < 1 frame.
+- Reset password : correspondance live + bouton dégrisé/activé en temps réel.
+- `prefers-reduced-motion` : transitions tombent à `opacity` simple.
