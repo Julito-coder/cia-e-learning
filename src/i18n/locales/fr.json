@@ -186,6 +186,33 @@
       "desc": "Tu es promu en ligue or."
     }
   },
+  "profile": {
+    "title": "Mon profil",
+    "identity": "Identité",
+    "personal_info": "Informations personnelles",
+    "account": "Compte",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "nationality": "Nationalité",
+    "email": "Email",
+    "interfaceLanguage": "Langue de l'interface",
+    "save": "Enregistrer",
+    "saved": "Modifications enregistrées",
+    "error": "Une erreur est survenue",
+    "redoOnboarding": "Refaire le tour d'introduction",
+    "redoPlacement": "Refaire le test de niveau",
+    "logout": "Se déconnecter",
+    "adminAccess": "Accéder au back-office",
+    "achievements": {
+      "title": "🏅 Vitrine d'achievements",
+      "all": "Tous",
+      "unlocked": "Débloqués",
+      "locked": "Verrouillés",
+      "unlockedCount": "{{done}} / {{total}} débloqués",
+      "empty": "Aucun achievement dans cette catégorie pour l'instant.",
+      "howToUnlock": "Continue à apprendre pour débloquer cet achievement."
+    }
+  },
   "player": {
     "continue": "Continuer",
     "next": "Suivant",
