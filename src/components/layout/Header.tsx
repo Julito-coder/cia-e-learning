@@ -53,20 +53,20 @@ export function Header() {
             : 'bg-card/95 backdrop-blur-xl border-b border-border/40'
         }`}
       >
-        <div className="container flex h-16 items-center justify-between gap-3">
+        <div className="container flex h-16 items-center justify-between gap-2 sm:gap-3 pt-safe">
           {/* Burger mobile + Logo */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
             <Button
               variant="ghost"
               size="icon"
-              className="lg:hidden rounded-xl"
+              className="lg:hidden rounded-xl min-h-touch min-w-touch"
               onClick={() => setDrawerOpen(true)}
               aria-label="Ouvrir le menu"
             >
               <Menu className="h-5 w-5" />
             </Button>
-            <Link to="/" className="flex items-center gap-2.5">
-              <img src="/cia-logo-2.png" alt="CIA" className="h-10 w-auto select-none" draggable={false} />
+            <Link to="/" className="flex items-center gap-2 min-w-0">
+              <img src="/cia-logo-2.png" alt="CIA" className="h-8 sm:h-10 w-auto select-none shrink-0" draggable={false} />
               <div className="hidden sm:block leading-tight">
                 <p className="font-display text-sm text-primary">CIA</p>
                 <p className="text-[10px] text-muted-foreground font-semibold">e-learning</p>
