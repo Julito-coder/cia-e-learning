@@ -9,9 +9,10 @@ import { staggerContainer, staggerItem } from '@/lib/animations';
 
 export function Pricing() {
   const { t } = useTranslation();
-  const free    = t('landing.pricing.free_features',    { returnObjects: true }) as string[];
-  const premium = t('landing.pricing.premium_features', { returnObjects: true }) as string[];
-  const cia     = t('landing.pricing.cia_features',     { returnObjects: true }) as string[];
+  const asArr = (v: unknown): string[] => (Array.isArray(v) ? (v as string[]) : []);
+  const free    = asArr(t('landing.pricing.free_features',    { returnObjects: true }));
+  const premium = asArr(t('landing.pricing.premium_features', { returnObjects: true }));
+  const cia     = asArr(t('landing.pricing.cia_features',     { returnObjects: true }));
 
   return (
     <section className="py-20 lg:py-24 bg-muted/30">
