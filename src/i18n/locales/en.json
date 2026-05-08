@@ -121,7 +121,70 @@
     "done": "{{completed}}/{{goal}} exercises"
   },
   "achievements": {
-    "title": "🏅 Badges"
+    "title": "🏅 Badges",
+    "unlocked": "Unlocked",
+    "rarity": {
+      "common": "Common",
+      "rare": "Rare",
+      "epic": "Epic",
+      "legendary": "Legendary"
+    },
+    "placement_done": {
+      "title": "Calibrated",
+      "desc": "You took the placement test."
+    },
+    "first_xp": {
+      "title": "First steps",
+      "desc": "You earned your first XP."
+    },
+    "xp_500": {
+      "title": "Apprentice",
+      "desc": "You reached 500 XP."
+    },
+    "xp_2500": {
+      "title": "Motivated learner",
+      "desc": "You reached 2,500 XP."
+    },
+    "xp_10000": {
+      "title": "Expert",
+      "desc": "You reached 10,000 XP."
+    },
+    "streak_7": {
+      "title": "One week",
+      "desc": "7 days in a row."
+    },
+    "streak_30": {
+      "title": "Marathon",
+      "desc": "30 days in a row."
+    },
+    "streak_100": {
+      "title": "Living legend",
+      "desc": "100 days in a row."
+    },
+    "level_a2": {
+      "title": "A2 reached",
+      "desc": "You can handle daily life."
+    },
+    "level_b1": {
+      "title": "B1 reached",
+      "desc": "You understand and express what you mean."
+    },
+    "level_b2": {
+      "title": "B2 reached",
+      "desc": "You debate and nuance in French."
+    },
+    "level_c1": {
+      "title": "C1 reached",
+      "desc": "You handle the language with subtlety."
+    },
+    "league_silver": {
+      "title": "Silver",
+      "desc": "Promoted to silver league."
+    },
+    "league_gold": {
+      "title": "Gold",
+      "desc": "Promoted to gold league."
+    }
   },
   "player": {
     "continue": "Continue",
@@ -296,6 +359,54 @@
       "adverbe": "Adverb",
       "expression": "Expression",
       "grammaire": "Grammar"
+    }
+  },
+  "levelup": {
+    "banner": "Level reached!",
+    "continue": "Continue",
+    "a2": {
+      "title": "Getting around!",
+      "desc": "You can handle daily life. Conversation becomes possible."
+    },
+    "b1": {
+      "title": "Autonomy!",
+      "desc": "You understand and express what you mean."
+    },
+    "b2": {
+      "title": "Fluency!",
+      "desc": "You debate, nuance, work in French."
+    },
+    "c1": {
+      "title": "Elegance!",
+      "desc": "You handle the language with subtlety."
+    },
+    "c2": {
+      "title": "Mastery!",
+      "desc": "Native level. The peak of CEFR."
+    },
+    "generic": {
+      "title": "Well done!",
+      "desc": "You're progressing, keep going."
+    }
+  },
+  "streak": {
+    "days_in_a_row": "days in a row",
+    "continue": "Continue",
+    "m7": {
+      "title": "One week!",
+      "desc": "Seven days in a row. Consistency pays off."
+    },
+    "m14": {
+      "title": "Two weeks!",
+      "desc": "You've built a real routine."
+    },
+    "m30": {
+      "title": "Marathon!",
+      "desc": "Thirty days in a row. Among the most dedicated."
+    },
+    "m100": {
+      "title": "Legend!",
+      "desc": "One hundred days in a row. Very few get there."
     }
   }
 }

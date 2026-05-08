@@ -118,6 +118,9 @@ export function useUserProgress() {
         setCecrLevel(newLevel);
         emitXPUpdate(newXP, newLevel);
         window.dispatchEvent(new CustomEvent('weekly-xp-update'));
+        if (leveledUp) {
+          window.dispatchEvent(new CustomEvent('level-up', { detail: { level: newLevel } }));
+        }
         return { leveledUp, newLevel };
       }
 
@@ -130,6 +133,9 @@ export function useUserProgress() {
       emitXPUpdate(newXP, newLevel);
       localStorage.setItem('user-xp', String(newXP));
       localStorage.setItem('user-cecr-level', newLevel);
+      if (leveledUp) {
+        window.dispatchEvent(new CustomEvent('level-up', { detail: { level: newLevel } }));
+      }
       return { leveledUp, newLevel };
     },
     [totalXP, cecrLevel, user],

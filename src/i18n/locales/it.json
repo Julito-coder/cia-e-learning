@@ -121,7 +121,70 @@
     "done": "{{completed}}/{{goal}} esercizi"
   },
   "achievements": {
-    "title": "🏅 Badge"
+    "title": "🏅 Badge",
+    "unlocked": "Débloqué",
+    "rarity": {
+      "common": "Commun",
+      "rare": "Rare",
+      "epic": "Épique",
+      "legendary": "Légendaire"
+    },
+    "placement_done": {
+      "title": "Calibré",
+      "desc": "Tu as passé le test de placement."
+    },
+    "first_xp": {
+      "title": "Premiers pas",
+      "desc": "Tu as gagné ton premier XP."
+    },
+    "xp_500": {
+      "title": "Apprenti",
+      "desc": "Tu as atteint 500 XP."
+    },
+    "xp_2500": {
+      "title": "Élève motivé",
+      "desc": "Tu as atteint 2 500 XP."
+    },
+    "xp_10000": {
+      "title": "Expert",
+      "desc": "Tu as atteint 10 000 XP."
+    },
+    "streak_7": {
+      "title": "Une semaine",
+      "desc": "7 jours consécutifs sans rater."
+    },
+    "streak_30": {
+      "title": "Marathon",
+      "desc": "30 jours consécutifs. Impressionnant."
+    },
+    "streak_100": {
+      "title": "Légende vivante",
+      "desc": "100 jours consécutifs."
+    },
+    "level_a2": {
+      "title": "A2 atteint",
+      "desc": "Tu te débrouilles dans la vie courante."
+    },
+    "level_b1": {
+      "title": "B1 atteint",
+      "desc": "Tu comprends et tu exprimes ce que tu veux dire."
+    },
+    "level_b2": {
+      "title": "B2 atteint",
+      "desc": "Tu débats et tu nuances en français."
+    },
+    "level_c1": {
+      "title": "C1 atteint",
+      "desc": "Tu manies la langue avec finesse."
+    },
+    "league_silver": {
+      "title": "Argent",
+      "desc": "Tu es promu en ligue argent."
+    },
+    "league_gold": {
+      "title": "Or",
+      "desc": "Tu es promu en ligue or."
+    }
   },
   "player": {
     "continue": "Continua",
@@ -296,6 +359,54 @@
       "adverbe": "Adverbe",
       "expression": "Expression",
       "grammaire": "Grammaire"
+    }
+  },
+  "levelup": {
+    "banner": "Niveau atteint !",
+    "continue": "Continuer",
+    "a2": {
+      "title": "Tu te débrouilles !",
+      "desc": "Tu maîtrises l'essentiel pour la vie courante. La conversation devient possible."
+    },
+    "b1": {
+      "title": "L'autonomie !",
+      "desc": "Tu comprends et tu exprimes ce que tu veux dire. Le français devient un outil."
+    },
+    "b2": {
+      "title": "L'aisance !",
+      "desc": "Tu débats, tu nuances, tu travailles en français. Bravo."
+    },
+    "c1": {
+      "title": "L'élégance !",
+      "desc": "Tu manies la langue avec finesse."
+    },
+    "c2": {
+      "title": "La maîtrise !",
+      "desc": "Niveau natif. Le sommet du CECR."
+    },
+    "generic": {
+      "title": "Bravo !",
+      "desc": "Tu progresses, continue comme ça."
+    }
+  },
+  "streak": {
+    "days_in_a_row": "jours d'affilée",
+    "continue": "Continuer",
+    "m7": {
+      "title": "Une semaine !",
+      "desc": "Sept jours consécutifs. La régularité paie."
+    },
+    "m14": {
+      "title": "Deux semaines !",
+      "desc": "Tu as installé une vraie routine."
+    },
+    "m30": {
+      "title": "Marathon !",
+      "desc": "Trente jours d'affilée. Tu fais partie des plus assidus."
+    },
+    "m100": {
+      "title": "Légende !",
+      "desc": "Cent jours d'affilée. Très peu de gens y arrivent."
     }
   }
 }

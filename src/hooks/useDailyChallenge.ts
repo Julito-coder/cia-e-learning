@@ -92,6 +92,9 @@ export function useDailyChallenge(initialLevel?: CECRLevel) {
           );
         }
         window.dispatchEvent(new CustomEvent('weekly-xp-update'));
+        if ([7, 14, 30, 100].includes(newStreak)) {
+          window.dispatchEvent(new CustomEvent('streak-milestone', { detail: { streak: newStreak } }));
+        }
         return { awarded: true, xp: xpAwarded, newStreak };
       }
 
@@ -104,6 +107,9 @@ export function useDailyChallenge(initialLevel?: CECRLevel) {
       localStorage.setItem(LS_STREAK, String(newStreak));
       localStorage.setItem(LS_LAST, today);
       await addXP(STREAK_BONUS_XP, 'daily_challenge', today);
+      if ([7, 14, 30, 100].includes(newStreak)) {
+        window.dispatchEvent(new CustomEvent('streak-milestone', { detail: { streak: newStreak } }));
+      }
       return { awarded: true, xp: STREAK_BONUS_XP, newStreak };
     },
     [lastDate, streak, user, addXP],
