@@ -12,6 +12,12 @@ const badgeVariants = cva(
         secondary: "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
         destructive: "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
         outline: "text-foreground",
+        xp: "bg-xp/10 text-xp border-xp/20 font-semibold",
+        streak: "bg-streak/10 text-streak border-streak/20 font-semibold gap-1",
+        level: "bg-cia-blue-50 text-cia-blue-700 border-cia-blue-200 font-semibold tracking-wide",
+        "league-bronze": "bg-league-bronze/15 text-league-bronze border-league-bronze/30",
+        "league-silver": "bg-league-silver/20 text-league-silver border-league-silver/40",
+        "league-gold": "bg-league-gold/15 text-cia-gold-600 border-cia-gold-300 shadow-glow",
       },
     },
     defaultVariants: {
