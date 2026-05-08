@@ -134,5 +134,104 @@
     "streak_tooltip": "{{count}} day(s) in a row · Come back tomorrow to keep your streak!",
     "level_tooltip": "Current level: {{level}}",
     "league_tooltip": "{{league}} league this week"
+  },
+  "landing": {
+    "hero": {
+      "badge": "Centre International d'Antibes",
+      "title_part1": "Learn French.",
+      "title_part2": "For real.",
+      "subtitle": "300 interactive lessons, 6 levels from A1 to C2, daily challenges and the proven CIA teaching method.",
+      "cta_primary": "Take the placement test",
+      "cta_secondary": "Browse the catalog",
+      "trust": "+2,000 students trained every year · CIA method since 1985"
+    },
+    "how_it_works": {
+      "title": "How it works",
+      "step1_title": "Assess your level",
+      "step1_desc": "A 5-minute placement test to start at the right spot.",
+      "step2_title": "Follow your path",
+      "step2_desc": "Courses tailored to your level, 10–15 minute lessons.",
+      "step3_title": "Practice every day",
+      "step3_desc": "Daily challenge + interactive lessons so nothing fades.",
+      "step4_title": "Progress and climb",
+      "step4_desc": "XP, levels, weekly leagues: motivation, every day."
+    },
+    "cecr": {
+      "title": "From beginner to bilingual.",
+      "subtitle": "Six levels, one clear path.",
+      "a1_label": "A1 - Beginner",
+      "a1_desc": "Lay the foundations: introductions, daily life, simple words.",
+      "a2_label": "A2 - Elementary",
+      "a2_desc": "Get by in everyday life: shopping, restaurants, travel.",
+      "b1_label": "B1 - Intermediate",
+      "b1_desc": "Follow most conversations and express your opinions.",
+      "b2_label": "B2 - Upper-int.",
+      "b2_desc": "Debate, add nuance, grasp complex content.",
+      "c1_label": "C1 - Advanced",
+      "c1_desc": "Master the language in professional and academic contexts.",
+      "c2_label": "C2 - Mastery",
+      "c2_desc": "Write and speak with native-like ease."
+    },
+    "gamification": {
+      "title": "A real method. With a healthy dose of motivation.",
+      "xp_title": "Earn XP with every lesson.",
+      "xp_desc": "Each exercise gives points. Reach the next level by completing your weekly goals.",
+      "daily_title": "One lesson. Every day.",
+      "daily_desc": "Come back each day for your XP bonus and grow your streak. No pressure — just 5 minutes.",
+      "league_title": "Compete with other learners.",
+      "league_desc": "Three leagues, weekly leaderboard. Finish at the top and climb up."
+    },
+    "personas": {
+      "title": "Who is it for?",
+      "b2c_title": "Remote learner",
+      "b2c_desc": "You want to learn from home, at your pace, with a real pedagogical method.",
+      "cia_title": "CIA student",
+      "cia_desc": "You're preparing your stay in Antibes or extending your training. Full access included in your enrollment.",
+      "school_title": "School & company",
+      "school_desc": "Train your teams or complement your students' programme. Tailored solution available.",
+      "learn_more": "Learn more"
+    },
+    "pricing": {
+      "title": "Choose your access.",
+      "free_title": "Discovery",
+      "free_price": "Free",
+      "free_features": [
+        "Full access to A1",
+        "1 lesson per other level",
+        "Placement test"
+      ],
+      "free_cta": "Get started",
+      "premium_title": "Premium",
+      "premium_price": "€9.99/month",
+      "premium_billing": "or €89/year (save 30%)",
+      "premium_badge": "Most popular",
+      "premium_features": [
+        "All levels",
+        "300 interactive lessons",
+        "Daily challenge",
+        "Leaderboard & leagues",
+        "Achievements"
+      ],
+      "premium_cta": "Subscribe",
+      "cia_title": "CIA Students",
+      "cia_price": "Included",
+      "cia_billing": "with your enrollment",
+      "cia_badge": "CIA students only",
+      "cia_features": [
+        "Full Premium access",
+        "Linked to your CIA program",
+        "Followed by your teacher"
+      ],
+      "cia_cta": "Activate my access"
+    },
+    "testimonials": {
+      "title": "What our students say"
+    },
+    "cta_final": {
+      "title": "Ready to actually speak French?",
+      "subtitle": "The placement test takes 5 minutes.",
+      "cta_primary": "Start now",
+      "cta_secondary": "See pricing"
+    }
   }
 }

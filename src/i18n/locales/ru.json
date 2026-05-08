@@ -134,5 +134,104 @@
     "streak_tooltip": "{{count}} дн. подряд · Возвращайтесь завтра!",
     "level_tooltip": "Текущий уровень: {{level}}",
     "league_tooltip": "Лига {{league}} на этой неделе"
+  },
+  "landing": {
+    "hero": {
+      "badge": "Centre International d'Antibes",
+      "title_part1": "Apprends le français.",
+      "title_part2": "Vraiment.",
+      "subtitle": "300 leçons interactives, 6 niveaux du A1 au C2, défis quotidiens et méthode pédagogique éprouvée du CIA.",
+      "cta_primary": "Commencer le test de niveau",
+      "cta_secondary": "Découvrir le catalogue",
+      "trust": "+2 000 étudiants formés chaque année · Méthode CIA depuis 1985"
+    },
+    "how_it_works": {
+      "title": "Comment ça marche",
+      "step1_title": "Évalue ton niveau",
+      "step1_desc": "Test de placement de 5 minutes pour démarrer au bon endroit.",
+      "step2_title": "Suis ton parcours",
+      "step2_desc": "Cours adaptés à ton niveau, leçons de 10–15 minutes.",
+      "step3_title": "Pratique chaque jour",
+      "step3_desc": "Défi quotidien + leçons interactives pour ne rien oublier.",
+      "step4_title": "Progresse et grimpe",
+      "step4_desc": "XP, niveaux, ligues hebdomadaires : la motivation au quotidien."
+    },
+    "cecr": {
+      "title": "De débutant à bilingue.",
+      "subtitle": "Six niveaux, un seul chemin clair.",
+      "a1_label": "A1 - Débutant",
+      "a1_desc": "Tu poses les bases : te présenter, le quotidien, des mots simples.",
+      "a2_label": "A2 - Élémentaire",
+      "a2_desc": "Tu te débrouilles dans la vie courante : courses, restaurant, voyage.",
+      "b1_label": "B1 - Intermédiaire",
+      "b1_desc": "Tu comprends l'essentiel d'une conversation et exprimes tes opinions.",
+      "b2_label": "B2 - Avancé",
+      "b2_desc": "Tu débats, nuances, comprends des contenus complexes.",
+      "c1_label": "C1 - Autonome",
+      "c1_desc": "Tu maîtrises la langue dans des contextes professionnels et académiques.",
+      "c2_label": "C2 - Maîtrise",
+      "c2_desc": "Tu écris et parles avec aisance, comme un natif."
+    },
+    "gamification": {
+      "title": "Une vraie méthode. Et une bonne dose de motivation.",
+      "xp_title": "Gagne des XP à chaque leçon.",
+      "xp_desc": "Chaque exercice rapporte des points. Atteins le niveau suivant en complétant tes objectifs hebdomadaires.",
+      "daily_title": "Une leçon. Tous les jours.",
+      "daily_desc": "Reviens chaque jour pour gagner ton bonus XP et grossir ton streak. Pas de pression — juste 5 minutes.",
+      "league_title": "Affronte les autres apprenants.",
+      "league_desc": "Trois ligues, classement hebdo. Termine dans le top et grimpe à la suivante."
+    },
+    "personas": {
+      "title": "À qui c'est fait ?",
+      "b2c_title": "Apprenant à distance",
+      "b2c_desc": "Tu veux apprendre depuis chez toi, à ton rythme, avec une vraie méthode pédagogique.",
+      "cia_title": "Étudiant CIA",
+      "cia_desc": "Tu prépares ton séjour à Antibes ou tu prolonges ta formation. Accès complet inclus dans ton inscription.",
+      "school_title": "École & entreprise",
+      "school_desc": "Tu veux former tes équipes ou compléter le programme de tes étudiants. Solution sur-mesure disponible.",
+      "learn_more": "En savoir plus"
+    },
+    "pricing": {
+      "title": "Choisis ton accès.",
+      "free_title": "Découverte",
+      "free_price": "Gratuit",
+      "free_features": [
+        "Niveau A1 en accès complet",
+        "1 leçon par autre niveau",
+        "Test de niveau"
+      ],
+      "free_cta": "Commencer",
+      "premium_title": "Premium",
+      "premium_price": "9,99 €/mois",
+      "premium_billing": "ou 89 €/an (économise 30 %)",
+      "premium_badge": "Le plus populaire",
+      "premium_features": [
+        "Tous les niveaux",
+        "300 leçons interactives",
+        "Défi du jour",
+        "Classement & ligues",
+        "Achievements"
+      ],
+      "premium_cta": "S'abonner",
+      "cia_title": "Étudiants CIA",
+      "cia_price": "Inclus",
+      "cia_billing": "dans ton inscription",
+      "cia_badge": "Réservé étudiants CIA",
+      "cia_features": [
+        "Tout l'accès Premium",
+        "Lien avec ta formation CIA",
+        "Suivi par ton professeur"
+      ],
+      "cia_cta": "Activer mon accès"
+    },
+    "testimonials": {
+      "title": "Ce qu'en disent nos étudiants"
+    },
+    "cta_final": {
+      "title": "Prêt à parler français pour de vrai ?",
+      "subtitle": "Le test de niveau prend 5 minutes.",
+      "cta_primary": "Commencer maintenant",
+      "cta_secondary": "Voir les tarifs"
+    }
   }
 }
