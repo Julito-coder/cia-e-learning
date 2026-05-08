@@ -2,11 +2,12 @@ import { useState, useRef, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Headphones, Play, CheckCircle2, XCircle, Volume2, Loader2 } from 'lucide-react';
+import { Headphones, Play, CheckCircle2, XCircle, Volume2, Loader2, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { ListeningStep as ListeningStepType } from '@/data/course-content';
 import { getCharacter, getCharacterEvolution } from '@/data/characters';
 import { CharacterBubble } from './CharacterBubble';
+import { StepFeedback } from './StepFeedback';
 import { useUserProgress } from '@/hooks/useUserProgress';
 
 interface Props {
@@ -93,7 +94,7 @@ export function ListeningStep({ step, onNext }: Props) {
   };
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6 animate-fade-in">
+    <div className="max-w-2xl mx-auto space-y-6">
       <div className="flex items-center gap-3 mb-2">
         <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
           <Headphones className="h-5 w-5 text-primary" />
@@ -106,19 +107,19 @@ export function ListeningStep({ step, onNext }: Props) {
       )}
 
       {/* Audio player */}
-      <Card className="border-2">
+      <Card className="border-2 bg-gradient-to-br from-cia-blue-50 to-card">
         <CardContent className="p-6">
           <div className="flex flex-col items-center gap-4">
             <button
               onClick={handlePlay}
               disabled={playing || loading}
               className={cn(
-                'h-20 w-20 rounded-full flex items-center justify-center transition-all',
+                'h-20 w-20 rounded-full flex items-center justify-center transition-all shadow-lg',
                 loading
                   ? 'bg-muted animate-pulse'
                   : playing
                     ? 'bg-primary/20 animate-pulse'
-                    : 'bg-primary hover:bg-primary/90 cursor-pointer',
+                    : 'bg-gradient-to-br from-cia-blue-500 to-cia-blue-700 hover:from-cia-blue-600 cursor-pointer',
               )}
             >
               {loading ? (
@@ -129,6 +130,13 @@ export function ListeningStep({ step, onNext }: Props) {
                 <Play className="h-8 w-8 text-primary-foreground ml-1" />
               )}
             </button>
+            {playing && (
+              <div className="flex items-end gap-1 h-6">
+                {[1,2,3,4,5].map((n) => (
+                  <span key={n} className="w-1 bg-cia-blue-500 rounded-full animate-pulse" style={{ height: `${30 + (n%3)*30}%`, animationDelay: `${n*80}ms` }} />
+                ))}
+              </div>
+            )}
             <p className="text-sm text-muted-foreground">
               {loading
                 ? t('player.generating', 'Génération de l\'audio...')
@@ -144,7 +152,7 @@ export function ListeningStep({ step, onNext }: Props) {
 
       {/* Question */}
       {hasListened && (
-        <Card className="border-2 animate-fade-in">
+        <Card className="border-2">
           <CardContent className="p-6">
             <p className="text-lg font-medium mb-4">{step.question}</p>
             <div className="grid gap-3">
@@ -154,16 +162,17 @@ export function ListeningStep({ step, onNext }: Props) {
                   onClick={() => handleSelect(i)}
                   disabled={answered}
                   className={cn(
-                    'w-full text-left p-3 rounded-xl border-2 transition-all font-medium text-sm',
+                    'w-full text-left p-3 rounded-xl border-2 transition-all duration-200 font-medium text-sm',
                     !answered && 'hover:border-primary hover:bg-primary/5 cursor-pointer',
-                    answered && i === step.correctIndex && 'border-green-500 bg-green-50 dark:bg-green-950',
+                    answered && i === step.correctIndex && 'border-success bg-success/10 text-success',
                     answered && selected === i && i !== step.correctIndex && 'border-destructive bg-destructive/10',
                     answered && i !== step.correctIndex && selected !== i && 'opacity-50',
                   )}
                 >
                   <div className="flex items-center gap-2">
+                    <Volume2 className="h-4 w-4 text-muted-foreground shrink-0" />
                     <span>{opt}</span>
-                    {answered && i === step.correctIndex && <CheckCircle2 className="h-4 w-4 text-green-600 ml-auto" />}
+                    {answered && i === step.correctIndex && <CheckCircle2 className="h-4 w-4 text-success ml-auto" />}
                     {answered && selected === i && i !== step.correctIndex && <XCircle className="h-4 w-4 text-destructive ml-auto" />}
                   </div>
                 </button>
@@ -173,9 +182,11 @@ export function ListeningStep({ step, onNext }: Props) {
         </Card>
       )}
 
+      <StepFeedback status={answered ? (isCorrect ? 'correct' : 'incorrect') : 'idle'} />
+
       {answered && (
-        <Button size="lg" className="w-full" onClick={() => onNext(isCorrect)}>
-          {t('player.continue')}
+        <Button variant="gradient" size="cta" className="w-full gap-2" onClick={() => onNext(isCorrect)}>
+          {t('player.continue')} <ArrowRight className="h-4 w-4" />
         </Button>
       )}
     </div>
