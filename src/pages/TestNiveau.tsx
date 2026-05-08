@@ -9,6 +9,8 @@ import { getRandomTest, calculateLevel } from '@/data/demo-test';
 import type { TestQuestion } from '@/data/demo-test';
 import type { CECRLevel } from '@/data/demo-courses';
 import { useUserProgress } from '@/hooks/useUserProgress';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Info } from 'lucide-react';
 
 type Phase = 'intro' | 'test' | 'result';
 
@@ -29,7 +31,7 @@ const levelColors: Record<CECRLevel, string> = {
 export default function TestNiveau() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { setLevel } = useUserProgress();
+  const { setPlacementLevel, placementTestTakenAt } = useUserProgress();
   const [phase, setPhase] = useState<Phase>('intro');
   const [questions, setQuestions] = useState<TestQuestion[]>(() => getRandomTest());
   const [currentQ, setCurrentQ] = useState(0);
@@ -103,7 +105,7 @@ export default function TestNiveau() {
 
     // Save the detected level
     const handleSaveLevel = async () => {
-      await setLevel(result.level);
+      await setPlacementLevel(result.level);
       navigate(`/catalogue?level=${result.level}`);
     };
 

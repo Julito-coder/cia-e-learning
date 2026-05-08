@@ -95,7 +95,7 @@ export default function CourseDetail() {
           // Award XP based on score
           const xpEarned = Math.max(5, Math.round(score * 5));
           console.log('[CourseDetail] awarding XP=', xpEarned);
-          const { leveledUp, newLevel } = await addXP(xpEarned);
+          const { leveledUp, newLevel } = await addXP(xpEarned, 'course_completion', displayCourse.id);
           toast.success(`+${xpEarned} XP gagnés !`);
 
           // Daily challenge bonus :
