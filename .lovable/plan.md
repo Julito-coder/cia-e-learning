@@ -1,112 +1,134 @@
-## Ligues hebdomadaires (Bronze / Argent / Or)
 
-Ajouter un système de ligues compétitives où les utilisateurs gagnent leur place dans une division en fonction de l'**XP gagné durant la semaine en cours** (lundi 00h → dimanche 23h59). À la fin de chaque semaine : les meilleurs montent, les derniers descendent.
+# Batch 7 — Compétitif (Classement + Daily + Speed)
 
-### Règles métier
+Refonte visuelle et animée des trois écrans compétitifs. Aucun changement de
+schéma DB ni de RPC : on capitalise sur `useLeague`, `useDailyChallenge`,
+`mark_daily_done`, `award_xp` et la table `league_history` déjà en place.
 
-- **3 divisions** : Bronze → Argent → Or (du plus bas au plus haut).
-- **Période** : semaine ISO (lundi–dimanche, fuseau Europe/Paris).
-- **Classement intra-ligue** : trié par `weekly_xp` décroissant, regroupé par division.
-- **Promotion / relégation** (appliquée au passage de semaine, à 00h le lundi) :
-  - Top 3 d'une ligue → promus à la division supérieure (ou restent en Or si déjà au sommet)
-  - 3 derniers d'une ligue → relégués à la division inférieure (ou restent en Bronze)
-  - Les autres restent dans leur ligue actuelle
-- **Nouveaux utilisateurs** : démarrent en **Bronze**.
-- L'XP hebdomadaire est remis à 0 à chaque rotation de semaine.
+## 1. Classement (`src/pages/Classement.tsx` + `LeagueView.tsx`)
 
-### Schéma base de données
+- **Onglets animés** : remplacer la `TabsList` actuelle par un indicateur
+  glissant (`framer-motion` `layoutId`) sous l'onglet actif, transitions
+  douces entre Ligue / Global / Niveau / Streak.
+- **Podium top-3** : entrée stagger (300ms decalé), pulse dorée permanente
+  derrière le rang 1, halo lumineux animé pour le rang du joueur s'il est
+  dans le top 3.
+- **Lignes du leaderboard** : `AnimatePresence` + `layout` pour animer
+  réorganisations quand l'XP change en temps réel (event `xp-update` déjà
+  déclenché). Hover lift subtil.
+- **"Ma position" sticky** : amélioration visuelle (gradient cia-blue →
+  cia-gold, badge XP, mini-avatar). Glissement depuis le bas à l'apparition.
+- **LeagueView**:
+  - **Compte à rebours fin de semaine** : digits animés (flip vertical à
+    chaque seconde), couleur passe en `cia-gold` puis `destructive` les 24
+    dernières heures.
+  - **Promotion / relégation** : zones colorées avec animation pulse douce
+    sur la bordure ("breathing") pour attirer l'œil.
+  - **Bandeau résultat semaine précédente** (`lastResult`) : confettis
+    ponctuels si `outcome === 'promoted'`, slide-in avec scale au mount,
+    bouton dismiss qui mémorise `mem-key` dans localStorage
+    (`league-result-seen:<week_start>`) pour ne pas le réafficher.
+  - **Sélecteur de ligue** : transition de `LeagueBadge` (rotation 360° +
+    scale) quand on switche.
 
-Nouveau champs sur `profiles` :
-- `league` (text, défaut `'bronze'`) — division actuelle
-- `weekly_xp` (integer, défaut 0) — XP gagné cette semaine
-- `weekly_period_start` (date, nullable) — début de la semaine en cours pour cet utilisateur (sert au reset paresseux)
+## 2. Daily Challenge (`src/pages/DailyChallenge.tsx`)
 
-Nouvelle table `league_history` (pour afficher la dernière promotion / relégation et un historique léger) :
-- `id`, `user_id`, `week_start` (date), `league_before`, `league_after`, `final_rank` (int), `weekly_xp_total` (int), `outcome` (text: `promoted` | `demoted` | `stayed`), `created_at`.
-- RLS : utilisateur lit ses propres lignes, admin gère tout.
+- **Header festif** : flamme animée (échelle pulsée + halo orange diffus
+  derrière), badge "DÉFI DU JOUR" qui ondule doucement.
+- **Streak actuel** : compteur animé via `AnimatedCounter` existant +
+  particules orange en arrière-plan si `streak >= 7`.
+- **Sélecteur niveau** : underline glissant + scale 1.05 sur le niveau
+  sélectionné, indicateur "VERROUILLÉ" pour les niveaux non débloqués
+  (réutilise `useUserProgress.cecrLevel` pour griser au-dessus).
+- **Carte leçon du jour** :
+  - Si `isDoneToday`: animation checkmark dessiné (SVG path stroke
+    animation) + countdown "Reviens dans Xh Ymin" jusqu'à minuit Paris.
+  - Sinon : CTA gradient orange→rouge avec shimmer effect, micro
+    rotation au hover.
+- **Top des séries** :
+  - Header animé "🔥 Top des séries"
+  - Lignes avec stagger fade-in
+  - Couronne or animée (rotation perpétuelle douce 8s) sur le #1
+  - Highlight "(vous)" avec ring pulsé
 
-### Logique d'attribution XP
+## 3. Speed Test (`src/pages/SpeedTest.tsx`)
 
-Modifier `useUserProgress.addXP()` pour incrémenter aussi `weekly_xp` :
-- À chaque appel, vérifier si `weekly_period_start` est < lundi de la semaine courante. Si oui → reset paresseux côté client (`weekly_xp = amount`, `weekly_period_start = lundi courant`).
-- Sinon → `weekly_xp += amount`.
-- Mise à jour atomique via une **fonction Postgres `add_weekly_xp(_user_id, _amount)`** (security definer) appelée depuis le hook, pour éviter les race conditions et garantir la cohérence du reset.
+- **Intro** :
+  - Icône `Zap` plus dynamique (rotation + glow gold)
+  - Card stats avec entrée stagger
+  - Record actuel : animation trophy + chiffre AnimatedCounter
+- **Phase playing** :
+  - Timer : devient bouton circulaire avec progress radial (au lieu d'une
+    barre linéaire), couleurs sémantiques `primary` → `cia-gold` →
+    `destructive` selon `timeLeft`
+  - Score/erreurs : `AnimatedCounter`, micro-burst (3 particules vertes /
+    rouges) à chaque tick correct/wrong à l'origine du badge
+  - Question : transition slide horizontale entre questions
+    (`AnimatePresence mode="wait"`), shake horizontal léger sur mauvaise
+    réponse, pulse vert sur bonne réponse
+  - Boutons réponses : tap scale, ripple gradient au clic
+  - Combo counter : si 3+ bonnes réponses consécutives → badge "Combo x3"
+    qui apparaît en haut, +1 par bonne, reset sur erreur (UI seulement,
+    pas d'XP supplémentaire — on garde la même formule de score)
+- **Phase done** :
+  - Trophée avec entrée scale + rotation
+  - Stats AnimatedCounter (compte de 0 → valeur finale en 1s)
+  - Confettis si `newRecord` (réutilise approche de `LevelUpCelebration`)
+  - CTA "Rejouer" avec shimmer
 
-### Rotation hebdomadaire (promotion/relégation)
+## 4. Composants nouveaux / partagés
 
-**Edge function** `weekly-league-rotation` planifiée via `pg_cron` chaque **lundi à 00h05 Europe/Paris**.
+- `src/components/leaderboard/CountdownDigit.tsx` — un digit avec flip
+  vertical, utilisé dans `LeagueView` et `DailyChallenge` (countdown
+  minuit).
+- `src/components/leaderboard/PromoZoneIndicator.tsx` — bordure animée
+  réutilisée dans `LeagueView`.
+- `src/components/speed-test/RadialTimer.tsx` — SVG circle progress avec
+  couleur dynamique.
+- `src/components/speed-test/AnswerBurst.tsx` — particules vert/rouge
+  émises au point d'origine (mêmes principes que `XPBurst`).
+- `src/components/speed-test/ComboBadge.tsx` — badge combo animé.
 
-Pour chaque division (bronze, argent, or) :
-1. Charger tous les profils actifs de cette division triés par `weekly_xp` desc.
-2. Calculer le rang final ; déterminer outcome (top 3 = promoted, bottom 3 = demoted, autres = stayed).
-3. Insérer une ligne dans `league_history` (avec `week_start` = lundi précédent).
-4. Mettre à jour `profiles.league` selon l'outcome.
-5. Reset `weekly_xp = 0` et `weekly_period_start = lundi courant` pour tous.
+## 5. i18n
 
-Cas limites :
-- Division Or : top 3 reste en Or (pas de "super ligue").
-- Division Bronze : bottom 3 reste en Bronze (pas de descente plus bas).
-- Si moins de 6 utilisateurs dans une ligue : seul le 1er est promu / le dernier est relégué (ou rien si <2).
+- Ajout d'une section `competitive.*` dans les 6 locales (FR / EN / ES /
+  DE / IT / RU) :
+  - `competitive.combo` (Combo x{n} !)
+  - `competitive.weekEndsIn`, `competitive.daysShort`, etc.
+  - `competitive.newRecord`, `competitive.tryAgain`
+  - `competitive.streakLeaders`, `competitive.youArePromoted`,
+    `competitive.youWereDemoted`
+- Les chaînes en dur en français dans `LeagueView`, `Classement`, `SpeedTest`,
+  `DailyChallenge` migrent vers `useTranslation`.
 
-### UI — page `/classement`
+## 6. Accessibilité & motion
 
-Ajouter un **4ᵉ onglet "🏆 Ligue"** (placé en premier, devient l'onglet par défaut) :
+- Toutes les animations (confettis, particules, rotations perpétuelles,
+  combo) respectent `prefers-reduced-motion: reduce` → fallback sans
+  animation.
+- Couleurs uniquement via tokens sémantiques (`primary`, `cia-gold`,
+  `cia-streak`, `cia-xp`, `destructive`, `cia-success`). Aucun hex en dur
+  dans les nouveaux composants.
 
-```text
-+---------------------------------------------------+
-| [Badge or/argent/bronze géant]                    |
-| LIGUE D'ARGENT • Semaine du 27 avril              |
-| ⏱ Fin dans 4j 12h 03m                             |
-+---------------------------------------------------+
-| [Sélecteur ligue : Bronze | Argent(actif) | Or]   |
-+---------------------------------------------------+
-| Zone PROMOTION (top 3) ── fond doré dégradé      |
-|   #1 🥇 Marie L. ............... 1240 XP ↑       |
-|   #2 🥈 Paul D. ................ 980 XP  ↑       |
-|   #3 🥉 (vous) ................. 850 XP  ↑       |
-+---------------------------------------------------+
-| Zone SAFE                                         |
-|   #4 ........... 720 XP                          |
-|   ...                                             |
-+---------------------------------------------------+
-| Zone RELÉGATION (3 derniers) ── fond rouge clair |
-|   #N-2 .......... 80 XP   ↓                      |
-|   #N-1 .......... 40 XP   ↓                      |
-|   #N   .......... 10 XP   ↓                      |
-+---------------------------------------------------+
-| Bandeau résultat semaine précédente :             |
-| « 🎉 Vous avez été promu en Argent ! »            |
-+---------------------------------------------------+
-```
+## 7. Hors scope (à confirmer)
 
-Détails visuels :
-- Badge ligue : Bronze (orange), Argent (slate), Or (gradient yellow/amber + Sparkles).
-- Compte à rebours live (secondes) jusqu'au prochain lundi 00h.
-- Lignes de promotion : bordure verte + flèche haut ; relégation : bordure rouge + flèche bas.
-- Carte sticky bas : "Votre position #X • Y XP cette semaine".
-- Lecture du dernier `league_history` de l'utilisateur pour afficher le bandeau résultat.
+- Pas de modification du schéma DB ni des RPC (`mark_daily_done`,
+  `rotate_weekly_leagues`, `award_xp` inchangés).
+- Pas d'ajout d'XP via Speed Test (formule actuelle conservée).
+- Pas de nouvelle table de records — `localStorage` reste la source pour
+  Speed Test best score.
+- Le combo en Speed Test est purement visuel (pas d'impact XP).
 
-### Composants à créer / modifier
+## Fichiers touchés (estimation)
 
-**Créer** :
-- `supabase/functions/weekly-league-rotation/index.ts` — edge function de rotation
-- `src/hooks/useLeague.ts` — fournit `league`, `weeklyXP`, `weekEnd`, `lastResult`, et la liste des membres de ma ligue via `supabase.from('profiles').eq('league', myLeague)`
-- `src/components/leaderboard/LeagueView.tsx` — la vue complète de l'onglet Ligue (badge, compte à rebours, zones promo/safe/reléguation)
-- `src/components/leaderboard/LeagueBadge.tsx` — badge réutilisable
-
-**Modifier** :
-- `src/hooks/useUserProgress.ts` — `addXP()` appelle aussi `supabase.rpc('add_weekly_xp', { _user_id, _amount })`
-- `src/pages/Classement.tsx` — ajouter onglet Ligue (par défaut), garder Global / Niveau / Streak
-
-### Migrations & cron
-
-1. Migration : ajout des 3 colonnes sur `profiles`, table `league_history` avec RLS, fonction Postgres `add_weekly_xp`.
-2. Activer extensions `pg_cron` + `pg_net` (si non déjà actives).
-3. Insert (pas migration) : `cron.schedule('weekly-league-rotation', '5 22 * * 0', ...)` (dimanche 22h UTC = lundi 00h05 Europe/Paris en heure d'été — l'edge function elle-même calculera le lundi exact pour rester robuste).
-
-### Ce que l'utilisateur verra
-
-- Onglet **🏆 Ligue** par défaut sur `/classement` avec son badge de division, son rang en temps réel, l'XP gagnée cette semaine et un compte à rebours.
-- Visualisation claire des zones de promotion (vert) / sécurité / relégation (rouge).
-- Notification (bandeau) du résultat de la semaine précédente lors du premier passage le lundi.
-- L'XP gagnée via leçons, défi du jour et test de vitesse alimente automatiquement le classement de ligue.
+- `src/pages/Classement.tsx`
+- `src/pages/DailyChallenge.tsx`
+- `src/pages/SpeedTest.tsx`
+- `src/components/leaderboard/LeagueView.tsx`
+- `src/components/leaderboard/LeagueBadge.tsx` (animations transition)
+- `src/components/leaderboard/CountdownDigit.tsx` (nouveau)
+- `src/components/leaderboard/PromoZoneIndicator.tsx` (nouveau)
+- `src/components/speed-test/RadialTimer.tsx` (nouveau)
+- `src/components/speed-test/AnswerBurst.tsx` (nouveau)
+- `src/components/speed-test/ComboBadge.tsx` (nouveau)
+- `src/i18n/locales/{fr,en,es,de,it,ru}.json`

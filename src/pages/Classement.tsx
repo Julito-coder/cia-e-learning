@@ -1,10 +1,10 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Trophy, Crown, Medal, Flame, Sparkles } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserProgress } from '@/hooks/useUserProgress';
 import { Card } from '@/components/ui/card';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/ui/skeleton';
 import { LeagueView } from '@/components/leaderboard/LeagueView';
 
@@ -47,10 +47,26 @@ const PodiumCard = ({ entry, rank, isMe, mode }: { entry: LeaderboardEntry; rank
     3: { icon: Medal, color: 'text-orange-500', bg: 'bg-gradient-to-b from-orange-100 to-orange-50 dark:from-orange-900/30 dark:to-orange-900/10', border: 'border-orange-400', height: 'md:h-52', label: 'BRONZE' },
   }[rank];
   const Icon = config.icon;
+  const delay = (rank === 1 ? 0.2 : rank === 2 ? 0.05 : 0.35);
   return (
+    <motion.div
+      initial={{ opacity: 0, y: 30, scale: 0.85 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ delay, duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
+    >
     <Card className={`${config.bg} ${config.height} border-2 ${config.border} ${isMe ? 'ring-4 ring-primary/40' : ''} flex flex-col items-center justify-end p-4 rounded-3xl relative overflow-hidden transition-transform hover:scale-105`}>
-      {rank === 1 && <Sparkles className="absolute top-3 right-3 h-5 w-5 text-yellow-500 animate-pulse" />}
-      <Icon className={`${config.color} h-8 w-8 mb-2`} />
+      {rank === 1 && (
+        <>
+          <Sparkles className="absolute top-3 right-3 h-5 w-5 text-yellow-500 animate-pulse" />
+          <div className="absolute inset-0 -z-10 bg-gradient-radial from-yellow-300/40 via-transparent to-transparent blur-2xl animate-pulse" />
+        </>
+      )}
+      <motion.div
+        animate={rank === 1 ? { rotate: [-5, 5, -5] } : undefined}
+        transition={rank === 1 ? { repeat: Infinity, duration: 3, ease: 'easeInOut' } : undefined}
+      >
+        <Icon className={`${config.color} h-8 w-8 mb-2`} />
+      </motion.div>
       <Avatar entry={entry} size="lg" />
       <p className="font-bold text-sm mt-2 text-center truncate max-w-full">{displayName(entry)}</p>
       <p className="text-xs text-muted-foreground">{entry.cecr_level || 'A1'}</p>
@@ -61,11 +77,18 @@ const PodiumCard = ({ entry, rank, isMe, mode }: { entry: LeaderboardEntry; rank
       </div>
       <p className={`mt-1 text-[10px] font-extrabold tracking-wider ${config.color}`}>#{rank} • {config.label}</p>
     </Card>
+    </motion.div>
   );
 };
 
 const Row = ({ entry, rank, isMe, mode }: { entry: LeaderboardEntry; rank: number; isMe: boolean; mode: Mode }) => (
-  <div className={`flex items-center gap-3 p-3 rounded-2xl transition-all ${isMe ? 'bg-primary/10 border-2 border-primary ring-2 ring-primary/20' : 'bg-card hover:bg-muted/50 border border-border/40'}`}>
+  <motion.div
+    layout
+    initial={{ opacity: 0, y: 6 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.25 }}
+    className={`flex items-center gap-3 p-3 rounded-2xl transition-colors ${isMe ? 'bg-primary/10 border-2 border-primary ring-2 ring-primary/20' : 'bg-card hover:bg-muted/50 border border-border/40'}`}
+  >
     <div className={`w-9 text-center font-extrabold ${rank <= 10 ? 'text-primary' : 'text-muted-foreground'}`}>
       #{rank}
     </div>
@@ -83,8 +106,42 @@ const Row = ({ entry, rank, isMe, mode }: { entry: LeaderboardEntry; rank: numbe
         ⚡ {entry.total_xp.toLocaleString()}
       </div>
     )}
-  </div>
+  </motion.div>
 );
+
+const TABS: { key: Mode; label: string }[] = [
+  { key: 'league', label: '🏆 Ligue' },
+  { key: 'global', label: '🌍 Global' },
+  { key: 'level', label: '🎯' },
+  { key: 'streak', label: '🔥 Streak' },
+];
+
+function AnimatedTabs({ value, onChange, levelLabel }: { value: Mode; onChange: (m: Mode) => void; levelLabel: string }) {
+  return (
+    <div className="grid w-full grid-cols-4 rounded-2xl bg-muted p-1 mb-6">
+      {TABS.map((t) => {
+        const active = value === t.key;
+        const display = t.key === 'level' ? `${t.label} ${levelLabel}` : t.label;
+        return (
+          <button
+            key={t.key}
+            onClick={() => onChange(t.key)}
+            className={`relative rounded-xl py-2 text-sm font-bold transition-colors ${active ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+          >
+            {active && (
+              <motion.span
+                layoutId="classement-tab-pill"
+                className="absolute inset-0 rounded-xl bg-card shadow"
+                transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+              />
+            )}
+            <span className="relative z-10">{display}</span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
 
 export default function Classement() {
   const { user } = useAuth();
@@ -156,22 +213,29 @@ export default function Classement() {
   return (
     <div className="container py-8 max-w-4xl">
       <div className="text-center mb-8">
-        <div className="inline-flex items-center justify-center h-16 w-16 rounded-2xl bg-gradient-to-br from-yellow-400 to-orange-500 mb-3 shadow-lg">
+        <motion.div
+          initial={{ scale: 0, rotate: -45 }}
+          animate={{ scale: 1, rotate: 0 }}
+          transition={{ duration: 0.6, ease: [0.34, 1.56, 0.64, 1] }}
+          className="inline-flex items-center justify-center h-16 w-16 rounded-2xl bg-gradient-to-br from-yellow-400 to-orange-500 mb-3 shadow-lg relative"
+        >
+          <div className="absolute inset-0 rounded-2xl bg-yellow-400/40 blur-xl -z-10" />
           <Trophy className="h-9 w-9 text-white" />
-        </div>
+        </motion.div>
         <h1 className="font-display text-3xl md:text-4xl text-primary mb-2">Classement</h1>
         <p className="text-muted-foreground text-sm">Affrontez les autres apprenants et grimpez dans le classement !</p>
       </div>
 
-      <Tabs value={tab} onValueChange={(v) => setTab(v as Mode)} className="mb-6">
-        <TabsList className="grid w-full grid-cols-4 rounded-2xl">
-          <TabsTrigger value="league" className="rounded-xl font-bold">🏆 Ligue</TabsTrigger>
-          <TabsTrigger value="global" className="rounded-xl font-bold">🌍 Global</TabsTrigger>
-          <TabsTrigger value="level" className="rounded-xl font-bold">🎯 {cecrLevel}</TabsTrigger>
-          <TabsTrigger value="streak" className="rounded-xl font-bold">🔥 Streak</TabsTrigger>
-        </TabsList>
-      </Tabs>
+      <AnimatedTabs value={tab} onChange={setTab} levelLabel={cecrLevel} />
 
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={tab}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -4 }}
+          transition={{ duration: 0.25 }}
+        >
       {tab === 'league' ? (
         <LeagueView />
       ) : loading ? (
@@ -202,19 +266,24 @@ export default function Classement() {
           )}
 
           {/* Rest */}
-          <div className="space-y-2">
+          <motion.div layout className="space-y-2">
             {rest.map((e, i) => (
               <Row key={e.user_id} entry={e} rank={i + 4} isMe={user?.id === e.user_id} mode={tab} />
             ))}
             {top3.length > 0 && top3.length < 3 && top3.map((e, i) => (
               <Row key={e.user_id} entry={e} rank={i + 1} isMe={user?.id === e.user_id} mode={tab} />
             ))}
-          </div>
+          </motion.div>
 
           {/* My position if outside top 50 */}
           {user && !meInTop && myRank && (
-            <div className="mt-6 sticky bottom-4">
-              <div className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground p-4 rounded-2xl shadow-xl flex items-center gap-3">
+            <motion.div
+              initial={{ y: 60, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.3, type: 'spring', stiffness: 220, damping: 24 }}
+              className="mt-6 sticky bottom-4"
+            >
+              <div className="bg-gradient-to-r from-primary via-primary to-cia-gold-500 text-primary-foreground p-4 rounded-2xl shadow-2xl flex items-center gap-3 ring-2 ring-primary/30">
                 <Flame className="h-6 w-6" />
                 <div className="flex-1">
                   <p className="text-xs font-bold opacity-90">VOTRE POSITION</p>
@@ -222,10 +291,12 @@ export default function Classement() {
                 </div>
                 <p className="text-xs opacity-90">Continuez pour entrer dans le top 50 !</p>
               </div>
-            </div>
+            </motion.div>
           )}
         </>
       )}
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 }
