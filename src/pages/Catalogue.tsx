@@ -1,12 +1,13 @@
 import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Search, SlidersHorizontal, X } from 'lucide-react';
+import { Search, SlidersHorizontal, X, BookOpen } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { CourseCard, type CourseCardProps } from '@/components/courses/CourseCard';
+import { EmptyState } from '@/components/states/EmptyState';
 import { staggerContainer, staggerItem, slideUp } from '@/lib/animations';
 import { curriculum } from '@/data/curriculum';
 import { useUserProgress, isLevelAccessible } from '@/hooks/useUserProgress';
@@ -183,11 +184,23 @@ export default function Catalogue() {
       <p className="text-xs text-muted-foreground font-bold mb-4">{t('catalogue.results_count', { count: filtered.length })}</p>
 
       {filtered.length === 0 ? (
-        <div className="text-center py-16">
-          <div className="text-5xl mb-4">🔍</div>
-          <p className="text-lg font-bold text-muted-foreground mb-1">{t('catalogue.empty_title')}</p>
-          <p className="text-sm text-muted-foreground">{t('catalogue.empty_subtitle')}</p>
-        </div>
+        <EmptyState
+          icon={Search}
+          title={t('catalogue.empty_title')}
+          description={t('catalogue.empty_subtitle')}
+          action={
+            activeFilters.length > 0 || search
+              ? {
+                  label: t('catalogue.clear_all'),
+                  onClick: () => {
+                    setLevelFilter('all');
+                    setStatusFilter('all');
+                    setSearch('');
+                  },
+                }
+              : undefined
+          }
+        />
       ) : (
         <motion.div
           variants={staggerContainer}
