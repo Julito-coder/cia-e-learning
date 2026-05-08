@@ -14,8 +14,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ['"Nunito"', 'sans-serif'],
-        body: ['"Nunito"', '"Source Sans 3"', 'sans-serif'],
+        sans:    ['Inter', 'system-ui', 'sans-serif'],
+        display: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', 'sans-serif'],
+        body:    ['Inter', 'system-ui', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -62,6 +63,33 @@ export default {
           ring: "hsl(var(--sidebar-ring))",
         },
         cia: {
+          blue: {
+            50:  'hsl(var(--cia-blue-50))',
+            100: 'hsl(var(--cia-blue-100))',
+            200: 'hsl(var(--cia-blue-200))',
+            300: 'hsl(var(--cia-blue-300))',
+            400: 'hsl(var(--cia-blue-400))',
+            500: 'hsl(var(--cia-blue-500))',
+            600: 'hsl(var(--cia-blue-600))',
+            700: 'hsl(var(--cia-blue-700))',
+            900: 'hsl(var(--cia-blue-900))',
+          },
+          gold: {
+            50:  'hsl(var(--cia-gold-50))',
+            100: 'hsl(var(--cia-gold-100))',
+            200: 'hsl(var(--cia-gold-200))',
+            300: 'hsl(var(--cia-gold-300))',
+            400: 'hsl(var(--cia-gold-400))',
+            500: 'hsl(var(--cia-gold-500))',
+            600: 'hsl(var(--cia-gold-600))',
+          },
+          red: {
+            50:  'hsl(var(--cia-red-50))',
+            100: 'hsl(var(--cia-red-100))',
+            300: 'hsl(var(--cia-red-300))',
+            500: 'hsl(var(--cia-red-500))',
+            600: 'hsl(var(--cia-red-600))',
+          },
           navy: "hsl(var(--cia-navy))",
           "navy-light": "hsl(var(--cia-navy-light))",
           sky: "hsl(var(--cia-sky))",
@@ -74,6 +102,14 @@ export default {
           gems: "hsl(var(--cia-gems))",
           bonus: "hsl(var(--cia-bonus))",
         },
+        xp:      'hsl(var(--xp-color))',
+        streak:  'hsl(var(--streak-color))',
+        success: 'hsl(var(--success-color))',
+        league: {
+          bronze: 'hsl(var(--league-bronze))',
+          silver: 'hsl(var(--league-silver))',
+          gold:   'hsl(var(--league-gold))',
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -81,6 +117,19 @@ export default {
         sm: "calc(var(--radius) - 4px)",
         xl: "calc(var(--radius) + 4px)",
         "2xl": "calc(var(--radius) + 8px)",
+      },
+      boxShadow: {
+        sm:      'var(--shadow-sm)',
+        DEFAULT: 'var(--shadow)',
+        md:      'var(--shadow-md)',
+        lg:      'var(--shadow-lg)',
+        xl:      'var(--shadow-xl)',
+        glow:    'var(--shadow-glow)',
+      },
+      transitionTimingFunction: {
+        'out-expo':    'var(--ease-out-expo)',
+        'out-back':    'var(--ease-out-back)',
+        'in-out-soft': 'var(--ease-in-out-soft)',
       },
       keyframes: {
         "accordion-down": {
@@ -135,6 +184,22 @@ export default {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-6px)" },
         },
+        "scale-pop": {
+          from: { opacity: "0", transform: "scale(0.92)" },
+          to: { opacity: "1", transform: "scale(1)" },
+        },
+        "shimmer": {
+          from: { backgroundPosition: "-200% 0" },
+          to: { backgroundPosition: "200% 0" },
+        },
+        "glow-pulse": {
+          "0%, 100%": { boxShadow: "0 0 0 0 hsl(var(--cia-gold-400) / 0.4)" },
+          "50%": { boxShadow: "0 0 0 12px hsl(var(--cia-gold-400) / 0)" },
+        },
+        "streak-flame": {
+          "0%, 100%": { transform: "rotate(-3deg) scale(1)" },
+          "50%": { transform: "rotate(3deg) scale(1.05)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -149,6 +214,10 @@ export default {
         "progress-fill": "progress-fill 1s ease-out forwards",
         "count-up": "count-up 0.5s ease-out forwards",
         "float": "float 3s ease-in-out infinite",
+        "scale-pop": "scale-pop 0.4s var(--ease-out-back)",
+        "shimmer": "shimmer 2s ease-in-out infinite",
+        "glow-pulse": "glow-pulse 2s ease-out infinite",
+        "streak-flame": "streak-flame 1.6s ease-in-out infinite",
       },
     },
   },
