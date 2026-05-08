@@ -1,125 +1,142 @@
-import { useState, useEffect, useRef } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useMemo } from 'react';
+import { motion } from 'framer-motion';
+import { Lock, CheckCircle2, Star } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Lock, Star } from 'lucide-react';
+import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { staggerContainer, staggerItem, slideUp } from '@/lib/animations';
 import { curriculum } from '@/data/curriculum';
-import { CECR_LEVELS, type CECRLevel } from '@/data/demo-courses';
 import { useUserProgress } from '@/hooks/useUserProgress';
-import { isModuleUnlocked } from '@/hooks/useModuleUnlock';
-import { LearningPath } from '@/components/courses/LearningPath';
+import type { CECRLevel } from '@/data/demo-courses';
 
-const levelEmojis: Record<string, string> = { A0: '🌰', A1: '🌱', A2: '🌿', B1: '🌊', B2: '⚡', C1: '🔥', C2: '👑' };
+const LEVELS: CECRLevel[] = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 
-const levelBgColors: Record<string, string> = {
-  A1: 'from-emerald-500/10 to-emerald-500/5 border-emerald-300/40',
-  A2: 'from-green-500/10 to-green-500/5 border-green-300/40',
-  B1: 'from-sky-500/10 to-sky-500/5 border-sky-300/40',
-  B2: 'from-blue-500/10 to-blue-500/5 border-blue-300/40',
-  C1: 'from-violet-500/10 to-violet-500/5 border-violet-300/40',
-  C2: 'from-purple-500/10 to-purple-500/5 border-purple-300/40',
+const LEVEL_GRADIENTS: Record<string, string> = {
+  A1: 'from-cia-blue-50 to-cia-blue-100',
+  A2: 'from-cia-blue-100 to-cia-gold-50',
+  B1: 'from-cia-gold-50 to-cia-gold-100',
+  B2: 'from-cia-gold-100 to-cia-blue-100',
+  C1: 'from-cia-blue-100 to-cia-blue-200',
+  C2: 'from-cia-blue-200 to-cia-blue-300',
 };
 
-export default function CurriculumPage() {
+export default function Curriculum() {
   const { t } = useTranslation();
   const { cecrLevel } = useUserProgress();
-  const [searchParams] = useSearchParams();
-  const [selectedLevel, setSelectedLevel] = useState<CECRLevel | null>(null);
-  const levelRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
-  // Scroll to module from URL param
-  useEffect(() => {
-    const moduleParam = searchParams.get('module');
-    if (moduleParam) {
-      // Find the level for this module
-      const levelData = curriculum.find(l => l.modules.some(m => m.id === moduleParam));
-      if (levelData) {
-        setTimeout(() => {
-          levelRefs.current[levelData.level]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 300);
-      }
-    }
-  }, [searchParams]);
-
-  const filteredLevels = selectedLevel
-    ? curriculum.filter(l => l.level === selectedLevel)
-    : curriculum;
+  const sections = useMemo(() => {
+    const userIdx = LEVELS.indexOf(cecrLevel as CECRLevel);
+    return LEVELS.map((level, lIdx) => {
+      const data = curriculum.find((c) => c.level === level);
+      const modules = (data?.modules ?? []).map((m, idx) => ({
+        ...m,
+        isLocked: lIdx > userIdx + 1,
+        progress: 0,
+      }));
+      return { level, title: data?.title ?? '', objective: data?.objective ?? '', modules };
+    });
+  }, [cecrLevel]);
 
   return (
-    <div className="container py-8 animate-fade-in pb-32 max-w-2xl mx-auto">
-      {/* Header */}
-      <div className="text-center mb-6">
-        <h1 className="font-display text-3xl mb-1">Mon Parcours</h1>
+    <motion.div initial="hidden" animate="visible" variants={slideUp} className="container py-8 pb-24 md:pb-8 max-w-5xl">
+      <header className="mb-8 text-center">
+        <h1 className="font-display text-3xl mb-1">{t('curriculum.title')}</h1>
         <p className="text-muted-foreground font-semibold">
-          300 leçons · 30 modules · 6 niveaux CECRL
+          {t('curriculum.subtitle')} <span className="text-accent font-bold">{cecrLevel}</span>
         </p>
-        <div className="mt-2 flex items-center justify-center gap-2">
-          <Badge className="bg-accent text-accent-foreground">
-            {levelEmojis[cecrLevel]} Niveau actuel : {cecrLevel}
-          </Badge>
-        </div>
-      </div>
+      </header>
 
-      {/* Level filter chips */}
-      <div className="flex gap-2 overflow-x-auto pb-3 mb-6 scrollbar-hide justify-center">
-        <button
-          onClick={() => setSelectedLevel(null)}
-          className={`chip-filter whitespace-nowrap ${!selectedLevel ? 'chip-active' : ''}`}
-        >
-          Tout
-        </button>
-        {CECR_LEVELS.filter(l => l.value !== 'A0').map((level) => (
-          <button
-            key={level.value}
-            onClick={() => {
-              setSelectedLevel(selectedLevel === level.value ? null : level.value);
-              setTimeout(() => {
-                levelRefs.current[level.value]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }, 100);
-            }}
-            className={`chip-filter whitespace-nowrap ${selectedLevel === level.value ? 'chip-active' : ''}`}
-          >
-            {levelEmojis[level.value]} {level.value}
-          </button>
-        ))}
-      </div>
-
-      {/* Visual path per level */}
-      <div className="space-y-8">
-        {filteredLevels.map((levelData) => {
-          const locked = !levelData.modules.some(m => isModuleUnlocked(m.id));
-          const isCurrentLevel = levelData.level === cecrLevel;
-
+      <div className="space-y-10">
+        {sections.map((section, sIdx) => {
+          const isCurrent = section.level === cecrLevel;
           return (
-            <div
-              key={levelData.level}
-              ref={el => { levelRefs.current[levelData.level] = el; }}
+            <motion.section
+              key={section.level}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-80px' }}
+              transition={{ duration: 0.4, delay: sIdx * 0.05 }}
             >
-              {/* Level banner */}
-              <div className={`relative rounded-2xl border-2 bg-gradient-to-r p-4 mb-4 ${levelBgColors[levelData.level] || 'border-border'} ${locked ? 'opacity-50' : ''}`}>
-                <div className="flex items-center gap-3">
-                  <span className="text-3xl">{levelEmojis[levelData.level]}</span>
+              <div className={`relative rounded-2xl border-2 bg-gradient-to-r ${LEVEL_GRADIENTS[section.level]} p-5 mb-4`}>
+                {isCurrent && (
+                  <motion.div
+                    animate={{ scale: [1, 1.05, 1] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                    className="absolute -top-3 right-4"
+                  >
+                    <Badge className="bg-cia-gold-500 text-white border-transparent gap-1 shadow-glow">
+                      <Star className="h-3 w-3" /> {t('curriculum.your_level')}
+                    </Badge>
+                  </motion.div>
+                )}
+                <div className="flex items-center gap-4">
+                  <div className="h-14 w-14 rounded-xl bg-white/70 grid place-items-center font-display text-2xl font-extrabold text-cia-blue-700">
+                    {section.level}
+                  </div>
                   <div className="flex-1">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <h2 className="font-display text-xl">{levelData.level} — {levelData.title}</h2>
-                      {locked && <Lock className="h-4 w-4 text-muted-foreground" />}
-                      {isCurrentLevel && (
-                        <Badge className="bg-accent/20 text-accent border border-accent/30 text-xs">
-                          <Star className="h-3 w-3 mr-1" /> En cours
-                        </Badge>
-                      )}
-                    </div>
-                    <p className="text-sm text-muted-foreground mt-0.5">{levelData.objective}</p>
+                    <h2 className="font-display text-xl">{section.title || t(`landing.cecr.${section.level.toLowerCase()}_label`)}</h2>
+                    <p className="text-sm text-muted-foreground mt-0.5">
+                      {section.objective || t(`landing.cecr.${section.level.toLowerCase()}_desc`)}
+                    </p>
                   </div>
                 </div>
               </div>
 
-              {/* Module path */}
-              <LearningPath modules={levelData.modules} />
-            </div>
+              {section.modules.length === 0 ? (
+                <div className="text-center py-8 text-sm text-muted-foreground italic border-2 border-dashed rounded-xl">
+                  {t('curriculum.coming_soon')}
+                </div>
+              ) : (
+                <motion.div
+                  variants={staggerContainer}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, margin: '-80px' }}
+                  className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3"
+                >
+                  {section.modules.map((mod, mIdx) => {
+                    const inner = (
+                      <Card className={`h-full p-3 flex flex-col gap-1.5 ${mod.isLocked ? 'opacity-60' : 'hover:shadow-md hover:-translate-y-0.5'} transition-all`}>
+                        <div className="flex items-center justify-between">
+                          <span className="text-[10px] font-bold text-muted-foreground tracking-wider">
+                            {String(mod.number ?? mIdx + 1).padStart(2, '0')}
+                          </span>
+                          {mod.isLocked ? (
+                            <Lock className="h-3.5 w-3.5 text-muted-foreground" />
+                          ) : mod.progress === 100 ? (
+                            <CheckCircle2 className="h-3.5 w-3.5 text-cia-success" />
+                          ) : mod.progress > 0 ? (
+                            <span className="text-[10px] font-bold text-accent">{mod.progress}%</span>
+                          ) : null}
+                        </div>
+                        <h3 className="font-display text-sm font-extrabold leading-tight line-clamp-2">
+                          {mod.title ?? `${t('curriculum.module')} ${mod.number}`}
+                        </h3>
+                        {mod.theme && (
+                          <p className="text-[10px] text-muted-foreground line-clamp-2">{mod.theme}</p>
+                        )}
+                        {!mod.isLocked && mod.progress > 0 && mod.progress < 100 && (
+                          <div className="mt-auto pt-1">
+                            <div className="h-1 w-full bg-muted rounded-full overflow-hidden">
+                              <div className="h-full bg-accent rounded-full" style={{ width: `${mod.progress}%` }} />
+                            </div>
+                          </div>
+                        )}
+                      </Card>
+                    );
+                    return (
+                      <motion.div key={mod.id} variants={staggerItem}>
+                        {mod.isLocked ? inner : <Link to={`/programme?module=${mod.id}`}>{inner}</Link>}
+                      </motion.div>
+                    );
+                  })}
+                </motion.div>
+              )}
+            </motion.section>
           );
         })}
       </div>
-    </div>
+    </motion.div>
   );
 }

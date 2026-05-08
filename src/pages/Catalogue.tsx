@@ -1,177 +1,207 @@
-import { useState, useMemo } from 'react';
+import { useMemo, useState } from 'react';
+import { motion } from 'framer-motion';
+import { Search, SlidersHorizontal, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { useLocation, useSearchParams } from 'react-router-dom';
-import { Search, X, PlayCircle, CheckCircle } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import { CourseCard } from '@/components/courses/CourseCard';
-import { demoCourses, CECR_LEVELS, COURSE_THEMES, type CECRLevel, type CourseTheme } from '@/data/demo-courses';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { CourseCard, type CourseCardProps } from '@/components/courses/CourseCard';
+import { staggerContainer, staggerItem, slideUp } from '@/lib/animations';
 import { curriculum } from '@/data/curriculum';
-import { useFavorites } from '@/hooks/useFavorites';
-import { useUserProgress } from '@/hooks/useUserProgress';
+import { useUserProgress, isLevelAccessible } from '@/hooks/useUserProgress';
+import type { CECRLevel } from '@/data/demo-courses';
 
-const levelEmojis: Record<string, string> = { A0: '🌰', A1: '🌱', A2: '🌿', B1: '🌊', B2: '⚡', C1: '🔥', C2: '👑' };
-
-type StatusFilter = 'all' | 'in-progress' | 'completed';
+const LEVELS = ['all', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2'] as const;
+type LevelFilter = typeof LEVELS[number];
+type StatusFilter = 'all' | 'free' | 'premium' | 'in_progress' | 'completed';
+type SortBy = 'level_asc' | 'level_desc' | 'duration_asc' | 'xp_desc' | 'alpha';
 
 export default function Catalogue() {
   const { t } = useTranslation();
-  const location = useLocation();
-  const [searchParams] = useSearchParams();
-  const isFavoritesPage = location.pathname === '/favoris';
-  const [search, setSearch] = useState('');
-  const [selectedLevel, setSelectedLevel] = useState<CECRLevel | null>(
-    (searchParams.get('level') as CECRLevel) || null
-  );
-  const [selectedTheme, setSelectedTheme] = useState<CourseTheme | null>(null);
-  const [showNew, setShowNew] = useState(false);
-  const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
-  const { favorites, toggleFavorite } = useFavorites();
   const { cecrLevel } = useUserProgress();
+  const [search, setSearch] = useState('');
+  const [levelFilter, setLevelFilter] = useState<LevelFilter>('all');
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
+  const [sortBy, setSortBy] = useState<SortBy>('level_asc');
+  const [showFilters, setShowFilters] = useState(false);
 
-  // Build a search index that includes lesson titles per module
-  const lessonSearchIndex = useMemo(() => {
-    const index: Record<string, string[]> = {};
-    curriculum.forEach(level => {
-      level.modules.forEach(mod => {
-        index[`module-${mod.id}`] = mod.lessons.map(l => l.title.toLowerCase());
+  const allCourses = useMemo<CourseCardProps[]>(() => {
+    const out: CourseCardProps[] = [];
+    curriculum.forEach((lvl) => {
+      lvl.modules.forEach((mod) => {
+        const totalLessons = mod.lessons?.length ?? 0;
+        const isFree = lvl.level === 'A1';
+        out.push({
+          id: mod.id,
+          title: mod.title,
+          description: mod.theme,
+          level: lvl.level,
+          theme: mod.theme,
+          durationMinutes: totalLessons * 12,
+          totalLessons,
+          xpReward: totalLessons * 50,
+          isFree,
+          isLocked: !isLevelAccessible(lvl.level, cecrLevel),
+          progress: 0,
+        });
       });
     });
-    return index;
-  }, []);
+    return out;
+  }, [cecrLevel]);
 
-  const filteredCourses = useMemo(() => {
-    return demoCourses.filter((course) => {
-      if (isFavoritesPage && !favorites.has(course.id)) return false;
-      if (search) {
-        const q = search.toLowerCase();
-        const matchTitle = course.title.toLowerCase().includes(q);
-        const matchCode = course.code.toLowerCase().includes(q);
-        const matchLesson = (lessonSearchIndex[course.id] || []).some(t => t.includes(q));
-        if (!matchTitle && !matchCode && !matchLesson) return false;
-      }
-      if (selectedLevel && course.level !== selectedLevel) return false;
-      if (selectedTheme && course.theme !== selectedTheme) return false;
-      if (showNew && !course.isNew) return false;
-      if (statusFilter === 'in-progress' && (!course.progress || course.progress === 0 || course.progress === 100)) return false;
-      if (statusFilter === 'completed' && course.progress !== 100) return false;
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    let r = allCourses.filter((c) => {
+      if (levelFilter !== 'all' && c.level !== levelFilter) return false;
+      if (statusFilter === 'free' && !c.isFree) return false;
+      if (statusFilter === 'premium' && c.isFree) return false;
+      if (statusFilter === 'in_progress' && !((c.progress ?? 0) > 0 && (c.progress ?? 0) < 100)) return false;
+      if (statusFilter === 'completed' && c.progress !== 100) return false;
+      if (q && !(c.title.toLowerCase().includes(q) || c.theme?.toLowerCase().includes(q))) return false;
       return true;
     });
-  }, [search, selectedLevel, selectedTheme, showNew, statusFilter, isFavoritesPage, favorites, lessonSearchIndex]);
+    const order: Record<string, number> = { A1: 0, A2: 1, B1: 2, B2: 3, C1: 4, C2: 5 };
+    r = [...r].sort((a, b) => {
+      switch (sortBy) {
+        case 'level_asc':    return (order[a.level] ?? 0) - (order[b.level] ?? 0);
+        case 'level_desc':   return (order[b.level] ?? 0) - (order[a.level] ?? 0);
+        case 'duration_asc': return (a.durationMinutes ?? 0) - (b.durationMinutes ?? 0);
+        case 'xp_desc':      return (b.xpReward ?? 0) - (a.xpReward ?? 0);
+        case 'alpha':        return a.title.localeCompare(b.title);
+      }
+    });
+    return r;
+  }, [allCourses, search, levelFilter, statusFilter, sortBy]);
 
-  const hasFilters = selectedLevel || selectedTheme || showNew || statusFilter !== 'all';
+  const activeFilters = [
+    levelFilter !== 'all' && { key: 'level', label: levelFilter, reset: () => setLevelFilter('all') },
+    statusFilter !== 'all' && { key: 'status', label: t(`catalogue.status.${statusFilter}`), reset: () => setStatusFilter('all') },
+  ].filter(Boolean) as { key: string; label: string; reset: () => void }[];
 
   return (
-    <div className="container py-8 animate-fade-in pb-24 md:pb-8">
-      <div className="mb-6">
-        <h1 className="font-display text-3xl mb-1">
-          {isFavoritesPage ? t('nav.favorites') : t('catalogue.title')}
-        </h1>
-        <p className="text-muted-foreground font-semibold">
-          {isFavoritesPage
-            ? `${favorites.size} cours en favoris`
-            : t('catalogue.subtitle', { count: demoCourses.length })}
-        </p>
+    <motion.div initial="hidden" animate="visible" variants={slideUp} className="container py-8 pb-24 md:pb-8">
+      <header className="mb-6">
+        <h1 className="font-display text-3xl mb-1">{t('catalogue.title')}</h1>
+        <p className="text-muted-foreground font-semibold">{t('catalogue.subtitle', { level: cecrLevel })}</p>
+      </header>
+
+      <div className="flex flex-col md:flex-row md:items-center gap-3 mb-4">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder={t('catalogue.search_placeholder')}
+            className="pl-9 h-11"
+          />
+        </div>
+        <Button variant="outline" onClick={() => setShowFilters((s) => !s)} className="md:hidden gap-2">
+          <SlidersHorizontal className="h-4 w-4" /> {t('catalogue.filters')}
+        </Button>
+        <div className="hidden md:flex gap-2">
+          <Select value={levelFilter} onValueChange={(v) => setLevelFilter(v as LevelFilter)}>
+            <SelectTrigger className="w-[160px] h-11"><SelectValue /></SelectTrigger>
+            <SelectContent>
+              {LEVELS.map((l) => <SelectItem key={l} value={l}>{l === 'all' ? t('catalogue.all_levels') : l}</SelectItem>)}
+            </SelectContent>
+          </Select>
+          <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v as StatusFilter)}>
+            <SelectTrigger className="w-[160px] h-11"><SelectValue /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">{t('catalogue.status.all')}</SelectItem>
+              <SelectItem value="free">{t('catalogue.status.free')}</SelectItem>
+              <SelectItem value="premium">{t('catalogue.status.premium')}</SelectItem>
+              <SelectItem value="in_progress">{t('catalogue.status.in_progress')}</SelectItem>
+              <SelectItem value="completed">{t('catalogue.status.completed')}</SelectItem>
+            </SelectContent>
+          </Select>
+          <Select value={sortBy} onValueChange={(v) => setSortBy(v as SortBy)}>
+            <SelectTrigger className="w-[200px] h-11"><SelectValue /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="level_asc">{t('catalogue.sort.level_asc')}</SelectItem>
+              <SelectItem value="level_desc">{t('catalogue.sort.level_desc')}</SelectItem>
+              <SelectItem value="duration_asc">{t('catalogue.sort.duration_asc')}</SelectItem>
+              <SelectItem value="xp_desc">{t('catalogue.sort.xp_desc')}</SelectItem>
+              <SelectItem value="alpha">{t('catalogue.sort.alpha')}</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
-      {/* Search — also searches lesson names */}
-      <div className="relative mb-5">
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-        <Input
-          placeholder="Rechercher un cours ou une leçon…"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="pl-11 h-12 rounded-2xl border-2 text-sm font-semibold"
-        />
-      </div>
-
-      {!isFavoritesPage && (
-        <>
-          {/* Level chips */}
-          <div className="flex gap-2 overflow-x-auto pb-2 mb-3 scrollbar-hide">
-            {CECR_LEVELS.filter(l => l.value !== 'A0').map((level) => (
-              <button
-                key={level.value}
-                onClick={() => setSelectedLevel(selectedLevel === level.value ? null : level.value)}
-                className={`chip-filter whitespace-nowrap ${selectedLevel === level.value ? 'chip-active' : ''}`}
-              >
-                {levelEmojis[level.value]} {level.value}
-              </button>
-            ))}
-          </div>
-
-          {/* Theme chips */}
-          <div className="flex gap-2 overflow-x-auto pb-2 mb-3 scrollbar-hide">
-            {COURSE_THEMES.map((theme) => (
-              <button
-                key={theme}
-                onClick={() => setSelectedTheme(selectedTheme === theme ? null : theme)}
-                className={`chip-filter whitespace-nowrap text-xs ${selectedTheme === theme ? 'chip-active' : ''}`}
-              >
-                {theme}
-              </button>
-            ))}
-          </div>
-
-          {/* Status + extra filters */}
-          <div className="flex gap-2 mb-5 flex-wrap">
-            <button
-              onClick={() => setStatusFilter(statusFilter === 'in-progress' ? 'all' : 'in-progress')}
-              className={`chip-filter text-xs ${statusFilter === 'in-progress' ? 'chip-active' : ''}`}
-            >
-              <PlayCircle className="h-3 w-3" /> En cours
-            </button>
-            <button
-              onClick={() => setStatusFilter(statusFilter === 'completed' ? 'all' : 'completed')}
-              className={`chip-filter text-xs ${statusFilter === 'completed' ? 'chip-active' : ''}`}
-            >
-              <CheckCircle className="h-3 w-3" /> Terminés
-            </button>
-            <button
-              onClick={() => setShowNew(!showNew)}
-              className={`chip-filter text-xs ${showNew ? 'chip-active' : ''}`}
-            >
-              {t('catalogue.newFilter')}
-            </button>
-            {hasFilters && (
-              <button
-                onClick={() => { setSelectedLevel(null); setSelectedTheme(null); setShowNew(false); setStatusFilter('all'); }}
-                className="chip-filter text-xs !border-destructive/30 !text-destructive hover:!bg-destructive/5"
-              >
-                <X className="h-3 w-3" /> {t('catalogue.reset')}
-              </button>
-            )}
-          </div>
-        </>
+      {showFilters && (
+        <div className="md:hidden grid grid-cols-1 gap-2 mb-4">
+          <Select value={levelFilter} onValueChange={(v) => setLevelFilter(v as LevelFilter)}>
+            <SelectTrigger><SelectValue /></SelectTrigger>
+            <SelectContent>
+              {LEVELS.map((l) => <SelectItem key={l} value={l}>{l === 'all' ? t('catalogue.all_levels') : l}</SelectItem>)}
+            </SelectContent>
+          </Select>
+          <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v as StatusFilter)}>
+            <SelectTrigger><SelectValue /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">{t('catalogue.status.all')}</SelectItem>
+              <SelectItem value="free">{t('catalogue.status.free')}</SelectItem>
+              <SelectItem value="premium">{t('catalogue.status.premium')}</SelectItem>
+              <SelectItem value="in_progress">{t('catalogue.status.in_progress')}</SelectItem>
+              <SelectItem value="completed">{t('catalogue.status.completed')}</SelectItem>
+            </SelectContent>
+          </Select>
+          <Select value={sortBy} onValueChange={(v) => setSortBy(v as SortBy)}>
+            <SelectTrigger><SelectValue /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="level_asc">{t('catalogue.sort.level_asc')}</SelectItem>
+              <SelectItem value="level_desc">{t('catalogue.sort.level_desc')}</SelectItem>
+              <SelectItem value="duration_asc">{t('catalogue.sort.duration_asc')}</SelectItem>
+              <SelectItem value="xp_desc">{t('catalogue.sort.xp_desc')}</SelectItem>
+              <SelectItem value="alpha">{t('catalogue.sort.alpha')}</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       )}
 
-      {/* Results */}
-      {filteredCourses.length === 0 ? (
+      {activeFilters.length > 0 && (
+        <div className="flex flex-wrap gap-2 mb-4">
+          {activeFilters.map((f) => (
+            <button key={f.key} onClick={f.reset}>
+              <Badge variant="secondary" className="gap-1 cursor-pointer hover:bg-secondary/70">
+                {f.label} <X className="h-3 w-3" />
+              </Badge>
+            </button>
+          ))}
+          {activeFilters.length > 1 && (
+            <button
+              onClick={() => { setLevelFilter('all'); setStatusFilter('all'); setSearch(''); }}
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors font-semibold"
+            >
+              {t('catalogue.clear_all')}
+            </button>
+          )}
+        </div>
+      )}
+
+      <p className="text-xs text-muted-foreground font-bold mb-4">{t('catalogue.results_count', { count: filtered.length })}</p>
+
+      {filtered.length === 0 ? (
         <div className="text-center py-16">
-          <div className="text-5xl mb-4">{isFavoritesPage ? '❤️' : '🔍'}</div>
-          <p className="text-lg font-bold text-muted-foreground mb-1">
-            {isFavoritesPage ? 'Aucun cours en favoris' : t('catalogue.noResults')}
-          </p>
-          <p className="text-sm text-muted-foreground">
-            {isFavoritesPage ? 'Ajoutez des cours en favoris depuis le catalogue' : t('catalogue.noResultsHint')}
-          </p>
+          <div className="text-5xl mb-4">🔍</div>
+          <p className="text-lg font-bold text-muted-foreground mb-1">{t('catalogue.empty_title')}</p>
+          <p className="text-sm text-muted-foreground">{t('catalogue.empty_subtitle')}</p>
         </div>
       ) : (
-        <>
-          <p className="text-xs text-muted-foreground font-bold mb-4">{t('catalogue.results', { count: filteredCourses.length })}</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {filteredCourses.map((course, i) => (
-              <div key={course.id} className="animate-slide-up" style={{ animationDelay: `${i * 50}ms` }}>
-                <CourseCard
-                  course={course}
-                  isFavorite={favorites.has(course.id)}
-                  onToggleFavorite={toggleFavorite}
-                  userLevel={cecrLevel}
-                />
-              </div>
-            ))}
-          </div>
-        </>
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          animate="visible"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+        >
+          {filtered.map((course) => (
+            <motion.div key={course.id} variants={staggerItem}>
+              <CourseCard {...course} />
+            </motion.div>
+          ))}
+        </motion.div>
       )}
-    </div>
+    </motion.div>
   );
 }
