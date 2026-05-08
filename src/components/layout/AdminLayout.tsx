@@ -124,16 +124,16 @@ export function AdminLayout() {
       {/* Main */}
       <div className={`flex-1 transition-all duration-300 ${collapsed ? 'lg:ml-16' : 'lg:ml-64'}`}>
         {/* Top bar */}
-        <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-card/80 px-4 backdrop-blur">
+        <header className="sticky top-0 z-30 flex h-14 items-center gap-3 border-b bg-card/80 px-3 sm:px-4 backdrop-blur pt-safe">
           <Button
             variant="ghost"
             size="icon"
-            className="lg:hidden"
+            className="lg:hidden min-h-touch min-w-touch"
             onClick={() => setMobileOpen(true)}
           >
             <Menu className="h-5 w-5" />
           </Button>
-          <nav className="flex items-center gap-2 text-sm text-muted-foreground">
+          <nav className="scroll-x no-scrollbar flex items-center gap-2 text-sm text-muted-foreground whitespace-nowrap min-w-0">
             <Link to="/admin" className="hover:text-foreground transition-colors">Admin</Link>
             {(() => {
               const current = adminNavItems.find((i) => i.href === location.pathname);
@@ -147,12 +147,12 @@ export function AdminLayout() {
             })()}
           </nav>
           <div className="flex-1" />
-          <span className="hidden sm:inline text-xs text-muted-foreground truncate max-w-[200px]">
+          <span className="hidden md:inline text-xs text-muted-foreground truncate max-w-[200px]">
             {user?.email}
           </span>
         </header>
 
-        <main className="p-6">
+        <main className="p-3 sm:p-4 lg:p-6 pb-safe">
           <Outlet />
         </main>
       </div>

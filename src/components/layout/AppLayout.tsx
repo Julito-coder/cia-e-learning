@@ -12,9 +12,9 @@ export function AppLayout() {
   // Sync interface language from DB on login
   useInterfaceLanguage();
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col pl-safe pr-safe">
       <Header />
-      <main className="flex-1">
+      <main className="flex-1 pb-safe">
         <AnimatePresence mode="wait">
           <motion.div
             key={location.pathname}

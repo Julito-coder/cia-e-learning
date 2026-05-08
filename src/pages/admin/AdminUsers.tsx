@@ -227,7 +227,9 @@ export default function AdminUsers() {
               />
             </div>
           ) : (
-            <div className="overflow-x-auto">
+            <>
+            {/* Desktop table */}
+            <div className="hidden md:block overflow-x-auto">
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -285,6 +287,56 @@ export default function AdminUsers() {
                 </TableBody>
               </Table>
             </div>
+            {/* Mobile cards */}
+            <ul className="md:hidden divide-y divide-border">
+              {pageUsers.map((user) => (
+                <li key={user.id} className="p-4 flex items-start gap-3">
+                  <div className="flex-1 min-w-0 space-y-1.5">
+                    <p className="font-semibold text-sm truncate">
+                      {user.first_name} {user.last_name || <span className="text-muted-foreground">—</span>}
+                    </p>
+                    <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                    <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                      <Badge variant="outline" className="text-[10px]">{user.cecr_level}</Badge>
+                      <Badge variant={user.is_cia_student ? 'default' : 'secondary'} className="text-[10px]">
+                        {user.is_cia_student ? 'CIA' : 'Externe'}
+                      </Badge>
+                      <Badge
+                        variant={user.is_active ? 'default' : 'destructive'}
+                        className={`text-[10px] ${user.is_active ? 'bg-cia-success' : ''}`}
+                      >
+                        {user.is_active ? 'Actif' : 'Inactif'}
+                      </Badge>
+                    </div>
+                    <p className="text-[11px] text-muted-foreground">
+                      Inscrit le {new Date(user.created_at).toLocaleDateString('fr-FR')}
+                    </p>
+                  </div>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="icon" className="min-h-touch min-w-touch shrink-0">
+                        <MoreHorizontal className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => notify.info('Détail utilisateur — bientôt')}>
+                        <Eye className="h-4 w-4 mr-2" /> Voir le détail
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => toggleUserActive(user)}>
+                        {user.is_active
+                          ? <><UserX className="h-4 w-4 mr-2" /> Désactiver</>
+                          : <><UserCheck className="h-4 w-4 mr-2" /> Activer</>}
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem onClick={() => notify.info('Réinitialisation par email — bientôt')}>
+                        <KeyRound className="h-4 w-4 mr-2" /> Réinitialiser le mot de passe
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </li>
+              ))}
+            </ul>
+            </>
           )}
         </CardContent>
       </Card>
