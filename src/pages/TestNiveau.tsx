@@ -281,13 +281,15 @@ export default function TestNiveau() {
           )}
 
           {!showFeedback && (
-            <button
-              type="button"
-              onClick={() => handleAnswer('___skip___')}
-              className="mx-auto flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <HelpCircle className="h-3.5 w-3.5" /> Je ne sais pas
-            </button>
+            <div className="flex justify-center">
+              <button
+                type="button"
+                onClick={() => handleAnswer('___skip___')}
+                className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <HelpCircle className="h-3.5 w-3.5" /> Je ne sais pas
+              </button>
+            </div>
           )}
 
           {/* Feedback */}
