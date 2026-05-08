@@ -44,14 +44,35 @@
     "new": "✨ Nuevo"
   },
   "catalogue": {
-    "title": "📚 Catálogo",
-    "subtitle": "{{count}} cursos disponibles — del nivel A1 al C2",
+    "title": "Catalogue des cours",
+    "subtitle": "Trouve les cours qui correspondent à ton niveau ({{level}}) et tes envies.",
     "search": "Buscar un curso o código (ej: B1-VOC-012)...",
     "newFilter": "✨ Novedades",
     "reset": "Restablecer",
     "noResults": "No se encontraron cursos",
     "noResultsHint": "Intenta cambiar tus filtros.",
-    "results": "{{count}} resultado(s)"
+    "results": "{{count}} resultado(s)",
+    "search_placeholder": "Rechercher un cours, un thème...",
+    "filters": "Filtres",
+    "all_levels": "Tous les niveaux",
+    "clear_all": "Tout réinitialiser",
+    "results_count": "{{count}} cours",
+    "empty_title": "Aucun cours trouvé",
+    "empty_subtitle": "Essaie de modifier tes filtres ou ta recherche.",
+    "status": {
+      "all": "Tous statuts",
+      "free": "Gratuit",
+      "premium": "Premium",
+      "in_progress": "En cours",
+      "completed": "Complété"
+    },
+    "sort": {
+      "level_asc": "Niveau (A1 → C2)",
+      "level_desc": "Niveau (C2 → A1)",
+      "duration_asc": "Durée (court → long)",
+      "xp_desc": "XP (élevé → bas)",
+      "alpha": "Alphabétique"
+    }
   },
   "test": {
     "title": "Test de francés",
@@ -233,5 +254,12 @@
       "cta_primary": "Commencer maintenant",
       "cta_secondary": "Voir les tarifs"
     }
+  },
+  "curriculum": {
+    "title": "Parcours pédagogique",
+    "subtitle": "Ton chemin du A1 au C2 — niveau actuel :",
+    "your_level": "Tu es ici",
+    "module": "Module",
+    "coming_soon": "Modules en préparation. Disponibles bientôt."
   }
 }

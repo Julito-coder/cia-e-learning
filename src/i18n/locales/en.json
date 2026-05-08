@@ -44,14 +44,35 @@
     "new": "✨ New"
   },
   "catalogue": {
-    "title": "📚 Catalogue",
-    "subtitle": "{{count}} courses available — from A1 to C2",
+    "title": "Course catalog",
+    "subtitle": "Find the courses that match your level ({{level}}) and interests.",
     "search": "Search for a course or code (e.g. B1-VOC-012)...",
     "newFilter": "✨ New",
     "reset": "Reset",
     "noResults": "No courses found",
     "noResultsHint": "Try changing your filters.",
-    "results": "{{count}} result(s)"
+    "results": "{{count}} result(s)",
+    "search_placeholder": "Search a course, a topic...",
+    "filters": "Filters",
+    "all_levels": "All levels",
+    "clear_all": "Clear all",
+    "results_count": "{{count}} courses",
+    "empty_title": "No course found",
+    "empty_subtitle": "Try adjusting your filters or search.",
+    "status": {
+      "all": "All statuses",
+      "free": "Free",
+      "premium": "Premium",
+      "in_progress": "In progress",
+      "completed": "Completed"
+    },
+    "sort": {
+      "level_asc": "Level (A1 → C2)",
+      "level_desc": "Level (C2 → A1)",
+      "duration_asc": "Duration (short → long)",
+      "xp_desc": "XP (high → low)",
+      "alpha": "Alphabetical"
+    }
   },
   "test": {
     "title": "French Test",
@@ -233,5 +254,12 @@
       "cta_primary": "Start now",
       "cta_secondary": "See pricing"
     }
+  },
+  "curriculum": {
+    "title": "Learning path",
+    "subtitle": "Your journey from A1 to C2 — current level:",
+    "your_level": "You are here",
+    "module": "Module",
+    "coming_soon": "Modules in preparation. Available soon."
   }
 }
