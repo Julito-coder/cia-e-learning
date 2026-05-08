@@ -122,7 +122,8 @@ export default function AdminSubscriptions() {
               />
             </div>
           ) : (
-            <div className="overflow-x-auto">
+            <>
+            <div className="hidden md:block overflow-x-auto">
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -171,6 +172,44 @@ export default function AdminSubscriptions() {
                 </TableBody>
               </Table>
             </div>
+            <ul className="md:hidden divide-y divide-border">
+              {subs.map((s) => (
+                <li key={s.id} className="p-4 space-y-2">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      <p className="font-semibold text-sm truncate">{s.profiles?.first_name} {s.profiles?.last_name}</p>
+                      <p className="text-xs text-muted-foreground truncate">{s.profiles?.email}</p>
+                    </div>
+                    <Badge className={`${statusColors[s.status] || ''} text-[10px] shrink-0`}>{s.status}</Badge>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                    <Select value={s.plan} onValueChange={(v) => updatePlan(s.id, v)}>
+                      <SelectTrigger className="h-9 w-32"><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="free">Gratuit</SelectItem>
+                        <SelectItem value="premium">Premium</SelectItem>
+                        <SelectItem value="school">École</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <span>Début {new Date(s.starts_at).toLocaleDateString('fr-FR')}</span>
+                    <span>· Expire {renderExpires(s)}</span>
+                    {s.promo_code && <span>· {s.promo_code}</span>}
+                  </div>
+                  <div className="flex justify-end">
+                    {s.status === 'active' ? (
+                      <Button variant="ghost" size="sm" onClick={() => updateStatus(s.id, 'cancelled')} className="text-destructive min-h-touch">
+                        Annuler
+                      </Button>
+                    ) : (
+                      <Button variant="ghost" size="sm" onClick={() => updateStatus(s.id, 'active')} className="min-h-touch">
+                        Réactiver
+                      </Button>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ul>
+            </>
           )}
         </CardContent>
       </Card>
