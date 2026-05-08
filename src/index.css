@@ -1,104 +1,144 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    /* CIA Navy Blue palette - Duolingo-inspired */
-    --background: 210 25% 97%;
-    --foreground: 207 52% 18%;
+    /* === Charte CIA === */
+    --cia-blue-50:  213 64% 96%;
+    --cia-blue-100: 213 60% 90%;
+    --cia-blue-200: 213 55% 78%;
+    --cia-blue-300: 213 52% 62%;
+    --cia-blue-400: 213 50% 45%;
+    --cia-blue-500: 213 81% 21%;
+    --cia-blue-600: 213 85% 17%;
+    --cia-blue-700: 213 88% 13%;
+    --cia-blue-900: 213 90%  8%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 207 52% 18%;
+    --cia-gold-50:  41 60% 95%;
+    --cia-gold-100: 41 55% 86%;
+    --cia-gold-200: 41 50% 75%;
+    --cia-gold-300: 41 48% 64%;
+    --cia-gold-400: 41 47% 58%;
+    --cia-gold-500: 41 50% 50%;
+    --cia-gold-600: 41 55% 42%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 207 52% 18%;
+    --cia-red-50:  348 80% 96%;
+    --cia-red-100: 348 75% 88%;
+    --cia-red-300: 348 80% 65%;
+    --cia-red-500: 348 81% 40%;
+    --cia-red-600: 348 85% 32%;
 
-    --primary: 207 52% 23%;
+    /* === Neutrals === */
+    --neutral-50:  220 15% 98%;
+    --neutral-100: 220 13% 95%;
+    --neutral-200: 220 12% 90%;
+    --neutral-300: 220 10% 80%;
+    --neutral-400: 220  8% 60%;
+    --neutral-500: 220  7% 45%;
+    --neutral-600: 220  9% 30%;
+    --neutral-700: 220 12% 20%;
+    --neutral-800: 220 15% 14%;
+    --neutral-900: 220 20%  9%;
+
+    /* === Mappings shadcn (clair) === */
+    --background:        var(--neutral-50);
+    --foreground:        var(--neutral-900);
+    --card:              0 0% 100%;
+    --card-foreground:   var(--neutral-900);
+    --popover:           0 0% 100%;
+    --popover-foreground: var(--neutral-900);
+    --primary:           var(--cia-blue-500);
     --primary-foreground: 0 0% 100%;
-
-    --secondary: 207 20% 93%;
-    --secondary-foreground: 207 52% 23%;
-
-    --muted: 210 20% 95%;
-    --muted-foreground: 207 15% 50%;
-
-    --accent: 199 78% 55%;
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 72% 51%;
+    --secondary:         var(--cia-gold-400);
+    --secondary-foreground: var(--cia-blue-700);
+    --muted:             var(--neutral-100);
+    --muted-foreground:  var(--neutral-500);
+    --accent:            var(--cia-gold-100);
+    --accent-foreground: var(--cia-blue-700);
+    --destructive:       var(--cia-red-500);
     --destructive-foreground: 0 0% 100%;
+    --border:            var(--neutral-200);
+    --input:             var(--neutral-200);
+    --ring:              var(--cia-blue-500);
+    --radius:            0.75rem;
 
-    --border: 210 18% 90%;
-    --input: 210 18% 90%;
-    --ring: 207 52% 23%;
+    /* === Sémantique gamification === */
+    --xp-color:        var(--cia-gold-400);
+    --streak-color:    25 95% 55%;
+    --success-color:   145 65% 42%;
+    --league-bronze:   25 55% 45%;
+    --league-silver:   220 10% 65%;
+    --league-gold:     var(--cia-gold-400);
 
-    --radius: 1rem;
-
-    /* CIA specific tokens */
-    --cia-navy: 207 52% 23%;
-    --cia-navy-light: 207 40% 35%;
-    --cia-sky: 199 78% 55%;
-    --cia-gold: 40 90% 55%;
-    --cia-sand: 38 40% 95%;
-
-    /* Gamification tokens */
-    --cia-success: 145 63% 42%;
-    --cia-warning: 40 90% 55%;
-    --cia-xp: 28 90% 55%;
-    --cia-streak: 10 80% 55%;
+    /* Legacy CIA tokens (compat ascendante) */
+    --cia-navy: var(--cia-blue-500);
+    --cia-navy-light: var(--cia-blue-400);
+    --cia-sky: var(--cia-blue-300);
+    --cia-gold: var(--cia-gold-400);
+    --cia-sand: var(--cia-gold-50);
+    --cia-success: var(--success-color);
+    --cia-warning: var(--cia-gold-400);
+    --cia-xp: var(--xp-color);
+    --cia-streak: var(--streak-color);
     --cia-gems: 260 70% 60%;
     --cia-bonus: 290 65% 55%;
 
-    --sidebar-background: 207 52% 23%;
-    --sidebar-foreground: 210 20% 95%;
-    --sidebar-primary: 199 78% 55%;
+    /* Sidebar (legacy mapping) */
+    --sidebar-background: var(--cia-blue-500);
+    --sidebar-foreground: var(--neutral-100);
+    --sidebar-primary: var(--cia-gold-400);
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 207 40% 30%;
-    --sidebar-accent-foreground: 210 20% 95%;
-    --sidebar-border: 207 40% 30%;
-    --sidebar-ring: 199 78% 55%;
+    --sidebar-accent: var(--cia-blue-600);
+    --sidebar-accent-foreground: var(--neutral-100);
+    --sidebar-border: var(--cia-blue-600);
+    --sidebar-ring: var(--cia-gold-400);
+
+    /* === Élévations === */
+    --shadow-sm:    0 1px 2px hsl(220 15% 20% / 0.04);
+    --shadow:       0 2px 8px hsl(220 15% 20% / 0.06), 0 1px 3px hsl(220 15% 20% / 0.04);
+    --shadow-md:    0 4px 16px hsl(220 15% 20% / 0.08), 0 2px 4px hsl(220 15% 20% / 0.04);
+    --shadow-lg:    0 10px 32px hsl(220 15% 20% / 0.10), 0 4px 8px hsl(220 15% 20% / 0.05);
+    --shadow-xl:    0 20px 60px hsl(220 15% 20% / 0.14);
+    --shadow-glow:  0 0 24px hsl(var(--cia-gold-400) / 0.40);
+
+    /* === Easings === */
+    --ease-out-expo:    cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-out-back:    cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-in-out-soft: cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .dark {
-    --background: 207 52% 8%;
-    --foreground: 210 20% 95%;
+    --background:        var(--neutral-900);
+    --foreground:        var(--neutral-50);
+    --card:              var(--neutral-800);
+    --card-foreground:   var(--neutral-50);
+    --popover:           var(--neutral-800);
+    --popover-foreground: var(--neutral-50);
+    --primary:           var(--cia-gold-400);
+    --primary-foreground: var(--cia-blue-700);
+    --secondary:         var(--cia-blue-400);
+    --secondary-foreground: var(--neutral-50);
+    --muted:             var(--neutral-700);
+    --muted-foreground:  var(--neutral-300);
+    --accent:            var(--cia-blue-700);
+    --accent-foreground: var(--neutral-50);
+    --destructive:       var(--cia-red-500);
+    --destructive-foreground: 0 0% 100%;
+    --border:            var(--neutral-700);
+    --input:             var(--neutral-700);
+    --ring:              var(--cia-gold-400);
+  }
+}
 
-    --card: 207 52% 12%;
-    --card-foreground: 210 20% 95%;
-
-    --popover: 207 52% 12%;
-    --popover-foreground: 210 20% 95%;
-
-    --primary: 199 78% 55%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 207 40% 18%;
-    --secondary-foreground: 210 20% 95%;
-
-    --muted: 207 40% 16%;
-    --muted-foreground: 210 15% 60%;
-
-    --accent: 199 78% 55%;
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 62% 30%;
-    --destructive-foreground: 210 20% 95%;
-
-    --border: 207 40% 18%;
-    --input: 207 40% 18%;
-    --ring: 199 78% 55%;
-
-    --sidebar-background: 207 52% 8%;
-    --sidebar-foreground: 210 20% 95%;
-    --sidebar-primary: 199 78% 55%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 207 40% 16%;
-    --sidebar-accent-foreground: 210 20% 95%;
-    --sidebar-border: 207 40% 16%;
-    --sidebar-ring: 199 78% 55%;
+@layer base {
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "ss01", "cv11";
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-tight;
   }
 }
 
@@ -106,25 +146,15 @@
   * {
     @apply border-border;
   }
-
-  body {
-    @apply bg-background text-foreground;
-    font-family: 'Nunito', 'Source Sans 3', sans-serif;
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Nunito', sans-serif;
-    font-weight: 800;
-  }
 }
 
 @layer utilities {
   .font-display {
-    font-family: 'Nunito', sans-serif;
-    font-weight: 800;
+    font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+    font-weight: 700;
   }
   .font-body {
-    font-family: 'Nunito', 'Source Sans 3', sans-serif;
+    font-family: 'Inter', system-ui, sans-serif;
   }
 }
 
