@@ -148,7 +148,24 @@
     "backToCourse": "Retour au cours",
     "nextQuestion": "Question suivante",
     "seeResult": "Voir le résultat",
-    "question": "Question"
+    "question": "Question",
+    "exit": "Quitter",
+    "lesson": {
+      "continue": "Continuer",
+      "examples": "Exemples"
+    },
+    "feedback": {
+      "correct": "Bonne réponse !",
+      "incorrect": "Pas tout à fait — réessaie."
+    },
+    "completion": {
+      "title": "Bravo !",
+      "steps": "étapes",
+      "time": "temps",
+      "next_course": "Cours suivant",
+      "back_catalogue": "Retour au catalogue",
+      "retry": "Refaire"
+    }
   },
   "indicators": {
     "xp_tooltip": "{{count}} XP gagnés au total",

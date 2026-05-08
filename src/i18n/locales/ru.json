@@ -148,7 +148,24 @@
     "backToCourse": "Вернуться к курсу",
     "nextQuestion": "Следующий вопрос",
     "seeResult": "Посмотреть результат",
-    "question": "Вопрос"
+    "question": "Вопрос",
+    "exit": "Выйти",
+    "lesson": {
+      "continue": "Продолжить",
+      "examples": "Примеры"
+    },
+    "feedback": {
+      "correct": "Верно!",
+      "incorrect": "Не совсем — попробуй ещё раз."
+    },
+    "completion": {
+      "title": "Отлично!",
+      "steps": "шаги",
+      "time": "время",
+      "next_course": "Следующий курс",
+      "back_catalogue": "Назад к каталогу",
+      "retry": "Повторить"
+    }
   },
   "indicators": {
     "xp_tooltip": "Всего {{count}} XP",

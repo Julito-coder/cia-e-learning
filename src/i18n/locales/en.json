@@ -148,7 +148,24 @@
     "backToCourse": "Back to course",
     "nextQuestion": "Next question",
     "seeResult": "See result",
-    "question": "Question"
+    "question": "Question",
+    "exit": "Exit",
+    "lesson": {
+      "continue": "Continue",
+      "examples": "Examples"
+    },
+    "feedback": {
+      "correct": "Correct!",
+      "incorrect": "Not quite — try again."
+    },
+    "completion": {
+      "title": "Well done!",
+      "steps": "steps",
+      "time": "time",
+      "next_course": "Next course",
+      "back_catalogue": "Back to catalog",
+      "retry": "Retry"
+    }
   },
   "indicators": {
     "xp_tooltip": "{{count}} total XP earned",
