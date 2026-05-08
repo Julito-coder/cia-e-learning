@@ -12,6 +12,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
 import { useUserProgress } from '@/hooks/useUserProgress';
 import { useDailyChallenge } from '@/hooks/useDailyChallenge';
+import { ProfileHeaderSkeleton } from '@/components/states/skeletons/ProfileHeaderSkeleton';
 import { Flame, Trophy, Zap } from 'lucide-react';
 
 const LEAGUE_LABEL: Record<string, { label: string; emoji: string }> = {
@@ -24,7 +25,7 @@ export default function Profil() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { user, isLoading } = useAuth();
-  const { profile, refetch } = useProfile();
+  const { profile, loading: profileLoading, refetch } = useProfile();
   const { totalXP, cecrLevel, xpProgress } = useUserProgress();
   const { streak } = useDailyChallenge();
 
@@ -33,6 +34,15 @@ export default function Profil() {
   }, [user, isLoading, navigate]);
 
   if (!user) return null;
+
+  if (isLoading || profileLoading) {
+    return (
+      <div className="container max-w-4xl py-6 sm:py-10 px-4 space-y-5">
+        <h1 className="font-display text-2xl sm:text-3xl text-primary">{t('profile.title')}</h1>
+        <ProfileHeaderSkeleton />
+      </div>
+    );
+  }
 
   const displayName = [profile?.first_name, profile?.last_name].filter(Boolean).join(' ').trim() || user.email;
   const league = profile?.league && LEAGUE_LABEL[profile.league];
