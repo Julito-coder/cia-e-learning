@@ -755,5 +755,88 @@
       "reindexBtn": "Starten",
       "reindexOk": "Glossar neu indiziert"
     }
+  },
+  "profile": {
+    "title": "Mein Profil",
+    "identity": "Identität",
+    "personal_info": "Persönliche Daten",
+    "account": "Konto",
+    "firstName": "Vorname",
+    "lastName": "Nachname",
+    "nationality": "Nationalität",
+    "email": "E-Mail",
+    "interfaceLanguage": "Oberflächensprache",
+    "save": "Speichern",
+    "saved": "Änderungen gespeichert",
+    "error": "Ein Fehler ist aufgetreten",
+    "redoOnboarding": "Einführungstour wiederholen",
+    "redoPlacement": "Einstufungstest wiederholen",
+    "logout": "Abmelden",
+    "adminAccess": "Backoffice öffnen",
+    "achievements": {
+      "title": "🏅 Erfolge",
+      "all": "Alle",
+      "unlocked": "Freigeschaltet",
+      "locked": "Gesperrt",
+      "unlockedCount": "{{done}} / {{total}} freigeschaltet",
+      "empty": "Noch keine Erfolge in dieser Kategorie.",
+      "howToUnlock": "Lerne weiter, um diesen Erfolg freizuschalten."
+    }
+  },
+  "onboarding": {
+    "skip": "Vorerst überspringen",
+    "next": "Weiter",
+    "previous": "Zurück",
+    "finish": "Beenden",
+    "bonusXp": "+50 Willkommens-XP!",
+    "welcome": {
+      "title": "Willkommen in Antibes!",
+      "subtitle": "Ich führe dich in 1 Minute zum Start.",
+      "cta": "Reise starten"
+    },
+    "profile": {
+      "title": "Was ist dein Profil?",
+      "beginner": {
+        "label": "Absoluter Anfänger",
+        "desc": "Ich habe nie Französisch gelernt."
+      },
+      "falseBeginner": {
+        "label": "Wiedereinsteiger",
+        "desc": "Etwas Grundwissen, ist aber lange her."
+      },
+      "confirmed": {
+        "label": "Fortgeschritten",
+        "desc": "Ich will mich verbessern."
+      }
+    },
+    "level": {
+      "title": "Wie möchtest du starten?",
+      "subtitle": "Wähle die passende Option.",
+      "takeTest": "Einstufungstest machen",
+      "later": "Später, ich beginne mit A1",
+      "knowMine": "Ich kenne mein Niveau"
+    },
+    "coach": {
+      "xp": {
+        "title": "Dein Dashboard",
+        "desc": "XP, Serie und Liga: oben rechts."
+      },
+      "programme": {
+        "title": "Das Programm",
+        "desc": "Dein geführter Weg, Lektion für Lektion."
+      },
+      "catalogue": {
+        "title": "Der Katalog",
+        "desc": "Alle verfügbaren Lektionen, frei erkundbar."
+      },
+      "daily": {
+        "title": "Tagesherausforderung",
+        "desc": "Eine Lektion täglich für Serie und Bonus-XP."
+      },
+      "classement": {
+        "title": "Rangliste & Ligen",
+        "desc": "Wochen-XP vergleichen. Aufstiege jeden Montag!"
+      }
+    }
   }
 }

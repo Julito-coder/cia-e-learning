@@ -755,5 +755,88 @@
       "reindexBtn": "Ejecutar",
       "reindexOk": "Glosario reindexado"
     }
+  },
+  "profile": {
+    "title": "Mi perfil",
+    "identity": "Identidad",
+    "personal_info": "Información personal",
+    "account": "Cuenta",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "nationality": "Nacionalidad",
+    "email": "Correo",
+    "interfaceLanguage": "Idioma de la interfaz",
+    "save": "Guardar",
+    "saved": "Cambios guardados",
+    "error": "Ocurrió un error",
+    "redoOnboarding": "Repetir el tour",
+    "redoPlacement": "Repetir la prueba de nivel",
+    "logout": "Cerrar sesión",
+    "adminAccess": "Acceder al back-office",
+    "achievements": {
+      "title": "🏅 Vitrina de logros",
+      "all": "Todos",
+      "unlocked": "Desbloqueados",
+      "locked": "Bloqueados",
+      "unlockedCount": "{{done}} / {{total}} desbloqueados",
+      "empty": "Aún no hay logros en esta categoría.",
+      "howToUnlock": "Sigue aprendiendo para desbloquearlo."
+    }
+  },
+  "onboarding": {
+    "skip": "Omitir por ahora",
+    "next": "Continuar",
+    "previous": "Atrás",
+    "finish": "Terminar",
+    "bonusXp": "+50 XP de bienvenida",
+    "welcome": {
+      "title": "¡Bienvenido a Antibes!",
+      "subtitle": "Te guiaré para empezar tu aventura. Tarda 1 minuto.",
+      "cta": "Empezar el viaje"
+    },
+    "profile": {
+      "title": "¿Cuál es tu perfil?",
+      "beginner": {
+        "label": "Principiante completo",
+        "desc": "Nunca he aprendido francés."
+      },
+      "falseBeginner": {
+        "label": "Falso principiante",
+        "desc": "Algunas nociones, hace tiempo."
+      },
+      "confirmed": {
+        "label": "Avanzado",
+        "desc": "Quiero progresar y perfeccionarme."
+      }
+    },
+    "level": {
+      "title": "¿Cómo quieres empezar?",
+      "subtitle": "Elige la opción que te convenga.",
+      "takeTest": "Hacer la prueba de nivel",
+      "later": "Más tarde, empiezo en A1",
+      "knowMine": "Conozco mi nivel"
+    },
+    "coach": {
+      "xp": {
+        "title": "Tu panel",
+        "desc": "XP, racha y liga: todo arriba a la derecha."
+      },
+      "programme": {
+        "title": "El Programa",
+        "desc": "Tu camino guiado, lección a lección."
+      },
+      "catalogue": {
+        "title": "El Catálogo",
+        "desc": "Todas las lecciones, libres de explorar."
+      },
+      "daily": {
+        "title": "Reto diario",
+        "desc": "Una lección al día para racha y XP bonus."
+      },
+      "classement": {
+        "title": "Clasificación y Ligas",
+        "desc": "Compara XP semanal. ¡Promociones cada lunes!"
+      }
+    }
   }
 }

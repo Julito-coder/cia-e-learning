@@ -755,5 +755,88 @@
       "reindexBtn": "Avvia",
       "reindexOk": "Glossario reindicizzato"
     }
+  },
+  "profile": {
+    "title": "Il mio profilo",
+    "identity": "Identità",
+    "personal_info": "Informazioni personali",
+    "account": "Account",
+    "firstName": "Nome",
+    "lastName": "Cognome",
+    "nationality": "Nazionalità",
+    "email": "Email",
+    "interfaceLanguage": "Lingua interfaccia",
+    "save": "Salva",
+    "saved": "Modifiche salvate",
+    "error": "Si è verificato un errore",
+    "redoOnboarding": "Ripeti il tour",
+    "redoPlacement": "Rifai il test di livello",
+    "logout": "Esci",
+    "adminAccess": "Apri il back-office",
+    "achievements": {
+      "title": "🏅 Vetrina dei trofei",
+      "all": "Tutti",
+      "unlocked": "Sbloccati",
+      "locked": "Bloccati",
+      "unlockedCount": "{{done}} / {{total}} sbloccati",
+      "empty": "Nessun trofeo in questa categoria.",
+      "howToUnlock": "Continua a imparare per sbloccarlo."
+    }
+  },
+  "onboarding": {
+    "skip": "Salta per ora",
+    "next": "Continua",
+    "previous": "Indietro",
+    "finish": "Termina",
+    "bonusXp": "+50 XP di benvenuto!",
+    "welcome": {
+      "title": "Benvenuto ad Antibes!",
+      "subtitle": "Ti guido per iniziare. 1 minuto.",
+      "cta": "Inizia il viaggio"
+    },
+    "profile": {
+      "title": "Qual è il tuo profilo?",
+      "beginner": {
+        "label": "Principiante assoluto",
+        "desc": "Non ho mai studiato francese."
+      },
+      "falseBeginner": {
+        "label": "Falso principiante",
+        "desc": "Qualche base, ma tanto tempo fa."
+      },
+      "confirmed": {
+        "label": "Confermato",
+        "desc": "Voglio migliorare."
+      }
+    },
+    "level": {
+      "title": "Come vuoi iniziare?",
+      "subtitle": "Scegli l'opzione adatta.",
+      "takeTest": "Fai il test di livello",
+      "later": "Più tardi, inizio da A1",
+      "knowMine": "Conosco il mio livello"
+    },
+    "coach": {
+      "xp": {
+        "title": "La tua dashboard",
+        "desc": "XP, serie e lega: tutto in alto a destra."
+      },
+      "programme": {
+        "title": "Il Programma",
+        "desc": "Il tuo percorso guidato, lezione dopo lezione."
+      },
+      "catalogue": {
+        "title": "Il Catalogo",
+        "desc": "Tutte le lezioni, libere da esplorare."
+      },
+      "daily": {
+        "title": "Sfida del giorno",
+        "desc": "Una lezione al giorno per la serie e XP bonus."
+      },
+      "classement": {
+        "title": "Classifica e Leghe",
+        "desc": "Confronta XP settimanali. Promozioni ogni lunedì!"
+      }
+    }
   }
 }

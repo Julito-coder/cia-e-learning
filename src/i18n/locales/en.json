@@ -421,8 +421,8 @@
     "interfaceLanguage": "Interface language",
     "save": "Save",
     "saved": "Changes saved",
-    "error": "Something went wrong",
-    "redoOnboarding": "Replay the intro tour",
+    "error": "An error occurred",
+    "redoOnboarding": "Restart the intro tour",
     "redoPlacement": "Retake the placement test",
     "logout": "Sign out",
     "adminAccess": "Open back-office",
@@ -432,7 +432,7 @@
       "unlocked": "Unlocked",
       "locked": "Locked",
       "unlockedCount": "{{done}} / {{total}} unlocked",
-      "empty": "No achievement in this category yet.",
+      "empty": "No achievements in this category yet.",
       "howToUnlock": "Keep learning to unlock this achievement."
     }
   },
@@ -781,6 +781,62 @@
       "reindexDesc": "Rebuilds the search index.",
       "reindexBtn": "Run",
       "reindexOk": "Glossary reindexed"
+    }
+  },
+  "onboarding": {
+    "skip": "Skip for now",
+    "next": "Continue",
+    "previous": "Back",
+    "finish": "Finish",
+    "bonusXp": "+50 welcome XP!",
+    "welcome": {
+      "title": "Welcome to Antibes!",
+      "subtitle": "I'll guide you to start your French journey. Takes 1 minute.",
+      "cta": "Start the journey"
+    },
+    "profile": {
+      "title": "What is your profile?",
+      "beginner": {
+        "label": "Complete beginner",
+        "desc": "I've never learned French."
+      },
+      "falseBeginner": {
+        "label": "False beginner",
+        "desc": "Some basics, but a long time ago."
+      },
+      "confirmed": {
+        "label": "Confirmed",
+        "desc": "I want to improve and master."
+      }
+    },
+    "level": {
+      "title": "How do you want to start?",
+      "subtitle": "Pick the option that suits you.",
+      "takeTest": "Take the placement test",
+      "later": "Later, I start at A1",
+      "knowMine": "I know my level"
+    },
+    "coach": {
+      "xp": {
+        "title": "Your dashboard",
+        "desc": "XP, daily streak and league: all up here, top right."
+      },
+      "programme": {
+        "title": "The Programme",
+        "desc": "Your guided path, lesson after lesson."
+      },
+      "catalogue": {
+        "title": "The Catalogue",
+        "desc": "All available lessons, free to explore."
+      },
+      "daily": {
+        "title": "Daily challenge",
+        "desc": "One lesson a day for streak and bonus XP."
+      },
+      "classement": {
+        "title": "Leaderboard & Leagues",
+        "desc": "Compare weekly XP with others. Promotions every Monday!"
+      }
     }
   }
 }
