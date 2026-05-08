@@ -83,9 +83,9 @@ export function AdminLayout() {
                 key={item.href}
                 to={item.href}
                 onClick={() => setMobileOpen(false)}
-                className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+                className={`group relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all ${
                   isActive
-                    ? 'bg-primary-foreground/15 text-primary-foreground'
+                    ? 'bg-gradient-to-r from-primary-foreground/20 to-primary-foreground/5 text-primary-foreground shadow-sm'
                     : 'text-primary-foreground/70 hover:text-primary-foreground hover:bg-primary-foreground/10'
                 }`}
                 title={collapsed ? item.label : undefined}
