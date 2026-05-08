@@ -1,9 +1,10 @@
 import { useState, useCallback, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ArrowRight, CheckCircle2, XCircle, ChevronRight, RotateCcw, BookOpen } from 'lucide-react';
+import { ArrowRight, CheckCircle2, XCircle, ChevronRight, RotateCcw, BookOpen, HelpCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { CircularProgress } from '@/components/gamification/CircularProgress';
 import { getRandomTest, calculateLevel } from '@/data/demo-test';
 import type { TestQuestion } from '@/data/demo-test';
@@ -39,6 +40,7 @@ export default function TestNiveau() {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
   const [fillBlankInput, setFillBlankInput] = useState('');
+  const [alreadyTakenOpen, setAlreadyTakenOpen] = useState(false);
 
   const question = questions[currentQ];
   const progress = ((currentQ) / questions.length) * 100;
@@ -121,7 +123,11 @@ export default function TestNiveau() {
 
     // Save the detected level
     const handleSaveLevel = async () => {
-      await setPlacementLevel(result.level);
+      const r = await setPlacementLevel(result.level);
+      if (r.alreadyTaken) {
+        setAlreadyTakenOpen(true);
+        return;
+      }
       navigate(`/catalogue?level=${result.level}`);
     };
 
@@ -172,6 +178,20 @@ export default function TestNiveau() {
             <BookOpen className="h-4 w-4" /> {t('test.seeCourses', { level: result.level })}
           </Button>
         </div>
+
+        <Dialog open={alreadyTakenOpen} onOpenChange={setAlreadyTakenOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Test déjà passé</DialogTitle>
+              <DialogDescription>
+                Tu as déjà passé le test de placement{placementTestTakenAt ? ` le ${new Date(placementTestTakenAt).toLocaleDateString('fr-FR')}` : ''}. Ton niveau officiel n'a pas été modifié, mais tu peux explorer librement le catalogue.
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <Button onClick={() => navigate('/catalogue')}>Voir le catalogue</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     );
   }
@@ -258,6 +278,16 @@ export default function TestNiveau() {
                 </Button>
               )}
             </div>
+          )}
+
+          {!showFeedback && (
+            <button
+              type="button"
+              onClick={() => handleAnswer('___skip___')}
+              className="mx-auto flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <HelpCircle className="h-3.5 w-3.5" /> Je ne sais pas
+            </button>
           )}
 
           {/* Feedback */}
