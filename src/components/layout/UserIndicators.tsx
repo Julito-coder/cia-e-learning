@@ -39,7 +39,7 @@ export function UserIndicators({ compact = false, align = 'horizontal' }: UserIn
 
   return (
     <TooltipProvider delayDuration={200}>
-      <motion.div className={`flex ${directionClass} items-center`} variants={staggerContainer} initial="hidden" animate="visible">
+      <motion.div data-onboard="header-xp" className={`flex ${directionClass} items-center`} variants={staggerContainer} initial="hidden" animate="visible">
         <Tooltip>
           <TooltipTrigger asChild>
             <motion.div variants={staggerItem} animate={xpControls} data-xp-origin>
