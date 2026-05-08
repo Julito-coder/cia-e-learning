@@ -1,14 +1,107 @@
 {
-  "nav": { "home": "Startseite", "catalogue": "Katalog", "test": "Test", "favorites": "Favoriten", "glossary": "Glossar", "login": "Anmelden" },
-  "hero": { "greeting": "Hallo, {{name}}!", "subtitle": "Mach weiter so — du bist auf dem besten Weg! 🚀", "explore": "Kurse entdecken", "test": "Einstufungstest", "level": "Niveau {{level}}", "progression": "Fortschritt", "xpTotal": "⚡ XP gesamt" },
-  "stats": { "coursesCompleted": "Abgeschlossene Kurse", "streak": "Tage in Folge", "hoursStudied": "Lernstunden", "gems": "Edelsteine" },
-  "sections": { "continue": "📖 Fortsetzen", "new": "✨ Neuheiten", "seeAll": "Alle ansehen", "levels": "📊 GER-Niveaus", "leaderboard": "🏆 Rangliste", "path": "🗺️ Lernpfad" },
-  "course": { "start": "🚀 Starten", "continue": "▶ Fortsetzen", "review": "✅ Wiederholen", "min": "Min", "new": "✨ Neu" },
-  "catalogue": { "title": "📚 Katalog", "subtitle": "{{count}} Kurse verfügbar — von A1 bis C2", "search": "Kurs oder Code suchen (z.B. B1-VOC-012)...", "newFilter": "✨ Neuheiten", "reset": "Zurücksetzen", "noResults": "Keine Kurse gefunden", "noResultsHint": "Versuche andere Filter.", "results": "{{count}} Ergebnis(se)" },
-  "test": { "title": "Französischtest", "intro": "Bewerte dein Französischniveau in {{count}} Fragen.", "duration": "Geschätzte Dauer: <strong>10–15 Minuten</strong>.", "progressive": "Progressive Fragen von A1 bis C2 — Multiple Choice & Lückentexte", "start": "Test starten", "qcmHint": "Wähle die richtige Antwort", "fillHint": "Vervollständige den Satz", "validate": "Bestätigen", "correct": "Richtig! 🎉", "incorrect": "Nicht ganz...", "answer": "Antwort: {{answer}}", "next": "Nächste Frage", "seeResults": "Ergebnisse ansehen", "resultTitle": "Dein Ergebnis", "correctAnswers": "richtige Antworten", "estimatedLevel": "Dein geschätztes Niveau", "detailByLevel": "Detail pro Niveau", "retake": "Test wiederholen", "seeCourses": "{{level}}-Kurse ansehen", "placeholder": "Deine Antwort..." },
-  "footer": { "school": "Centre International d'Antibes — Französischschule seit 1985.", "learn": "Lernen", "theSchool": "Die Schule", "legal": "Rechtliches", "legalNotice": "Impressum", "privacy": "Datenschutz", "terms": "AGB", "rights": "© {{year}} Centre International d'Antibes. Alle Rechte vorbehalten." },
-  "dailyGoal": { "title": "Tagesziel", "streak": "🔥 {{count}} Tage in Folge!", "done": "{{completed}}/{{goal}} Übungen" },
-  "achievements": { "title": "🏅 Abzeichen" },
+  "nav": {
+    "home": "Startseite",
+    "catalogue": "Katalog",
+    "test": "Test",
+    "favorites": "Favoriten",
+    "glossary": "Glossar",
+    "login": "Anmelden",
+    "curriculum": "Lernpfad",
+    "leaderboard": "Rangliste",
+    "daily_challenge": "Tages­challenge",
+    "profile": "Mein Profil",
+    "logout": "Abmelden",
+    "signup": "Registrieren"
+  },
+  "hero": {
+    "greeting": "Hallo, {{name}}!",
+    "subtitle": "Mach weiter so — du bist auf dem besten Weg! 🚀",
+    "explore": "Kurse entdecken",
+    "test": "Einstufungstest",
+    "level": "Niveau {{level}}",
+    "progression": "Fortschritt",
+    "xpTotal": "⚡ XP gesamt"
+  },
+  "stats": {
+    "coursesCompleted": "Abgeschlossene Kurse",
+    "streak": "Tage in Folge",
+    "hoursStudied": "Lernstunden",
+    "gems": "Edelsteine"
+  },
+  "sections": {
+    "continue": "📖 Fortsetzen",
+    "new": "✨ Neuheiten",
+    "seeAll": "Alle ansehen",
+    "levels": "📊 GER-Niveaus",
+    "leaderboard": "🏆 Rangliste",
+    "path": "🗺️ Lernpfad"
+  },
+  "course": {
+    "start": "🚀 Starten",
+    "continue": "▶ Fortsetzen",
+    "review": "✅ Wiederholen",
+    "min": "Min",
+    "new": "✨ Neu"
+  },
+  "catalogue": {
+    "title": "📚 Katalog",
+    "subtitle": "{{count}} Kurse verfügbar — von A1 bis C2",
+    "search": "Kurs oder Code suchen (z.B. B1-VOC-012)...",
+    "newFilter": "✨ Neuheiten",
+    "reset": "Zurücksetzen",
+    "noResults": "Keine Kurse gefunden",
+    "noResultsHint": "Versuche andere Filter.",
+    "results": "{{count}} Ergebnis(se)"
+  },
+  "test": {
+    "title": "Französischtest",
+    "intro": "Bewerte dein Französischniveau in {{count}} Fragen.",
+    "duration": "Geschätzte Dauer: <strong>10–15 Minuten</strong>.",
+    "progressive": "Progressive Fragen von A1 bis C2 — Multiple Choice & Lückentexte",
+    "start": "Test starten",
+    "qcmHint": "Wähle die richtige Antwort",
+    "fillHint": "Vervollständige den Satz",
+    "validate": "Bestätigen",
+    "correct": "Richtig! 🎉",
+    "incorrect": "Nicht ganz...",
+    "answer": "Antwort: {{answer}}",
+    "next": "Nächste Frage",
+    "seeResults": "Ergebnisse ansehen",
+    "resultTitle": "Dein Ergebnis",
+    "correctAnswers": "richtige Antworten",
+    "estimatedLevel": "Dein geschätztes Niveau",
+    "detailByLevel": "Detail pro Niveau",
+    "retake": "Test wiederholen",
+    "seeCourses": "{{level}}-Kurse ansehen",
+    "placeholder": "Deine Antwort..."
+  },
+  "footer": {
+    "school": "Centre International d'Antibes — Französischschule seit 1985.",
+    "learn": "Lernen",
+    "theSchool": "Die Schule",
+    "legal": "Rechtliches",
+    "legalNotice": "Impressum",
+    "privacy": "Datenschutz",
+    "terms": "AGB",
+    "rights": "© {{year}} Centre International d'Antibes. Alle Rechte vorbehalten.",
+    "tagline": "Lerne Französisch mit dem Centre International d'Antibes",
+    "section_navigation": "Navigation",
+    "section_learning": "Lernen",
+    "section_about": "Über uns",
+    "cefr_levels": "GER-Niveaus",
+    "placement_test": "Einstufungstest",
+    "pricing": "Preise",
+    "about_cia": "Centre International d'Antibes",
+    "copyright": "© {{year}} CIA E-Learning"
+  },
+  "dailyGoal": {
+    "title": "Tagesziel",
+    "streak": "🔥 {{count}} Tage in Folge!",
+    "done": "{{completed}}/{{goal}} Übungen"
+  },
+  "achievements": {
+    "title": "🏅 Abzeichen"
+  },
   "player": {
     "continue": "Weiter",
     "next": "Nächste",
@@ -35,5 +128,11 @@
     "nextQuestion": "Nächste Frage",
     "seeResult": "Ergebnis ansehen",
     "question": "Frage"
+  },
+  "indicators": {
+    "xp_tooltip": "{{count}} XP insgesamt",
+    "streak_tooltip": "{{count}} Tag(e) in Folge · Komm morgen wieder!",
+    "level_tooltip": "Aktuelles Niveau: {{level}}",
+    "league_tooltip": "Liga {{league}} diese Woche"
   }
 }

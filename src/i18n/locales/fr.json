@@ -1,14 +1,107 @@
 {
-  "nav": { "home": "Accueil", "catalogue": "Catalogue", "test": "Test", "favorites": "Favoris", "glossary": "Glossaire", "login": "Connexion" },
-  "hero": { "greeting": "Bonjour, {{name}} !", "subtitle": "Continuez votre progression — vous êtes sur une belle lancée ! 🚀", "explore": "Explorer les cours", "test": "Test de niveau", "level": "Niveau {{level}}", "progression": "Progression", "xpTotal": "⚡ XP total" },
-  "stats": { "coursesCompleted": "Cours terminés", "streak": "Jours de série", "hoursStudied": "Heures d'étude", "gems": "Gemmes" },
-  "sections": { "continue": "📖 Reprendre", "new": "✨ Nouveautés", "seeAll": "Tout voir", "levels": "📊 Niveaux CECRL", "leaderboard": "🏆 Classement", "path": "🗺️ Parcours" },
-  "course": { "start": "🚀 Commencer", "continue": "▶ Continuer", "review": "✅ Revoir", "min": "min", "new": "✨ Nouveau" },
-  "catalogue": { "title": "📚 Catalogue", "subtitle": "{{count}} cours disponibles — du niveau A1 au C2", "search": "Rechercher un cours, un code (ex: B1-VOC-012)...", "newFilter": "✨ Nouveautés", "reset": "Réinitialiser", "noResults": "Aucun cours trouvé", "noResultsHint": "Essayez de modifier vos critères.", "results": "{{count}} résultat(s)" },
-  "test": { "title": "Test de français", "intro": "Évaluez votre niveau de français en {{count}} questions.", "duration": "Durée estimée : <strong>10–15 minutes</strong>.", "progressive": "Questions progressives de A1 à C2 — QCM & texte à trous", "start": "Commencer le test", "qcmHint": "Choisissez la bonne réponse", "fillHint": "Complétez la phrase", "validate": "Valider", "correct": "Correct ! 🎉", "incorrect": "Pas tout à fait...", "answer": "Réponse : {{answer}}", "next": "Question suivante", "seeResults": "Voir mes résultats", "resultTitle": "Votre résultat", "correctAnswers": "bonnes réponses", "estimatedLevel": "Votre niveau estimé", "detailByLevel": "Détail par niveau", "retake": "Refaire le test", "seeCourses": "Voir les cours {{level}}", "placeholder": "Votre réponse..." },
-  "footer": { "school": "Centre International d'Antibes — École de FLE depuis 1985.", "learn": "Apprendre", "theSchool": "L'école", "legal": "Légal", "legalNotice": "Mentions légales", "privacy": "Confidentialité", "terms": "CGV", "rights": "© {{year}} Centre International d'Antibes. Tous droits réservés." },
-  "dailyGoal": { "title": "Objectif du jour", "streak": "🔥 {{count}} jours de suite !", "done": "{{completed}}/{{goal}} exercices" },
-  "achievements": { "title": "🏅 Badges" },
+  "nav": {
+    "home": "Accueil",
+    "catalogue": "Catalogue",
+    "test": "Test",
+    "favorites": "Favoris",
+    "glossary": "Glossaire",
+    "login": "Connexion",
+    "curriculum": "Parcours",
+    "leaderboard": "Classement",
+    "daily_challenge": "Défi du jour",
+    "profile": "Mon profil",
+    "logout": "Se déconnecter",
+    "signup": "S'inscrire"
+  },
+  "hero": {
+    "greeting": "Bonjour, {{name}} !",
+    "subtitle": "Continuez votre progression — vous êtes sur une belle lancée ! 🚀",
+    "explore": "Explorer les cours",
+    "test": "Test de niveau",
+    "level": "Niveau {{level}}",
+    "progression": "Progression",
+    "xpTotal": "⚡ XP total"
+  },
+  "stats": {
+    "coursesCompleted": "Cours terminés",
+    "streak": "Jours de série",
+    "hoursStudied": "Heures d'étude",
+    "gems": "Gemmes"
+  },
+  "sections": {
+    "continue": "📖 Reprendre",
+    "new": "✨ Nouveautés",
+    "seeAll": "Tout voir",
+    "levels": "📊 Niveaux CECRL",
+    "leaderboard": "🏆 Classement",
+    "path": "🗺️ Parcours"
+  },
+  "course": {
+    "start": "🚀 Commencer",
+    "continue": "▶ Continuer",
+    "review": "✅ Revoir",
+    "min": "min",
+    "new": "✨ Nouveau"
+  },
+  "catalogue": {
+    "title": "📚 Catalogue",
+    "subtitle": "{{count}} cours disponibles — du niveau A1 au C2",
+    "search": "Rechercher un cours, un code (ex: B1-VOC-012)...",
+    "newFilter": "✨ Nouveautés",
+    "reset": "Réinitialiser",
+    "noResults": "Aucun cours trouvé",
+    "noResultsHint": "Essayez de modifier vos critères.",
+    "results": "{{count}} résultat(s)"
+  },
+  "test": {
+    "title": "Test de français",
+    "intro": "Évaluez votre niveau de français en {{count}} questions.",
+    "duration": "Durée estimée : <strong>10–15 minutes</strong>.",
+    "progressive": "Questions progressives de A1 à C2 — QCM & texte à trous",
+    "start": "Commencer le test",
+    "qcmHint": "Choisissez la bonne réponse",
+    "fillHint": "Complétez la phrase",
+    "validate": "Valider",
+    "correct": "Correct ! 🎉",
+    "incorrect": "Pas tout à fait...",
+    "answer": "Réponse : {{answer}}",
+    "next": "Question suivante",
+    "seeResults": "Voir mes résultats",
+    "resultTitle": "Votre résultat",
+    "correctAnswers": "bonnes réponses",
+    "estimatedLevel": "Votre niveau estimé",
+    "detailByLevel": "Détail par niveau",
+    "retake": "Refaire le test",
+    "seeCourses": "Voir les cours {{level}}",
+    "placeholder": "Votre réponse..."
+  },
+  "footer": {
+    "school": "Centre International d'Antibes — École de FLE depuis 1985.",
+    "learn": "Apprendre",
+    "theSchool": "L'école",
+    "legal": "Légal",
+    "legalNotice": "Mentions légales",
+    "privacy": "Confidentialité",
+    "terms": "CGV",
+    "rights": "© {{year}} Centre International d'Antibes. Tous droits réservés.",
+    "tagline": "Apprends le français avec le Centre International d'Antibes",
+    "section_navigation": "Navigation",
+    "section_learning": "Apprentissage",
+    "section_about": "À propos",
+    "cefr_levels": "Niveaux CECR",
+    "placement_test": "Test de niveau",
+    "pricing": "Tarifs",
+    "about_cia": "Centre International d'Antibes",
+    "copyright": "© {{year}} CIA E-Learning"
+  },
+  "dailyGoal": {
+    "title": "Objectif du jour",
+    "streak": "🔥 {{count}} jours de suite !",
+    "done": "{{completed}}/{{goal}} exercices"
+  },
+  "achievements": {
+    "title": "🏅 Badges"
+  },
   "player": {
     "continue": "Continuer",
     "next": "Suivant",
@@ -35,5 +128,11 @@
     "nextQuestion": "Question suivante",
     "seeResult": "Voir le résultat",
     "question": "Question"
+  },
+  "indicators": {
+    "xp_tooltip": "{{count}} XP gagnés au total",
+    "streak_tooltip": "{{count}} jour(s) consécutifs · Reviens demain pour ne pas casser ta série !",
+    "level_tooltip": "Niveau actuel : {{level}}",
+    "league_tooltip": "Ligue {{league}} cette semaine"
   }
 }

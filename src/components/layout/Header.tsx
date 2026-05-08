@@ -1,34 +1,40 @@
-import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, NavLink } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { Menu, User, LogOut } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { Menu, X, User, BookOpen, Heart, Globe, Flame, GraduationCap, ClipboardCheck, Home, LogOut, Trophy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
+  DropdownMenu, DropdownMenuContent, DropdownMenuItem,
+  DropdownMenuSeparator, DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { UserIndicators } from './UserIndicators';
+import { LanguageSwitcher } from './LanguageSwitcher';
+import { MobileDrawer } from './MobileDrawer';
 import { useAuth } from '@/hooks/useAuth';
-import { useUserProgress } from '@/hooks/useUserProgress';
 import { supabase } from '@/integrations/supabase/client';
 
-const languages = [
-  { code: 'fr', label: '🇫🇷 Français' },
-  { code: 'en', label: '🇬🇧 English' },
-  { code: 'es', label: '🇪🇸 Español' },
-  { code: 'de', label: '🇩🇪 Deutsch' },
-  { code: 'it', label: '🇮🇹 Italiano' },
-  { code: 'ru', label: '🇷🇺 Русский' },
+const NAV = [
+  { to: '/catalogue',    key: 'nav.catalogue' },
+  { to: '/programme',    key: 'nav.curriculum' },
+  { to: '/classement',   key: 'nav.leaderboard' },
+  { to: '/defi-du-jour', key: 'nav.daily_challenge' },
 ];
 
 export function Header() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { t, i18n } = useTranslation();
-  const location = useLocation();
+  const { t } = useTranslation();
   const { user, signOut } = useAuth();
-  const { totalXP, cecrLevel } = useUserProgress();
+  const [scrolled, setScrolled] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   useEffect(() => {
     if (!user) { setAvatarUrl(null); return; }
@@ -36,195 +42,123 @@ export function Header() {
       .then(({ data }) => { if (data?.avatar_url) setAvatarUrl(data.avatar_url); });
   }, [user]);
 
-  // iconOnly = collapsed to a single icon on desktop to save horizontal space.
-  const navItems = [
-    { label: t('nav.home'), href: '/', icon: Home },
-    { label: 'Programme', href: '/programme', icon: BookOpen },
-    { label: t('nav.catalogue'), href: '/catalogue', icon: GraduationCap },
-    { label: 'Défi du jour', href: '/defi-du-jour', icon: Flame },
-    { label: t('nav.test'), href: '/test-niveau', icon: ClipboardCheck },
-    { label: 'Classement', href: '/classement', icon: Trophy },
-  ];
-
-  // Favoris : affiché comme bulle compacte (cœur) à côté des stats sur desktop/laptop,
-  // et inclus dans le menu burger en mobile/tablette.
-  const favoritesItem = { label: t('nav.favorites'), href: '/favoris', icon: Heart };
-
-  const changeLang = (code: string) => {
-    i18n.changeLanguage(code);
-  };
+  const initials = user?.email?.slice(0, 2).toUpperCase() ?? 'CI';
 
   return (
     <>
-      <header className="sticky top-0 z-50 border-b border-border/40 bg-card/95 backdrop-blur-xl supports-[backdrop-filter]:bg-card/80 shadow-sm">
-        <div className="container flex h-16 items-center justify-between gap-2">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2.5 flex-shrink-0">
-            <img
-              src="/cia-logo-2.png"
-              alt="CIA"
-              className="h-10 w-auto select-none"
-              draggable={false}
-            />
-            <div className="hidden sm:block">
-              <p className="font-display text-sm leading-tight text-primary">CIA</p>
-              <p className="text-[10px] text-muted-foreground font-semibold">E-Learning</p>
-            </div>
-          </Link>
+      <header
+        className={`sticky top-0 z-50 w-full transition-all duration-300 ${
+          scrolled
+            ? 'bg-background/80 backdrop-blur-xl border-b border-border/40 shadow-sm'
+            : 'bg-card/95 backdrop-blur-xl border-b border-border/40'
+        }`}
+      >
+        <div className="container flex h-16 items-center justify-between gap-3">
+          {/* Burger mobile + Logo */}
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="lg:hidden rounded-xl"
+              onClick={() => setDrawerOpen(true)}
+              aria-label="Ouvrir le menu"
+            >
+              <Menu className="h-5 w-5" />
+            </Button>
+            <Link to="/" className="flex items-center gap-2.5">
+              <img src="/cia-logo-2.png" alt="CIA" className="h-10 w-auto select-none" draggable={false} />
+              <div className="hidden sm:block leading-tight">
+                <p className="font-display text-sm text-primary">CIA</p>
+                <p className="text-[10px] text-muted-foreground font-semibold">e-learning</p>
+              </div>
+            </Link>
+          </div>
 
-          {/* Desktop nav (≥ lg only — tablette utilise le burger) */}
+          {/* Nav desktop */}
           <nav className="hidden lg:flex items-center gap-0.5">
-            {navItems.map((item) => {
-              const active = location.pathname === item.href;
-              return (
-                <Link
-                  key={item.href}
-                  to={item.href}
-                  aria-label={item.label}
-                  className={`story-link flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-bold whitespace-nowrap transition-all duration-200 ${
-                    active
-                      ? 'bg-primary text-primary-foreground'
-                      : 'text-muted-foreground hover:text-foreground'
-                  }`}
-                >
-                  <item.icon className="h-4 w-4" />
-                  {item.label}
-                </Link>
-              );
-            })}
+            {NAV.map(({ to, key }) => (
+              <NavLink
+                key={to}
+                to={to}
+                className={({ isActive }) =>
+                  `relative px-3 py-2 text-sm font-bold rounded-xl transition-colors ${
+                    isActive ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
+                  }`
+                }
+              >
+                {({ isActive }) => (
+                  <>
+                    {t(key)}
+                    {isActive && (
+                      <motion.span
+                        layoutId="nav-active"
+                        className="absolute inset-x-2 -bottom-px h-0.5 bg-primary rounded-full"
+                        transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                      />
+                    )}
+                  </>
+                )}
+              </NavLink>
+            ))}
           </nav>
 
-          {/* Right actions */}
-          <div className="flex items-center gap-1.5">
-            {/* Gamification stats + favoris (desktop / laptop) */}
-            <div className="hidden lg:flex items-center gap-1.5">
-              <Link
-                to="/favoris"
-                aria-label={favoritesItem.label}
-                title={favoritesItem.label}
-                className={`stat-bubble transition-colors ${
-                  location.pathname === '/favoris'
-                    ? 'bg-primary text-primary-foreground'
-                    : 'bg-cia-coral/15 text-cia-coral hover:bg-cia-coral/25'
-                }`}
-              >
-                <Heart className="h-3.5 w-3.5" />
-              </Link>
-              <div className="stat-bubble bg-cia-streak/15 text-cia-streak">
-                <Flame className="h-3.5 w-3.5" />
-                <span className="text-xs">{cecrLevel}</span>
-              </div>
-              <div className="hidden xl:flex stat-bubble bg-cia-xp/15 text-cia-xp">
-                <span className="text-xs">⚡ {totalXP}</span>
-              </div>
+          {/* Right cluster */}
+          <div className="flex items-center gap-2">
+            {user && (
+              <>
+                <div className="hidden lg:flex">
+                  <UserIndicators />
+                </div>
+                <div className="flex lg:hidden">
+                  <UserIndicators compact />
+                </div>
+              </>
+            )}
+
+            <div className="hidden md:flex">
+              <LanguageSwitcher />
             </div>
 
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="text-muted-foreground rounded-xl h-9 w-9">
-                  <Globe className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="rounded-xl">
-                {languages.map((lang) => (
-                  <DropdownMenuItem
-                    key={lang.code}
-                    onClick={() => changeLang(lang.code)}
-                    className={`rounded-lg ${i18n.language === lang.code ? 'bg-muted font-bold' : ''}`}
-                  >
-                    {lang.label}
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-
             {user ? (
-              <div className="flex items-center gap-2">
-                <Link to="/connexion">
-                  {avatarUrl ? (
-                    <img src={avatarUrl} alt="Avatar" className="h-8 w-8 rounded-full object-cover border-2 border-primary/30" />
-                  ) : (
-                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary border-2 border-primary/30">
-                      {user.email?.[0]?.toUpperCase() || '?'}
-                    </div>
-                  )}
-                </Link>
-                <Button variant="ghost" size="icon" className="hidden sm:flex rounded-xl h-9 w-9 text-muted-foreground" onClick={signOut}>
-                  <LogOut className="h-4 w-4" />
-                </Button>
-              </div>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="rounded-full focus:outline-none focus:ring-2 focus:ring-primary/40">
+                    <Avatar className="h-9 w-9 border-2 border-primary/30">
+                      {avatarUrl && <AvatarImage src={avatarUrl} alt="Avatar" />}
+                      <AvatarFallback className="bg-primary/10 text-primary text-xs font-bold">{initials}</AvatarFallback>
+                    </Avatar>
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56 rounded-xl">
+                  <DropdownMenuItem asChild>
+                    <Link to="/connexion" className="rounded-lg cursor-pointer">
+                      <User className="h-4 w-4 mr-2" /> {t('nav.profile')}
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/favoris" className="rounded-lg cursor-pointer">
+                      {t('nav.favorites')}
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={signOut} className="rounded-lg cursor-pointer text-destructive focus:text-destructive">
+                    <LogOut className="h-4 w-4 mr-2" /> {t('nav.logout')}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             ) : (
               <Link to="/connexion">
-                <Button size="sm" className="hidden sm:flex gap-2 btn-duo rounded-xl text-xs font-bold">
+                <Button size="sm" className="gap-2 btn-duo rounded-xl text-xs font-bold">
                   <User className="h-3.5 w-3.5" />
                   {t('nav.login')}
                 </Button>
               </Link>
             )}
-
-            <Button
-              variant="ghost"
-              size="icon"
-              className="lg:hidden rounded-xl"
-              aria-label="Menu"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
-              {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </Button>
           </div>
         </div>
-
-        {/* Mobile / Tablette nav (burger) — pas de slide latéral, panneau plein largeur */}
-        {mobileMenuOpen && (
-          <div className="lg:hidden border-t bg-card p-4 animate-fade-in relative">
-            <div className="flex gap-2 mb-4 pb-4 border-b">
-              <div className="stat-bubble bg-cia-streak/15 text-cia-streak text-xs">
-                <Flame className="h-3.5 w-3.5" /> {cecrLevel}
-              </div>
-              <div className="stat-bubble bg-cia-xp/15 text-cia-xp text-xs">
-                ⚡ {totalXP} XP
-              </div>
-            </div>
-            <nav className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-              {[...navItems, favoritesItem].map((item) => (
-                <Link
-                  key={item.href}
-                  to={item.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center gap-2.5 px-3 py-3 rounded-xl text-sm font-bold transition-all ${
-                    location.pathname === item.href
-                      ? 'bg-primary text-primary-foreground'
-                      : 'text-muted-foreground hover:bg-muted'
-                  }`}
-                >
-                  <item.icon className="h-5 w-5" />
-                  <span className="truncate">{item.label}</span>
-                </Link>
-              ))}
-            </nav>
-            <div className="mt-3 pt-3 border-t">
-              {user ? (
-                <button
-                  onClick={() => { signOut(); setMobileMenuOpen(false); }}
-                  className="w-full flex items-center justify-center gap-2 px-3 py-3 rounded-xl text-sm font-bold text-muted-foreground hover:bg-muted"
-                >
-                  <LogOut className="h-5 w-5" />
-                  Déconnexion
-                </button>
-              ) : (
-                <Link
-                  to="/connexion"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="w-full flex items-center justify-center gap-2 px-3 py-3 rounded-xl text-sm font-bold text-muted-foreground hover:bg-muted"
-                >
-                  <User className="h-5 w-5" />
-                  {t('nav.login')}
-                </Link>
-              )}
-            </div>
-          </div>
-        )}
       </header>
+
+      <MobileDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
     </>
   );
 }

@@ -1,14 +1,107 @@
 {
-  "nav": { "home": "Inicio", "catalogue": "Catálogo", "test": "Test", "favorites": "Favoritos", "glossary": "Glosario", "login": "Iniciar sesión" },
-  "hero": { "greeting": "¡Hola, {{name}}!", "subtitle": "Sigue con tu progreso — ¡lo estás haciendo genial! 🚀", "explore": "Explorar cursos", "test": "Test de nivel", "level": "Nivel {{level}}", "progression": "Progreso", "xpTotal": "⚡ XP total" },
-  "stats": { "coursesCompleted": "Cursos terminados", "streak": "Días seguidos", "hoursStudied": "Horas de estudio", "gems": "Gemas" },
-  "sections": { "continue": "📖 Continuar", "new": "✨ Novedades", "seeAll": "Ver todo", "levels": "📊 Niveles MCER", "leaderboard": "🏆 Clasificación", "path": "🗺️ Recorrido" },
-  "course": { "start": "🚀 Empezar", "continue": "▶ Continuar", "review": "✅ Repasar", "min": "min", "new": "✨ Nuevo" },
-  "catalogue": { "title": "📚 Catálogo", "subtitle": "{{count}} cursos disponibles — del nivel A1 al C2", "search": "Buscar un curso o código (ej: B1-VOC-012)...", "newFilter": "✨ Novedades", "reset": "Restablecer", "noResults": "No se encontraron cursos", "noResultsHint": "Intenta cambiar tus filtros.", "results": "{{count}} resultado(s)" },
-  "test": { "title": "Test de francés", "intro": "Evalúa tu nivel de francés en {{count}} preguntas.", "duration": "Duración estimada: <strong>10–15 minutos</strong>.", "progressive": "Preguntas progresivas de A1 a C2 — opción múltiple y completar", "start": "Comenzar el test", "qcmHint": "Elige la respuesta correcta", "fillHint": "Completa la frase", "validate": "Validar", "correct": "¡Correcto! 🎉", "incorrect": "No del todo...", "answer": "Respuesta: {{answer}}", "next": "Siguiente pregunta", "seeResults": "Ver mis resultados", "resultTitle": "Tu resultado", "correctAnswers": "respuestas correctas", "estimatedLevel": "Tu nivel estimado", "detailByLevel": "Detalle por nivel", "retake": "Repetir el test", "seeCourses": "Ver cursos {{level}}", "placeholder": "Tu respuesta..." },
-  "footer": { "school": "Centre International d'Antibes — Escuela de FLE desde 1985.", "learn": "Aprender", "theSchool": "La escuela", "legal": "Legal", "legalNotice": "Aviso legal", "privacy": "Privacidad", "terms": "Condiciones", "rights": "© {{year}} Centre International d'Antibes. Todos los derechos reservados." },
-  "dailyGoal": { "title": "Objetivo del día", "streak": "🔥 ¡{{count}} días seguidos!", "done": "{{completed}}/{{goal}} ejercicios" },
-  "achievements": { "title": "🏅 Insignias" },
+  "nav": {
+    "home": "Inicio",
+    "catalogue": "Catálogo",
+    "test": "Test",
+    "favorites": "Favoritos",
+    "glossary": "Glosario",
+    "login": "Iniciar sesión",
+    "curriculum": "Recorrido",
+    "leaderboard": "Clasificación",
+    "daily_challenge": "Reto del día",
+    "profile": "Mi perfil",
+    "logout": "Cerrar sesión",
+    "signup": "Registrarse"
+  },
+  "hero": {
+    "greeting": "¡Hola, {{name}}!",
+    "subtitle": "Sigue con tu progreso — ¡lo estás haciendo genial! 🚀",
+    "explore": "Explorar cursos",
+    "test": "Test de nivel",
+    "level": "Nivel {{level}}",
+    "progression": "Progreso",
+    "xpTotal": "⚡ XP total"
+  },
+  "stats": {
+    "coursesCompleted": "Cursos terminados",
+    "streak": "Días seguidos",
+    "hoursStudied": "Horas de estudio",
+    "gems": "Gemas"
+  },
+  "sections": {
+    "continue": "📖 Continuar",
+    "new": "✨ Novedades",
+    "seeAll": "Ver todo",
+    "levels": "📊 Niveles MCER",
+    "leaderboard": "🏆 Clasificación",
+    "path": "🗺️ Recorrido"
+  },
+  "course": {
+    "start": "🚀 Empezar",
+    "continue": "▶ Continuar",
+    "review": "✅ Repasar",
+    "min": "min",
+    "new": "✨ Nuevo"
+  },
+  "catalogue": {
+    "title": "📚 Catálogo",
+    "subtitle": "{{count}} cursos disponibles — del nivel A1 al C2",
+    "search": "Buscar un curso o código (ej: B1-VOC-012)...",
+    "newFilter": "✨ Novedades",
+    "reset": "Restablecer",
+    "noResults": "No se encontraron cursos",
+    "noResultsHint": "Intenta cambiar tus filtros.",
+    "results": "{{count}} resultado(s)"
+  },
+  "test": {
+    "title": "Test de francés",
+    "intro": "Evalúa tu nivel de francés en {{count}} preguntas.",
+    "duration": "Duración estimada: <strong>10–15 minutos</strong>.",
+    "progressive": "Preguntas progresivas de A1 a C2 — opción múltiple y completar",
+    "start": "Comenzar el test",
+    "qcmHint": "Elige la respuesta correcta",
+    "fillHint": "Completa la frase",
+    "validate": "Validar",
+    "correct": "¡Correcto! 🎉",
+    "incorrect": "No del todo...",
+    "answer": "Respuesta: {{answer}}",
+    "next": "Siguiente pregunta",
+    "seeResults": "Ver mis resultados",
+    "resultTitle": "Tu resultado",
+    "correctAnswers": "respuestas correctas",
+    "estimatedLevel": "Tu nivel estimado",
+    "detailByLevel": "Detalle por nivel",
+    "retake": "Repetir el test",
+    "seeCourses": "Ver cursos {{level}}",
+    "placeholder": "Tu respuesta..."
+  },
+  "footer": {
+    "school": "Centre International d'Antibes — Escuela de FLE desde 1985.",
+    "learn": "Aprender",
+    "theSchool": "La escuela",
+    "legal": "Legal",
+    "legalNotice": "Aviso legal",
+    "privacy": "Privacidad",
+    "terms": "Condiciones",
+    "rights": "© {{year}} Centre International d'Antibes. Todos los derechos reservados.",
+    "tagline": "Aprende francés con el Centre International d'Antibes",
+    "section_navigation": "Navegación",
+    "section_learning": "Aprendizaje",
+    "section_about": "Acerca de",
+    "cefr_levels": "Niveles MCER",
+    "placement_test": "Test de nivel",
+    "pricing": "Precios",
+    "about_cia": "Centre International d'Antibes",
+    "copyright": "© {{year}} CIA E-Learning"
+  },
+  "dailyGoal": {
+    "title": "Objetivo del día",
+    "streak": "🔥 ¡{{count}} días seguidos!",
+    "done": "{{completed}}/{{goal}} ejercicios"
+  },
+  "achievements": {
+    "title": "🏅 Insignias"
+  },
   "player": {
     "continue": "Continuar",
     "next": "Siguiente",
@@ -35,5 +128,11 @@
     "nextQuestion": "Siguiente pregunta",
     "seeResult": "Ver resultado",
     "question": "Pregunta"
+  },
+  "indicators": {
+    "xp_tooltip": "{{count}} XP totales",
+    "streak_tooltip": "{{count}} día(s) seguidos · ¡Vuelve mañana para mantener tu racha!",
+    "level_tooltip": "Nivel actual: {{level}}",
+    "league_tooltip": "Liga {{league}} esta semana"
   }
 }
