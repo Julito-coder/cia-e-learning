@@ -132,7 +132,7 @@ export function Header() {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56 rounded-xl">
                   <DropdownMenuItem asChild>
-                    <Link to="/connexion" className="rounded-lg cursor-pointer">
+                    <Link to="/profil" className="rounded-lg cursor-pointer">
                       <User className="h-4 w-4 mr-2" /> {t('nav.profile')}
                     </Link>
                   </DropdownMenuItem>

@@ -5,9 +5,12 @@ import { Footer } from './Footer';
 import { pageTransition } from '@/lib/animations';
 import { GamificationOverlay } from '@/components/gamification/GamificationOverlay';
 import { OnboardingFlow } from '@/components/onboarding/OnboardingFlow';
+import { useInterfaceLanguage } from '@/hooks/useInterfaceLanguage';
 
 export function AppLayout() {
   const location = useLocation();
+  // Sync interface language from DB on login
+  useInterfaceLanguage();
   return (
     <div className="flex min-h-screen flex-col">
       <Header />

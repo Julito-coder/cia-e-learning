@@ -16,6 +16,28 @@ export function AvatarUpload({ currentUrl, onUploaded, size = 80 }: AvatarUpload
   const [preview, setPreview] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const cropAndCompress = (file: File): Promise<Blob> =>
+    new Promise((resolve, reject) => {
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => {
+        URL.revokeObjectURL(url);
+        const side = Math.min(img.width, img.height);
+        const canvas = document.createElement('canvas');
+        const TARGET = 512;
+        canvas.width = TARGET;
+        canvas.height = TARGET;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return reject(new Error('canvas'));
+        const sx = (img.width  - side) / 2;
+        const sy = (img.height - side) / 2;
+        ctx.drawImage(img, sx, sy, side, side, 0, 0, TARGET, TARGET);
+        canvas.toBlob((b) => b ? resolve(b) : reject(new Error('blob')), 'image/jpeg', 0.85);
+      };
+      img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('load')); };
+      img.src = url;
+    });
+
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !user) return;
@@ -24,34 +46,51 @@ export function AvatarUpload({ currentUrl, onUploaded, size = 80 }: AvatarUpload
       toast.error('Veuillez sélectionner une image');
       return;
     }
-    if (file.size > 5 * 1024 * 1024) {
-      toast.error('L\'image ne doit pas dépasser 5 Mo');
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error("L'image ne doit pas dépasser 10 Mo");
       return;
     }
 
     setUploading(true);
-    setPreview(URL.createObjectURL(file));
 
-    const ext = file.name.split('.').pop();
-    const path = `${user.id}/avatar.${ext}`;
+    let blob: Blob;
+    try {
+      blob = await cropAndCompress(file);
+    } catch {
+      toast.error("Image illisible");
+      setUploading(false);
+      return;
+    }
+
+    setPreview(URL.createObjectURL(blob));
+    const path = `${user.id}/avatar-${Date.now()}.jpg`;
 
     const { error: uploadError } = await supabase.storage
       .from('avatars')
-      .upload(path, file, { upsert: true });
+      .upload(path, blob, { upsert: true, contentType: 'image/jpeg' });
 
     if (uploadError) {
-      toast.error('Erreur lors de l\'upload');
+      toast.error("Erreur lors de l'upload");
       setUploading(false);
       return;
     }
 
     const { data: { publicUrl } } = supabase.storage.from('avatars').getPublicUrl(path);
-
     await supabase.from('profiles').update({ avatar_url: publicUrl }).eq('user_id', user.id);
+
+    // Best-effort cleanup of old avatar files
+    try {
+      const { data: list } = await supabase.storage.from('avatars').list(user.id);
+      const stale = (list ?? [])
+        .map((o) => `${user.id}/${o.name}`)
+        .filter((p) => p !== path);
+      if (stale.length) await supabase.storage.from('avatars').remove(stale);
+    } catch { /* noop */ }
 
     onUploaded(publicUrl);
     toast.success('Photo de profil mise à jour !');
     setUploading(false);
+    if (e.target) e.target.value = '';
   };
 
   const displayUrl = preview || currentUrl;

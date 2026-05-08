@@ -408,5 +408,32 @@
       "title": "Legend!",
       "desc": "One hundred days in a row. Very few get there."
     }
+  },
+  "profile": {
+    "title": "My profile",
+    "identity": "Identity",
+    "personal_info": "Personal information",
+    "account": "Account",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "nationality": "Nationality",
+    "email": "Email",
+    "interfaceLanguage": "Interface language",
+    "save": "Save",
+    "saved": "Changes saved",
+    "error": "Something went wrong",
+    "redoOnboarding": "Replay the intro tour",
+    "redoPlacement": "Retake the placement test",
+    "logout": "Sign out",
+    "adminAccess": "Open back-office",
+    "achievements": {
+      "title": "🏅 Achievements showcase",
+      "all": "All",
+      "unlocked": "Unlocked",
+      "locked": "Locked",
+      "unlockedCount": "{{done}} / {{total}} unlocked",
+      "empty": "No achievement in this category yet.",
+      "howToUnlock": "Keep learning to unlock this achievement."
+    }
   }
 }
