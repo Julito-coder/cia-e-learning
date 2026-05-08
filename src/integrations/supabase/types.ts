@@ -188,6 +188,7 @@ export type Database = {
           last_name: string | null
           league: string
           nationality: string | null
+          onboarding_completed_at: string | null
           placement_test_taken_at: string | null
           total_xp: number
           updated_at: string
@@ -210,6 +211,7 @@ export type Database = {
           last_name?: string | null
           league?: string
           nationality?: string | null
+          onboarding_completed_at?: string | null
           placement_test_taken_at?: string | null
           total_xp?: number
           updated_at?: string
@@ -232,6 +234,7 @@ export type Database = {
           last_name?: string | null
           league?: string
           nationality?: string | null
+          onboarding_completed_at?: string | null
           placement_test_taken_at?: string | null
           total_xp?: number
           updated_at?: string
@@ -463,6 +466,7 @@ export type Database = {
         Returns: boolean
       }
       mark_daily_done: { Args: never; Returns: Json }
+      mark_onboarding_done: { Args: never; Returns: Json }
       rotate_weekly_leagues: { Args: never; Returns: Json }
       set_cecr_level: { Args: { _level: string }; Returns: Json }
       set_placement_level: { Args: { _level: string }; Returns: Json }

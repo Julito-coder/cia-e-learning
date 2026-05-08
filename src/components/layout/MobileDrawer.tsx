@@ -13,12 +13,12 @@ interface MobileDrawerProps {
   onClose: () => void;
 }
 
-const NAV_ITEMS = [
+const NAV_ITEMS: { to: string; icon: any; key: string; onboard?: string }[] = [
   { to: '/',             icon: Home,           key: 'nav.home' },
-  { to: '/catalogue',    icon: BookOpen,       key: 'nav.catalogue' },
-  { to: '/programme',    icon: Map,            key: 'nav.curriculum' },
-  { to: '/classement',   icon: Trophy,         key: 'nav.leaderboard' },
-  { to: '/defi-du-jour', icon: Flame,          key: 'nav.daily_challenge' },
+  { to: '/catalogue',    icon: BookOpen,       key: 'nav.catalogue',       onboard: 'nav-catalogue' },
+  { to: '/programme',    icon: Map,            key: 'nav.curriculum',      onboard: 'nav-programme' },
+  { to: '/classement',   icon: Trophy,         key: 'nav.leaderboard',     onboard: 'nav-classement' },
+  { to: '/defi-du-jour', icon: Flame,          key: 'nav.daily_challenge', onboard: 'nav-daily' },
   { to: '/test-niveau',  icon: ClipboardCheck, key: 'nav.test' },
 ];
 
@@ -65,10 +65,11 @@ export function MobileDrawer({ open, onClose }: MobileDrawerProps) {
             )}
 
             <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-1">
-              {NAV_ITEMS.map(({ to, icon: Icon, key }) => (
+              {NAV_ITEMS.map(({ to, icon: Icon, key, onboard }) => (
                 <Link
                   key={to}
                   to={to}
+                  data-onboard={onboard}
                   onClick={onClose}
                   className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-bold text-foreground hover:bg-muted transition-colors"
                 >

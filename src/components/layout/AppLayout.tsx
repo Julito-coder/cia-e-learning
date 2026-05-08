@@ -4,6 +4,7 @@ import { Header } from './Header';
 import { Footer } from './Footer';
 import { pageTransition } from '@/lib/animations';
 import { GamificationOverlay } from '@/components/gamification/GamificationOverlay';
+import { OnboardingFlow } from '@/components/onboarding/OnboardingFlow';
 
 export function AppLayout() {
   const location = useLocation();
@@ -25,6 +26,7 @@ export function AppLayout() {
       </main>
       <Footer />
       <GamificationOverlay />
+      <OnboardingFlow />
     </div>
   );
 }

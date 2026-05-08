@@ -15,11 +15,11 @@ import { MobileDrawer } from './MobileDrawer';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 
-const NAV = [
-  { to: '/catalogue',    key: 'nav.catalogue' },
-  { to: '/programme',    key: 'nav.curriculum' },
-  { to: '/classement',   key: 'nav.leaderboard' },
-  { to: '/defi-du-jour', key: 'nav.daily_challenge' },
+const NAV: { to: string; key: string; onboard?: string }[] = [
+  { to: '/catalogue',    key: 'nav.catalogue',       onboard: 'nav-catalogue' },
+  { to: '/programme',    key: 'nav.curriculum',      onboard: 'nav-programme' },
+  { to: '/classement',   key: 'nav.leaderboard',     onboard: 'nav-classement' },
+  { to: '/defi-du-jour', key: 'nav.daily_challenge', onboard: 'nav-daily' },
 ];
 
 export function Header() {
@@ -76,10 +76,11 @@ export function Header() {
 
           {/* Nav desktop */}
           <nav className="hidden lg:flex items-center gap-0.5">
-            {NAV.map(({ to, key }) => (
+            {NAV.map(({ to, key, onboard }) => (
               <NavLink
                 key={to}
                 to={to}
+                data-onboard={onboard}
                 className={({ isActive }) =>
                   `relative px-3 py-2 text-sm font-bold rounded-xl transition-colors ${
                     isActive ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'

@@ -408,5 +408,37 @@
       "title": "Légende !",
       "desc": "Cent jours d'affilée. Très peu de gens y arrivent."
     }
+  },
+  "onboarding": {
+    "skip": "Passer pour l'instant",
+    "next": "Continuer",
+    "previous": "Précédent",
+    "finish": "Terminer",
+    "bonusXp": "+50 XP de bienvenue !",
+    "welcome": {
+      "title": "Bienvenue à Antibes !",
+      "subtitle": "Je vais te guider pour démarrer ton aventure en français. Ça prend 1 minute.",
+      "cta": "Commencer le voyage"
+    },
+    "profile": {
+      "title": "Quel est ton profil ?",
+      "beginner": { "label": "Débutant complet", "desc": "Je n'ai jamais appris le français." },
+      "falseBeginner": { "label": "Faux débutant", "desc": "Quelques notions, mais ça remonte." },
+      "confirmed": { "label": "Confirmé", "desc": "Je veux progresser et me perfectionner." }
+    },
+    "level": {
+      "title": "Comment veux-tu démarrer ?",
+      "subtitle": "Choisis l'option qui te ressemble.",
+      "takeTest": "Faire le test de niveau",
+      "later": "Plus tard, je commence en A1",
+      "knowMine": "Je connais mon niveau"
+    },
+    "coach": {
+      "xp": { "title": "Ton tableau de bord", "desc": "XP, série quotidienne et ligue : tout est ici, en haut à droite." },
+      "programme": { "title": "Le Programme", "desc": "Ton chemin guidé, leçon après leçon, niveau après niveau." },
+      "catalogue": { "title": "Le Catalogue", "desc": "Toutes les leçons disponibles, à explorer librement." },
+      "daily": { "title": "Défi du jour", "desc": "Une leçon par jour pour entretenir ta série et gagner du bonus XP." },
+      "classement": { "title": "Classement & Ligues", "desc": "Compare ton XP hebdo aux autres apprenants. Promotions chaque lundi !" }
+    }
   }
 }
