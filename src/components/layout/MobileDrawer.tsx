@@ -23,6 +23,7 @@ const NAV_ITEMS: { to: string; icon: any; key: string; onboard?: string }[] = [
 ];
 
 const SECONDARY_ITEMS = [
+  { to: '/profil',    icon: User, key: 'nav.profile' },
   { to: '/favoris',   icon: Heart, key: 'nav.favorites' },
   { to: '/glossaire', icon: Book,  key: 'nav.glossary' },
 ];

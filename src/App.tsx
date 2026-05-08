@@ -19,6 +19,7 @@ import TestNiveau from "./pages/TestNiveau";
 import Classement from "./pages/Classement";
 import SpeedTest from "./pages/SpeedTest";
 import DailyChallenge from "./pages/DailyChallenge";
+import Profil from "./pages/Profil";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminCourses from "./pages/admin/AdminCourses";
@@ -55,6 +56,7 @@ const App = () => {
               <Route path="/test-vitesse/:level" element={<SpeedTest />} />
               <Route path="/defi-du-jour" element={<DailyChallenge />} />
               <Route path="/connexion" element={<Connexion />} />
+              <Route path="/profil" element={<Profil />} />
               <Route path="/mot-de-passe-oublie" element={<ForgotPassword />} />
               <Route path="/reinitialiser-mot-de-passe" element={<ResetPassword />} />
               <Route path="/favoris" element={<Catalogue />} />
