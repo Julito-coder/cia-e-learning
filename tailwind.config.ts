@@ -75,6 +75,7 @@ export default {
             900: 'hsl(var(--cia-blue-900))',
           },
           gold: {
+            DEFAULT: 'hsl(var(--cia-gold))',
             50:  'hsl(var(--cia-gold-50))',
             100: 'hsl(var(--cia-gold-100))',
             200: 'hsl(var(--cia-gold-200))',
@@ -93,7 +94,6 @@ export default {
           navy: "hsl(var(--cia-navy))",
           "navy-light": "hsl(var(--cia-navy-light))",
           sky: "hsl(var(--cia-sky))",
-          gold: "hsl(var(--cia-gold))",
           sand: "hsl(var(--cia-sand))",
           success: "hsl(var(--cia-success))",
           warning: "hsl(var(--cia-warning))",
