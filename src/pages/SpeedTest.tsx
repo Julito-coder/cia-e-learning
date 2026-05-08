@@ -70,7 +70,7 @@ export default function SpeedTest() {
     setXpEarned(xp);
     setNewRecord(record);
     if (xp > 0) {
-      await addXP(xp);
+      await addXP(xp, 'speed_test', level);
       toast.success(`+${xp} XP gagnés !`);
     }
   }, [addXP, bestKey, bestScore]);

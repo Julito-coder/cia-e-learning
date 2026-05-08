@@ -9,6 +9,8 @@ import { getRandomTest, calculateLevel } from '@/data/demo-test';
 import type { TestQuestion } from '@/data/demo-test';
 import type { CECRLevel } from '@/data/demo-courses';
 import { useUserProgress } from '@/hooks/useUserProgress';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Info } from 'lucide-react';
 
 type Phase = 'intro' | 'test' | 'result';
 
@@ -29,7 +31,7 @@ const levelColors: Record<CECRLevel, string> = {
 export default function TestNiveau() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { setLevel } = useUserProgress();
+  const { setPlacementLevel, placementTestTakenAt } = useUserProgress();
   const [phase, setPhase] = useState<Phase>('intro');
   const [questions, setQuestions] = useState<TestQuestion[]>(() => getRandomTest());
   const [currentQ, setCurrentQ] = useState(0);
@@ -76,6 +78,22 @@ export default function TestNiveau() {
         <div className="max-w-lg w-full text-center space-y-6 animate-fade-in">
           <div className="text-6xl mb-2 animate-float">🇫🇷</div>
           <h1 className="font-display text-3xl md:text-4xl">{t('test.title')}</h1>
+          {placementTestTakenAt && (
+            <Alert className="text-left">
+              <Info className="h-4 w-4" />
+              <AlertDescription>
+                Vous avez déjà passé le test de placement le{' '}
+                <strong>
+                  {new Date(placementTestTakenAt).toLocaleDateString('fr-FR', {
+                    day: '2-digit',
+                    month: 'long',
+                    year: 'numeric',
+                  })}
+                </strong>
+                . Refaire le test ne modifiera pas votre niveau.
+              </AlertDescription>
+            </Alert>
+          )}
           <p className="text-muted-foreground text-lg">
             {t('test.intro', { count: questions.length })}
           </p>
@@ -103,7 +121,7 @@ export default function TestNiveau() {
 
     // Save the detected level
     const handleSaveLevel = async () => {
-      await setLevel(result.level);
+      await setPlacementLevel(result.level);
       navigate(`/catalogue?level=${result.level}`);
     };
 
