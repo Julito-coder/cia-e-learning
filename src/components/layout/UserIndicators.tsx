@@ -42,7 +42,7 @@ export function UserIndicators({ compact = false, align = 'horizontal' }: UserIn
       <motion.div className={`flex ${directionClass} items-center`} variants={staggerContainer} initial="hidden" animate="visible">
         <Tooltip>
           <TooltipTrigger asChild>
-            <motion.div variants={staggerItem} animate={xpControls}>
+            <motion.div variants={staggerItem} animate={xpControls} data-xp-origin>
               <Badge variant="xp" className="gap-1.5 px-2.5 py-1">
                 <Sparkles className="h-3.5 w-3.5" />
                 <span className="tabular-nums">{totalXP.toLocaleString('fr-FR')}</span>
