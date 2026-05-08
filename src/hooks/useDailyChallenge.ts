@@ -9,6 +9,7 @@ import {
   todayKey,
   type DailyLessonInfo,
 } from '@/lib/dailyChallenge';
+import { toast } from 'sonner';
 import type { CECRLevel } from '@/data/demo-courses';
 
 const STREAK_BONUS_XP = 25;
@@ -23,12 +24,10 @@ export function useDailyChallenge(initialLevel?: CECRLevel) {
   const [lastDate, setLastDate] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Sync default level to user's CECR level once
   useEffect(() => {
     if (!initialLevel) setSelectedLevel(cecrLevel);
   }, [cecrLevel, initialLevel]);
 
-  // Load streak data
   useEffect(() => {
     let cancelled = false;
     const load = async () => {
@@ -44,10 +43,7 @@ export function useDailyChallenge(initialLevel?: CECRLevel) {
         const eff = effectiveStreak(last, stored);
         setStreak(eff);
         setLastDate(last);
-        // Persist auto-reset
-        if (eff !== stored) {
-          await supabase.from('profiles').update({ daily_streak: eff }).eq('user_id', user.id);
-        }
+        // Note: la correction auto est désormais faite côté serveur via mark_daily_done
       } else {
         const stored = parseInt(localStorage.getItem(LS_STREAK) || '0', 10);
         const last = localStorage.getItem(LS_LAST);
@@ -65,28 +61,53 @@ export function useDailyChallenge(initialLevel?: CECRLevel) {
   const dailyLesson: DailyLessonInfo | null = getDailyLesson(selectedLevel);
   const isDoneToday = lastDate === todayKey();
 
-  const markDoneToday = useCallback(async (): Promise<{ awarded: boolean; xp: number; newStreak: number }> => {
-    const { streak: newStreak, alreadyDone } = computeStreakUpdate(lastDate, streak);
-    if (alreadyDone) return { awarded: false, xp: 0, newStreak: streak };
-    const today = todayKey();
-    setStreak(newStreak);
-    setLastDate(today);
-    if (user) {
-      const { error } = await supabase
-        .from('profiles')
-        .update({ daily_streak: newStreak, last_daily_completed_at: today })
-        .eq('user_id', user.id);
-      if (error) {
-        console.error('[markDoneToday] update profile failed', error);
-        return { awarded: false, xp: 0, newStreak: streak };
+  const markDoneToday = useCallback(
+    async (): Promise<{ awarded: boolean; xp: number; newStreak: number }> => {
+      if (user) {
+        const { data, error } = await supabase.rpc('mark_daily_done');
+        if (error) {
+          console.error('[markDoneToday] mark_daily_done failed', error);
+          toast.error(`Erreur défi du jour: ${error.message}`);
+          return { awarded: false, xp: 0, newStreak: streak };
+        }
+        const result = data as any;
+        const today = todayKey();
+        if (!result?.awarded) {
+          // Déjà fait aujourd'hui — synchronise l'état local
+          const s = result?.streak ?? streak;
+          setStreak(s);
+          setLastDate(today);
+          return { awarded: false, xp: 0, newStreak: s };
+        }
+        const newStreak = result.streak as number;
+        const xpAwarded = (result.xp_awarded as number) ?? STREAK_BONUS_XP;
+        setStreak(newStreak);
+        setLastDate(today);
+        // Diffuse les events pour synchroniser l'UI XP
+        if (typeof result.total_xp_after === 'number' && result.level_after) {
+          window.dispatchEvent(
+            new CustomEvent('xp-update', {
+              detail: { xp: result.total_xp_after, level: result.level_after },
+            }),
+          );
+        }
+        window.dispatchEvent(new CustomEvent('weekly-xp-update'));
+        return { awarded: true, xp: xpAwarded, newStreak };
       }
-    } else {
+
+      // Anonyme — fallback local
+      const { streak: newStreak, alreadyDone } = computeStreakUpdate(lastDate, streak);
+      if (alreadyDone) return { awarded: false, xp: 0, newStreak: streak };
+      const today = todayKey();
+      setStreak(newStreak);
+      setLastDate(today);
       localStorage.setItem(LS_STREAK, String(newStreak));
       localStorage.setItem(LS_LAST, today);
-    }
-    await addXP(STREAK_BONUS_XP);
-    return { awarded: true, xp: STREAK_BONUS_XP, newStreak };
-  }, [lastDate, streak, user, addXP]);
+      await addXP(STREAK_BONUS_XP, 'daily_challenge', today);
+      return { awarded: true, xp: STREAK_BONUS_XP, newStreak };
+    },
+    [lastDate, streak, user, addXP],
+  );
 
   return {
     selectedLevel,

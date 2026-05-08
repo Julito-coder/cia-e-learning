@@ -7,7 +7,6 @@ import type { CECRLevel } from '@/data/demo-courses';
 const LEVEL_ORDER: CECRLevel[] = ['A0', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 const XP_PER_LEVEL = 5000;
 
-// Global event for cross-component XP sync
 const XP_UPDATE_EVENT = 'xp-update';
 
 function emitXPUpdate(xp: number, level: CECRLevel) {
@@ -40,14 +39,14 @@ export function useUserProgress() {
   const { user } = useAuth();
   const [totalXP, setTotalXP] = useState(0);
   const [cecrLevel, setCecrLevel] = useState<CECRLevel>('A1');
+  const [placementTestTakenAt, setPlacementTestTakenAt] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Listen for XP updates from other hook instances (cross-component sync)
+  // Cross-component sync
   useEffect(() => {
     const handler = (e: Event) => {
       const detail = (e as CustomEvent).detail;
       if (!detail) return;
-      // Use functional updates to avoid stale closures and skip identical values
       setTotalXP((prev) => (prev === detail.xp ? prev : detail.xp));
       setCecrLevel((prev) => (prev === detail.level ? prev : detail.level));
     };
@@ -75,104 +74,130 @@ export function useUserProgress() {
     const fetchProgress = async () => {
       const { data } = await supabase
         .from('profiles')
-        .select('total_xp, cecr_level')
+        .select('total_xp, cecr_level, placement_test_taken_at')
         .eq('user_id', user.id)
         .maybeSingle();
 
       if (data) {
         setTotalXP(data.total_xp || 0);
         setCecrLevel((data.cecr_level as CECRLevel) || 'A1');
+        setPlacementTestTakenAt((data as any).placement_test_taken_at ?? null);
       }
       setLoading(false);
     };
     fetchProgress();
   }, [user]);
 
-  const addXP = useCallback(async (amount: number): Promise<{ leveledUp: boolean; newLevel: CECRLevel }> => {
-    if (!Number.isFinite(amount) || amount === 0) {
-      return { leveledUp: false, newLevel: cecrLevel };
-    }
-
-    console.log('[addXP] called with amount=', amount, 'user?', user?.id);
-
-    if (user) {
-      // Atomic-ish update: re-read DB to avoid stale closure overwrites,
-      // then write back. Logs any error so silent failures (RLS, network) become visible.
-      const { data: fresh, error: readErr } = await supabase
-        .from('profiles')
-        .select('total_xp, cecr_level')
-        .eq('user_id', user.id)
-        .maybeSingle();
-      if (readErr) {
-        console.error('[addXP] read profile failed', readErr);
-        toast.error(`Erreur lecture profil: ${readErr.message}`);
+  const addXP = useCallback(
+    async (
+      amount: number,
+      source: string = 'unknown',
+      sourceRef?: string,
+    ): Promise<{ leveledUp: boolean; newLevel: CECRLevel }> => {
+      if (!Number.isFinite(amount) || amount <= 0) {
+        return { leveledUp: false, newLevel: cecrLevel };
       }
 
-      const baseXP = fresh?.total_xp ?? totalXP ?? 0;
-      const newXP = Math.max(0, baseXP + amount);
+      if (user) {
+        const { data, error } = await supabase.rpc('award_xp', {
+          _amount: amount,
+          _source: source,
+          _source_ref: sourceRef ?? null,
+        });
+        if (error) {
+          console.error('[addXP] award_xp failed', error);
+          toast.error(`Erreur XP: ${error.message}`);
+          return { leveledUp: false, newLevel: cecrLevel };
+        }
+        const result = data as any;
+        const newXP = result?.xp_after ?? totalXP;
+        const newLevel = (result?.level_after as CECRLevel) ?? cecrLevel;
+        const leveledUp = !!result?.leveled_up;
+
+        setTotalXP(newXP);
+        setCecrLevel(newLevel);
+        emitXPUpdate(newXP, newLevel);
+        window.dispatchEvent(new CustomEvent('weekly-xp-update'));
+        return { leveledUp, newLevel };
+      }
+
+      // Anonymous fallback (local only)
+      const newXP = Math.max(0, totalXP + amount);
       const newLevel = getLevelFromXP(newXP);
-      const prevLevel = (fresh?.cecr_level as CECRLevel) ?? cecrLevel;
-      const leveledUp = newLevel !== prevLevel;
-
-      const { error: updErr } = await supabase
-        .from('profiles')
-        .update({ total_xp: newXP, cecr_level: newLevel })
-        .eq('user_id', user.id);
-      if (updErr) {
-        console.error('[addXP] update profile failed', updErr);
-        toast.error(`Erreur sauvegarde XP: ${updErr.message}`);
-        // Do not optimistically update UI when persistence fails
-        return { leveledUp: false, newLevel: prevLevel };
-      }
-      console.log('[addXP] updated profile to', newXP, newLevel);
-
+      const leveledUp = newLevel !== cecrLevel;
       setTotalXP(newXP);
       setCecrLevel(newLevel);
       emitXPUpdate(newXP, newLevel);
-
-      if (amount > 0) {
-        const { error: weeklyErr } = await supabase.rpc('add_weekly_xp', {
-          _user_id: user.id,
-          _amount: amount,
-        });
-        if (weeklyErr) {
-          console.error('[addXP] add_weekly_xp failed', weeklyErr);
-          toast.error(`Erreur XP hebdo: ${weeklyErr.message}`);
-        }
-        window.dispatchEvent(new CustomEvent('weekly-xp-update'));
-      }
-
+      localStorage.setItem('user-xp', String(newXP));
+      localStorage.setItem('user-cecr-level', newLevel);
       return { leveledUp, newLevel };
-    }
+    },
+    [totalXP, cecrLevel, user],
+  );
 
-    // Anonymous (no user) — keep purely local
-    const newXP = Math.max(0, totalXP + amount);
-    const newLevel = getLevelFromXP(newXP);
-    const leveledUp = newLevel !== cecrLevel;
-    setTotalXP(newXP);
-    setCecrLevel(newLevel);
-    emitXPUpdate(newXP, newLevel);
-    localStorage.setItem('user-xp', String(newXP));
-    localStorage.setItem('user-cecr-level', newLevel);
-    return { leveledUp, newLevel };
-  }, [totalXP, cecrLevel, user]);
+  // Auto-progression CECRL (multi-appel)
+  const setLevel = useCallback(
+    async (level: CECRLevel) => {
+      setCecrLevel(level);
+      emitXPUpdate(totalXP, level);
 
-  const setLevel = useCallback(async (level: CECRLevel) => {
-    const xp = getXPForLevel(level);
-    setTotalXP(xp);
-    setCecrLevel(level);
-    emitXPUpdate(xp, level);
+      if (user) {
+        const { error } = await supabase.rpc('set_cecr_level', { _level: level });
+        if (error) {
+          console.error('[setLevel] set_cecr_level failed', error);
+          toast.error(`Erreur niveau: ${error.message}`);
+        }
+      } else {
+        localStorage.setItem('user-cecr-level', level);
+      }
+    },
+    [user, totalXP],
+  );
 
-    if (user) {
-      await supabase
-        .from('profiles')
-        .update({ total_xp: xp, cecr_level: level })
-        .eq('user_id', user.id);
-    } else {
-      localStorage.setItem('user-xp', String(xp));
-      localStorage.setItem('user-cecr-level', level);
-    }
-  }, [user]);
+  // Test de placement (one-shot côté serveur)
+  const setPlacementLevel = useCallback(
+    async (level: CECRLevel): Promise<{ ok: boolean; alreadyTaken: boolean; message?: string }> => {
+      if (!user) {
+        // Anonyme : applique localement
+        const xp = getXPForLevel(level);
+        setTotalXP(xp);
+        setCecrLevel(level);
+        emitXPUpdate(xp, level);
+        localStorage.setItem('user-xp', String(xp));
+        localStorage.setItem('user-cecr-level', level);
+        return { ok: true, alreadyTaken: false };
+      }
+      const { data, error } = await supabase.rpc('set_placement_level', { _level: level });
+      if (error) {
+        const msg = error.message || '';
+        const already = msg.includes('déjà passé');
+        if (already) {
+          toast.warning('Test de placement déjà passé — votre niveau n\'a pas été modifié.');
+        } else {
+          toast.error(`Erreur test de placement: ${msg}`);
+        }
+        return { ok: false, alreadyTaken: already, message: msg };
+      }
+      const result = data as any;
+      const newXP = result?.total_xp ?? totalXP;
+      setTotalXP(newXP);
+      setCecrLevel(level);
+      setPlacementTestTakenAt(result?.taken_at ?? new Date().toISOString());
+      emitXPUpdate(newXP, level);
+      window.dispatchEvent(new CustomEvent('weekly-xp-update'));
+      return { ok: true, alreadyTaken: false };
+    },
+    [user, totalXP],
+  );
 
-  return { totalXP, cecrLevel, loading, addXP, setLevel, xpProgress: getXPForNextLevel(totalXP) };
+  return {
+    totalXP,
+    cecrLevel,
+    placementTestTakenAt,
+    loading,
+    addXP,
+    setLevel,
+    setPlacementLevel,
+    xpProgress: getXPForNextLevel(totalXP),
+  };
 }
