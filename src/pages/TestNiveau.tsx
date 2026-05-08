@@ -78,6 +78,22 @@ export default function TestNiveau() {
         <div className="max-w-lg w-full text-center space-y-6 animate-fade-in">
           <div className="text-6xl mb-2 animate-float">🇫🇷</div>
           <h1 className="font-display text-3xl md:text-4xl">{t('test.title')}</h1>
+          {placementTestTakenAt && (
+            <Alert className="text-left">
+              <Info className="h-4 w-4" />
+              <AlertDescription>
+                Vous avez déjà passé le test de placement le{' '}
+                <strong>
+                  {new Date(placementTestTakenAt).toLocaleDateString('fr-FR', {
+                    day: '2-digit',
+                    month: 'long',
+                    year: 'numeric',
+                  })}
+                </strong>
+                . Refaire le test ne modifiera pas votre niveau.
+              </AlertDescription>
+            </Alert>
+          )}
           <p className="text-muted-foreground text-lg">
             {t('test.intro', { count: questions.length })}
           </p>
