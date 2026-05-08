@@ -1,0 +1,263 @@
+import { useState, useEffect, FormEvent } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Mail, Lock, Eye, EyeOff, Loader2, User as UserIcon } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Card, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { useAuth } from '@/hooks/useAuth';
+import { toast } from 'sonner';
+import { AuthShell } from '@/components/auth/AuthShell';
+import { AuthTabs } from '@/components/auth/AuthTabs';
+import { PasswordStrength } from '@/components/auth/PasswordStrength';
+import { signInSchema, signUpSchema } from '@/lib/validators/auth';
+
+type Tab = 'login' | 'signup';
+
+export default function Connexion() {
+  const [tab, setTab] = useState<Tab>('login');
+  const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [loading, setLoading] = useState(false);
+  const { signIn, signUp, user } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) navigate('/profil', { replace: true });
+  }, [user, navigate]);
+
+  if (user) return null;
+
+  const isLogin = tab === 'login';
+
+  const validate = () => {
+    const schema = isLogin ? signInSchema : signUpSchema;
+    const payload = isLogin
+      ? { email, password }
+      : { email, password, firstName, lastName };
+    const result = schema.safeParse(payload);
+    if (!result.success) {
+      const fieldErrors: Record<string, string> = {};
+      for (const issue of result.error.issues) {
+        const key = issue.path[0] as string;
+        if (!fieldErrors[key]) fieldErrors[key] = issue.message;
+      }
+      setErrors(fieldErrors);
+      return false;
+    }
+    setErrors({});
+    return true;
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!validate()) return;
+    setLoading(true);
+    try {
+      if (isLogin) {
+        const { error } = await signIn(email, password);
+        if (error) toast.error(error.message);
+        else {
+          toast.success('Connexion réussie');
+          navigate('/');
+        }
+      } else {
+        const { error } = await signUp(email, password, {
+          first_name: firstName,
+          last_name: lastName,
+        });
+        if (error) toast.error(error.message);
+        else {
+          toast.success('Bienvenue ! On démarre ton aventure 🇫🇷');
+          navigate('/?welcome=1');
+        }
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const switchTab = (v: Tab) => {
+    setTab(v);
+    setErrors({});
+  };
+
+  return (
+    <AuthShell
+      title={isLogin ? 'Bienvenue !' : 'Créer un compte'}
+      subtitle={
+        isLogin
+          ? 'Connectez-vous pour accéder à vos cours'
+          : 'Rejoignez la plateforme e-learning du CIA'
+      }
+    >
+      <Card className="border-border/60 shadow-xl rounded-2xl">
+        <CardContent className="p-6">
+          <AuthTabs value={tab} onChange={switchTab} />
+
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.form
+              key={tab}
+              onSubmit={handleSubmit}
+              className="space-y-4"
+              initial={{ opacity: 0, x: isLogin ? -16 : 16 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: isLogin ? 16 : -16 }}
+              transition={{ duration: 0.22, ease: 'easeOut' }}
+            >
+              {!isLogin && (
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-1.5">
+                    <Label htmlFor="firstName">Prénom</Label>
+                    <div className="relative">
+                      <UserIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        id="firstName"
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        placeholder="Marie"
+                        className="pl-9"
+                        maxLength={50}
+                        aria-invalid={!!errors.firstName}
+                      />
+                    </div>
+                    {errors.firstName && (
+                      <p className="text-[11px] text-destructive">{errors.firstName}</p>
+                    )}
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label htmlFor="lastName">Nom</Label>
+                    <Input
+                      id="lastName"
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
+                      placeholder="Dupont"
+                      maxLength={50}
+                      aria-invalid={!!errors.lastName}
+                    />
+                    {errors.lastName && (
+                      <p className="text-[11px] text-destructive">{errors.lastName}</p>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              <div className="space-y-1.5">
+                <Label htmlFor="email">Email</Label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="votre@email.com"
+                    className="pl-10"
+                    autoComplete="email"
+                    required
+                    aria-invalid={!!errors.email}
+                  />
+                </div>
+                {errors.email && (
+                  <p className="text-[11px] text-destructive">{errors.email}</p>
+                )}
+              </div>
+
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="password">Mot de passe</Label>
+                  {isLogin && (
+                    <Link
+                      to="/mot-de-passe-oublie"
+                      className="text-xs text-accent hover:underline"
+                    >
+                      Mot de passe oublié ?
+                    </Link>
+                  )}
+                </div>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    id="password"
+                    type={showPassword ? 'text' : 'password'}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="pl-10 pr-10"
+                    autoComplete={isLogin ? 'current-password' : 'new-password'}
+                    required
+                    minLength={isLogin ? undefined : 6}
+                    aria-invalid={!!errors.password}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((v) => !v)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                    aria-label={showPassword ? 'Masquer' : 'Afficher'}
+                  >
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                </div>
+                {errors.password && (
+                  <p className="text-[11px] text-destructive">{errors.password}</p>
+                )}
+                {!isLogin && <PasswordStrength value={password} />}
+              </div>
+
+              <motion.div whileTap={{ scale: 0.98 }}>
+                <Button
+                  type="submit"
+                  className="w-full"
+                  size="lg"
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                      {isLogin ? 'Connexion…' : 'Création…'}
+                    </>
+                  ) : isLogin ? (
+                    'Se connecter'
+                  ) : (
+                    "Créer mon compte"
+                  )}
+                </Button>
+              </motion.div>
+
+              <div className="text-center text-sm text-muted-foreground">
+                {isLogin ? (
+                  <>
+                    Pas encore de compte ?{' '}
+                    <button
+                      type="button"
+                      onClick={() => switchTab('signup')}
+                      className="text-accent hover:underline font-medium"
+                    >
+                      S'inscrire
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    Déjà un compte ?{' '}
+                    <button
+                      type="button"
+                      onClick={() => switchTab('login')}
+                      className="text-accent hover:underline font-medium"
+                    >
+                      Se connecter
+                    </button>
+                  </>
+                )}
+              </div>
+            </motion.form>
+          </AnimatePresence>
+        </CardContent>
+      </Card>
+    </AuthShell>
+  );
+}
