@@ -1,14 +1,107 @@
 {
-  "nav": { "home": "Home", "catalogue": "Courses", "test": "Test", "favorites": "Favorites", "glossary": "Glossary", "login": "Log in" },
-  "hero": { "greeting": "Hello, {{name}}!", "subtitle": "Keep up the momentum — you're doing great! 🚀", "explore": "Explore courses", "test": "Level test", "level": "Level {{level}}", "progression": "Progress", "xpTotal": "⚡ Total XP" },
-  "stats": { "coursesCompleted": "Courses completed", "streak": "Day streak", "hoursStudied": "Hours studied", "gems": "Gems" },
-  "sections": { "continue": "📖 Continue", "new": "✨ New courses", "seeAll": "See all", "levels": "📊 CEFR Levels", "leaderboard": "🏆 Leaderboard", "path": "🗺️ Path" },
-  "course": { "start": "🚀 Start", "continue": "▶ Continue", "review": "✅ Review", "min": "min", "new": "✨ New" },
-  "catalogue": { "title": "📚 Catalogue", "subtitle": "{{count}} courses available — from A1 to C2", "search": "Search for a course or code (e.g. B1-VOC-012)...", "newFilter": "✨ New", "reset": "Reset", "noResults": "No courses found", "noResultsHint": "Try changing your filters.", "results": "{{count}} result(s)" },
-  "test": { "title": "French Test", "intro": "Evaluate your French level in {{count}} questions.", "duration": "Estimated duration: <strong>10–15 minutes</strong>.", "progressive": "Progressive questions from A1 to C2 — MCQ & fill-in-the-blank", "start": "Start the test", "qcmHint": "Choose the correct answer", "fillHint": "Complete the sentence", "validate": "Submit", "correct": "Correct! 🎉", "incorrect": "Not quite...", "answer": "Answer: {{answer}}", "next": "Next question", "seeResults": "See my results", "resultTitle": "Your result", "correctAnswers": "correct answers", "estimatedLevel": "Your estimated level", "detailByLevel": "Detail by level", "retake": "Retake the test", "seeCourses": "See {{level}} courses", "placeholder": "Your answer..." },
-  "footer": { "school": "Centre International d'Antibes — French school since 1985.", "learn": "Learn", "theSchool": "The school", "legal": "Legal", "legalNotice": "Legal notice", "privacy": "Privacy", "terms": "Terms", "rights": "© {{year}} Centre International d'Antibes. All rights reserved." },
-  "dailyGoal": { "title": "Daily goal", "streak": "🔥 {{count}} day streak!", "done": "{{completed}}/{{goal}} exercises" },
-  "achievements": { "title": "🏅 Badges" },
+  "nav": {
+    "home": "Home",
+    "catalogue": "Courses",
+    "test": "Test",
+    "favorites": "Favorites",
+    "glossary": "Glossary",
+    "login": "Log in",
+    "curriculum": "Path",
+    "leaderboard": "Leaderboard",
+    "daily_challenge": "Daily Challenge",
+    "profile": "My Profile",
+    "logout": "Sign out",
+    "signup": "Sign up"
+  },
+  "hero": {
+    "greeting": "Hello, {{name}}!",
+    "subtitle": "Keep up the momentum — you're doing great! 🚀",
+    "explore": "Explore courses",
+    "test": "Level test",
+    "level": "Level {{level}}",
+    "progression": "Progress",
+    "xpTotal": "⚡ Total XP"
+  },
+  "stats": {
+    "coursesCompleted": "Courses completed",
+    "streak": "Day streak",
+    "hoursStudied": "Hours studied",
+    "gems": "Gems"
+  },
+  "sections": {
+    "continue": "📖 Continue",
+    "new": "✨ New courses",
+    "seeAll": "See all",
+    "levels": "📊 CEFR Levels",
+    "leaderboard": "🏆 Leaderboard",
+    "path": "🗺️ Path"
+  },
+  "course": {
+    "start": "🚀 Start",
+    "continue": "▶ Continue",
+    "review": "✅ Review",
+    "min": "min",
+    "new": "✨ New"
+  },
+  "catalogue": {
+    "title": "📚 Catalogue",
+    "subtitle": "{{count}} courses available — from A1 to C2",
+    "search": "Search for a course or code (e.g. B1-VOC-012)...",
+    "newFilter": "✨ New",
+    "reset": "Reset",
+    "noResults": "No courses found",
+    "noResultsHint": "Try changing your filters.",
+    "results": "{{count}} result(s)"
+  },
+  "test": {
+    "title": "French Test",
+    "intro": "Evaluate your French level in {{count}} questions.",
+    "duration": "Estimated duration: <strong>10–15 minutes</strong>.",
+    "progressive": "Progressive questions from A1 to C2 — MCQ & fill-in-the-blank",
+    "start": "Start the test",
+    "qcmHint": "Choose the correct answer",
+    "fillHint": "Complete the sentence",
+    "validate": "Submit",
+    "correct": "Correct! 🎉",
+    "incorrect": "Not quite...",
+    "answer": "Answer: {{answer}}",
+    "next": "Next question",
+    "seeResults": "See my results",
+    "resultTitle": "Your result",
+    "correctAnswers": "correct answers",
+    "estimatedLevel": "Your estimated level",
+    "detailByLevel": "Detail by level",
+    "retake": "Retake the test",
+    "seeCourses": "See {{level}} courses",
+    "placeholder": "Your answer..."
+  },
+  "footer": {
+    "school": "Centre International d'Antibes — French school since 1985.",
+    "learn": "Learn",
+    "theSchool": "The school",
+    "legal": "Legal",
+    "legalNotice": "Legal notice",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "rights": "© {{year}} Centre International d'Antibes. All rights reserved.",
+    "tagline": "Learn French with the Centre International d'Antibes",
+    "section_navigation": "Navigation",
+    "section_learning": "Learning",
+    "section_about": "About",
+    "cefr_levels": "CEFR Levels",
+    "placement_test": "Placement test",
+    "pricing": "Pricing",
+    "about_cia": "Centre International d'Antibes",
+    "copyright": "© {{year}} CIA E-Learning"
+  },
+  "dailyGoal": {
+    "title": "Daily goal",
+    "streak": "🔥 {{count}} day streak!",
+    "done": "{{completed}}/{{goal}} exercises"
+  },
+  "achievements": {
+    "title": "🏅 Badges"
+  },
   "player": {
     "continue": "Continue",
     "next": "Next",
@@ -35,5 +128,11 @@
     "nextQuestion": "Next question",
     "seeResult": "See result",
     "question": "Question"
+  },
+  "indicators": {
+    "xp_tooltip": "{{count}} total XP earned",
+    "streak_tooltip": "{{count}} day(s) in a row · Come back tomorrow to keep your streak!",
+    "level_tooltip": "Current level: {{level}}",
+    "league_tooltip": "{{league}} league this week"
   }
 }
