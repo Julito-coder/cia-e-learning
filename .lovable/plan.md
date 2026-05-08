@@ -1,173 +1,96 @@
 
-# Batch 11 — States (Empty / Loading / Error / Notif)
+# Batch 12 — Admin Polish
 
-Polir tout ce qui se passe **autour** du contenu : ce que voit l'utilisateur
-quand ça charge, quand il n'y a rien, quand ça casse, et quand on lui parle.
-Aucune logique métier modifiée — uniquement présentation et feedback.
+Polish existing admin pages with consistent design, loading/empty/error states, better UX, and reuse of Batch 11 primitives (`notify.*`, `EmptyState`, skeletons, `ErrorState`). No new business logic, no DB migrations.
 
-## 1. Système de notifications unifié
+## Scope per page
 
-### `src/lib/notify.ts`
-Wrapper unique au-dessus de `sonner` pour homogénéiser les toasts :
+### 1. AdminLayout (`src/components/layout/AdminLayout.tsx`)
+- Add a top header bar with breadcrumb (Admin › current page) and signed-in admin email + logout.
+- Clean active-state styling, subtle gradient on active nav item, animated chevron when collapsing.
+- Mobile: floating burger button (currently no visible trigger when sidebar closed).
+- Footer of sidebar: "Retour à l'app" link → `/`.
 
-```ts
-notify.success(title, { description?, duration?, icon? })
-notify.error(title, { description?, action? })
-notify.info(title, ...)
-notify.warning(title, ...)
-notify.loading(title) → id    // pour les opérations longues
-notify.promise(promise, { loading, success, error })
-notify.xp(amount, source?)    // toast spécial XP avec emoji ⚡
-notify.streak(days)            // toast spécial série 🔥
-notify.badge(label, emoji)     // toast spécial badge 🏅
-notify.levelUp(newLevel)       // toast spécial level-up 🎉
-```
+### 2. AdminDashboard (`src/pages/admin/AdminDashboard.tsx`)
+- Replace 4 plain stat cards with rich `StatCard` (icon in colored circle, delta vs previous period if available, gradient border).
+- Add 3 new sections:
+  - Recent signups (last 5 users, mini list)
+  - Recent XP activity (last 5 from `xp_audit_log`)
+  - Quick actions (Créer un utilisateur, Créer un cours, Voir analytics)
+- Skeleton loaders during fetch.
+- Greeting line: "Bonjour, {firstName} 👋".
 
-- Durations standardisées : `success` 3s, `error` 5s, `gamification` 5s.
-- Icônes Lucide injectées par défaut selon le type.
-- Position : `bottom-right` desktop, `top-center` mobile (responsive via
-  Sonner config).
-- Tous les `toast.success/error/...` existants migrent vers `notify.*`
-  (Connexion, ResetPassword, ForgotPassword, useAuth, useUserProgress,
-  useDailyChallenge, useOnboarding, CourseDetail, AdminUsers).
+### 3. AdminUsers (`src/pages/admin/AdminUsers.tsx`)
+- Add skeletons + `EmptyState` (no results, no users).
+- Pagination (20/page) with shadcn `Pagination`.
+- Filters row: search + level + new "Statut" (actif/inactif) + "Type" (CIA/externe).
+- Replace single icon action with dropdown (Voir détail, Activer/Désactiver, Réinitialiser mot de passe — toast "à venir").
+- Migrate `toast` → `notify.*`.
+- Fix CSV export to include UTF-8 BOM for Excel compatibility.
+- Replace native `<a download>` with proper helper.
 
-### `src/components/ui/sonner.tsx`
-- Ajout de `richColors`, `closeButton`, `expand={false}`, `visibleToasts={3}`.
-- Ajout de classnames pour les variants `success / error / warning / info`
-  (couleurs sémantiques tokens).
-- Position responsive (top-center sur mobile).
+### 4. AdminCourses (`src/pages/admin/AdminCourses.tsx`)
+- Switch from table-only to grid of admin course cards with thumbnail + status badges (publié/brouillon, gratuit/premium).
+- Filter bar: search, level, statut publication.
+- Skeletons + `EmptyState` (no courses → CTA "Créer un cours").
+- Bulk actions placeholder hidden behind feature flag (skip for now).
+- Migrate to `notify.*`.
 
-## 2. Empty states réutilisables
+### 5. AdminAnalytics (`src/pages/admin/AdminAnalytics.tsx`)
+- Add KPI row (4 cards): total users, active users, total XP awarded (sum from `xp_audit_log`), avg streak.
+- Use semantic chart colors via CSS vars (`hsl(var(--primary))`, etc.) — replace hardcoded hex.
+- Add a 3rd chart: weekly XP trend (last 8 weeks, bar chart, from `xp_audit_log` grouped by week).
+- Skeletons + empty states per chart.
+- Period selector (7j / 30j / 90j) — UI only, filters analytics queries by `created_at`.
 
-### `src/components/states/EmptyState.tsx`
-Composant générique avec props :
-```tsx
-<EmptyState
-  icon={Search}            // composant Lucide
-  title="Aucun résultat"
-  description="Essayez d'autres mots-clés"
-  action={{ label: 'Réinitialiser', onClick: ... }}
-  illustration?: ReactNode  // override icône
-/>
-```
-- Animation `motion` fade + scale sur l'icône.
-- Tailwind tokens uniquement.
+### 6. AdminSubscriptions (`src/pages/admin/AdminSubscriptions.tsx`)
+- Add KPI row: total subscriptions, active premium, active school, expiring <30j.
+- Skeletons + empty state.
+- Add expiration date column with "expire dans X jours" badge (rouge si <7).
+- Migrate to `notify.*`.
 
-### Variantes prêtes à l'emploi
-`src/components/states/empty/`
-- `EmptyFavorites.tsx` — "Aucun cours favori" + CTA → Catalogue
-- `EmptyCatalogue.tsx` — "Aucun cours ne correspond" + CTA reset filtres
-- `EmptyGlossary.tsx` — "Aucun terme trouvé"
-- `EmptyLeaderboard.tsx` — "Soyez le premier à gagner des XP cette semaine"
-- `EmptyDailyHistory.tsx` — "Pas encore de défi accompli"
-- `EmptyAchievements.tsx` — "Vos premiers achievements apparaîtront ici"
+### 7. AdminSettings (`src/pages/admin/AdminSettings.tsx`)
+- Replace placeholder "à venir" with structured sections (cards):
+  - **Apparence**: theme toggle (light/dark) — connect to existing theme provider if present, else stub.
+  - **Notifications email**: switches (welcome, weekly digest, inactivity reminder) — UI only, persisted in `localStorage` key `admin.settings.*`.
+  - **Codes promo**: list (read-only from existing `subscriptions.promo_code` distinct values) + "Créer" stub.
+  - **Intégration CRM**: read-only info card with "Bientôt".
+  - **Zone dangereuse**: "Vider le cache analytics" (no-op toast), "Réindexer le glossaire" (no-op toast).
+- Use shadcn `Switch`, `Separator`.
 
-Intégrées dans : Catalogue, Glossaire, Profil (favoris + achievements),
-Classement, DailyChallenge.
+## Shared additions
 
-## 3. Loading skeletons cohérents
+- `src/components/admin/StatCard.tsx` — reusable stat card with icon, label, value, optional delta + trend arrow.
+- `src/components/admin/AdminPageHeader.tsx` — h1 + description + right-side actions slot, consistent across pages.
+- `src/components/admin/AdminSectionCard.tsx` — wrapper card with title, description, action.
+- `src/components/states/skeletons/AdminTableSkeleton.tsx` — 5 rows × N cols skeleton.
 
-### `src/components/states/skeletons/`
-Skeletons spécifiques aux principales surfaces (réutilisables) :
-- `CourseCardSkeleton.tsx` — card 280×180 + 2 lignes texte
-- `CourseGridSkeleton.tsx` — grille de 6 `CourseCardSkeleton`
-- `LeaderboardRowSkeleton.tsx` — avatar + nom + XP
-- `LeaderboardSkeleton.tsx` — 10 rows
-- `ProfileHeaderSkeleton.tsx` — avatar + identité + stats
-- `AchievementGridSkeleton.tsx` — 8 cartes 1:1
-- `LearningPathSkeleton.tsx` — 5 noeuds zigzag
-- `GlossarySkeleton.tsx` — liste de 8 entrées
-- `DailyChallengeSkeleton.tsx` — header + carte cours
+## Out of scope
+- No DB migrations.
+- No real CRM/email/promo-code backends — UI scaffolding only.
+- No course editor improvements (separate batch).
+- No role management UI.
+- No real-time websockets.
 
-Toutes basées sur le `<Skeleton>` shadcn existant + variantes
-shimmer (gradient animé via une classe utilitaire `.skeleton-shimmer`
-ajoutée dans `index.css`).
+## Validation
+- All admin pages render skeletons on first load, empty states when no data, and use `notify.*` for feedback.
+- Charts use semantic CSS colors and adapt to dark mode if applicable.
+- Mobile: sidebar toggle works, tables are scrollable horizontally.
+- No console errors on navigation between admin pages.
 
-### Intégration
-Remplacer les `loading ? <p>Chargement…</p>` ou rien-du-tout par les
-skeletons appropriés sur :
-- Catalogue, Curriculum, CourseDetail, Glossaire, Classement,
-  DailyChallenge, Profil, TestNiveau (chargement initial uniquement).
+## Files
 
-## 4. Page 404 refondue (`NotFound.tsx`)
+**New:**
+- `src/components/admin/StatCard.tsx`
+- `src/components/admin/AdminPageHeader.tsx`
+- `src/components/admin/AdminSectionCard.tsx`
+- `src/components/states/skeletons/AdminTableSkeleton.tsx`
 
-Look CIA : background gradient, illustration "perdu à Antibes", message
-chaleureux, deux CTA (Retour accueil / Voir le catalogue), animation
-fade + scale-in.
-
-```
-┌────────────────────────────────┐
-│   🧭                           │
-│     404                        │
-│   Cette page s'est perdue      │
-│   en chemin pour Antibes       │
-│                                │
-│   [ Retour à l'accueil ]       │
-│   [ Explorer les cours ]       │
-└────────────────────────────────┘
-```
-
-- Garde `console.error` pour debug.
-- i18n direct FR (cohérent avec le reste).
-- Composant interne : `LostCharacter` (réutilise un personnage existant
-  si disponible, sinon icône `Compass` Lucide).
-
-## 5. Error boundary global
-
-### `src/components/states/ErrorBoundary.tsx`
-- Class component qui catch les erreurs React.
-- Fallback : `<ErrorState />` avec message générique, bouton "Réessayer"
-  (reset state + reload), et "Retour à l'accueil".
-- Log console.error + envoi vers `notify.error` au mount du fallback.
-
-### `src/components/states/ErrorState.tsx`
-Utilisable seul pour erreurs de fetch :
-```tsx
-<ErrorState
-  title="Impossible de charger les cours"
-  description="Vérifiez votre connexion et réessayez."
-  onRetry={() => refetch()}
-/>
-```
-
-### Intégration
-- `App.tsx` → wrap les routes dans `<ErrorBoundary>`.
-- Catalogue, Curriculum, Classement, Glossaire : afficher `<ErrorState>`
-  si la query échoue.
-
-## 6. Hors scope
-
-- Pas de migration DB.
-- Pas de modification de la logique de fetch (React Query / hooks
-  existants restent identiques).
-- Pas d'Onboarding modifié.
-- Pas de gestion d'offline (Service Worker) — sera un autre batch.
-
-## 7. Fichiers touchés
-
-**Nouveaux**
-- `src/lib/notify.ts`
-- `src/components/states/EmptyState.tsx`
-- `src/components/states/ErrorState.tsx`
-- `src/components/states/ErrorBoundary.tsx`
-- `src/components/states/empty/Empty{Favorites,Catalogue,Glossary,Leaderboard,DailyHistory,Achievements}.tsx`
-- `src/components/states/skeletons/{CourseCard,CourseGrid,LeaderboardRow,Leaderboard,ProfileHeader,AchievementGrid,LearningPath,Glossary,DailyChallenge}Skeleton.tsx`
-
-**Modifiés**
-- `src/components/ui/sonner.tsx` — config enrichie + responsive
-- `src/pages/NotFound.tsx` — refonte complète
-- `src/App.tsx` — wrap `<ErrorBoundary>`
-- `src/index.css` — classe utilitaire `.skeleton-shimmer`
-- `src/pages/Catalogue.tsx`, `Curriculum.tsx`, `Glossaire.tsx`,
-  `Classement.tsx`, `DailyChallenge.tsx`, `Profil.tsx`, `CourseDetail.tsx`
-  — intégration skeletons + empty + error
-- Migration `toast.*` → `notify.*` dans tous les fichiers listés § 1.
-
-## 8. Critères de validation
-
-- Aucun écran blanc pendant les chargements : tout affiche un skeleton.
-- Liste vide ⇒ `EmptyState` avec CTA pertinent.
-- Erreur de fetch ⇒ `ErrorState` avec bouton "Réessayer" qui marche.
-- Toasts visuellement homogènes (couleurs, durées, icônes).
-- Page 404 stylée et chaleureuse.
-- ErrorBoundary attrape une erreur volontaire et affiche le fallback.
+**Modified:**
+- `src/components/layout/AdminLayout.tsx`
+- `src/pages/admin/AdminDashboard.tsx`
+- `src/pages/admin/AdminUsers.tsx`
+- `src/pages/admin/AdminCourses.tsx`
+- `src/pages/admin/AdminAnalytics.tsx`
+- `src/pages/admin/AdminSubscriptions.tsx`
+- `src/pages/admin/AdminSettings.tsx`
