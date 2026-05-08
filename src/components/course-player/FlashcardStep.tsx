@@ -27,7 +27,7 @@ export function FlashcardStep({ step, onNext }: Props) {
   };
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6 animate-fade-in">
+    <div className="max-w-2xl mx-auto space-y-6">
       <StepCharacterBubble characterId={step.characterId} message={step.characterMessage} />
       <div className="flex items-center justify-between mb-2">
         <h2 className="text-xl font-bold font-display">{step.title}</h2>
@@ -45,7 +45,7 @@ export function FlashcardStep({ step, onNext }: Props) {
         >
           {/* Front */}
           <div
-            className="absolute inset-0 rounded-2xl border-2 bg-card flex items-center justify-center p-8 text-center"
+            className="absolute inset-0 rounded-2xl border-2 border-cia-blue-200 bg-gradient-to-br from-cia-blue-50 to-card flex items-center justify-center p-8 text-center shadow-md"
             style={{ backfaceVisibility: 'hidden' }}
           >
             <div>
@@ -57,7 +57,7 @@ export function FlashcardStep({ step, onNext }: Props) {
           </div>
           {/* Back */}
           <div
-            className="absolute inset-0 rounded-2xl border-2 bg-primary/5 flex items-center justify-center p-8 text-center [transform:rotateY(180deg)]"
+            className="absolute inset-0 rounded-2xl border-2 border-cia-gold-300 bg-gradient-to-br from-cia-gold-50 to-card flex items-center justify-center p-8 text-center [transform:rotateY(180deg)] shadow-md"
             style={{ backfaceVisibility: 'hidden' }}
           >
             <p className="text-xl font-medium text-foreground">{card.back}</p>
@@ -71,11 +71,11 @@ export function FlashcardStep({ step, onNext }: Props) {
           <ArrowLeft className="h-4 w-4 mr-1" /> {t('player.previous')}
         </Button>
         {index < step.cards.length - 1 ? (
-          <Button onClick={handleNext} className="flex-1">
+          <Button variant="gradient" size="cta" onClick={handleNext} className="flex-1">
             {t('player.next')} <ArrowRight className="h-4 w-4 ml-1" />
           </Button>
         ) : (
-          <Button onClick={onNext} className="flex-1">
+          <Button variant="gradient" size="cta" onClick={onNext} className="flex-1">
             {t('player.continue')} <ArrowRight className="h-4 w-4 ml-1" />
           </Button>
         )}

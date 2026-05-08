@@ -2,10 +2,11 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { GripVertical, CheckCircle2, XCircle, ArrowRight } from 'lucide-react';
+import { GripVertical, CheckCircle2, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { DragDropStep as DragDropStepType } from '@/data/course-content';
 import { StepCharacterBubble } from './StepCharacterBubble';
+import { StepFeedback } from './StepFeedback';
 
 interface Props {
   step: DragDropStepType;
@@ -39,7 +40,7 @@ export function DragDropStep({ step, onNext }: Props) {
   };
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6 animate-fade-in">
+    <div className="max-w-2xl mx-auto space-y-6">
       <StepCharacterBubble characterId={step.characterId} message={step.characterMessage} />
       <div className="flex items-center gap-3 mb-2">
         <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
@@ -56,7 +57,7 @@ export function DragDropStep({ step, onNext }: Props) {
           <div className={cn(
             'min-h-[56px] p-3 rounded-xl border-2 border-dashed flex flex-wrap gap-2',
             placed.length === 0 && 'items-center justify-center',
-            answered && isCorrect && 'border-green-500 bg-green-50 dark:bg-green-950',
+            answered && isCorrect && 'border-success bg-success/10',
             answered && !isCorrect && 'border-destructive bg-destructive/10',
           )}>
             {placed.length === 0 && (
@@ -97,30 +98,19 @@ export function DragDropStep({ step, onNext }: Props) {
         </CardContent>
       </Card>
 
-      {answered && (
-        <div className={cn(
-          'p-4 rounded-xl border-2 animate-fade-in',
-          isCorrect ? 'bg-green-50 border-green-200 dark:bg-green-950 dark:border-green-800' : 'bg-destructive/10 border-destructive/30'
-        )}>
-          <p className={cn('font-bold', isCorrect ? 'text-green-700 dark:text-green-400' : 'text-destructive')}>
-            {isCorrect ? `🎉 ${t('player.perfect')}` : `❌ ${t('player.incorrect')}`}
-          </p>
-          {!isCorrect && (
-            <p className="text-sm text-muted-foreground mt-1 flex items-center gap-1">
-              {t('player.correctAnswer')} : {step.correctOrder.join(' ')}
-            </p>
-          )}
-        </div>
-      )}
+      <StepFeedback
+        status={answered ? (isCorrect ? 'correct' : 'incorrect') : 'idle'}
+        hint={answered && !isCorrect ? `${t('player.correctAnswer')} : ${step.correctOrder.join(' ')}` : undefined}
+      />
 
       {!answered && placed.length === step.correctOrder.length && (
-        <Button size="lg" className="w-full" onClick={handleCheck}>
+        <Button variant="gradient" size="cta" className="w-full" onClick={handleCheck}>
           <CheckCircle2 className="h-4 w-4 mr-2" /> {t('player.check')}
         </Button>
       )}
 
       {answered && (
-        <Button size="lg" className="w-full" onClick={() => onNext(isCorrect)}>
+        <Button variant="gradient" size="cta" className="w-full" onClick={() => onNext(isCorrect)}>
           {t('player.continue')} <ArrowRight className="h-4 w-4 ml-2" />
         </Button>
       )}
