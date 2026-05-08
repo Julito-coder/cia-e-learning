@@ -5,8 +5,9 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserProgress } from '@/hooks/useUserProgress';
 import { Card } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
 import { LeagueView } from '@/components/leaderboard/LeagueView';
+import { LeaderboardSkeleton } from '@/components/states/skeletons/LeaderboardSkeleton';
+import { EmptyState } from '@/components/states/EmptyState';
 
 type LeaderboardEntry = {
   user_id: string;
@@ -239,15 +240,19 @@ export default function Classement() {
       {tab === 'league' ? (
         <LeagueView />
       ) : loading ? (
-        <div className="space-y-3">
-          {Array.from({ length: 8 }).map((_, i) => <Skeleton key={i} className="h-16 rounded-2xl" />)}
-        </div>
+        <LeaderboardSkeleton />
       ) : entries.length === 0 ? (
-        <Card className="p-12 text-center rounded-3xl">
-          <Trophy className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-          <p className="text-muted-foreground font-bold">Aucun apprenant à ce niveau pour l'instant.</p>
-          <p className="text-xs text-muted-foreground mt-2">Soyez le premier à grimper dans le classement !</p>
-        </Card>
+        <EmptyState
+          icon={Trophy}
+          title="Classement encore vide"
+          description={
+            tab === 'streak'
+              ? "Personne n'a encore lancé de série. Soyez le premier 🔥"
+              : tab === 'level'
+              ? `Aucun apprenant au niveau ${cecrLevel} pour l'instant.`
+              : "Soyez le premier à grimper dans le classement !"
+          }
+        />
       ) : (
         <>
           {/* Podium */}

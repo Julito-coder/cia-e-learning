@@ -17,6 +17,7 @@ import { useDailyChallenge } from '@/hooks/useDailyChallenge';
 import { getDailyLesson } from '@/lib/dailyChallenge';
 import { readCourseProgressMap, writeCourseProgressMap } from '@/lib/courseProgress';
 import { toast } from 'sonner';
+import { notify } from '@/lib/notify';
 
 const contentTypeLabels: Record<string, { label: string; icon: React.ElementType }> = {
   text: { label: 'Texte', icon: FileText },
@@ -96,7 +97,7 @@ export default function CourseDetail() {
           const xpEarned = Math.max(5, Math.round(score * 5));
           console.log('[CourseDetail] awarding XP=', xpEarned);
           const { leveledUp, newLevel } = await addXP(xpEarned, 'course_completion', displayCourse.id);
-          toast.success(`+${xpEarned} XP gagnés !`);
+          notify.xp(xpEarned, 'Cours terminé');
 
           // Daily challenge bonus :
           // - soit la leçon ouverte EST la leçon du jour pour son niveau (entrée naturelle depuis le programme),
@@ -106,9 +107,7 @@ export default function CourseDetail() {
           if (isDailyChallenge || isDailyMatch) {
             const res = await markDoneToday();
             if (res.awarded) {
-              setTimeout(() => {
-                toast.success(`🔥 Défi du jour validé ! Série : ${res.newStreak} jour${res.newStreak > 1 ? 's' : ''} (+${res.xp} XP)`, { duration: 5000 });
-              }, 600);
+              setTimeout(() => notify.streak(res.newStreak, res.xp), 600);
             } else if (isDailyChallenge) {
               setTimeout(() => {
                 toast(`✅ Défi du jour déjà validé aujourd'hui — pas de bonus supplémentaire.`, { duration: 4000 });
@@ -121,21 +120,19 @@ export default function CourseDetail() {
             const mod = curriculumData.module;
             if (isModuleComplete(mod)) {
               // Badge earned toast
-              toast.success(`🏅 Badge obtenu : ${mod.badgeEmoji} ${mod.badge}`, { duration: 5000 });
+              notify.badge(mod.badge, mod.badgeEmoji);
 
               // Check newly unlocked modules
               const unlocked = getNewlyUnlockedModules(mod.id);
               for (const u of unlocked) {
-                setTimeout(() => {
-                  toast(`🔓 Module débloqué : ${u.badgeEmoji} ${u.id} — ${u.title}`, { duration: 6000 });
-                }, 1500);
+                setTimeout(() => notify.unlock(`${u.id} — ${u.title}`, u.badgeEmoji), 1500);
               }
 
               // Update CECR level based on progress
               const newComputedLevel = computeLevelFromProgress();
               if (newComputedLevel !== cecrLevel) {
                 await setLevel(newComputedLevel as any);
-                toast.success(`🎉 Niveau supérieur ! Vous êtes maintenant ${newComputedLevel} !`, { duration: 5000 });
+                notify.levelUp(newComputedLevel);
               }
             }
           }

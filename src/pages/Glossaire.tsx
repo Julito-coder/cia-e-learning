@@ -1,11 +1,12 @@
 import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Search } from 'lucide-react';
+import { Search, BookMarked } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { EmptyState } from '@/components/states/EmptyState';
 import { staggerContainer, staggerItem, slideUp } from '@/lib/animations';
 import { glossary, type GlossaryEntry } from '@/data/glossary';
 
@@ -89,11 +90,23 @@ export default function Glossaire() {
       </p>
 
       {filtered.length === 0 ? (
-        <div className="text-center py-16">
-          <div className="text-5xl mb-4">📚</div>
-          <p className="text-lg font-bold text-muted-foreground mb-1">{t('glossary.empty_title')}</p>
-          <p className="text-sm text-muted-foreground">{t('glossary.empty_subtitle')}</p>
-        </div>
+        <EmptyState
+          icon={BookMarked}
+          title={t('glossary.empty_title')}
+          description={t('glossary.empty_subtitle')}
+          action={
+            search || levelFilter !== 'all' || categoryFilter !== 'all'
+              ? {
+                  label: t('catalogue.clear_all'),
+                  onClick: () => {
+                    setSearch('');
+                    setLevelFilter('all');
+                    setCategoryFilter('all');
+                  },
+                }
+              : undefined
+          }
+        />
       ) : (
         <div className="space-y-8">
           {grouped.map(([letter, entries]) => (

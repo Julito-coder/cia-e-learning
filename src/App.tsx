@@ -7,6 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/hooks/useAuth";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { AdminLayout } from "@/components/layout/AdminLayout";
+import { ErrorBoundary } from "@/components/states/ErrorBoundary";
 import Index from "./pages/Index";
 import Catalogue from "./pages/Catalogue";
 import Curriculum from "./pages/Curriculum";
@@ -43,6 +44,7 @@ const App = () => {
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
+          <ErrorBoundary>
           <Routes>
             {/* Front-office */}
             <Route element={<AppLayout />}>
@@ -74,6 +76,7 @@ const App = () => {
 
             <Route path="*" element={<NotFound />} />
           </Routes>
+          </ErrorBoundary>
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
