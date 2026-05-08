@@ -148,7 +148,24 @@
     "backToCourse": "Zurück zum Kurs",
     "nextQuestion": "Nächste Frage",
     "seeResult": "Ergebnis ansehen",
-    "question": "Frage"
+    "question": "Frage",
+    "exit": "Beenden",
+    "lesson": {
+      "continue": "Weiter",
+      "examples": "Beispiele"
+    },
+    "feedback": {
+      "correct": "Richtig!",
+      "incorrect": "Nicht ganz — versuch es nochmal."
+    },
+    "completion": {
+      "title": "Gut gemacht!",
+      "steps": "Schritte",
+      "time": "Zeit",
+      "next_course": "Nächster Kurs",
+      "back_catalogue": "Zurück zum Katalog",
+      "retry": "Erneut"
+    }
   },
   "indicators": {
     "xp_tooltip": "{{count}} XP insgesamt",
