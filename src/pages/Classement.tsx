@@ -212,19 +212,19 @@ export default function Classement() {
   const meInTop = user && entries.some((e) => e.user_id === user.id);
 
   return (
-    <div className="container py-8 max-w-4xl">
-      <div className="text-center mb-8">
+    <div className="container py-6 md:py-8 max-w-4xl">
+      <div className="text-center mb-6 md:mb-8">
         <motion.div
           initial={{ scale: 0, rotate: -45 }}
           animate={{ scale: 1, rotate: 0 }}
           transition={{ duration: 0.6, ease: [0.34, 1.56, 0.64, 1] }}
-          className="inline-flex items-center justify-center h-16 w-16 rounded-2xl bg-gradient-to-br from-yellow-400 to-orange-500 mb-3 shadow-lg relative"
+          className="inline-flex items-center justify-center h-14 w-14 sm:h-16 sm:w-16 rounded-2xl bg-gradient-to-br from-yellow-400 to-orange-500 mb-3 shadow-lg relative"
         >
           <div className="absolute inset-0 rounded-2xl bg-yellow-400/40 blur-xl -z-10" />
-          <Trophy className="h-9 w-9 text-white" />
+          <Trophy className="h-7 w-7 sm:h-9 sm:w-9 text-white" />
         </motion.div>
-        <h1 className="font-display text-3xl md:text-4xl text-primary mb-2">Classement</h1>
-        <p className="text-muted-foreground text-sm">Affrontez les autres apprenants et grimpez dans le classement !</p>
+        <h1 className="font-display text-2xl sm:text-3xl md:text-4xl text-primary mb-2">Classement</h1>
+        <p className="text-muted-foreground text-xs sm:text-sm px-4">Affrontez les autres apprenants et grimpez dans le classement !</p>
       </div>
 
       <AnimatedTabs value={tab} onChange={setTab} levelLabel={cecrLevel} />
@@ -257,7 +257,7 @@ export default function Classement() {
         <>
           {/* Podium */}
           {top3.length >= 3 && (
-            <div className="grid grid-cols-3 gap-3 mb-8 items-end">
+            <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-6 md:mb-8 items-end">
               <div className="order-1">
                 <PodiumCard entry={top3[1]} rank={2} isMe={user?.id === top3[1].user_id} mode={tab} />
               </div>
