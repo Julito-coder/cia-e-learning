@@ -97,7 +97,10 @@ export default function Connexion() {
     } else {
       const { error } = await signUp(email, password, { first_name: firstName, last_name: lastName });
       if (error) toast.error(error.message);
-      else toast.success('Inscription réussie ! Vérifiez votre email.');
+      else {
+        toast.success('Bienvenue ! On démarre ton aventure 🇫🇷');
+        navigate('/?welcome=1');
+      }
     }
     setLoading(false);
   };
