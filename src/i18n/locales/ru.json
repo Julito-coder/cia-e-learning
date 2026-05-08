@@ -261,5 +261,24 @@
     "your_level": "Tu es ici",
     "module": "Module",
     "coming_soon": "Modules en préparation. Disponibles bientôt."
+  },
+  "glossary": {
+    "title": "Glossaire",
+    "subtitle": "Tous les mots et expressions de la méthode CIA, classés par niveau et catégorie.",
+    "search_placeholder": "Rechercher un mot, une traduction...",
+    "all_categories": "Toutes catégories",
+    "results_count": "{{count}} entrées",
+    "entry": "entrée",
+    "entries": "entrées",
+    "empty_title": "Aucune entrée trouvée",
+    "empty_subtitle": "Essaie de modifier ta recherche ou tes filtres.",
+    "categories": {
+      "verbe": "Verbe",
+      "nom": "Nom",
+      "adjectif": "Adjectif",
+      "adverbe": "Adverbe",
+      "expression": "Expression",
+      "grammaire": "Grammaire"
+    }
   }
 }

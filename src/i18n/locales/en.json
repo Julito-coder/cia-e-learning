@@ -261,5 +261,24 @@
     "your_level": "You are here",
     "module": "Module",
     "coming_soon": "Modules in preparation. Available soon."
+  },
+  "glossary": {
+    "title": "Glossary",
+    "subtitle": "All the words and expressions from CIA method, sorted by level and category.",
+    "search_placeholder": "Search a word, a translation...",
+    "all_categories": "All categories",
+    "results_count": "{{count}} entries",
+    "entry": "entry",
+    "entries": "entries",
+    "empty_title": "No entry found",
+    "empty_subtitle": "Try adjusting your search or filters.",
+    "categories": {
+      "verbe": "Verb",
+      "nom": "Noun",
+      "adjectif": "Adjective",
+      "adverbe": "Adverb",
+      "expression": "Expression",
+      "grammaire": "Grammar"
+    }
   }
 }
