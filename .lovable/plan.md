@@ -1,96 +1,92 @@
 
-# Batch 12 — Admin Polish
+# Batch 13 — i18n Complet (FR/EN/ES/DE/IT/RU)
 
-Polish existing admin pages with consistent design, loading/empty/error states, better UX, and reuse of Batch 11 primitives (`notify.*`, `EmptyState`, skeletons, `ErrorState`). No new business logic, no DB migrations.
+Goal: every user-facing string flows through `react-i18next`, with all 6 locale files in perfect sync. FR is the canonical source.
 
-## Scope per page
+## Audit (current state)
 
-### 1. AdminLayout (`src/components/layout/AdminLayout.tsx`)
-- Add a top header bar with breadcrumb (Admin › current page) and signed-in admin email + logout.
-- Clean active-state styling, subtle gradient on active nav item, animated chevron when collapsing.
-- Mobile: floating burger button (currently no visible trigger when sidebar closed).
-- Footer of sidebar: "Retour à l'app" link → `/`.
+- 39 files use `useTranslation` (mostly landing, course player, profile, curriculum, glossary, catalogue, gamification toasts).
+- ~25 pages/components still hardcode FR strings, including: all 6 admin pages, `Index`, `NotFound`, `Classement`, `CourseDetail`, `DailyChallenge`, `SpeedTest`, `Connexion`, `ForgotPassword`, `ResetPassword`, `SplashScreen`, characters modal, course card / learning path, league components, `AppLayout`, `AdminLayout`, gamification visuals, `EmptyState` consumers.
+- `fr.json` has 19 namespaces / ~337 keys. Other locales lag (412–439 lines vs 471 for FR) and likely miss the newer namespaces.
 
-### 2. AdminDashboard (`src/pages/admin/AdminDashboard.tsx`)
-- Replace 4 plain stat cards with rich `StatCard` (icon in colored circle, delta vs previous period if available, gradient border).
-- Add 3 new sections:
-  - Recent signups (last 5 users, mini list)
-  - Recent XP activity (last 5 from `xp_audit_log`)
-  - Quick actions (Créer un utilisateur, Créer un cours, Voir analytics)
-- Skeleton loaders during fetch.
-- Greeting line: "Bonjour, {firstName} 👋".
+## Scope
 
-### 3. AdminUsers (`src/pages/admin/AdminUsers.tsx`)
-- Add skeletons + `EmptyState` (no results, no users).
-- Pagination (20/page) with shadcn `Pagination`.
-- Filters row: search + level + new "Statut" (actif/inactif) + "Type" (CIA/externe).
-- Replace single icon action with dropdown (Voir détail, Activer/Désactiver, Réinitialiser mot de passe — toast "à venir").
-- Migrate `toast` → `notify.*`.
-- Fix CSV export to include UTF-8 BOM for Excel compatibility.
-- Replace native `<a download>` with proper helper.
+### 1. Add missing namespaces in `fr.json`
+- `auth` (login, signup, forgot, reset, validation messages, password strength labels)
+- `admin` (dashboard, users, courses, analytics, subscriptions, settings, layout breadcrumbs, common table labels)
+- `classement` (leagues, ranks, promo/relegation, countdown labels)
+- `courseDetail` (sections, prerequisites, locked, premium banner, CTA)
+- `dailyChallenge` (intro, claim, already done, streak summary)
+- `speedTest` & `notFound` & `splash`
+- `common` (yes/no, save, cancel, delete, edit, loading, retry, search, filters, all, none, today, yesterday, etc.)
+- `states` (empty/error standard titles + retry)
+- `notify` (xp, streak, badge, levelUp, unlock — bonus payloads)
 
-### 4. AdminCourses (`src/pages/admin/AdminCourses.tsx`)
-- Switch from table-only to grid of admin course cards with thumbnail + status badges (publié/brouillon, gratuit/premium).
-- Filter bar: search, level, statut publication.
-- Skeletons + `EmptyState` (no courses → CTA "Créer un cours").
-- Bulk actions placeholder hidden behind feature flag (skip for now).
-- Migrate to `notify.*`.
+### 2. Refactor hardcoded files to use `t()`
+Group A — public pages:
+- `Index.tsx`, `NotFound.tsx`, `Classement.tsx`, `CourseDetail.tsx`, `DailyChallenge.tsx`, `SpeedTest.tsx`, `Connexion.tsx`, `ForgotPassword.tsx`, `ResetPassword.tsx`
 
-### 5. AdminAnalytics (`src/pages/admin/AdminAnalytics.tsx`)
-- Add KPI row (4 cards): total users, active users, total XP awarded (sum from `xp_audit_log`), avg streak.
-- Use semantic chart colors via CSS vars (`hsl(var(--primary))`, etc.) — replace hardcoded hex.
-- Add a 3rd chart: weekly XP trend (last 8 weeks, bar chart, from `xp_audit_log` grouped by week).
-- Skeletons + empty states per chart.
-- Period selector (7j / 30j / 90j) — UI only, filters analytics queries by `created_at`.
+Group B — shared components:
+- `SplashScreen.tsx`, `AppLayout.tsx`
+- `courses/CourseCard.tsx`, `courses/LearningPath.tsx`, `courses/LevelBadge.tsx`
+- `leaderboard/LeagueBadge.tsx`, `leaderboard/LeagueView.tsx`, `leaderboard/PromoZoneIndicator.tsx`
+- `gamification/Achievements.tsx`, `gamification/DailyGoal.tsx`, `gamification/GamificationOverlay.tsx`
+- `characters/CharacterStoryModal.tsx`, `characters/CharacterShowcase.tsx`
+- `profile/AvatarUpload.tsx`, `profile/CountrySelect.tsx` (label + country-name policy: keep names in own language, only translate the field label)
 
-### 6. AdminSubscriptions (`src/pages/admin/AdminSubscriptions.tsx`)
-- Add KPI row: total subscriptions, active premium, active school, expiring <30j.
-- Skeletons + empty state.
-- Add expiration date column with "expire dans X jours" badge (rouge si <7).
-- Migrate to `notify.*`.
+Group C — admin (Batch 12):
+- `AdminLayout.tsx` and all 6 `Admin*.tsx` pages, plus shared `AdminPageHeader`, `StatCard`, `AdminSectionCard`, table skeleton labels.
 
-### 7. AdminSettings (`src/pages/admin/AdminSettings.tsx`)
-- Replace placeholder "à venir" with structured sections (cards):
-  - **Apparence**: theme toggle (light/dark) — connect to existing theme provider if present, else stub.
-  - **Notifications email**: switches (welcome, weekly digest, inactivity reminder) — UI only, persisted in `localStorage` key `admin.settings.*`.
-  - **Codes promo**: list (read-only from existing `subscriptions.promo_code` distinct values) + "Créer" stub.
-  - **Intégration CRM**: read-only info card with "Bientôt".
-  - **Zone dangereuse**: "Vider le cache analytics" (no-op toast), "Réindexer le glossaire" (no-op toast).
-- Use shadcn `Switch`, `Separator`.
+Group D — auth utilities:
+- `lib/validators/auth.ts` → return error codes (e.g. `auth.errors.emailInvalid`) instead of raw strings; consumers translate.
+- `lib/notify.ts` gamification helpers accept already-translated text (callers pass `t(...)`); keep API stable but add a thin `notify.t` helper that takes a key.
 
-## Shared additions
+### 3. Translate to EN / ES / DE / IT / RU
+- Sync structure with FR (same nesting & keys).
+- Provide native, idiomatic translations for all strings — not literal.
+- Preserve placeholders (`{{name}}`, `{{count}}`) and pluralization (use i18next `_one` / `_other` suffix where the count varies, e.g. `j`/`days`).
+- Special policies:
+  - **Brand & product names** (CIA, Antibes, character names, CECRL levels A1–C2) stay in original.
+  - **Learning content** stays French (memory rule). UI strings only.
+  - **Admin labels** translated everywhere.
 
-- `src/components/admin/StatCard.tsx` — reusable stat card with icon, label, value, optional delta + trend arrow.
-- `src/components/admin/AdminPageHeader.tsx` — h1 + description + right-side actions slot, consistent across pages.
-- `src/components/admin/AdminSectionCard.tsx` — wrapper card with title, description, action.
-- `src/components/states/skeletons/AdminTableSkeleton.tsx` — 5 rows × N cols skeleton.
+### 4. i18n quality utilities
+- Add `scripts/i18n-check.mjs`: walks FR keys, verifies every other locale has the same set; logs missing/extra keys; non-zero exit if mismatch. Run manually (no CI wiring here).
+- `i18n/index.ts`: enable `returnEmptyString: false`, `saveMissing: true` only in dev with a `console.warn` for missing keys. Keep `fallbackLng: 'fr'`.
+- Document conventions in `src/i18n/README.md`: naming (`namespace.section.key`), placeholders, pluralization, and "FR is source of truth".
+
+### 5. LanguageSwitcher polish
+- Already exists. Verify all 6 langs (FR, EN, ES, DE, IT, RU) render with native names + flags. Ensure HTML `lang` attribute updates on `i18n.changeLanguage`.
+- Persist selection (already via `cia-interface-lang`). Add a side effect in `i18n/index.ts` that writes `document.documentElement.lang` on init and on `languageChanged`.
 
 ## Out of scope
+
 - No DB migrations.
-- No real CRM/email/promo-code backends — UI scaffolding only.
-- No course editor improvements (separate batch).
-- No role management UI.
-- No real-time websockets.
+- No new pages/features.
+- No translation of learning content (lessons stay FR per memory).
+- No CI integration of the check script.
+- No RTL support (RU is LTR; no Arabic/Hebrew added).
 
 ## Validation
-- All admin pages render skeletons on first load, empty states when no data, and use `notify.*` for feedback.
-- Charts use semantic CSS colors and adapt to dark mode if applicable.
-- Mobile: sidebar toggle works, tables are scrollable horizontally.
-- No console errors on navigation between admin pages.
+
+- `node scripts/i18n-check.mjs` reports zero missing/extra keys for all 5 non-FR locales.
+- Switching language in the UI updates: nav, landing, course player, catalogue, curriculum, glossary, classement, profile, daily challenge, auth pages, splash, 404, admin shell, all 6 admin pages, league/course/character components.
+- No raw FR string remains in any of the listed files (spot-check via `rg` for accents like "é/à/ç" in JSX strings).
+- Console shows no "missingKey" warnings during a full nav loop in any of the 6 languages.
+- HTML `<html lang="…">` reflects the active language.
 
 ## Files
 
 **New:**
-- `src/components/admin/StatCard.tsx`
-- `src/components/admin/AdminPageHeader.tsx`
-- `src/components/admin/AdminSectionCard.tsx`
-- `src/components/states/skeletons/AdminTableSkeleton.tsx`
+- `scripts/i18n-check.mjs`
+- `src/i18n/README.md`
 
-**Modified:**
-- `src/components/layout/AdminLayout.tsx`
-- `src/pages/admin/AdminDashboard.tsx`
-- `src/pages/admin/AdminUsers.tsx`
-- `src/pages/admin/AdminCourses.tsx`
-- `src/pages/admin/AdminAnalytics.tsx`
-- `src/pages/admin/AdminSubscriptions.tsx`
-- `src/pages/admin/AdminSettings.tsx`
+**Modified (locales):**
+- `src/i18n/locales/fr.json` (canonical, expanded)
+- `src/i18n/locales/en.json`, `es.json`, `de.json`, `it.json`, `ru.json` (full re-sync + new translations)
+
+**Modified (code):**
+- `src/i18n/index.ts` (lang side-effect + dev warnings)
+- `src/lib/validators/auth.ts` (return keys, not strings)
+- `src/lib/notify.ts` (helper for keyed messages)
+- All files listed in Groups A / B / C above (~25 files)

@@ -17,4 +17,18 @@ i18n.use(initReactI18next).init({
   interpolation: { escapeValue: false },
 });
 
+if (typeof document !== 'undefined') {
+  document.documentElement.lang = i18n.language;
+  i18n.on('languageChanged', (lng) => {
+    document.documentElement.lang = lng;
+  });
+}
+
+if (import.meta.env?.DEV) {
+  i18n.on('missingKey', (_lngs, ns, key) => {
+    // eslint-disable-next-line no-console
+    console.warn(`[i18n] missing key: ${ns}:${key}`);
+  });
+}
+
 export default i18n;
