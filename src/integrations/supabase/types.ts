@@ -277,6 +277,36 @@ export type Database = {
         }
         Relationships: []
       }
+      tts_usage_log: {
+        Row: {
+          created_at: string
+          error_msg: string | null
+          id: string
+          status: string
+          text_length: number
+          user_id: string | null
+          voice_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          error_msg?: string | null
+          id?: string
+          status: string
+          text_length: number
+          user_id?: string | null
+          voice_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          error_msg?: string | null
+          id?: string
+          status?: string
+          text_length?: number
+          user_id?: string | null
+          voice_id?: string | null
+        }
+        Relationships: []
+      }
       user_favorites: {
         Row: {
           course_id: string
@@ -433,6 +463,7 @@ export type Database = {
         Returns: boolean
       }
       mark_daily_done: { Args: never; Returns: Json }
+      rotate_weekly_leagues: { Args: never; Returns: Json }
       set_cecr_level: { Args: { _level: string }; Returns: Json }
       set_placement_level: { Args: { _level: string }; Returns: Json }
     }
