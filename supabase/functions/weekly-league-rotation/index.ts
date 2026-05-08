@@ -1,106 +1,55 @@
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.45.0';
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
+const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
+const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+const CRON_SECRET = Deno.env.get("CRON_SECRET");
+const ALLOWED_ORIGINS = (Deno.env.get("ALLOWED_ORIGINS") || "*").split(",").map(s => s.trim());
 
-type League = 'bronze' | 'argent' | 'or';
-const LEAGUES: League[] = ['bronze', 'argent', 'or'];
-
-const promote = (l: League): League => (l === 'bronze' ? 'argent' : l === 'argent' ? 'or' : 'or');
-const demote = (l: League): League => (l === 'or' ? 'argent' : l === 'argent' ? 'bronze' : 'bronze');
-
-function previousMondayParis(now = new Date()): string {
-  // Compute Monday in Europe/Paris of the *previous* completed week.
-  const paris = new Date(now.toLocaleString('en-US', { timeZone: 'Europe/Paris' }));
-  const dow = (paris.getDay() + 6) % 7; // 0 = Monday
-  const thisMonday = new Date(paris);
-  thisMonday.setHours(0, 0, 0, 0);
-  thisMonday.setDate(paris.getDate() - dow);
-  const prev = new Date(thisMonday);
-  prev.setDate(thisMonday.getDate() - 7);
-  return prev.toISOString().slice(0, 10);
+function buildCorsHeaders(origin: string | null): Record<string, string> {
+  let allow = "*";
+  if (!ALLOWED_ORIGINS.includes("*")) {
+    allow = origin && ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+  }
+  return {
+    "Access-Control-Allow-Origin": allow,
+    "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+    "Vary": "Origin",
+  };
 }
 
-function currentMondayParis(now = new Date()): string {
-  const paris = new Date(now.toLocaleString('en-US', { timeZone: 'Europe/Paris' }));
-  const dow = (paris.getDay() + 6) % 7;
-  const monday = new Date(paris);
-  monday.setHours(0, 0, 0, 0);
-  monday.setDate(paris.getDate() - dow);
-  return monday.toISOString().slice(0, 10);
+function timingSafeEqual(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let mismatch = 0;
+  for (let i = 0; i < a.length; i++) mismatch |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return mismatch === 0;
 }
 
 Deno.serve(async (req) => {
-  if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
+  const corsHeaders = buildCorsHeaders(req.headers.get("Origin"));
+  const jsonHeaders = { ...corsHeaders, "Content-Type": "application/json" };
+  if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
-  const supabase = createClient(
-    Deno.env.get('SUPABASE_URL')!,
-    Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
-  );
-
-  const weekStart = previousMondayParis();
-  const newPeriod = currentMondayParis();
-  const summary: Record<string, { promoted: number; demoted: number; stayed: number }> = {};
-
-  for (const league of LEAGUES) {
-    summary[league] = { promoted: 0, demoted: 0, stayed: 0 };
-
-    const { data: members, error } = await supabase
-      .from('profiles')
-      .select('user_id, weekly_xp, league')
-      .eq('is_active', true)
-      .eq('league', league)
-      .order('weekly_xp', { ascending: false });
-
-    if (error || !members) continue;
-    const n = members.length;
-    if (n === 0) continue;
-
-    // Promotion / relegation slots
-    const promoteCount = n >= 6 ? 3 : n >= 2 ? 1 : 0;
-    const demoteCount = n >= 6 ? 3 : n >= 2 ? 1 : 0;
-
-    for (let i = 0; i < n; i++) {
-      const m = members[i];
-      const rank = i + 1;
-      let outcome: 'promoted' | 'demoted' | 'stayed' = 'stayed';
-      let nextLeague: League = league;
-
-      if (i < promoteCount && league !== 'or') {
-        outcome = 'promoted';
-        nextLeague = promote(league);
-      } else if (i >= n - demoteCount && league !== 'bronze') {
-        outcome = 'demoted';
-        nextLeague = demote(league);
-      }
-      summary[league][outcome]++;
-
-      await supabase.from('league_history').insert({
-        user_id: m.user_id,
-        week_start: weekStart,
-        league_before: league,
-        league_after: nextLeague,
-        final_rank: rank,
-        weekly_xp_total: m.weekly_xp ?? 0,
-        outcome,
-      });
-
-      await supabase
-        .from('profiles')
-        .update({ league: nextLeague })
-        .eq('user_id', m.user_id);
-    }
+  if (!CRON_SECRET) {
+    console.error("[weekly-league-rotation] CRON_SECRET not configured");
+    return new Response(JSON.stringify({ error: "Server misconfigured" }), { status: 500, headers: jsonHeaders });
   }
 
-  // Reset weekly counters for everyone
-  await supabase
-    .from('profiles')
-    .update({ weekly_xp: 0, weekly_period_start: newPeriod })
-    .eq('is_active', true);
+  const authHeader = req.headers.get("Authorization") || "";
+  const provided = authHeader.startsWith("Bearer ") ? authHeader.replace("Bearer ", "") : "";
+  if (!timingSafeEqual(provided, CRON_SECRET)) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: jsonHeaders });
+  }
 
-  return new Response(JSON.stringify({ ok: true, weekStart, summary }), {
-    headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-  });
+  try {
+    const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } });
+    const { data, error } = await supabase.rpc("rotate_weekly_leagues");
+    if (error) {
+      console.error("[weekly-league-rotation] RPC error", error);
+      return new Response(JSON.stringify({ ok: false, error: error.message }), { status: 500, headers: jsonHeaders });
+    }
+    return new Response(JSON.stringify({ ok: true, ...data }), { headers: jsonHeaders });
+  } catch (e) {
+    console.error("[weekly-league-rotation] exception", e);
+    return new Response(JSON.stringify({ ok: false, error: String(e).slice(0, 200) }), { status: 500, headers: jsonHeaders });
+  }
 });
