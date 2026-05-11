@@ -9,6 +9,7 @@ import { getCharacter, getCharacterEvolution } from '@/data/characters';
 import { CharacterBubble } from './CharacterBubble';
 import { StepFeedback } from './StepFeedback';
 import { useUserProgress } from '@/hooks/useUserProgress';
+import { supabase } from '@/integrations/supabase/client';
 
 interface Props {
   step: ListeningStepType;
@@ -47,6 +48,8 @@ export function ListeningStep({ step, onNext }: Props) {
 
     setLoading(true);
     try {
+      const { data: sessionData } = await supabase.auth.getSession();
+      const accessToken = sessionData.session?.access_token ?? import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
       const response = await fetch(
         `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/elevenlabs-tts`,
         {
@@ -54,7 +57,7 @@ export function ListeningStep({ step, onNext }: Props) {
           headers: {
             'Content-Type': 'application/json',
             apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
-            Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+            Authorization: `Bearer ${accessToken}`,
           },
           body: JSON.stringify({
             text: step.text,
