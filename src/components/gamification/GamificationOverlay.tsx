@@ -10,7 +10,7 @@ export function GamificationOverlay() {
   useAchievements();
 
   const [bursts, setBursts] = useState<Array<{ id: string; amount: number; x: number; y: number }>>([]);
-  const [levelUp, setLevelUp] = useState<{ level: string } | null>(null);
+  const [levelUp, setLevelUp] = useState<{ level: string; previousLevel?: string } | null>(null);
   const [streakMilestone, setStreakMilestone] = useState<{ streak: number } | null>(null);
   const [achievementQueue, setAchievementQueue] = useState<Achievement[]>([]);
   const currentAchievement = achievementQueue[0] ?? null;
@@ -42,7 +42,9 @@ export function GamificationOverlay() {
     };
     const onLevelUp = (e: Event) => {
       const detail = (e as CustomEvent).detail;
-      if (detail?.level) setLevelUp({ level: detail.level });
+      if (detail?.level) {
+        setLevelUp({ level: detail.level, previousLevel: detail.previousLevel });
+      }
     };
     const onStreakMilestone = (e: Event) => {
       const detail = (e as CustomEvent).detail;
@@ -81,6 +83,7 @@ export function GamificationOverlay() {
 
       <LevelUpCelebration
         level={levelUp?.level ?? ''}
+        previousLevel={levelUp?.previousLevel}
         open={levelUp != null}
         onClose={() => setLevelUp(null)}
       />
