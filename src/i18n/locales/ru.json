@@ -411,6 +411,15 @@
       "desc": "Cent jours d'affilée. Très peu de gens y arrivent."
     }
   },
+  "daily": {
+    "mascot": {
+      "first_time": "On commence ?",
+      "streak_short": "Continue ta série !",
+      "streak_medium": "Bravo, ne lâche pas !",
+      "streak_long": "Tu es incroyable !",
+      "done": "Bravo pour aujourd'hui !"
+    }
+  },
   "common": {
     "yes": "Да",
     "no": "Нет",

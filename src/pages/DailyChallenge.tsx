@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Flame, Calendar, Play, Check, Trophy, ArrowLeft, Crown } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -12,6 +13,8 @@ import { useAuth } from '@/hooks/useAuth';
 import type { CECRLevel } from '@/data/demo-courses';
 import { AnimatedCounter } from '@/components/gamification/AnimatedCounter';
 import { CountdownDigit } from '@/components/leaderboard/CountdownDigit';
+import { MascotPresence, type MascotMood } from '@/components/characters/MascotPresence';
+import { useUserProgress } from '@/hooks/useUserProgress';
 
 type StreakRow = {
   user_id: string;
@@ -44,11 +47,29 @@ function useTimeUntilMidnightParis() {
 }
 
 export default function DailyChallenge() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const navigate = useNavigate();
   const { selectedLevel, setSelectedLevel, dailyLesson, streak, isDoneToday } = useDailyChallenge();
+  const { cecrLevel } = useUserProgress();
   const [topStreaks, setTopStreaks] = useState<StreakRow[]>([]);
   const tilMidnight = useTimeUntilMidnightParis();
+
+  const mascotMood: MascotMood = isDoneToday
+    ? 'celebrating'
+    : streak >= 7
+      ? 'encouraging'
+      : 'talking';
+
+  const mascotMessage = isDoneToday
+    ? t('daily.mascot.done')
+    : streak >= 30
+      ? t('daily.mascot.streak_long')
+      : streak >= 7
+        ? t('daily.mascot.streak_medium')
+        : streak >= 1
+          ? t('daily.mascot.streak_short')
+          : t('daily.mascot.first_time');
 
   useEffect(() => {
     supabase
@@ -109,6 +130,17 @@ export default function DailyChallenge() {
           <Flame className="h-5 w-5" />
           <AnimatedCounter target={streak} duration={800} /> {streak > 1 ? 'jours' : 'jour'} de série
         </motion.div>
+
+        {/* Mascot with contextual bubble — desktop only */}
+        <div className="hidden lg:flex justify-center mt-6">
+          <MascotPresence
+            level={cecrLevel}
+            mood={mascotMood}
+            message={mascotMessage}
+            bubbleSide="right"
+            size={96}
+          />
+        </div>
       </div>
 
       {/* Level selector */}

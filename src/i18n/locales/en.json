@@ -411,6 +411,15 @@
       "desc": "One hundred days in a row. Very few get there."
     }
   },
+  "daily": {
+    "mascot": {
+      "first_time": "Shall we start?",
+      "streak_short": "Keep it up!",
+      "streak_medium": "Great, don't stop!",
+      "streak_long": "You're amazing!",
+      "done": "Well done today!"
+    }
+  },
   "profile": {
     "title": "My profile",
     "identity": "Identity",

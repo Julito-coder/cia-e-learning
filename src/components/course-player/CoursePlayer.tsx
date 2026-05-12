@@ -13,6 +13,8 @@ import { FlashcardStep } from './FlashcardStep';
 import { ListeningStep } from './ListeningStep';
 import { FinalQuizStep } from './FinalQuizStep';
 import { readCoursePlayerProgress, writeCoursePlayerProgress, clearCoursePlayerProgress } from '@/lib/courseProgress';
+import { MascotPresence, type MascotMood } from '@/components/characters/MascotPresence';
+import { useUserProgress } from '@/hooks/useUserProgress';
 
 interface Props {
   content: CourseContent;
@@ -45,6 +47,7 @@ function saveProgress(courseId: string, progress: SavedProgress) {
 
 export function CoursePlayer({ content, courseTitle, onExit, onComplete }: Props) {
   const { t } = useTranslation();
+  const { cecrLevel } = useUserProgress();
   const saved = loadProgress(content.courseId);
   const [currentStep, setCurrentStep] = useState(Math.min(saved.step, content.steps.length - 1));
   const [correctCount, setCorrectCount] = useState(saved.correctCount);
@@ -53,6 +56,7 @@ export function CoursePlayer({ content, courseTitle, onExit, onComplete }: Props
   const [finalScore, setFinalScore] = useState(0);
   const [startedAt] = useState(() => Date.now());
   const [durationSeconds, setDurationSeconds] = useState(0);
+  const [mascotMood, setMascotMood] = useState<MascotMood>('idle');
 
   const step = content.steps[currentStep];
   const totalSteps = content.steps.length;
@@ -74,6 +78,7 @@ export function CoursePlayer({ content, courseTitle, onExit, onComplete }: Props
     if (correct !== undefined) {
       setTotalQuestions(newTotal);
       if (correct) setCorrectCount(newCorrect);
+      setMascotMood(correct ? 'encouraging' : 'sad');
     }
 
     if (currentStep + 1 >= totalSteps) {
@@ -137,38 +142,54 @@ export function CoursePlayer({ content, courseTitle, onExit, onComplete }: Props
 
       {/* Body */}
       <div className="flex-1 overflow-y-auto overflow-x-hidden">
-        <div className="px-4 py-8 max-w-4xl mx-auto w-full">
-          <AnimatePresence mode="wait" initial={false}>
-            {!completed && step && (
-              <motion.div
-                key={step.id}
-                initial={{ opacity: 0, x: 40 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -40 }}
-                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              >
-                {renderStep(step)}
-              </motion.div>
-            )}
-
-            {completed && (
-              <motion.div
-                key="completion"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              >
-                <CompletionScreen
-                  courseTitle={courseTitle}
-                  score={finalScore}
-                  totalSteps={totalSteps}
-                  durationSeconds={durationSeconds}
-                  onContinue={() => onComplete(finalScore)}
-                  onExit={onExit}
+        <div className="px-4 py-8 w-full">
+          <div className="grid lg:grid-cols-[180px_1fr] gap-8 lg:gap-10 max-w-5xl mx-auto">
+            {/* Mascot sidebar — desktop only */}
+            <aside className="hidden lg:flex flex-col items-center pt-4" aria-hidden="true">
+              <div className="sticky top-24">
+                <MascotPresence
+                  level={cecrLevel}
+                  mood={completed ? 'celebrating' : mascotMood}
+                  size={120}
                 />
-              </motion.div>
-            )}
-          </AnimatePresence>
+              </div>
+            </aside>
+
+            {/* Step zone */}
+            <div className="min-w-0 max-w-3xl mx-auto w-full">
+              <AnimatePresence mode="wait" initial={false}>
+                {!completed && step && (
+                  <motion.div
+                    key={step.id}
+                    initial={{ opacity: 0, x: 40 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -40 }}
+                    transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    {renderStep(step)}
+                  </motion.div>
+                )}
+
+                {completed && (
+                  <motion.div
+                    key="completion"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    <CompletionScreen
+                      courseTitle={courseTitle}
+                      score={finalScore}
+                      totalSteps={totalSteps}
+                      durationSeconds={durationSeconds}
+                      onContinue={() => onComplete(finalScore)}
+                      onExit={onExit}
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -206,6 +227,15 @@ function CompletionScreen({
         <h2 className="text-3xl font-bold font-display">{t('player.completion.title')}</h2>
         <p className="text-muted-foreground">{courseTitle}</p>
       </div>
+
+      <motion.div
+        initial={{ opacity: 0, scale: 0, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ delay: 0.3, type: 'spring', damping: 13, stiffness: 200 }}
+        className="flex justify-center"
+      >
+        <MascotPresence mood="celebrating" size={120} />
+      </motion.div>
 
       <div className="grid grid-cols-3 gap-3">
         <div className="p-4 rounded-xl bg-cia-gold-50 border border-cia-gold-200">
