@@ -98,6 +98,8 @@ export function useUserProgress() {
         return { leveledUp: false, newLevel: cecrLevel };
       }
 
+      const previousLevel = cecrLevel;
+
       if (user) {
         const { data, error } = await supabase.rpc('award_xp', {
           _amount: amount,
@@ -119,7 +121,9 @@ export function useUserProgress() {
         emitXPUpdate(newXP, newLevel);
         window.dispatchEvent(new CustomEvent('weekly-xp-update'));
         if (leveledUp) {
-          window.dispatchEvent(new CustomEvent('level-up', { detail: { level: newLevel } }));
+          window.dispatchEvent(new CustomEvent('level-up', {
+            detail: { level: newLevel, previousLevel },
+          }));
         }
         return { leveledUp, newLevel };
       }
@@ -134,7 +138,9 @@ export function useUserProgress() {
       localStorage.setItem('user-xp', String(newXP));
       localStorage.setItem('user-cecr-level', newLevel);
       if (leveledUp) {
-        window.dispatchEvent(new CustomEvent('level-up', { detail: { level: newLevel } }));
+        window.dispatchEvent(new CustomEvent('level-up', {
+          detail: { level: newLevel, previousLevel },
+        }));
       }
       return { leveledUp, newLevel };
     },

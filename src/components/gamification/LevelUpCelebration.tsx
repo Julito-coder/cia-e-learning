@@ -1,21 +1,22 @@
-import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Crown } from 'lucide-react';
+import { Crown, Sparkles } from 'lucide-react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import { Character3DAvatar } from '@/components/characters/Character3DAvatar';
+import { CHARACTERS } from '@/data/characters';
+import { springPop } from '@/lib/animations';
+import { levelUpSequence } from '@/lib/confetti';
 
 interface LevelUpCelebrationProps {
+  /** Niveau atteint (A2, B1, B2, C1, C2) */
   level: string;
+  /** Niveau précédent — si fourni, animation de "déchirement" affichée */
+  previousLevel?: string;
   open: boolean;
   onClose: () => void;
 }
-
-const CONFETTI_COLORS = [
-  'hsl(var(--cia-gold-400))',
-  'hsl(var(--cia-blue-400))',
-  'hsl(var(--cia-red-500))',
-  'hsl(var(--cia-gold-500))',
-];
 
 const LEVEL_DESCRIPTIONS: Record<string, { titleKey: string; descKey: string }> = {
   A2: { titleKey: 'levelup.a2.title', descKey: 'levelup.a2.desc' },
@@ -25,67 +26,229 @@ const LEVEL_DESCRIPTIONS: Record<string, { titleKey: string; descKey: string }> 
   C2: { titleKey: 'levelup.c2.title', descKey: 'levelup.c2.desc' },
 };
 
-export function LevelUpCelebration({ level, open, onClose }: LevelUpCelebrationProps) {
+const DEFAULT_MASCOT_ID = 'marie';
+
+type Phase = 'previous' | 'transition' | 'reveal';
+
+export function LevelUpCelebration({
+  level,
+  previousLevel,
+  open,
+  onClose,
+}: LevelUpCelebrationProps) {
   const { t } = useTranslation();
-  const reduced = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const meta = LEVEL_DESCRIPTIONS[level] ?? { titleKey: 'levelup.generic.title', descKey: 'levelup.generic.desc' };
+  const reduced = typeof window !== 'undefined'
+    && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const meta = LEVEL_DESCRIPTIONS[level] ?? {
+    titleKey: 'levelup.generic.title',
+    descKey: 'levelup.generic.desc',
+  };
+
+  const mascot = CHARACTERS.find((c) => c.id === DEFAULT_MASCOT_ID) ?? CHARACTERS[0];
+  const mascotEvolution = mascot?.evolution[mascot.evolution.length - 1] ?? mascot?.evolution[0];
+
+  const [phase, setPhase] = useState<Phase>(previousLevel ? 'previous' : 'reveal');
+
+  useEffect(() => {
+    if (!open) return;
+
+    const timers: ReturnType<typeof setTimeout>[] = [];
+
+    if (previousLevel && !reduced) {
+      setPhase('previous');
+      timers.push(setTimeout(() => setPhase('transition'), 800));
+      timers.push(setTimeout(() => setPhase('reveal'), 1400));
+      timers.push(setTimeout(() => levelUpSequence(), 1500));
+    } else {
+      setPhase('reveal');
+      timers.push(setTimeout(() => levelUpSequence(), 100));
+    }
+
+    if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+      try {
+        navigator.vibrate([50, 30, 50, 30, 100]);
+      } catch {
+        // ignore vibration errors on unsupported devices
+      }
+    }
+
+    // TODO: jouer sound effect quand asset disponible
+    // const audio = new Audio('/sounds/level-up.mp3');
+    // audio.volume = 0.5;
+    // audio.play().catch(() => {});
+
+    return () => {
+      timers.forEach((timer) => clearTimeout(timer));
+    };
+  }, [open, previousLevel, reduced]);
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-w-lg overflow-hidden border-0 bg-gradient-to-br from-cia-blue-900 via-cia-blue-700 to-cia-blue-900 text-white p-0">
-        {!reduced && (
-          <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            {Array.from({ length: 30 }).map((_, i) => {
-              const left = Math.random() * 100;
-              const delay = Math.random() * 0.6;
-              const duration = 2 + Math.random() * 1.5;
-              const color = CONFETTI_COLORS[i % CONFETTI_COLORS.length];
-              const rotation = Math.random() * 360;
-              return (
-                <motion.span
-                  key={i}
-                  className="absolute top-[-20px] block w-2 h-3 rounded-sm"
-                  style={{ left: `${left}%`, backgroundColor: color }}
-                  initial={{ y: -20, rotate: 0, opacity: 1 }}
-                  animate={{ y: 600, rotate: rotation + 720, opacity: [1, 1, 0] }}
-                  transition={{ duration, delay, ease: 'linear', repeat: Infinity }}
-                />
-              );
-            })}
-          </div>
-        )}
+      <DialogContent className="max-w-lg overflow-hidden border-0 bg-gradient-to-br from-cia-blue-900 via-cia-blue-700 to-cia-blue-900 text-white p-0 [&>button]:hidden">
+        <motion.div
+          className="absolute inset-0 -z-10 pointer-events-none"
+          initial={{ opacity: 0 }}
+          animate={phase === 'reveal' ? { opacity: [0, 1, 0.7, 1] } : { opacity: 0 }}
+          transition={phase === 'reveal'
+            ? { duration: 2, repeat: Infinity, repeatType: 'reverse' }
+            : { duration: 0.3 }
+          }
+        >
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] bg-[radial-gradient(circle,_hsl(var(--cia-gold-400)/0.35)_0%,_transparent_60%)] blur-3xl" />
+        </motion.div>
 
-        <div className="relative z-10 px-8 py-10 text-center space-y-4">
-          <div className="absolute inset-0 -z-10 bg-gradient-radial from-cia-gold-500/30 via-transparent to-transparent blur-2xl" />
-
-          <motion.div
-            initial={{ scale: 0, rotate: -30 }}
-            animate={{ scale: 1, rotate: 0 }}
-            transition={{ duration: 0.7, ease: [0.34, 1.56, 0.64, 1] }}
-            className="mx-auto h-20 w-20 rounded-full bg-gradient-to-br from-cia-gold-400 to-cia-gold-600 flex items-center justify-center shadow-2xl"
+        <div className="relative z-10 px-8 py-10 text-center space-y-4 min-h-[460px] flex flex-col items-center justify-center">
+          <motion.p
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="uppercase tracking-widest text-xs font-semibold text-cia-gold-300"
           >
-            <Crown className="h-10 w-10 text-white" />
-          </motion.div>
-
-          <p className="uppercase tracking-widest text-xs font-semibold text-cia-gold-300">
             {t('levelup.banner')}
-          </p>
+          </motion.p>
 
-          <motion.h2
-            initial={{ scale: 0.5, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
-            className="text-7xl font-display font-extrabold bg-gradient-to-br from-cia-gold-300 to-cia-gold-500 bg-clip-text text-transparent"
-          >
-            {level}
-          </motion.h2>
+          <div className="relative h-32 w-full flex items-center justify-center">
+            <AnimatePresence mode="wait">
+              {phase === 'previous' && previousLevel && (
+                <motion.div
+                  key="previous"
+                  initial={{ opacity: 0, scale: 0.6 }}
+                  animate={{ opacity: 0.6, scale: 1 }}
+                  exit={{ opacity: 0, scale: 1.2, transition: { duration: 0.4 } }}
+                  className="absolute font-display font-extrabold text-6xl text-white/40"
+                >
+                  <motion.span
+                    animate={{ x: [0, -3, 3, -3, 0], y: [0, 2, -2, 2, 0] }}
+                    transition={{ duration: 0.3, repeat: 2, delay: 0.3 }}
+                    style={{ display: 'inline-block' }}
+                  >
+                    {previousLevel}
+                  </motion.span>
+                </motion.div>
+              )}
 
-          <p className="text-xl font-display font-semibold">{t(meta.titleKey)}</p>
-          <p className="text-sm text-white/80 max-w-sm mx-auto">{t(meta.descKey)}</p>
+              {phase === 'transition' && (
+                <motion.div
+                  key="transition"
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 1.5 }}
+                  transition={{ duration: 0.3 }}
+                  className="absolute"
+                >
+                  <Sparkles className="h-20 w-20 text-cia-gold-400 drop-shadow-[0_0_30px_rgba(204,174,98,0.8)]" />
+                </motion.div>
+              )}
 
-          <Button variant="gold" size="cta" onClick={onClose} className="mt-2">
-            {t('levelup.continue')}
-          </Button>
+              {phase === 'reveal' && (
+                <motion.h2
+                  key="reveal"
+                  initial={{ opacity: 0, scale: 0.3, rotateY: -90 }}
+                  animate={{
+                    opacity: 1,
+                    scale: 1,
+                    rotateY: 0,
+                    transition: {
+                      type: 'spring',
+                      damping: 10,
+                      stiffness: 180,
+                      mass: 0.9,
+                    },
+                  }}
+                  className="absolute text-8xl md:text-9xl font-display font-extrabold bg-gradient-to-br from-cia-gold-300 via-cia-gold-400 to-cia-gold-600 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(204,174,98,0.6)]"
+                  style={{
+                    transformPerspective: 1200,
+                    transformStyle: 'preserve-3d',
+                  }}
+                >
+                  {level}
+                </motion.h2>
+              )}
+            </AnimatePresence>
+          </div>
+
+          <AnimatePresence>
+            {phase === 'reveal' && (
+              <motion.div
+                key="crown"
+                variants={springPop}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                transition={{ delay: 0.3 }}
+                className="absolute top-12 left-1/2 -translate-x-1/2"
+              >
+                <div className="h-14 w-14 rounded-full bg-gradient-to-br from-cia-gold-300 to-cia-gold-500 flex items-center justify-center shadow-[0_0_24px_rgba(204,174,98,0.7)]">
+                  <Crown className="h-7 w-7 text-white" />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          <AnimatePresence>
+            {phase === 'reveal' && (
+              <motion.div
+                key="texts"
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6, duration: 0.5 }}
+                className="space-y-1 max-w-sm"
+              >
+                <p className="text-xl font-display font-semibold">{t(meta.titleKey)}</p>
+                <p className="text-sm text-white/80">{t(meta.descKey)}</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          <AnimatePresence>
+            {phase === 'reveal' && mascot && mascotEvolution && (
+              <motion.div
+                key="mascot"
+                initial={{ opacity: 0, scale: 0, y: 40 }}
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                  y: 0,
+                  transition: {
+                    type: 'spring',
+                    damping: 13,
+                    stiffness: 200,
+                    delay: 0.8,
+                  },
+                }}
+                className="pt-2"
+              >
+                <Character3DAvatar
+                  character={mascot}
+                  evolution={mascotEvolution}
+                  isSelected={true}
+                  onClick={() => {}}
+                  size={80}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          <AnimatePresence>
+            {phase === 'reveal' && (
+              <motion.div
+                key="cta"
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.4, duration: 0.4 }}
+                className="pt-4"
+              >
+                <Button
+                  variant="gold"
+                  size="cta"
+                  onClick={onClose}
+                  className="shadow-lg"
+                >
+                  {t('levelup.continue')}
+                </Button>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </DialogContent>
     </Dialog>

@@ -1,5 +1,5 @@
 import { motion, useAnimation } from 'framer-motion';
-import { Sparkles, Flame, Medal, Trophy, Crown } from 'lucide-react';
+import { Sparkles, Medal, Trophy, Crown } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/ui/badge';
@@ -8,6 +8,7 @@ import { useUserProgress } from '@/hooks/useUserProgress';
 import { useLeague } from '@/hooks/useLeague';
 import { useDailyChallenge } from '@/hooks/useDailyChallenge';
 import { staggerContainer, staggerItem } from '@/lib/animations';
+import { StreakFlame } from '@/components/gamification/StreakFlame';
 
 interface UserIndicatorsProps {
   compact?: boolean;
@@ -57,7 +58,7 @@ export function UserIndicators({ compact = false, align = 'horizontal' }: UserIn
           <TooltipTrigger asChild>
             <motion.div variants={staggerItem}>
               <Badge variant="streak" className="gap-1.5 px-2.5 py-1">
-                <Flame className={`h-3.5 w-3.5 ${streak >= 3 ? 'animate-streak-flame' : ''}`} />
+                <StreakFlame streak={streak} />
                 <span className="tabular-nums">{streak}</span>
                 {!compact && <span className="text-xs opacity-70">j</span>}
               </Badge>
