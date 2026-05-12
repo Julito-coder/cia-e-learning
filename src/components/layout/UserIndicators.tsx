@@ -1,6 +1,6 @@
-import { motion, useAnimation } from 'framer-motion';
+import { motion, useAnimation, animate } from 'framer-motion';
 import { Sparkles, Medal, Trophy, Crown } from 'lucide-react';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -24,6 +24,8 @@ export function UserIndicators({ compact = false, align = 'horizontal' }: UserIn
   const { streak } = useDailyChallenge();
   const xpControls = useAnimation();
   const prevXP = useRef(totalXP);
+  const [displayedXP, setDisplayedXP] = useState(totalXP);
+  const prevXPCountRef = useRef<number>(totalXP);
 
   useEffect(() => {
     if (totalXP > prevXP.current) {
@@ -34,6 +36,17 @@ export function UserIndicators({ compact = false, align = 'horizontal' }: UserIn
     }
     prevXP.current = totalXP;
   }, [totalXP, xpControls]);
+
+  useEffect(() => {
+    if (totalXP === prevXPCountRef.current) return;
+    const controls = animate(prevXPCountRef.current, totalXP, {
+      duration: 0.7,
+      ease: [0.16, 1, 0.3, 1],
+      onUpdate: (v) => setDisplayedXP(Math.round(v)),
+    });
+    prevXPCountRef.current = totalXP;
+    return () => controls.stop();
+  }, [totalXP]);
 
   const LeagueIcon = currentLeague ? LEAGUE_ICON[currentLeague] : Medal;
   const directionClass = align === 'vertical' ? 'flex-col gap-3' : 'flex-row gap-2';
@@ -46,7 +59,7 @@ export function UserIndicators({ compact = false, align = 'horizontal' }: UserIn
             <motion.div variants={staggerItem} animate={xpControls} data-xp-origin>
               <Badge variant="xp" className="gap-1.5 px-2.5 py-1">
                 <Sparkles className="h-3.5 w-3.5" />
-                <span className="tabular-nums">{totalXP.toLocaleString('fr-FR')}</span>
+                <span className="tabular-nums">{displayedXP.toLocaleString('fr-FR')}</span>
                 {!compact && <span className="text-xs opacity-70">XP</span>}
               </Badge>
             </motion.div>
