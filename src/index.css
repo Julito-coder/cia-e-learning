@@ -128,6 +128,62 @@
     --border:            var(--neutral-700);
     --input:             var(--neutral-700);
     --ring:              var(--cia-gold-400);
+
+    /* === Sidebar (B1) === */
+    --sidebar-background:        220 32% 10%;
+    --sidebar-foreground:        210 40% 96%;
+    --sidebar-primary:           207 64% 55%;
+    --sidebar-primary-foreground: 220 35% 8%;
+    --sidebar-accent:            220 22% 22%;
+    --sidebar-accent-foreground: 210 40% 96%;
+    --sidebar-border:            220 22% 22%;
+    --sidebar-ring:              207 64% 55%;
+
+    /* === Palette CIA bleu — éclaircie pour rester visible en dark (B1) === */
+    --cia-blue-50:  220 30% 14%;
+    --cia-blue-100: 220 28% 18%;
+    --cia-blue-200: 220 25% 24%;
+    --cia-blue-300: 215 30% 35%;
+    --cia-blue-400: 210 40% 50%;
+    --cia-blue-500: 207 55% 60%;
+    --cia-blue-600: 207 60% 68%;
+    --cia-blue-700: 207 65% 75%;
+    --cia-blue-800: 207 70% 82%;
+    --cia-blue-900: 207 75% 88%;
+
+    /* === Palette CIA or — désaturée pour confort nuit (B1) === */
+    --cia-gold:     41 50% 58%;
+    --cia-gold-50:  41 30% 16%;
+    --cia-gold-100: 41 35% 22%;
+    --cia-gold-200: 41 40% 35%;
+    --cia-gold-300: 41 45% 50%;
+    --cia-gold-400: 41 50% 60%;
+    --cia-gold-500: 41 55% 65%;
+    --cia-gold-600: 41 60% 72%;
+    --cia-gold-700: 41 65% 80%;
+
+    /* === Palette CIA rouge (B1) === */
+    --cia-red-50:  348 30% 16%;
+    --cia-red-100: 348 35% 22%;
+    --cia-red-300: 348 50% 45%;
+    --cia-red-500: 348 65% 55%;
+    --cia-red-600: 348 70% 62%;
+
+    /* === Couleurs sémantiques en dark (B1) === */
+    --cia-success: 142 55% 50%;
+    --cia-warning: 38 80% 55%;
+    --cia-xp:      41 50% 60%;
+    --cia-streak:  14 75% 55%;
+    --cia-gems:    207 55% 60%;
+    --cia-bonus:   280 50% 60%;
+
+    /* === Shadows ajustées pour dark mode (plus profondes) (B1) === */
+    --shadow-sm:   0 1px 2px 0 rgb(0 0 0 / 0.5);
+    --shadow:      0 1px 3px 0 rgb(0 0 0 / 0.6), 0 1px 2px -1px rgb(0 0 0 / 0.5);
+    --shadow-md:   0 4px 6px -1px rgb(0 0 0 / 0.6), 0 2px 4px -2px rgb(0 0 0 / 0.5);
+    --shadow-lg:   0 10px 15px -3px rgb(0 0 0 / 0.7), 0 4px 6px -4px rgb(0 0 0 / 0.6);
+    --shadow-xl:   0 20px 25px -5px rgb(0 0 0 / 0.7), 0 8px 10px -6px rgb(0 0 0 / 0.6);
+    --shadow-glow: 0 0 24px hsl(var(--cia-gold-400) / 0.4);
   }
 }
 
@@ -267,4 +323,29 @@
 }
 .animate-slide-up {
   animation: slide-up 0.3s ease-out;
+}
+
+/* === Glassmorphism utilities (B1) === */
+@layer components {
+  .glass {
+    @apply backdrop-blur-md bg-white/70 border border-white/40;
+  }
+  .glass-subtle {
+    @apply backdrop-blur-sm bg-white/40 border border-white/30;
+  }
+  .glass-strong {
+    @apply backdrop-blur-xl bg-white/80 border border-white/50 shadow-glass-strong;
+  }
+  .glass-dark {
+    @apply backdrop-blur-md bg-cia-blue-900/70 border border-white/10;
+  }
+  /* Adaptive variants — pick up bg-card / border tokens, so they
+   * automatically switch between light and dark mode. Prefer these for
+   * persistent UI surfaces. */
+  .glass-adaptive {
+    @apply backdrop-blur-md bg-card/70 border border-border;
+  }
+  .glass-subtle-adaptive {
+    @apply backdrop-blur-sm bg-card/40 border border-border/50;
+  }
 }
