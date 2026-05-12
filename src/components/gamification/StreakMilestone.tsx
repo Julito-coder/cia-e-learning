@@ -1,8 +1,12 @@
-import { motion } from 'framer-motion';
-import { Flame } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { motion, animate, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import { Character3DAvatar } from '@/components/characters/Character3DAvatar';
+import { CHARACTERS } from '@/data/characters';
+import { StreakFlame } from './StreakFlame';
+import { streakBurst } from '@/lib/confetti';
 
 interface StreakMilestoneProps {
   streak: number;
@@ -17,43 +21,144 @@ const MILESTONES: Record<number, { titleKey: string; descKey: string }> = {
   100: { titleKey: 'streak.m100.title', descKey: 'streak.m100.desc' },
 };
 
+const DEFAULT_MASCOT_ID = 'marie';
+
 export function StreakMilestone({ streak, open, onClose }: StreakMilestoneProps) {
   const { t } = useTranslation();
   const meta = MILESTONES[streak];
+  const reduced = typeof window !== 'undefined'
+    && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const mascot = CHARACTERS.find((c) => c.id === DEFAULT_MASCOT_ID) ?? CHARACTERS[0];
+  const mascotEvolution = mascot?.evolution[mascot.evolution.length - 1] ?? mascot?.evolution[0];
+
+  const [displayed, setDisplayed] = useState(0);
+
+  useEffect(() => {
+    if (!open) return;
+
+    setDisplayed(0);
+    const controls = animate(0, streak, {
+      duration: reduced ? 0.3 : 0.9,
+      delay: reduced ? 0 : 0.3,
+      ease: [0.16, 1, 0.3, 1],
+      onUpdate: (v) => setDisplayed(Math.round(v)),
+    });
+
+    const burstTimer = setTimeout(() => streakBurst(), reduced ? 0 : 200);
+
+    if (!reduced && typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+      try {
+        navigator.vibrate([30, 20, 30, 20, 50]);
+      } catch {
+        // ignore vibration errors on unsupported devices
+      }
+    }
+
+    return () => {
+      controls.stop();
+      clearTimeout(burstTimer);
+    };
+  }, [open, streak, reduced]);
+
   if (!meta) return null;
-  const reduced = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const daysLabel = streak > 1
+    ? t('streak.days_label_plural')
+    : t('streak.days_label');
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-w-md overflow-hidden border-0 bg-gradient-to-br from-orange-600 via-red-500 to-orange-700 text-white p-0">
-        <div className="relative px-8 py-10 text-center space-y-4">
+      <DialogContent className="max-w-md overflow-hidden border-0 bg-gradient-to-br from-orange-600 via-red-500 to-orange-700 text-white p-0 [&>button]:hidden">
+        <div className="relative px-8 py-10 text-center space-y-4 min-h-[460px] flex flex-col items-center justify-center">
           <motion.div
-            animate={reduced ? {} : { rotate: [0, -8, 8, -6, 6, 0], scale: [1, 1.08, 1] }}
-            transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }}
-            className="mx-auto h-24 w-24 rounded-full bg-white/15 backdrop-blur flex items-center justify-center shadow-2xl"
+            className="absolute inset-0 -z-10 pointer-events-none"
+            initial={{ opacity: 0 }}
+            animate={reduced ? { opacity: 0.4 } : { opacity: [0.3, 0.8, 0.4, 0.7] }}
+            transition={reduced
+              ? { duration: 0.3 }
+              : { duration: 2.2, repeat: Infinity, repeatType: 'reverse' }
+            }
           >
-            <Flame className="h-14 w-14 text-yellow-200" fill="currentColor" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[160%] h-[160%] bg-[radial-gradient(circle,_rgba(254,178,53,0.45)_0%,_transparent_60%)] blur-3xl" />
           </motion.div>
 
-          <motion.p
-            initial={{ scale: 0.4, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
-            className="text-7xl font-display font-extrabold"
+          <motion.div
+            initial={{ scale: 0, rotate: -30 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ type: 'spring', damping: 11, stiffness: 180, delay: 0.1 }}
+            className="mx-auto h-28 w-28 rounded-full bg-white/15 backdrop-blur flex items-center justify-center shadow-2xl"
           >
-            {streak}
-          </motion.p>
+            <StreakFlame streak={streak} animateOnChange={false} sizeOverride={72} />
+          </motion.div>
 
-          <p className="uppercase tracking-widest text-xs font-semibold text-yellow-100/90">
-            {t('streak.days_in_a_row')}
-          </p>
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.4 }}
+            className="space-y-1"
+          >
+            <p className="text-7xl md:text-8xl font-display font-extrabold tabular-nums leading-none">
+              {displayed}
+            </p>
+            <p className="text-sm uppercase tracking-widest font-semibold text-white/85">
+              {daysLabel}
+            </p>
+          </motion.div>
 
-          <p className="text-2xl font-display font-bold">{t(meta.titleKey)}</p>
-          <p className="text-sm text-white/85 max-w-sm mx-auto">{t(meta.descKey)}</p>
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.9, duration: 0.4 }}
+            className="space-y-1 max-w-sm"
+          >
+            <p className="text-xl font-display font-semibold">{t(meta.titleKey)}</p>
+            <p className="text-sm text-white/85">{t(meta.descKey)}</p>
+          </motion.div>
 
-          <Button variant="gold" size="cta" onClick={onClose} className="mt-2">
-            {t('streak.continue')}
-          </Button>
+          <AnimatePresence>
+            {mascot && mascotEvolution && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0, y: 30 }}
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                  y: 0,
+                  transition: {
+                    type: 'spring',
+                    damping: 13,
+                    stiffness: 200,
+                    delay: 1.2,
+                  },
+                }}
+                className="pt-2"
+              >
+                <Character3DAvatar
+                  character={mascot}
+                  evolution={mascotEvolution}
+                  isSelected={true}
+                  onClick={() => {}}
+                  size={72}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.6, duration: 0.4 }}
+            className="pt-3"
+          >
+            <Button
+              onClick={onClose}
+              variant="gold"
+              size="cta"
+              className="shadow-lg"
+            >
+              {t('streak.continue')}
+            </Button>
+          </motion.div>
         </div>
       </DialogContent>
     </Dialog>

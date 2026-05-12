@@ -391,6 +391,8 @@
   },
   "streak": {
     "days_in_a_row": "days in a row",
+    "days_label": "day in a row",
+    "days_label_plural": "days in a row",
     "continue": "Continue",
     "m7": {
       "title": "One week!",

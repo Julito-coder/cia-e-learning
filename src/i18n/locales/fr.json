@@ -418,6 +418,8 @@
   },
   "streak": {
     "days_in_a_row": "jours d'affilée",
+    "days_label": "jour consécutif",
+    "days_label_plural": "jours consécutifs",
     "continue": "Continuer",
     "m7": {
       "title": "Une semaine !",
