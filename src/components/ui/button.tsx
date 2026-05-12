@@ -20,10 +20,10 @@ const buttonVariants = cva(
         success: "bg-success text-white hover:opacity-90 shadow-[0_3px_0_0] shadow-green-800/40 active:translate-y-[2px] active:shadow-[0_1px_0_0]",
       },
       size: {
-        default: "h-10 px-4 py-2",
+        default: "h-11 px-4 py-2",
         sm: "h-9 rounded-md px-3",
-        lg: "h-11 rounded-md px-8",
-        icon: "h-10 w-10",
+        lg: "h-12 rounded-md px-8",
+        icon: "h-11 w-11",
         cta: "h-12 px-8 text-base font-semibold rounded-xl",
       },
     },
