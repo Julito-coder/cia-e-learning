@@ -247,6 +247,10 @@
   75% { transform: translateY(-7px) rotate(-1deg); }
   100% { transform: translateY(0) rotate(0deg); }
 }
+@keyframes character-sad {
+  0%, 100% { transform: scale(1) translateY(0); }
+  50% { transform: scale(0.97) translateY(2px); }
+}
 @keyframes slide-up {
   from { transform: translateY(100%); }
   to { transform: translateY(0); }
@@ -257,6 +261,9 @@
 }
 .animate-character-walk {
   animation: character-walk 1.2s ease-in-out infinite;
+}
+.animate-character-sad {
+  animation: character-sad 2.4s ease-in-out infinite;
 }
 .animate-slide-up {
   animation: slide-up 0.3s ease-out;
