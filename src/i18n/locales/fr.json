@@ -367,7 +367,24 @@
     "subtitle": "Ton chemin du A1 au C2 — niveau actuel :",
     "your_level": "Tu es ici",
     "module": "Module",
-    "coming_soon": "Modules en préparation. Disponibles bientôt."
+    "coming_soon": "Modules en préparation. Disponibles bientôt.",
+    "you_are_here": "Tu es ici",
+    "state": {
+      "locked": "verrouillé",
+      "available": "disponible",
+      "current": "en cours",
+      "completed": "complété"
+    },
+    "drawer": {
+      "lessons": "leçons",
+      "minutes": "minutes",
+      "progress": "Ta progression",
+      "start_cta": "Commencer",
+      "continue_cta": "Continuer",
+      "completed_cta": "Refaire le module",
+      "locked_cta": "Verrouillé",
+      "close": "Fermer"
+    }
   },
   "glossary": {
     "title": "Glossaire",
