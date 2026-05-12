@@ -22,6 +22,7 @@ export function AppLayout() {
             animate={pageTransition.animate}
             exit={pageTransition.exit}
             transition={pageTransition.transition}
+            style={pageTransition.style}
           >
             <Outlet />
           </motion.div>
