@@ -9,6 +9,7 @@ import { staggerContainer, staggerItem, slideUp, useTilt3D } from '@/lib/animati
 import { curriculum } from '@/data/curriculum';
 import { useUserProgress } from '@/hooks/useUserProgress';
 import type { CECRLevel } from '@/data/demo-courses';
+import { CurriculumPath } from '@/components/courses/CurriculumPath';
 
 const LEVELS: CECRLevel[] = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 
@@ -130,19 +131,27 @@ export default function Curriculum() {
                   {t('curriculum.coming_soon')}
                 </div>
               ) : (
-                <motion.div
-                  variants={staggerContainer}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: '-80px' }}
-                  className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3"
-                >
-                  {section.modules.map((mod, mIdx) => (
-                    <motion.div key={mod.id} variants={staggerItem}>
-                      <ModuleCard mod={mod} index={mIdx} t={t} />
-                    </motion.div>
-                  ))}
-                </motion.div>
+                <div className="relative">
+                  <CurriculumPath
+                    modulesCount={section.modules.length}
+                    level={section.level as CECRLevel}
+                    className="hidden md:block"
+                  />
+
+                  <motion.div
+                    variants={staggerContainer}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: '-80px' }}
+                    className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 relative z-10"
+                  >
+                    {section.modules.map((mod, mIdx) => (
+                      <motion.div key={mod.id} variants={staggerItem}>
+                        <ModuleCard mod={mod} index={mIdx} t={t} />
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                </div>
               )}
             </motion.section>
           );
