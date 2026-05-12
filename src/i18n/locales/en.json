@@ -340,7 +340,24 @@
     "subtitle": "Your journey from A1 to C2 — current level:",
     "your_level": "You are here",
     "module": "Module",
-    "coming_soon": "Modules in preparation. Available soon."
+    "coming_soon": "Modules in preparation. Available soon.",
+    "you_are_here": "You are here",
+    "state": {
+      "locked": "locked",
+      "available": "available",
+      "current": "current",
+      "completed": "completed"
+    },
+    "drawer": {
+      "lessons": "lessons",
+      "minutes": "minutes",
+      "progress": "Your progress",
+      "start_cta": "Start",
+      "continue_cta": "Continue",
+      "completed_cta": "Replay module",
+      "locked_cta": "Locked",
+      "close": "Close"
+    }
   },
   "glossary": {
     "title": "Glossary",
