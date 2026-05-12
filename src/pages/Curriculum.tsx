@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { staggerContainer, staggerItem, slideUp } from '@/lib/animations';
+import { staggerContainer, staggerItem, slideUp, useTilt3D } from '@/lib/animations';
 import { curriculum } from '@/data/curriculum';
 import { useUserProgress } from '@/hooks/useUserProgress';
 import type { CECRLevel } from '@/data/demo-courses';
@@ -20,6 +20,48 @@ const LEVEL_GRADIENTS: Record<string, string> = {
   C1: 'from-cia-blue-100 to-cia-blue-200',
   C2: 'from-cia-blue-200 to-cia-blue-300',
 };
+
+interface ModuleCardProps {
+  mod: { id: string; number?: number; title?: string; theme?: string; isLocked: boolean; progress: number };
+  index: number;
+  t: (key: string) => string;
+}
+
+function ModuleCard({ mod, index, t }: ModuleCardProps) {
+  const tilt = useTilt3D({ max: 8, scale: 1.02, perspective: 1100, active: !mod.isLocked });
+  const inner = (
+    <div {...tilt.bind} style={tilt.style} className="h-full">
+      <Card className={`h-full p-3 flex flex-col gap-1.5 ${mod.isLocked ? 'opacity-60' : 'hover:shadow-md hover:-translate-y-0.5'} transition-all`}>
+        <div className="flex items-center justify-between">
+          <span className="text-[10px] font-bold text-muted-foreground tracking-wider">
+            {String(mod.number ?? index + 1).padStart(2, '0')}
+          </span>
+          {mod.isLocked ? (
+            <Lock className="h-3.5 w-3.5 text-muted-foreground" />
+          ) : mod.progress === 100 ? (
+            <CheckCircle2 className="h-3.5 w-3.5 text-cia-success" />
+          ) : mod.progress > 0 ? (
+            <span className="text-[10px] font-bold text-accent">{mod.progress}%</span>
+          ) : null}
+        </div>
+        <h3 className="font-display text-sm font-extrabold leading-tight line-clamp-2">
+          {mod.title ?? `${t('curriculum.module')} ${mod.number}`}
+        </h3>
+        {mod.theme && (
+          <p className="text-[10px] text-muted-foreground line-clamp-2">{mod.theme}</p>
+        )}
+        {!mod.isLocked && mod.progress > 0 && mod.progress < 100 && (
+          <div className="mt-auto pt-1">
+            <div className="h-1 w-full bg-muted rounded-full overflow-hidden">
+              <div className="h-full bg-accent rounded-full" style={{ width: `${mod.progress}%` }} />
+            </div>
+          </div>
+        )}
+      </Card>
+    </div>
+  );
+  return mod.isLocked ? inner : <Link to={`/programme?module=${mod.id}`}>{inner}</Link>;
+}
 
 export default function Curriculum() {
   const { t } = useTranslation();
@@ -95,42 +137,11 @@ export default function Curriculum() {
                   viewport={{ once: true, margin: '-80px' }}
                   className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3"
                 >
-                  {section.modules.map((mod, mIdx) => {
-                    const inner = (
-                      <Card className={`h-full p-3 flex flex-col gap-1.5 ${mod.isLocked ? 'opacity-60' : 'hover:shadow-md hover:-translate-y-0.5'} transition-all`}>
-                        <div className="flex items-center justify-between">
-                          <span className="text-[10px] font-bold text-muted-foreground tracking-wider">
-                            {String(mod.number ?? mIdx + 1).padStart(2, '0')}
-                          </span>
-                          {mod.isLocked ? (
-                            <Lock className="h-3.5 w-3.5 text-muted-foreground" />
-                          ) : mod.progress === 100 ? (
-                            <CheckCircle2 className="h-3.5 w-3.5 text-cia-success" />
-                          ) : mod.progress > 0 ? (
-                            <span className="text-[10px] font-bold text-accent">{mod.progress}%</span>
-                          ) : null}
-                        </div>
-                        <h3 className="font-display text-sm font-extrabold leading-tight line-clamp-2">
-                          {mod.title ?? `${t('curriculum.module')} ${mod.number}`}
-                        </h3>
-                        {mod.theme && (
-                          <p className="text-[10px] text-muted-foreground line-clamp-2">{mod.theme}</p>
-                        )}
-                        {!mod.isLocked && mod.progress > 0 && mod.progress < 100 && (
-                          <div className="mt-auto pt-1">
-                            <div className="h-1 w-full bg-muted rounded-full overflow-hidden">
-                              <div className="h-full bg-accent rounded-full" style={{ width: `${mod.progress}%` }} />
-                            </div>
-                          </div>
-                        )}
-                      </Card>
-                    );
-                    return (
-                      <motion.div key={mod.id} variants={staggerItem}>
-                        {mod.isLocked ? inner : <Link to={`/programme?module=${mod.id}`}>{inner}</Link>}
-                      </motion.div>
-                    );
-                  })}
+                  {section.modules.map((mod, mIdx) => (
+                    <motion.div key={mod.id} variants={staggerItem}>
+                      <ModuleCard mod={mod} index={mIdx} t={t} />
+                    </motion.div>
+                  ))}
                 </motion.div>
               )}
             </motion.section>

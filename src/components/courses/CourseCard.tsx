@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Clock, BookOpen, Lock, Sparkles, CheckCircle2, Zap } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { hoverLift } from '@/lib/animations';
+import { hoverLift, useTilt3D } from '@/lib/animations';
 import type { CECRLevel } from '@/data/demo-courses';
 
 export interface CourseCardProps {
@@ -36,8 +36,12 @@ export function CourseCard(props: CourseCardProps) {
     xpReward, progress = 0, isLocked = false, isFree = true, isCompleted = false,
   } = props;
 
+  const tilt = useTilt3D({ max: 6, scale: 1.015, perspective: 1200, active: !isLocked });
+
   const inner = (
     <motion.div
+      {...tilt.bind}
+      style={tilt.style}
       variants={hoverLift}
       initial="rest"
       whileHover={isLocked ? 'rest' : 'hover'}

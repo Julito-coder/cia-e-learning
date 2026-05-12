@@ -9,15 +9,15 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        default: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_3px_0_0] shadow-cia-blue-800/40 active:translate-y-[2px] active:shadow-[0_1px_0_0]",
         destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        gold: "bg-secondary text-secondary-foreground hover:bg-cia-gold-500 shadow hover:shadow-md",
-        gradient: "bg-gradient-to-br from-cia-blue-500 to-cia-blue-700 text-white hover:from-cia-blue-600 hover:to-cia-blue-700 shadow-lg hover:shadow-xl",
-        success: "bg-success text-white hover:opacity-90",
+        gold: "bg-cia-gold-400 text-cia-blue-900 hover:bg-cia-gold-500 shadow-[0_4px_0_0] shadow-cia-gold-700/50 active:translate-y-[2px] active:shadow-[0_1px_0_0]",
+        gradient: "bg-gradient-to-br from-cia-blue-500 to-cia-blue-700 text-white hover:from-cia-blue-600 hover:to-cia-blue-800 shadow-[0_4px_0_0] shadow-cia-blue-900/50 active:translate-y-[2px] active:shadow-[0_1px_0_0]",
+        success: "bg-success text-white hover:opacity-90 shadow-[0_3px_0_0] shadow-green-800/40 active:translate-y-[2px] active:shadow-[0_1px_0_0]",
       },
       size: {
         default: "h-10 px-4 py-2",

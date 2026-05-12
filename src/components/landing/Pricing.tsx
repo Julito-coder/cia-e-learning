@@ -5,7 +5,16 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { staggerContainer, staggerItem } from '@/lib/animations';
+import { staggerContainer, staggerItem, useTilt3D } from '@/lib/animations';
+
+function PricingPlanCard({ children }: { children: React.ReactNode }) {
+  const tilt = useTilt3D({ max: 5, scale: 1.015, perspective: 1200 });
+  return (
+    <div {...tilt.bind} style={tilt.style} className="flex w-full">
+      {children}
+    </div>
+  );
+}
 
 export function Pricing() {
   const { t } = useTranslation();
@@ -29,6 +38,7 @@ export function Pricing() {
         >
           {/* Découverte */}
           <motion.div variants={staggerItem} className="flex">
+           <PricingPlanCard>
             <Card className="p-7 flex flex-col w-full">
               <h3 className="font-display text-xl mb-2">{t('landing.pricing.free_title')}</h3>
               <p className="font-display text-3xl mb-6">{t('landing.pricing.free_price')}</p>
@@ -43,10 +53,12 @@ export function Pricing() {
                 <Button variant="outline" className="w-full" size="lg">{t('landing.pricing.free_cta')}</Button>
               </Link>
             </Card>
+           </PricingPlanCard>
           </motion.div>
 
           {/* Premium */}
           <motion.div variants={staggerItem} className="flex md:-translate-y-2">
+           <PricingPlanCard>
             <Card className="p-7 flex flex-col w-full ring-2 ring-cia-gold-300/40 shadow-xl relative bg-card">
               <Badge variant="league-gold" className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 gap-1">
                 <Star className="h-3.5 w-3.5" />
@@ -66,10 +78,12 @@ export function Pricing() {
                 <Button variant="gradient" className="w-full" size="lg">{t('landing.pricing.premium_cta')}</Button>
               </Link>
             </Card>
+           </PricingPlanCard>
           </motion.div>
 
           {/* Étudiants CIA */}
           <motion.div variants={staggerItem} className="flex">
+           <PricingPlanCard>
             <Card className="p-7 flex flex-col w-full">
               <Badge variant="level" className="self-start mb-2 gap-1">
                 <GraduationCap className="h-3.5 w-3.5" />
@@ -89,6 +103,7 @@ export function Pricing() {
                 <Button variant="gold" className="w-full" size="lg">{t('landing.pricing.cia_cta')}</Button>
               </Link>
             </Card>
+           </PricingPlanCard>
           </motion.div>
         </motion.div>
       </div>
