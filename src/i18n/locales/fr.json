@@ -271,7 +271,12 @@
       "subtitle": "300 leçons interactives, 6 niveaux du A1 au C2, défis quotidiens et méthode pédagogique éprouvée du CIA.",
       "cta_primary": "Commencer le test de niveau",
       "cta_secondary": "Découvrir le catalogue",
-      "trust": "+2 000 étudiants formés chaque année · Méthode CIA depuis 1985"
+      "trust": "+2 000 étudiants formés chaque année · Méthode CIA depuis 1985",
+      "stats": {
+        "students": "étudiants",
+        "success": "de réussite",
+        "years": "ans d'expertise"
+      }
     },
     "how_it_works": {
       "title": "Comment ça marche",

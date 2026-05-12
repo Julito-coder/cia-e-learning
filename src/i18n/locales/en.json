@@ -244,7 +244,12 @@
       "subtitle": "300 interactive lessons, 6 levels from A1 to C2, daily challenges and the proven CIA teaching method.",
       "cta_primary": "Take the placement test",
       "cta_secondary": "Browse the catalog",
-      "trust": "+2,000 students trained every year · CIA method since 1985"
+      "trust": "+2,000 students trained every year · CIA method since 1985",
+      "stats": {
+        "students": "students",
+        "success": "success rate",
+        "years": "years of expertise"
+      }
     },
     "how_it_works": {
       "title": "How it works",
