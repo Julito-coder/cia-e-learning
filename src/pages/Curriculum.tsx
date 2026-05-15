@@ -8,7 +8,7 @@ import { useUserProgress } from '@/hooks/useUserProgress';
 import { ModuleNode, type ModuleNodeState } from '@/components/courses/ModuleNode';
 import { ZigzagPath } from '@/components/courses/ZigzagPath';
 import { ModuleDrawer } from '@/components/courses/ModuleDrawer';
-import { MascotPresence } from '@/components/characters/MascotPresence';
+import { SparkPresence } from '@/components/spark';
 import { getModuleIcon } from '@/lib/moduleIcon';
 import type { CECRLevel } from '@/data/demo-courses';
 
@@ -170,8 +170,7 @@ export default function Curriculum() {
                                 mIdx % 2 === 0 ? 'left-full ml-3' : 'right-full mr-3'
                               } top-1/2 -translate-y-1/2 hidden sm:block`}
                             >
-                              <MascotPresence
-                                level={cecrLevel as CECRLevel}
+                              <SparkPresence
                                 mood="encouraging"
                                 size={56}
                               />

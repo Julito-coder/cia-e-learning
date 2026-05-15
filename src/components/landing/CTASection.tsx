@@ -8,15 +8,17 @@ import { scalePop } from '@/lib/animations';
 export function CTASection() {
   const { t } = useTranslation();
   return (
-    <section className="py-20 lg:py-28 bg-gradient-to-br from-cia-blue-700 via-cia-blue-900 to-cia-blue-700 text-white">
+    <section className="relative overflow-hidden py-20 lg:py-28 bg-g-sea text-white">
+      <div className="absolute -top-32 -right-20 w-[28rem] h-[28rem] rounded-full bg-g-sun opacity-20 blur-3xl pointer-events-none" aria-hidden="true" />
+      <div className="absolute -bottom-40 -left-20 w-[28rem] h-[28rem] rounded-full bg-g-spark opacity-15 blur-3xl pointer-events-none" aria-hidden="true" />
       <motion.div
-        className="container text-center max-w-3xl"
+        className="container relative text-center max-w-3xl"
         variants={scalePop}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: '-80px' }}
       >
-        <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl tracking-tight">{t('landing.cta_final.title')}</h2>
+        <h2 className="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl tracking-tight">{t('landing.cta_final.title')}</h2>
         <p className="mt-4 text-lg text-white/80">{t('landing.cta_final.subtitle')}</p>
         <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
           <Link to="/test-niveau">

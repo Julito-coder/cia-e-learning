@@ -21,8 +21,8 @@ function PersonaCard({ Icon, titleKey, descKey, t }: PersonaCardProps) {
   const tilt = useTilt3D({ max: 7, scale: 1.02, perspective: 1100 });
   return (
     <div {...tilt.bind} style={tilt.style} className="h-full">
-      <Card interactive className="p-7 h-full">
-        <div className="h-12 w-12 rounded-2xl bg-cia-blue-50 text-cia-blue-700 flex items-center justify-center mb-5">
+      <Card interactive variant="elevated" tone="blue" className="p-7 h-full">
+        <div className="h-12 w-12 rounded-2xl bg-g-sea text-white flex items-center justify-center mb-5 shadow-glass">
           <Icon className="h-6 w-6" />
         </div>
         <h3 className="font-display text-xl mb-2">{t(titleKey)}</h3>

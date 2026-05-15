@@ -13,7 +13,8 @@ import { useAuth } from '@/hooks/useAuth';
 import type { CECRLevel } from '@/data/demo-courses';
 import { AnimatedCounter } from '@/components/gamification/AnimatedCounter';
 import { CountdownDigit } from '@/components/leaderboard/CountdownDigit';
-import { MascotPresence, type MascotMood } from '@/components/characters/MascotPresence';
+import { SparkPresence } from '@/components/spark';
+import type { MascotMood } from '@/components/characters/MascotPresence';
 import { useUserProgress } from '@/hooks/useUserProgress';
 
 type StreakRow = {
@@ -133,8 +134,7 @@ export default function DailyChallenge() {
 
         {/* Mascot with contextual bubble — desktop only */}
         <div className="hidden lg:flex justify-center mt-6">
-          <MascotPresence
-            level={cecrLevel}
+          <SparkPresence
             mood={mascotMood}
             message={mascotMessage}
             bubbleSide="right"
