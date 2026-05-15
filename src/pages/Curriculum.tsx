@@ -60,7 +60,7 @@ export default function Curriculum() {
 
       const modules: ModuleWithMeta[] = modulesRaw.map((m, idx) => {
         const lessonsCount = m.lessons?.length ?? 0;
-        const progress = 0;
+        const progress: number = 0;
 
         let state: ModuleNodeState;
         if (levelIdx > userIdx + 1) {

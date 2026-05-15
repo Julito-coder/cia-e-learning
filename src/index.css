@@ -4,185 +4,186 @@
 
 @layer base {
   :root {
-    /* === Charte CIA === */
-    --cia-blue-50:  213 64% 96%;
-    --cia-blue-100: 213 60% 90%;
-    --cia-blue-200: 213 55% 78%;
-    --cia-blue-300: 213 52% 62%;
-    --cia-blue-400: 213 50% 45%;
-    --cia-blue-500: 213 81% 21%;
-    --cia-blue-600: 213 85% 17%;
-    --cia-blue-700: 213 88% 13%;
-    --cia-blue-900: 213 90%  8%;
+    /* ============================================
+     * CIA Palette — HSL (light mode)
+     * ============================================ */
 
-    --cia-gold-50:  41 60% 95%;
-    --cia-gold-100: 41 55% 86%;
-    --cia-gold-200: 41 50% 75%;
-    --cia-gold-300: 41 48% 64%;
-    --cia-gold-400: 41 47% 58%;
-    --cia-gold-500: 41 50% 50%;
-    --cia-gold-600: 41 55% 42%;
+    /* CIA Blue — Méditerranée profonde */
+    --cia-blue-50:  208 35% 93%;
+    --cia-blue-100: 208 39% 82%;
+    --cia-blue-200: 208 36% 69%;
+    --cia-blue-300: 208 36% 56%;
+    --cia-blue-400: 208 46% 42%;
+    --cia-blue-500: 208 81% 21%;
+    --cia-blue-600: 208 80% 19%;
+    --cia-blue-700: 209 79% 15%;
+    --cia-blue-800: 209 80% 12%;
+    --cia-blue-900: 209 80% 9%;
 
-    --cia-red-50:  348 80% 96%;
-    --cia-red-100: 348 75% 88%;
-    --cia-red-300: 348 80% 65%;
-    --cia-red-500: 348 81% 40%;
-    --cia-red-600: 348 85% 32%;
+    /* CIA Gold — Soleil d'Antibes */
+    --cia-gold-50:  45 70% 94%;
+    --cia-gold-100: 45 73% 85%;
+    --cia-gold-200: 45 70% 74%;
+    --cia-gold-300: 45 67% 63%;
+    --cia-gold-400: 48 65% 54%;
+    --cia-gold-500: 43 50% 59%;
+    --cia-gold-600: 43 42% 47%;
+    --cia-gold-700: 43 43% 35%;
+    --cia-gold-800: 42 46% 23%;
+    --cia-gold-900: 42 53% 12%;
 
-    /* === Neutrals === */
-    --neutral-50:  220 15% 98%;
-    --neutral-100: 220 13% 95%;
-    --neutral-200: 220 12% 90%;
-    --neutral-300: 220 10% 80%;
-    --neutral-400: 220  8% 60%;
-    --neutral-500: 220  7% 45%;
-    --neutral-600: 220  9% 30%;
-    --neutral-700: 220 12% 20%;
-    --neutral-800: 220 15% 14%;
-    --neutral-900: 220 20%  9%;
+    /* CIA Red — Passion bord de mer */
+    --cia-red-50:  348 70% 95%;
+    --cia-red-100: 349 71% 85%;
+    --cia-red-200: 349 70% 75%;
+    --cia-red-300: 349 67% 64%;
+    --cia-red-400: 348 67% 55%;
+    --cia-red-500: 345 79% 40%;
+    --cia-red-600: 345 80% 32%;
+    --cia-red-700: 345 80% 24%;
+    --cia-red-800: 345 82% 16%;
+    --cia-red-900: 345 83% 8%;
 
-    /* === Mappings shadcn (clair) === */
-    --background:        var(--neutral-50);
-    --foreground:        var(--neutral-900);
+    /* Spark — accents lumineux (jamais en aplat plein écran) */
+    --cia-spark-light: 210 100% 69%;
+    --cia-spark-mid:   210 100% 56%;
+    --cia-spark-deep:  208 81% 21%;
+
+    /* Ink — neutres */
+    --ink-50:  220 23% 97%;
+    --ink-100: 220 19% 94%;
+    --ink-200: 220 14% 88%;
+    --ink-300: 222 16% 75%;
+    --ink-400: 222 11% 54%;
+    --ink-500: 222 14% 38%;
+    --ink-600: 222 18% 28%;
+    --ink-700: 225 22% 20%;
+    --ink-800: 224 25% 13%;
+    --ink-900: 225 33% 7%;
+
+    /* Sémantique */
+    --success-500: 145 70% 40%;
+    --success-600: 145 72% 32%;
+    --success-700: 145 74% 24%;
+    --warning-500: 38 92% 50%;
+    --warning-600: 38 94% 41%;
+    --warning-700: 38 95% 30%;
+    --error-500:   348 70% 51%;
+    --error-600:   345 79% 40%;
+    --error-700:   345 80% 30%;
+    --info-500:    210 100% 56%;
+    --info-600:    210 80% 44%;
+    --info-700:    210 80% 33%;
+
+    /* Gamification */
+    --xp-500:     43 50% 59%;
+    --streak-500: 18 100% 59%;
+    --gems-500:   210 100% 56%;
+    --bonus-500:  250 100% 68%;
+
+    /* ============================================
+     * Mappings shadcn (light)
+     * ============================================ */
+    --background:        0 0% 100%;
+    --foreground:        var(--ink-900);
     --card:              0 0% 100%;
-    --card-foreground:   var(--neutral-900);
+    --card-foreground:   var(--ink-900);
     --popover:           0 0% 100%;
-    --popover-foreground: var(--neutral-900);
+    --popover-foreground: var(--ink-900);
     --primary:           var(--cia-blue-500);
     --primary-foreground: 0 0% 100%;
-    --secondary:         var(--cia-gold-400);
+    --secondary:         var(--cia-gold-500);
     --secondary-foreground: var(--cia-blue-700);
-    --muted:             var(--neutral-100);
-    --muted-foreground:  var(--neutral-500);
+    --muted:             var(--ink-100);
+    --muted-foreground:  var(--ink-500);
     --accent:            var(--cia-gold-100);
     --accent-foreground: var(--cia-blue-700);
-    --destructive:       var(--cia-red-500);
+    --destructive:       var(--error-500);
     --destructive-foreground: 0 0% 100%;
-    --border:            var(--neutral-200);
-    --input:             var(--neutral-200);
-    --ring:              var(--cia-blue-500);
-    --radius:            0.75rem;
+    --border:            var(--ink-100);
+    --input:             var(--ink-200);
+    --ring:              var(--info-500);
+    --radius:            1rem;
 
-    /* === Sémantique gamification === */
-    --xp-color:        var(--cia-gold-400);
-    --streak-color:    25 95% 55%;
-    --success-color:   145 65% 42%;
-    --league-bronze:   25 55% 45%;
-    --league-silver:   220 10% 65%;
-    --league-gold:     var(--cia-gold-400);
-
-    /* Legacy CIA tokens (compat ascendante) */
-    --cia-navy: var(--cia-blue-500);
-    --cia-navy-light: var(--cia-blue-400);
-    --cia-sky: var(--cia-blue-300);
-    --cia-gold: var(--cia-gold-400);
-    --cia-sand: var(--cia-gold-50);
-    --cia-success: var(--success-color);
-    --cia-warning: var(--cia-gold-400);
-    --cia-xp: var(--xp-color);
-    --cia-streak: var(--streak-color);
-    --cia-gems: 260 70% 60%;
-    --cia-bonus: 290 65% 55%;
-
-    /* Sidebar (legacy mapping) */
+    /* Sidebar */
     --sidebar-background: var(--cia-blue-500);
-    --sidebar-foreground: var(--neutral-100);
-    --sidebar-primary: var(--cia-gold-400);
+    --sidebar-foreground: var(--ink-100);
+    --sidebar-primary:    var(--cia-gold-500);
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: var(--cia-blue-600);
-    --sidebar-accent-foreground: var(--neutral-100);
-    --sidebar-border: var(--cia-blue-600);
-    --sidebar-ring: var(--cia-gold-400);
+    --sidebar-accent:     var(--cia-blue-600);
+    --sidebar-accent-foreground: var(--ink-100);
+    --sidebar-border:     var(--cia-blue-600);
+    --sidebar-ring:       var(--cia-spark-mid);
 
-    /* === Élévations === */
-    --shadow-sm:    0 1px 2px hsl(220 15% 20% / 0.04);
-    --shadow:       0 2px 8px hsl(220 15% 20% / 0.06), 0 1px 3px hsl(220 15% 20% / 0.04);
-    --shadow-md:    0 4px 16px hsl(220 15% 20% / 0.08), 0 2px 4px hsl(220 15% 20% / 0.04);
-    --shadow-lg:    0 10px 32px hsl(220 15% 20% / 0.10), 0 4px 8px hsl(220 15% 20% / 0.05);
-    --shadow-xl:    0 20px 60px hsl(220 15% 20% / 0.14);
-    --shadow-glow:  0 0 24px hsl(var(--cia-gold-400) / 0.40);
+    /* Élévations (shadcn) */
+    --shadow-sm:  0 1px 2px hsl(var(--ink-900) / 0.04);
+    --shadow:     0 2px 8px hsl(var(--ink-900) / 0.06), 0 1px 3px hsl(var(--ink-900) / 0.04);
+    --shadow-md:  0 4px 16px hsl(var(--ink-900) / 0.08), 0 2px 4px hsl(var(--ink-900) / 0.04);
+    --shadow-lg:  0 10px 32px hsl(var(--ink-900) / 0.10), 0 4px 8px hsl(var(--ink-900) / 0.05);
+    --shadow-xl:  0 20px 60px hsl(var(--ink-900) / 0.14);
+    --shadow-glow: 0 0 24px hsl(var(--cia-gold-500) / 0.40);
 
-    /* === Easings === */
+    /* Easings */
     --ease-out-expo:    cubic-bezier(0.16, 1, 0.3, 1);
     --ease-out-back:    cubic-bezier(0.34, 1.56, 0.64, 1);
     --ease-in-out-soft: cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Legacy aliases (compat ascendante — à retirer au batch suivant) */
+    --cia-navy:        var(--cia-blue-500);
+    --cia-navy-light:  var(--cia-blue-400);
+    --cia-sky:         var(--cia-spark-light);
+    --cia-sand:        var(--cia-gold-50);
+    --cia-gold:        var(--cia-gold-500);
+    --cia-success:     var(--success-500);
+    --cia-warning:     var(--warning-500);
+    --cia-xp:          var(--xp-500);
+    --cia-streak:      var(--streak-500);
+    --cia-gems:        var(--gems-500);
+    --cia-bonus:       var(--bonus-500);
+    --xp-color:        var(--xp-500);
+    --streak-color:    var(--streak-500);
+    --success-color:   var(--success-500);
+    --league-bronze:   25 55% 45%;
+    --league-silver:   220 10% 65%;
+    --league-gold:     var(--cia-gold-500);
   }
 
   .dark {
-    --background:        var(--neutral-900);
-    --foreground:        var(--neutral-50);
-    --card:              var(--neutral-800);
-    --card-foreground:   var(--neutral-50);
-    --popover:           var(--neutral-800);
-    --popover-foreground: var(--neutral-50);
+    /* Shadcn mappings — dark */
+    --background:        var(--ink-900);
+    --foreground:        var(--ink-50);
+    --card:              var(--ink-800);
+    --card-foreground:   var(--ink-50);
+    --popover:           var(--ink-800);
+    --popover-foreground: var(--ink-50);
     --primary:           var(--cia-gold-400);
     --primary-foreground: var(--cia-blue-700);
-    --secondary:         var(--cia-blue-400);
-    --secondary-foreground: var(--neutral-50);
-    --muted:             var(--neutral-700);
-    --muted-foreground:  var(--neutral-300);
+    --secondary:         var(--cia-spark-mid);
+    --secondary-foreground: var(--ink-50);
+    --muted:             var(--ink-700);
+    --muted-foreground:  var(--ink-300);
     --accent:            var(--cia-blue-700);
-    --accent-foreground: var(--neutral-50);
-    --destructive:       var(--cia-red-500);
+    --accent-foreground: var(--ink-50);
+    --destructive:       var(--error-500);
     --destructive-foreground: 0 0% 100%;
-    --border:            var(--neutral-700);
-    --input:             var(--neutral-700);
-    --ring:              var(--cia-gold-400);
+    --border:            var(--ink-700);
+    --input:             var(--ink-700);
+    --ring:              var(--cia-spark-light);
 
-    /* === Sidebar (B1) === */
-    --sidebar-background:        220 32% 10%;
-    --sidebar-foreground:        210 40% 96%;
-    --sidebar-primary:           207 64% 55%;
-    --sidebar-primary-foreground: 220 35% 8%;
-    --sidebar-accent:            220 22% 22%;
-    --sidebar-accent-foreground: 210 40% 96%;
-    --sidebar-border:            220 22% 22%;
-    --sidebar-ring:              207 64% 55%;
+    --sidebar-background: 224 28% 9%;
+    --sidebar-foreground: var(--ink-50);
+    --sidebar-primary:    var(--cia-spark-mid);
+    --sidebar-primary-foreground: var(--ink-900);
+    --sidebar-accent:     var(--ink-700);
+    --sidebar-accent-foreground: var(--ink-50);
+    --sidebar-border:     var(--ink-700);
+    --sidebar-ring:       var(--cia-spark-light);
 
-    /* === Palette CIA bleu — éclaircie pour rester visible en dark (B1) === */
-    --cia-blue-50:  220 30% 14%;
-    --cia-blue-100: 220 28% 18%;
-    --cia-blue-200: 220 25% 24%;
-    --cia-blue-300: 215 30% 35%;
-    --cia-blue-400: 210 40% 50%;
-    --cia-blue-500: 207 55% 60%;
-    --cia-blue-600: 207 60% 68%;
-    --cia-blue-700: 207 65% 75%;
-    --cia-blue-800: 207 70% 82%;
-    --cia-blue-900: 207 75% 88%;
-
-    /* === Palette CIA or — désaturée pour confort nuit (B1) === */
-    --cia-gold:     41 50% 58%;
-    --cia-gold-50:  41 30% 16%;
-    --cia-gold-100: 41 35% 22%;
-    --cia-gold-200: 41 40% 35%;
-    --cia-gold-300: 41 45% 50%;
-    --cia-gold-400: 41 50% 60%;
-    --cia-gold-500: 41 55% 65%;
-    --cia-gold-600: 41 60% 72%;
-    --cia-gold-700: 41 65% 80%;
-
-    /* === Palette CIA rouge (B1) === */
-    --cia-red-50:  348 30% 16%;
-    --cia-red-100: 348 35% 22%;
-    --cia-red-300: 348 50% 45%;
-    --cia-red-500: 348 65% 55%;
-    --cia-red-600: 348 70% 62%;
-
-    /* === Couleurs sémantiques en dark (B1) === */
-    --cia-success: 142 55% 50%;
-    --cia-warning: 38 80% 55%;
-    --cia-xp:      41 50% 60%;
-    --cia-streak:  14 75% 55%;
-    --cia-gems:    207 55% 60%;
-    --cia-bonus:   280 50% 60%;
-
-    /* === Shadows ajustées pour dark mode (plus profondes) (B1) === */
-    --shadow-sm:   0 1px 2px 0 rgb(0 0 0 / 0.5);
-    --shadow:      0 1px 3px 0 rgb(0 0 0 / 0.6), 0 1px 2px -1px rgb(0 0 0 / 0.5);
-    --shadow-md:   0 4px 6px -1px rgb(0 0 0 / 0.6), 0 2px 4px -2px rgb(0 0 0 / 0.5);
-    --shadow-lg:   0 10px 15px -3px rgb(0 0 0 / 0.7), 0 4px 6px -4px rgb(0 0 0 / 0.6);
-    --shadow-xl:   0 20px 25px -5px rgb(0 0 0 / 0.7), 0 8px 10px -6px rgb(0 0 0 / 0.6);
+    --shadow-sm:  0 1px 2px 0 rgb(0 0 0 / 0.5);
+    --shadow:     0 1px 3px 0 rgb(0 0 0 / 0.6), 0 1px 2px -1px rgb(0 0 0 / 0.5);
+    --shadow-md:  0 4px 6px -1px rgb(0 0 0 / 0.6), 0 2px 4px -2px rgb(0 0 0 / 0.5);
+    --shadow-lg:  0 10px 15px -3px rgb(0 0 0 / 0.7), 0 4px 6px -4px rgb(0 0 0 / 0.6);
+    --shadow-xl:  0 20px 25px -5px rgb(0 0 0 / 0.7), 0 8px 10px -6px rgb(0 0 0 / 0.6);
     --shadow-glow: 0 0 24px hsl(var(--cia-gold-400) / 0.4);
   }
 }
@@ -201,45 +202,71 @@
   button, a, [role="button"] {
     touch-action: manipulation;
   }
-  /* Avoid iOS zoom on input focus */
-  input, select, textarea {
-    font-size: 16px;
-  }
+  input, select, textarea { font-size: 16px; }
   @media (min-width: 640px) {
     input, select, textarea { font-size: inherit; }
   }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
+  * { @apply border-border; }
 }
 
 @layer utilities {
-  .font-display {
-    font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
-    font-weight: 700;
-  }
-  .font-body {
-    font-family: 'Inter', system-ui, sans-serif;
-  }
-  .pt-safe   { padding-top: env(safe-area-inset-top); }
-  .pb-safe   { padding-bottom: env(safe-area-inset-bottom); }
-  .pl-safe   { padding-left: env(safe-area-inset-left); }
-  .pr-safe   { padding-right: env(safe-area-inset-right); }
+  .font-display { font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif; font-weight: 700; }
+  .font-body    { font-family: 'Inter', system-ui, sans-serif; }
+  .font-mono    { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .tnum         { font-variant-numeric: tabular-nums; }
+
+  .pt-safe { padding-top: env(safe-area-inset-top); }
+  .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+  .pl-safe { padding-left: env(safe-area-inset-left); }
+  .pr-safe { padding-right: env(safe-area-inset-right); }
   .min-h-touch { min-height: 44px; }
   .min-w-touch { min-width: 44px; }
-  .scroll-x {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-  }
+  .scroll-x { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: thin; }
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { scrollbar-width: none; }
 }
 
-/* Gamification card style */
+/* ============================================
+ * Glassmorphism — 4 variants
+ * ============================================ */
+@layer components {
+  .glass {
+    background: hsl(var(--background) / 0.55);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    border: 1px solid hsl(var(--background) / 0.7);
+  }
+  .glass-subtle {
+    background: hsl(var(--background) / 0.75);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid hsl(var(--background) / 0.6);
+  }
+  .glass-strong {
+    background: hsl(var(--background) / 0.35);
+    backdrop-filter: blur(28px) saturate(160%);
+    -webkit-backdrop-filter: blur(28px) saturate(160%);
+    border: 1px solid hsl(var(--background) / 0.5);
+  }
+  .glass-dark {
+    background: hsl(var(--cia-blue-500) / 0.55);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    border: 1px solid hsl(0 0% 100% / 0.12);
+    color: hsl(0 0% 100%);
+  }
+  /* Adaptive variants — pick up tokens, switch with theme */
+  .glass-adaptive {
+    @apply backdrop-blur-md bg-card/70 border border-border;
+  }
+  .glass-subtle-adaptive {
+    @apply backdrop-blur-sm bg-card/40 border border-border/50;
+  }
+}
+
+/* ============================================
+ * Cards & components signature
+ * ============================================ */
 @layer components {
   .card-duo {
     @apply relative overflow-hidden rounded-2xl border-2 border-border bg-card transition-all duration-200;
@@ -258,6 +285,11 @@
     @apply relative font-bold rounded-2xl border-2 border-b-4 transition-all duration-150 active:border-b-2 active:translate-y-[2px];
   }
 
+  .btn3d {
+    transition: transform .08s ease, box-shadow .08s ease;
+  }
+  .btn3d:active { transform: translateY(2px); }
+
   .chip-filter {
     @apply inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold border-2 transition-all duration-200 cursor-pointer select-none;
   }
@@ -271,81 +303,129 @@
   .level-node {
     @apply relative flex items-center justify-center rounded-full border-4 transition-all duration-300;
   }
-  .level-node-locked {
-    @apply border-muted bg-muted text-muted-foreground;
-  }
-  .level-node-available {
-    @apply border-accent bg-accent/10 text-accent cursor-pointer hover:scale-110;
-  }
-  .level-node-active {
-    @apply border-accent bg-accent text-accent-foreground animate-pulse-soft;
-  }
-  .level-node-complete {
-    @apply border-cia-success bg-cia-success text-primary-foreground;
-  }
+  .level-node-locked    { @apply border-muted bg-muted text-muted-foreground; }
+  .level-node-available { @apply border-accent bg-accent/10 text-accent cursor-pointer hover:scale-110; }
+  .level-node-active    { @apply border-accent bg-accent text-accent-foreground animate-pulse-soft; }
+  .level-node-complete  { @apply border-cia-success bg-cia-success text-primary-foreground; }
 
   .stat-bubble {
     @apply flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-bold;
   }
+
+  /* Editorial numeral — giant section numbers */
+  .editorial-num {
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: .85;
+    font-variant-numeric: tabular-nums;
+  }
 }
 
-/* Character 3D avatar animations */
+/* ============================================
+ * Animations
+ * ============================================ */
+
+/* Spark — flame */
+@keyframes flame-breathe {
+  0%, 100% { transform: translateY(0) scale(1, 1); }
+  50%      { transform: translateY(-3px) scale(1.015, 1.04); }
+}
+@keyframes flame-talk {
+  0%, 100% { transform: scale(1, 1); }
+  50%      { transform: scale(1.04, 1.08); }
+}
+@keyframes flame-bounce {
+  0%, 100% { transform: translateY(0) scale(1, 1); }
+  30%      { transform: translateY(-14px) scale(.96, 1.1); }
+  60%      { transform: translateY(0) scale(1.05, .96); }
+}
+@keyframes flame-celebrate {
+  0%   { transform: translateY(0) rotate(-3deg) scale(1.04, 1.08); }
+  25%  { transform: translateY(-8px) rotate(3deg) scale(1.08, 1.12); }
+  50%  { transform: translateY(-2px) rotate(-2deg) scale(1.06, 1.1); }
+  75%  { transform: translateY(-6px) rotate(2deg) scale(1.1, 1.14); }
+  100% { transform: translateY(0) rotate(0deg) scale(1.04, 1.08); }
+}
+@keyframes flame-sad {
+  0%, 100% { transform: translateY(6px) scale(.94, .9); opacity: .85; }
+  50%      { transform: translateY(8px) scale(.93, .88); opacity: .78; }
+}
+@keyframes flicker-outer {
+  0%, 100% { transform: scaleY(1) scaleX(1); opacity: .55; }
+  33%      { transform: scaleY(1.06) scaleX(.96); opacity: .5; }
+  66%      { transform: scaleY(.97) scaleX(1.03); opacity: .6; }
+}
+@keyframes flicker-mid {
+  0%, 100% { transform: scaleY(1) translateX(0); }
+  25%      { transform: scaleY(1.04) translateX(1px); }
+  50%      { transform: scaleY(.98) translateX(-1px); }
+  75%      { transform: scaleY(1.03) translateX(0.5px); }
+}
+@keyframes flicker-mid2 {
+  0%, 100% { transform: scaleY(1.02) scaleX(.98); }
+  50%      { transform: scaleY(.97) scaleX(1.02); }
+}
+@keyframes flicker-core {
+  0%, 100% { transform: scaleY(1.04) scaleX(.97); opacity: .95; }
+  50%      { transform: scaleY(.96) scaleX(1.04); opacity: 1; }
+}
+@keyframes halo-pulse {
+  0%, 100% { opacity: .7; transform: scale(1); }
+  50%      { opacity: 1;  transform: scale(1.12); }
+}
+@keyframes ember-rise {
+  0%   { transform: translateY(0) scale(1);   opacity: 0; }
+  15%  { opacity: 1; }
+  100% { transform: translateY(-160px) scale(.3); opacity: 0; }
+}
+@keyframes shine-sweep {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+/* Legacy anims (used by existing components) */
 @keyframes character-idle {
   0%, 100% { transform: scale(1) translateY(0); }
-  50% { transform: scale(1.02) translateY(-1px); }
+  50%      { transform: scale(1.02) translateY(-1px); }
 }
 @keyframes character-walk {
-  0% { transform: translateY(0) rotate(0deg); }
-  15% { transform: translateY(-6px) rotate(-2deg); }
-  30% { transform: translateY(-2px) rotate(1deg); }
-  45% { transform: translateY(-8px) rotate(-1.5deg); }
-  60% { transform: translateY(-3px) rotate(2deg); }
-  75% { transform: translateY(-7px) rotate(-1deg); }
+  0%   { transform: translateY(0) rotate(0deg); }
+  15%  { transform: translateY(-6px) rotate(-2deg); }
+  30%  { transform: translateY(-2px) rotate(1deg); }
+  45%  { transform: translateY(-8px) rotate(-1.5deg); }
+  60%  { transform: translateY(-3px) rotate(2deg); }
+  75%  { transform: translateY(-7px) rotate(-1deg); }
   100% { transform: translateY(0) rotate(0deg); }
 }
 @keyframes character-sad {
   0%, 100% { transform: scale(1) translateY(0); }
-  50% { transform: scale(0.97) translateY(2px); }
+  50%      { transform: scale(0.97) translateY(2px); }
 }
 @keyframes slide-up {
   from { transform: translateY(100%); }
-  to { transform: translateY(0); }
+  to   { transform: translateY(0); }
 }
 
-.animate-character-idle {
-  animation: character-idle 3s ease-in-out infinite;
-}
-.animate-character-walk {
-  animation: character-walk 1.2s ease-in-out infinite;
-}
-.animate-character-sad {
-  animation: character-sad 2.4s ease-in-out infinite;
-}
-.animate-slide-up {
-  animation: slide-up 0.3s ease-out;
-}
+.animate-character-idle { animation: character-idle 3s ease-in-out infinite; }
+.animate-character-walk { animation: character-walk 1.2s ease-in-out infinite; }
+.animate-character-sad  { animation: character-sad 2.4s ease-in-out infinite; }
+.animate-slide-up       { animation: slide-up 0.3s ease-out; }
 
-/* === Glassmorphism utilities (B1) === */
-@layer components {
-  .glass {
-    @apply backdrop-blur-md bg-white/70 border border-white/40;
-  }
-  .glass-subtle {
-    @apply backdrop-blur-sm bg-white/40 border border-white/30;
-  }
-  .glass-strong {
-    @apply backdrop-blur-xl bg-white/80 border border-white/50 shadow-glass-strong;
-  }
-  .glass-dark {
-    @apply backdrop-blur-md bg-cia-blue-900/70 border border-white/10;
-  }
-  /* Adaptive variants — pick up bg-card / border tokens, so they
-   * automatically switch between light and dark mode. Prefer these for
-   * persistent UI surfaces. */
-  .glass-adaptive {
-    @apply backdrop-blur-md bg-card/70 border border-border;
-  }
-  .glass-subtle-adaptive {
-    @apply backdrop-blur-sm bg-card/40 border border-border/50;
-  }
+/* Spark animation classes */
+.anim-flame-breathe   { animation: flame-breathe 3.4s ease-in-out infinite; transform-origin: 50% 100%; }
+.anim-flame-talk      { animation: flame-talk 0.6s ease-in-out infinite; transform-origin: 50% 100%; }
+.anim-flame-bounce    { animation: flame-bounce 1.4s cubic-bezier(.34,1.56,.64,1) infinite; transform-origin: 50% 100%; }
+.anim-flame-celebrate { animation: flame-celebrate 1.6s ease-in-out infinite; transform-origin: 50% 100%; }
+.anim-flame-sad       { animation: flame-sad 3s ease-in-out infinite; transform-origin: 50% 100%; }
+.anim-flicker-outer   { animation: flicker-outer 0.7s ease-in-out infinite; }
+.anim-flicker-mid     { animation: flicker-mid 0.55s ease-in-out infinite; }
+.anim-flicker-mid2    { animation: flicker-mid2 0.45s ease-in-out infinite; }
+.anim-flicker-core    { animation: flicker-core 0.35s ease-in-out infinite; }
+.anim-halo-pulse      { animation: halo-pulse 2.4s ease-in-out infinite; }
+.anim-ember           { animation: ember-rise 3s ease-in infinite; }
+.anim-shine           { background-size: 200% 100%; animation: shine-sweep 2.4s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  [class*="anim-"], [class*="animate-"] { animation: none !important; }
 }
