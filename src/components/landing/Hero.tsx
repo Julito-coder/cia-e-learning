@@ -3,25 +3,25 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Sparkles, ArrowRight, Users, TrendingUp, Award } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { MascotPresence } from '@/components/characters/MascotPresence';
+import { SparkPresence } from '@/components/spark';
 import { staggerContainer, staggerItem } from '@/lib/animations';
 
 export function Hero() {
   const { t } = useTranslation();
 
   return (
-    <section className="relative overflow-hidden bg-gradient-mistral pt-16 pb-20 md:pt-24 md:pb-28">
+    <section className="relative overflow-hidden bg-g-mistral pt-16 pb-20 md:pt-24 md:pb-28">
       {/* Background décoratifs flottants */}
       <div
-        className="absolute -top-32 -right-32 w-[28rem] h-[28rem] rounded-full bg-gradient-sun opacity-25 blur-3xl pointer-events-none"
+        className="absolute -top-32 -right-32 w-[28rem] h-[28rem] rounded-full bg-g-sun opacity-25 blur-3xl pointer-events-none"
         aria-hidden="true"
       />
       <div
-        className="absolute -bottom-40 -left-32 w-[32rem] h-[32rem] rounded-full bg-gradient-sea opacity-15 blur-3xl pointer-events-none"
+        className="absolute -bottom-40 -left-32 w-[32rem] h-[32rem] rounded-full bg-g-sea opacity-15 blur-3xl pointer-events-none"
         aria-hidden="true"
       />
       <div
-        className="absolute top-1/3 left-1/4 w-64 h-64 rounded-full bg-gradient-dawn opacity-10 blur-3xl pointer-events-none"
+        className="absolute top-1/3 left-1/4 w-64 h-64 rounded-full bg-g-dawn opacity-10 blur-3xl pointer-events-none"
         aria-hidden="true"
       />
 
@@ -49,7 +49,7 @@ export function Hero() {
             >
               {t('landing.hero.title_part1')}
               <br />
-              <span className="bg-gradient-gold-shine bg-clip-text text-transparent">
+              <span className="bg-g-shine bg-clip-text text-transparent anim-shine">
                 {t('landing.hero.title_part2')}
               </span>
             </motion.h1>
@@ -131,12 +131,12 @@ export function Hero() {
               aria-hidden="true"
             />
 
-            {/* Mascotte Marie. Mobile: 180px hidden via responsive container. Desktop: 280px */}
+            {/* Mascotte Spark. Mobile: 180px. Desktop: 280px */}
             <div className="relative z-10 hidden md:block">
-              <MascotPresence mood="encouraging" size={280} />
+              <SparkPresence mood="encouraging" size={280} embers />
             </div>
             <div className="relative z-10 md:hidden">
-              <MascotPresence mood="encouraging" size={180} />
+              <SparkPresence mood="encouraging" size={180} embers />
             </div>
 
             {/* Confetti décoratifs flottants */}
@@ -147,14 +147,6 @@ export function Hero() {
               aria-hidden="true"
             >
               ✨
-            </motion.div>
-            <motion.div
-              className="absolute bottom-12 left-2 text-xl"
-              animate={{ y: [0, -6, 0], rotate: [0, -8, 0] }}
-              transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
-              aria-hidden="true"
-            >
-              🇫🇷
             </motion.div>
             <motion.div
               className="absolute top-1/3 -right-2 text-xl"

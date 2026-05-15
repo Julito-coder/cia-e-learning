@@ -13,7 +13,8 @@ import { FlashcardStep } from './FlashcardStep';
 import { ListeningStep } from './ListeningStep';
 import { FinalQuizStep } from './FinalQuizStep';
 import { readCoursePlayerProgress, writeCoursePlayerProgress, clearCoursePlayerProgress } from '@/lib/courseProgress';
-import { MascotPresence, type MascotMood } from '@/components/characters/MascotPresence';
+import { SparkPresence } from '@/components/spark';
+import type { MascotMood } from '@/components/characters/MascotPresence';
 import { useUserProgress } from '@/hooks/useUserProgress';
 
 interface Props {
@@ -147,10 +148,10 @@ export function CoursePlayer({ content, courseTitle, onExit, onComplete }: Props
             {/* Mascot sidebar — desktop only */}
             <aside className="hidden lg:flex flex-col items-center pt-4" aria-hidden="true">
               <div className="sticky top-24">
-                <MascotPresence
-                  level={cecrLevel}
+                <SparkPresence
                   mood={completed ? 'celebrating' : mascotMood}
                   size={120}
+                  embers={completed}
                 />
               </div>
             </aside>
@@ -234,7 +235,7 @@ function CompletionScreen({
         transition={{ delay: 0.3, type: 'spring', damping: 13, stiffness: 200 }}
         className="flex justify-center"
       >
-        <MascotPresence mood="celebrating" size={120} />
+        <SparkPresence mood="celebrating" size={120} embers />
       </motion.div>
 
       <div className="grid grid-cols-3 gap-3">
