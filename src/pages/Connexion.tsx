@@ -1,5 +1,5 @@
 import { useState, useEffect, FormEvent } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff, Loader2, User as UserIcon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
@@ -15,8 +15,34 @@ import { signInSchema, signUpSchema } from '@/lib/validators/auth';
 
 type Tab = 'login' | 'signup';
 
+const INTERESTED_PLAN_LS_KEY = 'cia-interested-plan';
+type InterestedPlan = 'premium' | 'school' | 'cia';
+const VALID_PLANS: InterestedPlan[] = ['premium', 'school', 'cia'];
+
+function GoogleIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true">
+      <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.76h3.56c2.08-1.92 3.28-4.74 3.28-8.09Z"/>
+      <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.56-2.76c-.99.66-2.25 1.06-3.72 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23Z"/>
+      <path fill="#FBBC05" d="M5.84 14.11A6.62 6.62 0 0 1 5.48 12c0-.73.13-1.44.36-2.11V7.05H2.18A11 11 0 0 0 1 12c0 1.77.42 3.45 1.18 4.95l3.66-2.84Z"/>
+      <path fill="#EA4335" d="M12 4.75c1.61 0 3.06.55 4.21 1.64l3.15-3.15C17.45 1.47 14.97.5 12 .5A11 11 0 0 0 2.18 7.05l3.66 2.84C6.71 7.28 9.14 4.75 12 4.75Z"/>
+    </svg>
+  );
+}
+
+function AppleIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true" fill="currentColor">
+      <path d="M16.36 12.71c.02-2.4 1.96-3.55 2.05-3.6-1.12-1.63-2.86-1.85-3.48-1.88-1.48-.15-2.89.87-3.65.87-.76 0-1.92-.85-3.16-.83-1.62.02-3.13.94-3.97 2.39-1.69 2.93-.43 7.27 1.22 9.65.81 1.17 1.78 2.48 3.04 2.44 1.22-.05 1.69-.79 3.17-.79 1.48 0 1.9.79 3.18.77 1.32-.02 2.16-1.19 2.96-2.36.93-1.36 1.32-2.69 1.35-2.76-.03-.01-2.59-1-2.61-3.96ZM14.04 5.66c.66-.81 1.11-1.93.99-3.05-.96.04-2.13.64-2.81 1.45-.62.72-1.16 1.87-1.02 2.97 1.07.08 2.18-.55 2.84-1.37Z"/>
+    </svg>
+  );
+}
+
 export default function Connexion() {
-  const [tab, setTab] = useState<Tab>('login');
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
+  const initialTab: Tab = location.pathname === '/inscription' ? 'signup' : 'login';
+  const [tab, setTab] = useState<Tab>(initialTab);
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -26,6 +52,20 @@ export default function Connexion() {
   const [loading, setLoading] = useState(false);
   const { signIn, signUp, user } = useAuth();
   const navigate = useNavigate();
+
+  // Capture interest in a paid plan when coming from Pricing CTAs.
+  // TODO(sprint-4): persist this in `subscriptions.interested_plan` once
+  // the BDD migration is done, instead of localStorage.
+  useEffect(() => {
+    const plan = searchParams.get('plan') ?? searchParams.get('context');
+    if (plan && VALID_PLANS.includes(plan as InterestedPlan)) {
+      try {
+        localStorage.setItem(INTERESTED_PLAN_LS_KEY, plan);
+      } catch {
+        /* localStorage disabled in private mode — silently ignore */
+      }
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     if (user) navigate('/profil', { replace: true });
@@ -67,9 +107,17 @@ export default function Connexion() {
           navigate('/');
         }
       } else {
+        const interestedPlan = (() => {
+          try {
+            return localStorage.getItem(INTERESTED_PLAN_LS_KEY) ?? undefined;
+          } catch {
+            return undefined;
+          }
+        })();
         const { error } = await signUp(email, password, {
           first_name: firstName,
           last_name: lastName,
+          ...(interestedPlan ? { interested_plan: interestedPlan } : {}),
         });
         if (error) toast.error(error.message);
         else {
@@ -97,8 +145,56 @@ export default function Connexion() {
       }
     >
       <Card className="border-border/60 shadow-xl rounded-2xl">
-        <CardContent className="p-6">
+        <CardContent className="p-6 space-y-4">
           <AuthTabs value={tab} onChange={switchTab} />
+
+          {/* SSO — Google & Apple are placeholder-disabled for V1.
+              Sprint 3 will wire up Google via supabase.auth.signInWithOAuth({provider:'google'}).
+              Apple requires an Apple Developer account ($99/yr) — deferred. */}
+          <div className="space-y-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="lg"
+              className="w-full gap-2 opacity-60 cursor-not-allowed"
+              disabled
+              aria-disabled="true"
+              title="Bientôt disponible"
+            >
+              <GoogleIcon />
+              Continuer avec Google
+              <span className="ml-auto text-[10px] uppercase tracking-wider text-muted-foreground">
+                bientôt
+              </span>
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="lg"
+              className="w-full gap-2 opacity-60 cursor-not-allowed"
+              disabled
+              aria-disabled="true"
+              title="Bientôt disponible"
+            >
+              <AppleIcon />
+              Continuer avec Apple
+              <span className="ml-auto text-[10px] uppercase tracking-wider text-muted-foreground">
+                bientôt
+              </span>
+            </Button>
+          </div>
+
+          {/* Divider */}
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center" aria-hidden="true">
+              <div className="w-full border-t border-border" />
+            </div>
+            <div className="relative flex justify-center">
+              <span className="bg-card px-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                ou avec ton email
+              </span>
+            </div>
+          </div>
 
           <AnimatePresence mode="wait" initial={false}>
             <motion.form
@@ -127,7 +223,7 @@ export default function Connexion() {
                       />
                     </div>
                     {errors.firstName && (
-                      <p className="text-[11px] text-destructive">{errors.firstName}</p>
+                      <p className="text-xs text-destructive">{errors.firstName}</p>
                     )}
                   </div>
                   <div className="space-y-1.5">
@@ -141,7 +237,7 @@ export default function Connexion() {
                       aria-invalid={!!errors.lastName}
                     />
                     {errors.lastName && (
-                      <p className="text-[11px] text-destructive">{errors.lastName}</p>
+                      <p className="text-xs text-destructive">{errors.lastName}</p>
                     )}
                   </div>
                 </div>
@@ -164,7 +260,7 @@ export default function Connexion() {
                   />
                 </div>
                 {errors.email && (
-                  <p className="text-[11px] text-destructive">{errors.email}</p>
+                  <p className="text-xs text-destructive">{errors.email}</p>
                 )}
               </div>
 
@@ -204,7 +300,7 @@ export default function Connexion() {
                   </button>
                 </div>
                 {errors.password && (
-                  <p className="text-[11px] text-destructive">{errors.password}</p>
+                  <p className="text-xs text-destructive">{errors.password}</p>
                 )}
                 {!isLogin && <PasswordStrength value={password} />}
               </div>
@@ -228,6 +324,19 @@ export default function Connexion() {
                   )}
                 </Button>
               </motion.div>
+
+              {!isLogin && (
+                <p className="text-[11px] text-muted-foreground text-center leading-relaxed">
+                  En créant ton compte, tu acceptes nos{' '}
+                  {/* TODO(sprint-3): wire /cgu and /confidentialite routes when legal copy is ready */}
+                  <a href="/cgu" className="underline hover:text-foreground">CGU</a>
+                  {' '}et notre{' '}
+                  <a href="/confidentialite" className="underline hover:text-foreground">
+                    politique de confidentialité
+                  </a>
+                  .
+                </p>
+              )}
 
               <div className="text-center text-sm text-muted-foreground">
                 {isLogin ? (

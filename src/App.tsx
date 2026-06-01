@@ -70,6 +70,7 @@ const App = () => (
                   <Route path="/test-vitesse/:level" element={<SpeedTest />} />
                   <Route path="/defi-du-jour" element={<DailyChallenge />} />
                   <Route path="/connexion" element={<Connexion />} />
+                  <Route path="/inscription" element={<Connexion />} />
                   <Route path="/profil" element={<Profil />} />
                   <Route path="/mot-de-passe-oublie" element={<ForgotPassword />} />
                   <Route path="/reinitialiser-mot-de-passe" element={<ResetPassword />} />
