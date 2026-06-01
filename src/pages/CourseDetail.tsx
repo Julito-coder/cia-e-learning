@@ -57,11 +57,11 @@ export default function CourseDetail() {
     title: curriculumData.lesson.title,
     description: curriculumData.lesson.description,
     level: curriculumData.level.level,
-    theme: curriculumData.module.theme as any,
+    theme: curriculumData.module.theme,
     duration: 10,
     isNew: false,
     imageUrl: 'https://images.unsplash.com/photo-1503917988258-f87a78e3c995?w=800&h=500&fit=crop&q=80',
-    contentTypes: ['text', 'qcm', 'fill-blank'] as any[],
+    contentTypes: ['text', 'qcm', 'fill-blank'] as const,
   } : null);
 
   if (!displayCourse) {
@@ -84,7 +84,6 @@ export default function CourseDetail() {
         courseTitle={displayCourse.title}
         onExit={() => setPlaying(false)}
         onComplete={async (score) => {
-          console.log('[CourseDetail] onComplete fired, score=', score, 'isDailyChallenge=', isDailyChallenge);
           setFinalScore(score);
           setPlaying(false);
 
@@ -95,7 +94,6 @@ export default function CourseDetail() {
 
           // Award XP based on score
           const xpEarned = Math.max(5, Math.round(score * 5));
-          console.log('[CourseDetail] awarding XP=', xpEarned);
           const { leveledUp, newLevel } = await addXP(xpEarned, 'course_completion', displayCourse.id);
           notify.xp(xpEarned, 'Cours terminé');
 
@@ -131,7 +129,7 @@ export default function CourseDetail() {
               // Update CECR level based on progress
               const newComputedLevel = computeLevelFromProgress();
               if (newComputedLevel !== cecrLevel) {
-                await setLevel(newComputedLevel as any);
+                await setLevel(newComputedLevel);
                 notify.levelUp(newComputedLevel);
               }
             }
@@ -162,7 +160,7 @@ export default function CourseDetail() {
     <div className="animate-fade-in">
       {/* Hero */}
       <div className="relative h-64 md:h-80 overflow-hidden">
-        <img src={displayCourse.imageUrl} alt={displayCourse.title} className="h-full w-full object-cover" />
+        <img src={displayCourse.imageUrl} alt={displayCourse.title} className="h-full w-full object-cover" loading="lazy" decoding="async" />
         <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/40 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 p-6 text-primary-foreground">
           <div className="container">

@@ -275,7 +275,7 @@ export default function DailyChallenge() {
                     ) : `#${i + 1}`}
                   </div>
                   {row.avatar_url ? (
-                    <img src={row.avatar_url} alt="" className="h-9 w-9 rounded-full object-cover border-2 border-primary/30" />
+                    <img src={row.avatar_url} alt="" className="h-9 w-9 rounded-full object-cover border-2 border-primary/30" loading="lazy" decoding="async" />
                   ) : (
                     <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center text-sm font-bold text-primary border-2 border-primary/30">{initial}</div>
                   )}

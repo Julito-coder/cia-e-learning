@@ -18,7 +18,7 @@ export function AuthShell({ title, subtitle, children }: AuthShellProps) {
       >
         <div className="text-center mb-8">
           <motion.img
-            src="/cia-logo-2.jpg"
+            src="/cia-logo-2.png"
             alt="CIA"
             className="h-16 mx-auto rounded-xl mb-4 shadow-md"
             initial={{ scale: 0.85, opacity: 0 }}

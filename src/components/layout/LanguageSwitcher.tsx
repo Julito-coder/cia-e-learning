@@ -22,7 +22,7 @@ export function LanguageSwitcher({ compact = true }: { compact?: boolean }) {
 
   const handleChange = (code: string) => {
     i18n.changeLanguage(code);
-    try { localStorage.setItem(LS_KEY, code); } catch {}
+    try { localStorage.setItem(LS_KEY, code); } catch { /* noop */ }
   };
 
   return (

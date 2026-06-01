@@ -16,6 +16,11 @@ interface UserIndicatorsProps {
 }
 
 const LEAGUE_ICON = { bronze: Medal, argent: Trophy, or: Crown } as const;
+const LEAGUE_BADGE_VARIANT = {
+  bronze: 'league-bronze',
+  argent: 'league-silver',
+  or: 'league-gold',
+} as const;
 
 export function UserIndicators({ compact = false, align = 'horizontal' }: UserIndicatorsProps) {
   const { t } = useTranslation();
@@ -96,7 +101,7 @@ export function UserIndicators({ compact = false, align = 'horizontal' }: UserIn
                 <TooltipTrigger asChild>
                   <motion.div variants={staggerItem}>
                     <Badge
-                      variant={(`league-${currentLeague === 'argent' ? 'silver' : currentLeague === 'or' ? 'gold' : 'bronze'}`) as any}
+                      variant={LEAGUE_BADGE_VARIANT[currentLeague]}
                       className="gap-1.5 px-2.5 py-1 capitalize"
                     >
                       <LeagueIcon className="h-3.5 w-3.5" />

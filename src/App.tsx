@@ -1,87 +1,99 @@
-import { useState, useCallback } from "react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { Toaster } from "@/components/ui/toaster";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { AuthProvider } from "@/hooks/useAuth";
-import { AppLayout } from "@/components/layout/AppLayout";
-import { AdminLayout } from "@/components/layout/AdminLayout";
-import { ErrorBoundary } from "@/components/states/ErrorBoundary";
-import Index from "./pages/Index";
-import Catalogue from "./pages/Catalogue";
-import Curriculum from "./pages/Curriculum";
-import Glossaire from "./pages/Glossaire";
-import Connexion from "./pages/Connexion";
-import ForgotPassword from "./pages/ForgotPassword";
-import ResetPassword from "./pages/ResetPassword";
-import CourseDetail from "./pages/CourseDetail";
-import TestNiveau from "./pages/TestNiveau";
-import Classement from "./pages/Classement";
-import SpeedTest from "./pages/SpeedTest";
-import DailyChallenge from "./pages/DailyChallenge";
-import Profil from "./pages/Profil";
-import AdminDashboard from "./pages/admin/AdminDashboard";
-import AdminUsers from "./pages/admin/AdminUsers";
-import AdminCourses from "./pages/admin/AdminCourses";
-import AdminAnalytics from "./pages/admin/AdminAnalytics";
-import AdminSubscriptions from "./pages/admin/AdminSubscriptions";
-import AdminSettings from "./pages/admin/AdminSettings";
-import NotFound from "./pages/NotFound";
-import { SplashScreen } from "./components/SplashScreen";
+import { lazy, Suspense } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Toaster as Sonner } from '@/components/ui/sonner';
+import { Toaster } from '@/components/ui/toaster';
+import { TooltipProvider } from '@/components/ui/tooltip';
+import { AuthProvider } from '@/hooks/useAuth';
+import { AppLayout } from '@/components/layout/AppLayout';
+import { AdminLayout } from '@/components/layout/AdminLayout';
+import { ErrorBoundary } from '@/components/states/ErrorBoundary';
+import Index from './pages/Index';
+
+// All non-landing routes are code-split — chunked on demand.
+const Catalogue = lazy(() => import('./pages/Catalogue'));
+const Curriculum = lazy(() => import('./pages/Curriculum'));
+const Glossaire = lazy(() => import('./pages/Glossaire'));
+const Connexion = lazy(() => import('./pages/Connexion'));
+const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
+const ResetPassword = lazy(() => import('./pages/ResetPassword'));
+const CourseDetail = lazy(() => import('./pages/CourseDetail'));
+const TestNiveau = lazy(() => import('./pages/TestNiveau'));
+const Classement = lazy(() => import('./pages/Classement'));
+const SpeedTest = lazy(() => import('./pages/SpeedTest'));
+const DailyChallenge = lazy(() => import('./pages/DailyChallenge'));
+const Profil = lazy(() => import('./pages/Profil'));
+const NotFound = lazy(() => import('./pages/NotFound'));
+
+// Admin bundle (recharts + 6 admin pages) — split from the user-facing bundle.
+const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
+const AdminUsers = lazy(() => import('./pages/admin/AdminUsers'));
+const AdminCourses = lazy(() => import('./pages/admin/AdminCourses'));
+const AdminAnalytics = lazy(() => import('./pages/admin/AdminAnalytics'));
+const AdminSubscriptions = lazy(() => import('./pages/admin/AdminSubscriptions'));
+const AdminSettings = lazy(() => import('./pages/admin/AdminSettings'));
 
 const queryClient = new QueryClient();
 
-const App = () => {
-  const [showSplash, setShowSplash] = useState(true);
-  const hideSplash = useCallback(() => setShowSplash(false), []);
-
+function RouteFallback() {
   return (
+    <div
+      className="flex min-h-[60vh] w-full items-center justify-center"
+      role="status"
+      aria-live="polite"
+      aria-label="Chargement"
+    >
+      <div className="h-10 w-10 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+    </div>
+  );
+}
+
+const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      {showSplash && <SplashScreen onFinish={hideSplash} />}
       <Toaster />
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
           <ErrorBoundary>
-          <Routes>
-            {/* Front-office */}
-            <Route element={<AppLayout />}>
-              <Route path="/" element={<Index />} />
-              <Route path="/catalogue" element={<Catalogue />} />
-              <Route path="/programme" element={<Curriculum />} />
-              <Route path="/glossaire" element={<Glossaire />} />
-              <Route path="/cours/:id" element={<CourseDetail />} />
-              <Route path="/test-niveau" element={<TestNiveau />} />
-              <Route path="/classement" element={<Classement />} />
-              <Route path="/test-vitesse/:level" element={<SpeedTest />} />
-              <Route path="/defi-du-jour" element={<DailyChallenge />} />
-              <Route path="/connexion" element={<Connexion />} />
-              <Route path="/profil" element={<Profil />} />
-              <Route path="/mot-de-passe-oublie" element={<ForgotPassword />} />
-              <Route path="/reinitialiser-mot-de-passe" element={<ResetPassword />} />
-              <Route path="/favoris" element={<Catalogue />} />
-            </Route>
+            <Suspense fallback={<RouteFallback />}>
+              <Routes>
+                {/* Front-office */}
+                <Route element={<AppLayout />}>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/catalogue" element={<Catalogue />} />
+                  <Route path="/programme" element={<Curriculum />} />
+                  <Route path="/glossaire" element={<Glossaire />} />
+                  <Route path="/cours/:id" element={<CourseDetail />} />
+                  <Route path="/test-niveau" element={<TestNiveau />} />
+                  <Route path="/classement" element={<Classement />} />
+                  <Route path="/test-vitesse/:level" element={<SpeedTest />} />
+                  <Route path="/defi-du-jour" element={<DailyChallenge />} />
+                  <Route path="/connexion" element={<Connexion />} />
+                  <Route path="/profil" element={<Profil />} />
+                  <Route path="/mot-de-passe-oublie" element={<ForgotPassword />} />
+                  <Route path="/reinitialiser-mot-de-passe" element={<ResetPassword />} />
+                  <Route path="/favoris" element={<Catalogue />} />
+                </Route>
 
-            {/* Back-office admin */}
-            <Route path="/admin" element={<AdminLayout />}>
-              <Route index element={<AdminDashboard />} />
-              <Route path="utilisateurs" element={<AdminUsers />} />
-              <Route path="cours" element={<AdminCourses />} />
-              <Route path="analytics" element={<AdminAnalytics />} />
-              <Route path="abonnements" element={<AdminSubscriptions />} />
-              <Route path="parametres" element={<AdminSettings />} />
-            </Route>
+                {/* Back-office admin */}
+                <Route path="/admin" element={<AdminLayout />}>
+                  <Route index element={<AdminDashboard />} />
+                  <Route path="utilisateurs" element={<AdminUsers />} />
+                  <Route path="cours" element={<AdminCourses />} />
+                  <Route path="analytics" element={<AdminAnalytics />} />
+                  <Route path="abonnements" element={<AdminSubscriptions />} />
+                  <Route path="parametres" element={<AdminSettings />} />
+                </Route>
 
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
           </ErrorBoundary>
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
-  );
-};
+);
 
 export default App;

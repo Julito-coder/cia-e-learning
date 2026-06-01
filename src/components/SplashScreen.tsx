@@ -26,7 +26,7 @@ export function SplashScreen({ onFinish }: { onFinish: () => void }) {
         }`}
       >
         <img
-          src="/cia-logo-2.jpg"
+          src="/cia-logo-2.png"
           alt="CIA"
           className="h-24 md:h-32 rounded-2xl shadow-2xl"
           style={{ mixBlendMode: 'screen', filter: 'brightness(1.8) contrast(1.1)' }}

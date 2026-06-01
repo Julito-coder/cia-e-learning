@@ -6,6 +6,15 @@ import { toast } from 'sonner';
 const LS_DONE = 'cia-onboarding-done';
 const LS_SKIP_UNTIL = 'cia-onboarding-skip-until';
 
+interface MarkOnboardingDoneResult {
+  awarded: boolean;
+  reason?: string;
+  completed_at: string;
+  xp_awarded?: number;
+  total_xp_after?: number;
+  level_after?: string;
+}
+
 export function useOnboarding() {
   const { user } = useAuth();
   const [completedAt, setCompletedAt] = useState<string | null>(null);
@@ -26,8 +35,8 @@ export function useOnboarding() {
         .eq('user_id', user.id)
         .maybeSingle();
       if (cancelled) return;
-      setCompletedAt((data as any)?.onboarding_completed_at ?? null);
-      setPlacementTakenAt((data as any)?.placement_test_taken_at ?? null);
+      setCompletedAt(data?.onboarding_completed_at ?? null);
+      setPlacementTakenAt(data?.placement_test_taken_at ?? null);
       setLoading(false);
     };
     load();
@@ -51,7 +60,7 @@ export function useOnboarding() {
       console.error('[onboarding] failed', error);
       return { awarded: false };
     }
-    const result = data as any;
+    const result = data as MarkOnboardingDoneResult | null;
     setCompletedAt(result?.completed_at ?? new Date().toISOString());
     if (result?.awarded) {
       const xp = result?.xp_awarded ?? 50;

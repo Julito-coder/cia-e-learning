@@ -1,10 +1,12 @@
 import { useMemo } from 'react';
 import { curriculum, type Module } from '@/data/curriculum';
-import { readCourseProgressMap } from '@/lib/courseProgress';
+import { readCourseProgressMap, type CourseProgressMap } from '@/lib/courseProgress';
+import type { CECRLevel } from '@/data/demo-courses';
 
-const LEVEL_ORDER = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+const LEVEL_ORDER = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'] as const;
+type CurriculumLevel = (typeof LEVEL_ORDER)[number];
 
-function getSavedProgress(): Record<string, any> {
+function getSavedProgress(): CourseProgressMap {
   return readCourseProgressMap();
 }
 
@@ -27,7 +29,7 @@ export function isModuleComplete(mod: Module): boolean {
 export function isModuleUnlocked(moduleId: string): boolean {
   const [levelStr, modNumStr] = moduleId.split('.');
   const modNum = parseInt(modNumStr, 10);
-  const levelIdx = LEVEL_ORDER.indexOf(levelStr);
+  const levelIdx = (LEVEL_ORDER as readonly string[]).indexOf(levelStr);
 
   if (levelIdx === 0 && modNum === 1) return true;
 
@@ -64,16 +66,16 @@ export function getEarnedBadges(): { moduleId: string; badge: string; badgeEmoji
 }
 
 /** Compute current CECR level from module completion */
-export function computeLevelFromProgress(): string {
-  let currentLevel = 'A1';
+export function computeLevelFromProgress(): CECRLevel {
+  let currentLevel: CurriculumLevel = 'A1';
   for (const levelData of curriculum) {
     const allComplete = levelData.modules.every(m => isModuleComplete(m));
     if (allComplete) {
-      const idx = LEVEL_ORDER.indexOf(levelData.level);
-      if (idx + 1 < LEVEL_ORDER.length) {
+      const idx = LEVEL_ORDER.indexOf(levelData.level as CurriculumLevel);
+      if (idx >= 0 && idx + 1 < LEVEL_ORDER.length) {
         currentLevel = LEVEL_ORDER[idx + 1];
-      } else {
-        currentLevel = levelData.level; // Already at max
+      } else if (idx >= 0) {
+        currentLevel = levelData.level as CurriculumLevel; // Already at max
       }
     }
   }
@@ -86,7 +88,7 @@ export function computeLevelFromProgress(): string {
 export function getNewlyUnlockedModules(completedModuleId: string): Module[] {
   const [levelStr, modNumStr] = completedModuleId.split('.');
   const modNum = parseInt(modNumStr, 10);
-  const levelIdx = LEVEL_ORDER.indexOf(levelStr);
+  const levelIdx = (LEVEL_ORDER as readonly string[]).indexOf(levelStr);
   const unlocked: Module[] = [];
 
   const findModule = (level: string, num: number): Module | undefined => {
