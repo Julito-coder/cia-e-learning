@@ -34,7 +34,7 @@ const displayName = (e: LeagueMember) => {
 const Avatar = ({ entry }: { entry: LeagueMember }) => {
   const initial = (entry.first_name?.[0] || entry.last_name?.[0] || '?').toUpperCase();
   if (entry.avatar_url) {
-    return <img src={entry.avatar_url} alt={displayName(entry)} className="h-10 w-10 rounded-full object-cover border-2 border-primary/30" />;
+    return <img src={entry.avatar_url} alt={displayName(entry)} className="h-10 w-10 rounded-full object-cover border-2 border-primary/30" loading="lazy" decoding="async" />;
   }
   return (
     <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center font-bold text-primary border-2 border-primary/30">

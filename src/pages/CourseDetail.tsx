@@ -160,7 +160,7 @@ export default function CourseDetail() {
     <div className="animate-fade-in">
       {/* Hero */}
       <div className="relative h-64 md:h-80 overflow-hidden">
-        <img src={displayCourse.imageUrl} alt={displayCourse.title} className="h-full w-full object-cover" />
+        <img src={displayCourse.imageUrl} alt={displayCourse.title} className="h-full w-full object-cover" loading="lazy" decoding="async" />
         <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/40 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 p-6 text-primary-foreground">
           <div className="container">

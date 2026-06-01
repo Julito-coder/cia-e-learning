@@ -104,7 +104,7 @@ export function AvatarUpload({ currentUrl, onUploaded, size = 80 }: AvatarUpload
       disabled={uploading}
     >
       {displayUrl ? (
-        <img src={displayUrl} alt="Avatar" className="w-full h-full object-cover" />
+        <img src={displayUrl} alt="Avatar" className="w-full h-full object-cover" loading="lazy" decoding="async" />
       ) : (
         <div className="w-full h-full bg-muted flex items-center justify-center text-muted-foreground text-2xl font-bold">
           {user?.email?.[0]?.toUpperCase() || '?'}

@@ -32,7 +32,7 @@ const Avatar = ({ entry, size = 'md' }: { entry: LeaderboardEntry; size?: 'sm' |
   const sz = size === 'lg' ? 'h-20 w-20 text-2xl' : size === 'md' ? 'h-12 w-12 text-base' : 'h-10 w-10 text-sm';
   const initial = (entry.first_name?.[0] || entry.last_name?.[0] || '?').toUpperCase();
   if (entry.avatar_url) {
-    return <img src={entry.avatar_url} alt={displayName(entry)} className={`${sz} rounded-full object-cover border-2 border-primary/30`} />;
+    return <img src={entry.avatar_url} alt={displayName(entry)} className={`${sz} rounded-full object-cover border-2 border-primary/30`} loading="lazy" decoding="async" />;
   }
   return (
     <div className={`${sz} rounded-full bg-primary/10 flex items-center justify-center font-bold text-primary border-2 border-primary/30`}>

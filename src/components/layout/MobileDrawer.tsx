@@ -55,7 +55,7 @@ export function MobileDrawer({ open, onClose }: MobileDrawerProps) {
           >
             <div className="flex items-center justify-between px-5 py-4 border-b border-border/40">
               <div className="flex items-center gap-2">
-                <img src="/cia-logo-2.png" alt="CIA" className="h-8 w-auto" />
+                <img src="/cia-logo-2.png" alt="CIA" className="h-8 w-auto" loading="lazy" decoding="async" />
                 <div>
                   <p className="font-display text-sm leading-tight text-primary">CIA</p>
                   <p className="text-[10px] text-muted-foreground font-semibold">e-learning</p>
