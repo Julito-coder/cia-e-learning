@@ -67,9 +67,11 @@ export default function Connexion() {
     }
   }, [searchParams]);
 
+  const redirectTo = searchParams.get('redirect') || '/dashboard';
+
   useEffect(() => {
-    if (user) navigate('/profil', { replace: true });
-  }, [user, navigate]);
+    if (user) navigate(redirectTo, { replace: true });
+  }, [user, navigate, redirectTo]);
 
   if (user) return null;
 
@@ -104,7 +106,7 @@ export default function Connexion() {
         if (error) toast.error(error.message);
         else {
           toast.success('Connexion réussie');
-          navigate('/');
+          navigate(redirectTo);
         }
       } else {
         const interestedPlan = (() => {
@@ -122,7 +124,7 @@ export default function Connexion() {
         if (error) toast.error(error.message);
         else {
           toast.success('Bienvenue ! On démarre ton aventure 🇫🇷');
-          navigate('/?welcome=1');
+          navigate('/dashboard?welcome=1');
         }
       }
     } finally {

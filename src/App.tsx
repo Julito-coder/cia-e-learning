@@ -1,10 +1,10 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, type ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { Toaster as Sonner } from '@/components/ui/sonner';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
-import { AuthProvider } from '@/hooks/useAuth';
+import { AuthProvider, useAuth } from '@/hooks/useAuth';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { AdminLayout } from '@/components/layout/AdminLayout';
 import { ErrorBoundary } from '@/components/states/ErrorBoundary';
@@ -23,6 +23,7 @@ const Classement = lazy(() => import('./pages/Classement'));
 const SpeedTest = lazy(() => import('./pages/SpeedTest'));
 const DailyChallenge = lazy(() => import('./pages/DailyChallenge'));
 const Profil = lazy(() => import('./pages/Profil'));
+const Dashboard = lazy(() => import('./pages/Dashboard'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 // Admin bundle (recharts + 6 admin pages) — split from the user-facing bundle.
@@ -48,6 +49,27 @@ function RouteFallback() {
   );
 }
 
+/** Root route: shows the public landing for visitors, redirects authenticated
+ *  users to their dashboard so `/` becomes an "open the app" URL. */
+function LandingOrRedirect() {
+  const { user, isLoading } = useAuth();
+  if (isLoading) return <RouteFallback />;
+  if (user) return <Navigate to="/dashboard" replace />;
+  return <Index />;
+}
+
+/** Wraps a route that requires authentication. */
+function ProtectedRoute({ children }: { children: ReactNode }) {
+  const { user, isLoading } = useAuth();
+  const location = useLocation();
+  if (isLoading) return <RouteFallback />;
+  if (!user) {
+    const next = encodeURIComponent(location.pathname + location.search);
+    return <Navigate to={`/connexion?redirect=${next}`} replace />;
+  }
+  return <>{children}</>;
+}
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -60,7 +82,15 @@ const App = () => (
               <Routes>
                 {/* Front-office */}
                 <Route element={<AppLayout />}>
-                  <Route path="/" element={<Index />} />
+                  <Route path="/" element={<LandingOrRedirect />} />
+                  <Route
+                    path="/dashboard"
+                    element={
+                      <ProtectedRoute>
+                        <Dashboard />
+                      </ProtectedRoute>
+                    }
+                  />
                   <Route path="/catalogue" element={<Catalogue />} />
                   <Route path="/programme" element={<Curriculum />} />
                   <Route path="/glossaire" element={<Glossaire />} />

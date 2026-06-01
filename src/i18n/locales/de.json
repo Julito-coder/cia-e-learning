@@ -11,7 +11,8 @@
     "daily_challenge": "Tages­challenge",
     "profile": "Mein Profil",
     "logout": "Abmelden",
-    "signup": "Registrieren"
+    "signup": "Registrieren",
+    "dashboard": "Mon tableau de bord"
   },
   "hero": {
     "greeting": "Hallo, {{name}}!",
@@ -869,6 +870,67 @@
       "classement": {
         "title": "Rangliste & Ligen",
         "desc": "Wochen-XP vergleichen. Aufstiege jeden Montag!"
+      }
+    }
+  },
+  "dashboard": {
+    "hero": {
+      "tag": "TABLEAU DE BORD",
+      "fallback_name": "Apprenant",
+      "greeting": "Bonjour, {{name}}",
+      "subtitle_first": "Bienvenue à Antibes. Spark t'accompagne pour démarrer.",
+      "subtitle_streak": "Tu enchaînes {{count}} jours d'affilée. 🔥 Continue ta série.",
+      "subtitle_default": "Une nouvelle journée commence. Spark t'attend."
+    },
+    "resume": {
+      "tag_resume": "REPRENDRE",
+      "tag_start": "COMMENCE",
+      "empty_title": "Choisis ton niveau de départ",
+      "empty_desc": "Passe le test de placement pour qu'on personnalise ton parcours.",
+      "empty_cta": "Faire le test de placement",
+      "continue": "Continuer",
+      "replay": "Refaire",
+      "start": "Démarrer",
+      "module_label": "Module",
+      "progress_label": "Progression",
+      "score_label": "Score :"
+    },
+    "daily": {
+      "tag": "Défi du jour",
+      "todo_title": "Ton défi t'attend",
+      "todo_desc": "Une mini-leçon pour entretenir ta série.",
+      "done_title": "Défi du jour validé",
+      "done_desc": "Bravo ! Reviens demain pour la suite.",
+      "cta": "Faire le défi",
+      "completed_label": "Terminé aujourd'hui"
+    },
+    "path": {
+      "title": "Ton parcours",
+      "see_all": "Voir tout le parcours",
+      "module_aria": "Module"
+    },
+    "recommended": {
+      "title": "Recommandé pour toi",
+      "see_all": "Voir le catalogue",
+      "start": "Démarrer"
+    },
+    "shortcuts": {
+      "title": "Raccourcis",
+      "placement": {
+        "label": "Test de niveau",
+        "desc": "Mesurer ton niveau CECR"
+      },
+      "leaderboard": {
+        "label": "Classement",
+        "desc": "Voir ta ligue hebdomadaire"
+      },
+      "profile": {
+        "label": "Mon profil",
+        "desc": "Tes infos et achievements"
+      },
+      "glossary": {
+        "label": "Glossaire",
+        "desc": "Lexique grammatical"
       }
     }
   }

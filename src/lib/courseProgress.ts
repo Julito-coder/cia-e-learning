@@ -1,6 +1,15 @@
 const ACTIVE_USER_STORAGE_KEY = 'cia-active-user-id';
 const COURSE_PROGRESS_KEY = 'course-progress';
 const COURSE_PLAYER_PROGRESS_PREFIX = 'course-player-progress';
+const LAST_LESSON_OPENED_KEY = 'cia-last-lesson-opened';
+
+export interface LastLessonOpened {
+  courseId: string;
+  moduleId?: string;
+  title?: string;
+  level?: string;
+  openedAt: string;
+}
 
 export interface CourseProgressEntry {
   score?: number;
@@ -71,4 +80,24 @@ export function writeCoursePlayerProgress(courseId: string, progress: CoursePlay
 export function clearCoursePlayerProgress(courseId: string) {
   if (typeof window === 'undefined') return;
   window.localStorage.removeItem(getCoursePlayerProgressKey(courseId));
+}
+
+export function setLastLessonOpened(payload: Omit<LastLessonOpened, 'openedAt'>) {
+  if (typeof window === 'undefined') return;
+  const entry: LastLessonOpened = { ...payload, openedAt: new Date().toISOString() };
+  try {
+    window.localStorage.setItem(getScopedKey(LAST_LESSON_OPENED_KEY), JSON.stringify(entry));
+  } catch {
+    /* noop */
+  }
+}
+
+export function readLastLessonOpened(): LastLessonOpened | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    const raw = window.localStorage.getItem(getScopedKey(LAST_LESSON_OPENED_KEY));
+    return raw ? (JSON.parse(raw) as LastLessonOpened) : null;
+  } catch {
+    return null;
+  }
 }
