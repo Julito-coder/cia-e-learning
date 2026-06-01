@@ -7,7 +7,7 @@ import { Progress } from '@/components/ui/progress';
 import type { Module } from '@/data/curriculum';
 import { getCourseContent } from '@/data/course-content';
 import { isModuleUnlocked, isModuleComplete } from '@/hooks/useModuleUnlock';
-import { readCourseProgressMap } from '@/lib/courseProgress';
+import { readCourseProgressMap, type CourseProgressMap } from '@/lib/courseProgress';
 
 interface LearningPathProps {
   modules: Module[];
@@ -70,7 +70,7 @@ function ModulePopup({ mod, state, progress, onClose, index }: {
 }
 
 function PopupContent({ mod, state, progress, saved, onClose }: {
-  mod: Module; state: NodeState; progress: number; saved: Record<string, any>; onClose: () => void;
+  mod: Module; state: NodeState; progress: number; saved: CourseProgressMap; onClose: () => void;
 }) {
   return (
     <>

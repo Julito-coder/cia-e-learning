@@ -18,7 +18,7 @@ function readSeen(): Set<string> {
 }
 
 function writeSeen(set: Set<string>) {
-  try { localStorage.setItem(LS_SEEN_KEY, JSON.stringify(Array.from(set))); } catch {}
+  try { localStorage.setItem(LS_SEEN_KEY, JSON.stringify(Array.from(set))); } catch { /* noop */ }
 }
 
 export function useAchievements() {

@@ -1,0 +1,10 @@
+node_modules
+dist
+dist-ssr
+build
+.env*
+*.lock
+package-lock.json
+src/integrations/supabase/types.ts
+src/i18n/locales
+public

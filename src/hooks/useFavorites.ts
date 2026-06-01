@@ -46,7 +46,7 @@ export function useFavorites() {
             }
             localStorage.removeItem(FAVORITES_KEY);
           }
-        } catch {}
+        } catch { /* noop */ }
       }
       setLoading(false);
     };

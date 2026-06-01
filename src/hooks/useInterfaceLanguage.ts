@@ -31,7 +31,7 @@ export function useInterfaceLanguage() {
         const lang = data?.interface_language;
         if (isSupportedLang(lang) && lang !== i18n.language) {
           i18n.changeLanguage(lang);
-          try { localStorage.setItem(LS_KEY, lang); } catch {}
+          try { localStorage.setItem(LS_KEY, lang); } catch { /* noop */ }
         }
         synced.current = true;
       });
@@ -41,7 +41,7 @@ export function useInterfaceLanguage() {
   const setLanguage = async (code: string) => {
     if (!isSupportedLang(code)) return;
     await i18n.changeLanguage(code);
-    try { localStorage.setItem(LS_KEY, code); } catch {}
+    try { localStorage.setItem(LS_KEY, code); } catch { /* noop */ }
     if (user) {
       await supabase.from('profiles').update({ interface_language: code }).eq('user_id', user.id);
     }
