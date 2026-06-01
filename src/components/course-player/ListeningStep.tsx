@@ -5,10 +5,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Headphones, Play, CheckCircle2, XCircle, Volume2, Loader2, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { ListeningStep as ListeningStepType } from '@/data/course-content';
-import { getCharacter, getCharacterEvolution } from '@/data/characters';
-import { CharacterBubble } from './CharacterBubble';
+import { SparkBubble } from './SparkBubble';
 import { StepFeedback } from './StepFeedback';
-import { useUserProgress } from '@/hooks/useUserProgress';
 import { supabase } from '@/integrations/supabase/client';
 
 interface Props {
@@ -18,7 +16,6 @@ interface Props {
 
 export function ListeningStep({ step, onNext }: Props) {
   const { t } = useTranslation();
-  const { cecrLevel } = useUserProgress();
   const [playing, setPlaying] = useState(false);
   const [loading, setLoading] = useState(false);
   const [hasListened, setHasListened] = useState(false);
@@ -27,10 +24,6 @@ export function ListeningStep({ step, onNext }: Props) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const audioBlobUrlRef = useRef<string | null>(null);
   const isCorrect = selected === step.correctIndex;
-
-  // Resolve character for this step
-  const character = step.characterId ? getCharacter(step.characterId) : undefined;
-  const evolution = character ? getCharacterEvolution(character, cecrLevel) : undefined;
 
   const handlePlay = useCallback(async () => {
     if (playing || loading) return;
@@ -61,8 +54,8 @@ export function ListeningStep({ step, onNext }: Props) {
           },
           body: JSON.stringify({
             text: step.text,
-            voiceId: character?.voiceId,
-            voiceSettings: evolution?.voiceSettings,
+            // voiceId/voiceSettings are omitted: the elevenlabs-tts edge
+            // function falls back to its configured default voice.
           }),
         }
       );
@@ -88,7 +81,7 @@ export function ListeningStep({ step, onNext }: Props) {
       setLoading(false);
       setHasListened(true);
     }
-  }, [playing, loading, step.text, character?.voiceId, evolution?.voiceSettings]);
+  }, [playing, loading, step.text]);
 
   const handleSelect = (index: number) => {
     if (answered) return;
@@ -104,9 +97,9 @@ export function ListeningStep({ step, onNext }: Props) {
         </div>
         <h2 className="text-xl font-bold font-display">{step.title}</h2>
       </div>
-      {/* Character info */}
-      {character && evolution && (
-        <CharacterBubble character={character} evolution={evolution} showBio message={step.characterMessage} />
+      {/* Narrative bubble (Spark) */}
+      {step.characterMessage && (
+        <SparkBubble message={step.characterMessage} />
       )}
 
       {/* Audio player */}

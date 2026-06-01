@@ -14,7 +14,7 @@ import type { CECRLevel } from '@/data/demo-courses';
 import { AnimatedCounter } from '@/components/gamification/AnimatedCounter';
 import { CountdownDigit } from '@/components/leaderboard/CountdownDigit';
 import { SparkPresence } from '@/components/spark';
-import type { MascotMood } from '@/components/characters/MascotPresence';
+import type { SparkMood } from '@/components/spark/Spark';
 import { useUserProgress } from '@/hooks/useUserProgress';
 
 type StreakRow = {
@@ -56,7 +56,7 @@ export default function DailyChallenge() {
   const [topStreaks, setTopStreaks] = useState<StreakRow[]>([]);
   const tilMidnight = useTimeUntilMidnightParis();
 
-  const mascotMood: MascotMood = isDoneToday
+  const mascotMood: SparkMood = isDoneToday
     ? 'celebrating'
     : streak >= 7
       ? 'encouraging'
