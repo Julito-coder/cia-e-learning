@@ -54,15 +54,15 @@ export function Coachmark({
   }, [onNext, onPrev, onSkip]);
 
   // Position bubble below or above target
-  const bubblePos = (() => {
-    if (!rect) return { top: '50%', left: '50%', transform: 'translate(-50%, -50%)' as const };
+  const bubblePos: React.CSSProperties = (() => {
+    if (!rect) return { top: '50%', left: '50%', transform: 'translate(-50%, -50%)' };
     const padding = 16;
     const bubbleW = 320;
     const below = rect.bottom + padding + 220 < window.innerHeight;
     const top = below ? rect.bottom + padding : rect.top - padding - 220;
     let left = rect.left + rect.width / 2 - bubbleW / 2;
     left = Math.max(12, Math.min(window.innerWidth - bubbleW - 12, left));
-    return { top, left, transform: undefined as any };
+    return { top, left };
   })();
 
   // Spotlight cutout via clipPath

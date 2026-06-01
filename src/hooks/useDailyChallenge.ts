@@ -16,6 +16,16 @@ const STREAK_BONUS_XP = 25;
 const LS_STREAK = 'daily-streak';
 const LS_LAST = 'daily-last-date';
 
+interface MarkDailyDoneResult {
+  awarded: boolean;
+  reason?: string;
+  xp_awarded?: number;
+  streak: number;
+  total_xp_after?: number;
+  level_after?: CECRLevel;
+  leveled_up?: boolean;
+}
+
 export function useDailyChallenge(initialLevel?: CECRLevel) {
   const { user } = useAuth();
   const { cecrLevel, addXP } = useUserProgress();
@@ -70,7 +80,7 @@ export function useDailyChallenge(initialLevel?: CECRLevel) {
           toast.error(`Erreur défi du jour: ${error.message}`);
           return { awarded: false, xp: 0, newStreak: streak };
         }
-        const result = data as any;
+        const result = data as MarkDailyDoneResult | null;
         const today = todayKey();
         if (!result?.awarded) {
           // Déjà fait aujourd'hui — synchronise l'état local
@@ -79,8 +89,8 @@ export function useDailyChallenge(initialLevel?: CECRLevel) {
           setLastDate(today);
           return { awarded: false, xp: 0, newStreak: s };
         }
-        const newStreak = result.streak as number;
-        const xpAwarded = (result.xp_awarded as number) ?? STREAK_BONUS_XP;
+        const newStreak = result.streak;
+        const xpAwarded = result.xp_awarded ?? STREAK_BONUS_XP;
         setStreak(newStreak);
         setLastDate(today);
         // Diffuse les events pour synchroniser l'UI XP

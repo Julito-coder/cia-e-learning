@@ -9,6 +9,20 @@ const XP_PER_LEVEL = 5000;
 
 const XP_UPDATE_EVENT = 'xp-update';
 
+interface AwardXPResult {
+  xp_before: number;
+  xp_after: number;
+  level_before: CECRLevel;
+  level_after: CECRLevel;
+  leveled_up: boolean;
+}
+
+interface SetPlacementLevelResult {
+  level: CECRLevel;
+  total_xp: number;
+  taken_at: string;
+}
+
 function emitXPUpdate(xp: number, level: CECRLevel) {
   window.dispatchEvent(new CustomEvent(XP_UPDATE_EVENT, { detail: { xp, level } }));
 }
@@ -81,7 +95,7 @@ export function useUserProgress() {
       if (data) {
         setTotalXP(data.total_xp || 0);
         setCecrLevel((data.cecr_level as CECRLevel) || 'A1');
-        setPlacementTestTakenAt((data as any).placement_test_taken_at ?? null);
+        setPlacementTestTakenAt(data.placement_test_taken_at ?? null);
       }
       setLoading(false);
     };
@@ -104,16 +118,16 @@ export function useUserProgress() {
         const { data, error } = await supabase.rpc('award_xp', {
           _amount: amount,
           _source: source,
-          _source_ref: sourceRef ?? null,
+          _source_ref: sourceRef,
         });
         if (error) {
           console.error('[addXP] award_xp failed', error);
           toast.error(`Erreur XP: ${error.message}`);
           return { leveledUp: false, newLevel: cecrLevel };
         }
-        const result = data as any;
+        const result = data as AwardXPResult | null;
         const newXP = result?.xp_after ?? totalXP;
-        const newLevel = (result?.level_after as CECRLevel) ?? cecrLevel;
+        const newLevel = result?.level_after ?? cecrLevel;
         const leveledUp = !!result?.leveled_up;
 
         setTotalXP(newXP);
@@ -190,7 +204,7 @@ export function useUserProgress() {
         }
         return { ok: false, alreadyTaken: already, message: msg };
       }
-      const result = data as any;
+      const result = data as SetPlacementLevelResult | null;
       const newXP = result?.total_xp ?? totalXP;
       setTotalXP(newXP);
       setCecrLevel(level);

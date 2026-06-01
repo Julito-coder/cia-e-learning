@@ -129,7 +129,7 @@ export const demoCourses: Course[] = curriculum.flatMap(level =>
       imageUrl: moduleImages[mod.id] || 'https://images.unsplash.com/photo-1503917988258-f87a78e3c995?w=800&h=500&fit=crop&q=80',
       progress,
       score,
-      contentTypes: ['text', 'qcm', 'fill-blank', 'flashcard', 'audio'] as any[],
+      contentTypes: ['text', 'qcm', 'fill-blank', 'flashcard', 'audio'],
       moduleId: mod.id,
       lessonCount: mod.lessons.length,
     };

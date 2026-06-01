@@ -62,7 +62,7 @@ export default function AdminDashboard() {
       });
       setRecentUsers(recentUsersRes.data || []);
       setRecentXP(recentXPRes.data || []);
-      setFirstName((meRes.data as any)?.first_name || '');
+      setFirstName(meRes.data?.first_name || '');
       setLoading(false);
     }
     load();

@@ -2,6 +2,20 @@ const ACTIVE_USER_STORAGE_KEY = 'cia-active-user-id';
 const COURSE_PROGRESS_KEY = 'course-progress';
 const COURSE_PLAYER_PROGRESS_PREFIX = 'course-player-progress';
 
+export interface CourseProgressEntry {
+  score?: number;
+  completed?: boolean;
+  date?: string;
+}
+
+export interface CoursePlayerProgress {
+  step?: number;
+  correctCount?: number;
+  totalQuestions?: number;
+}
+
+export type CourseProgressMap = Record<string, CourseProgressEntry>;
+
 function getScopedKey(baseKey: string) {
   if (typeof window === 'undefined') return baseKey;
   const activeUserId = window.localStorage.getItem(ACTIVE_USER_STORAGE_KEY);
@@ -19,7 +33,7 @@ export function setActiveProgressUser(userId: string | null | undefined) {
   window.localStorage.removeItem(ACTIVE_USER_STORAGE_KEY);
 }
 
-export function readCourseProgressMap(): Record<string, any> {
+export function readCourseProgressMap(): CourseProgressMap {
   if (typeof window === 'undefined') return {};
 
   try {
@@ -29,7 +43,7 @@ export function readCourseProgressMap(): Record<string, any> {
   }
 }
 
-export function writeCourseProgressMap(progress: Record<string, any>) {
+export function writeCourseProgressMap(progress: CourseProgressMap) {
   if (typeof window === 'undefined') return;
   window.localStorage.setItem(getScopedKey(COURSE_PROGRESS_KEY), JSON.stringify(progress));
 }
@@ -38,7 +52,7 @@ function getCoursePlayerProgressKey(courseId: string) {
   return `${getScopedKey(COURSE_PLAYER_PROGRESS_PREFIX)}:${courseId}`;
 }
 
-export function readCoursePlayerProgress(courseId: string) {
+export function readCoursePlayerProgress(courseId: string): CoursePlayerProgress | null {
   if (typeof window === 'undefined') return null;
 
   try {
@@ -49,7 +63,7 @@ export function readCoursePlayerProgress(courseId: string) {
   }
 }
 
-export function writeCoursePlayerProgress(courseId: string, progress: Record<string, any>) {
+export function writeCoursePlayerProgress(courseId: string, progress: CoursePlayerProgress) {
   if (typeof window === 'undefined') return;
   window.localStorage.setItem(getCoursePlayerProgressKey(courseId), JSON.stringify(progress));
 }

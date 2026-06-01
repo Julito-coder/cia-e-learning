@@ -57,11 +57,11 @@ export default function CourseDetail() {
     title: curriculumData.lesson.title,
     description: curriculumData.lesson.description,
     level: curriculumData.level.level,
-    theme: curriculumData.module.theme as any,
+    theme: curriculumData.module.theme,
     duration: 10,
     isNew: false,
     imageUrl: 'https://images.unsplash.com/photo-1503917988258-f87a78e3c995?w=800&h=500&fit=crop&q=80',
-    contentTypes: ['text', 'qcm', 'fill-blank'] as any[],
+    contentTypes: ['text', 'qcm', 'fill-blank'] as const,
   } : null);
 
   if (!displayCourse) {
@@ -131,7 +131,7 @@ export default function CourseDetail() {
               // Update CECR level based on progress
               const newComputedLevel = computeLevelFromProgress();
               if (newComputedLevel !== cecrLevel) {
-                await setLevel(newComputedLevel as any);
+                await setLevel(newComputedLevel);
                 notify.levelUp(newComputedLevel);
               }
             }

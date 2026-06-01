@@ -5,6 +5,11 @@ import { useAuth } from '@/hooks/useAuth';
 
 const LS_KEY = 'cia-interface-lang';
 const SUPPORTED = ['fr', 'en', 'es', 'de', 'it', 'ru'] as const;
+type SupportedLang = (typeof SUPPORTED)[number];
+
+function isSupportedLang(code: string | null | undefined): code is SupportedLang {
+  return !!code && (SUPPORTED as readonly string[]).includes(code);
+}
 
 /**
  * Sync interface language between DB (profiles.interface_language),
@@ -24,7 +29,7 @@ export function useInterfaceLanguage() {
       .then(({ data }) => {
         if (cancelled) return;
         const lang = data?.interface_language;
-        if (lang && SUPPORTED.includes(lang as any) && lang !== i18n.language) {
+        if (isSupportedLang(lang) && lang !== i18n.language) {
           i18n.changeLanguage(lang);
           try { localStorage.setItem(LS_KEY, lang); } catch {}
         }
@@ -34,7 +39,7 @@ export function useInterfaceLanguage() {
   }, [user, i18n]);
 
   const setLanguage = async (code: string) => {
-    if (!SUPPORTED.includes(code as any)) return;
+    if (!isSupportedLang(code)) return;
     await i18n.changeLanguage(code);
     try { localStorage.setItem(LS_KEY, code); } catch {}
     if (user) {

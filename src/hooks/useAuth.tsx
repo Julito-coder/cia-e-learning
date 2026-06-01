@@ -86,7 +86,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         console.error('[signOut] error', error);
         toast.error(`Erreur déconnexion: ${error.message}`);
       }
-    } catch (e: any) {
+    } catch (e: unknown) {
       console.error('[signOut] exception', e);
     } finally {
       // Force local cleanup even if the network call failed

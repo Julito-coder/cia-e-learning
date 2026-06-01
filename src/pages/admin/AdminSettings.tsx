@@ -35,7 +35,9 @@ export default function AdminSettings() {
     setTheme((localStorage.getItem(SETTINGS_KEYS.theme) as 'light' | 'dark') || 'light');
 
     supabase.from('subscriptions').select('promo_code').not('promo_code', 'is', null).then(({ data }) => {
-      const unique = Array.from(new Set((data || []).map((r: any) => r.promo_code).filter(Boolean)));
+      const unique = Array.from(
+        new Set((data || []).map((r) => r.promo_code).filter((c): c is string => Boolean(c))),
+      );
       setPromos(unique);
     });
   }, []);

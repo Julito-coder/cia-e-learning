@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, BookOpen, Map, Trophy, Flame, Heart, Book, User, LogOut, ClipboardCheck, Home } from 'lucide-react';
+import { X, BookOpen, Map, Trophy, Flame, Heart, Book, User, LogOut, ClipboardCheck, Home, type LucideIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
@@ -13,7 +13,14 @@ interface MobileDrawerProps {
   onClose: () => void;
 }
 
-const NAV_ITEMS: { to: string; icon: any; key: string; onboard?: string }[] = [
+interface NavItem {
+  to: string;
+  icon: LucideIcon;
+  key: string;
+  onboard?: string;
+}
+
+const NAV_ITEMS: NavItem[] = [
   { to: '/',             icon: Home,           key: 'nav.home' },
   { to: '/catalogue',    icon: BookOpen,       key: 'nav.catalogue',       onboard: 'nav-catalogue' },
   { to: '/programme',    icon: Map,            key: 'nav.curriculum',      onboard: 'nav-programme' },
