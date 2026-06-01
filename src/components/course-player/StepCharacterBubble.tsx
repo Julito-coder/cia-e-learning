@@ -1,25 +1,19 @@
-import { getCharacter, getCharacterEvolution } from '@/data/characters';
-import { CharacterBubble } from './CharacterBubble';
-import { useUserProgress } from '@/hooks/useUserProgress';
+import { SparkBubble } from './SparkBubble';
 
 interface Props {
+  /** Optional `characterId` from legacy pedagogical content. Ignored after Sprint 2
+   *  (the field will be removed from `src/data/*-content.ts` when content moves
+   *  to Supabase in Sprint 4). All narrative bubbles now use Spark. */
   characterId?: string;
   message?: string;
 }
 
-/** Reusable wrapper: shows a CharacterBubble if a characterId is provided */
-export function StepCharacterBubble({ characterId, message }: Props) {
-  const { cecrLevel } = useUserProgress();
-  if (!characterId) return null;
-
-  const character = getCharacter(characterId);
-  if (!character) return null;
-
-  const evolution = getCharacterEvolution(character, cecrLevel);
-
+/** Wrapper that renders a Spark dialogue bubble if a message is provided. */
+export function StepCharacterBubble({ message }: Props) {
+  if (!message) return null;
   return (
     <div className="mb-4">
-      <CharacterBubble character={character} evolution={evolution} showBio message={message} />
+      <SparkBubble message={message} />
     </div>
   );
 }

@@ -3,8 +3,7 @@ import { motion, animate, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Character3DAvatar } from '@/components/characters/Character3DAvatar';
-import { CHARACTERS } from '@/data/characters';
+import { Spark } from '@/components/spark/Spark';
 import { StreakFlame } from './StreakFlame';
 import { streakBurst } from '@/lib/confetti';
 
@@ -21,16 +20,11 @@ const MILESTONES: Record<number, { titleKey: string; descKey: string }> = {
   100: { titleKey: 'streak.m100.title', descKey: 'streak.m100.desc' },
 };
 
-const DEFAULT_MASCOT_ID = 'marie';
-
 export function StreakMilestone({ streak, open, onClose }: StreakMilestoneProps) {
   const { t } = useTranslation();
   const meta = MILESTONES[streak];
   const reduced = typeof window !== 'undefined'
     && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  const mascot = CHARACTERS.find((c) => c.id === DEFAULT_MASCOT_ID) ?? CHARACTERS[0];
-  const mascotEvolution = mascot?.evolution[mascot.evolution.length - 1] ?? mascot?.evolution[0];
 
   const [displayed, setDisplayed] = useState(0);
 
@@ -116,33 +110,23 @@ export function StreakMilestone({ streak, open, onClose }: StreakMilestoneProps)
             <p className="text-sm text-white/85">{t(meta.descKey)}</p>
           </motion.div>
 
-          <AnimatePresence>
-            {mascot && mascotEvolution && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0, y: 30 }}
-                animate={{
-                  opacity: 1,
-                  scale: 1,
-                  y: 0,
-                  transition: {
-                    type: 'spring',
-                    damping: 13,
-                    stiffness: 200,
-                    delay: 1.2,
-                  },
-                }}
-                className="pt-2"
-              >
-                <Character3DAvatar
-                  character={mascot}
-                  evolution={mascotEvolution}
-                  isSelected={true}
-                  onClick={() => {}}
-                  size={72}
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
+          <motion.div
+            initial={{ opacity: 0, scale: 0, y: 30 }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+              y: 0,
+              transition: {
+                type: 'spring',
+                damping: 13,
+                stiffness: 200,
+                delay: 1.2,
+              },
+            }}
+            className="pt-2"
+          >
+            <Spark mood="celebrating" size={72} embers />
+          </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 12 }}

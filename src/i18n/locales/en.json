@@ -10,6 +10,7 @@
     "leaderboard": "Leaderboard",
     "daily_challenge": "Daily Challenge",
     "profile": "My Profile",
+    "dashboard": "My Dashboard",
     "logout": "Sign out",
     "signup": "Sign up"
   },
@@ -869,6 +870,67 @@
       "classement": {
         "title": "Leaderboard & Leagues",
         "desc": "Compare weekly XP with others. Promotions every Monday!"
+      }
+    }
+  },
+  "dashboard": {
+    "hero": {
+      "tag": "DASHBOARD",
+      "fallback_name": "Learner",
+      "greeting": "Hi, {{name}}",
+      "subtitle_first": "Welcome to Antibes. Spark is here to help you get started.",
+      "subtitle_streak": "You're on a {{count}}-day streak. 🔥 Keep it going.",
+      "subtitle_default": "A new day starts. Spark is waiting for you."
+    },
+    "resume": {
+      "tag_resume": "RESUME",
+      "tag_start": "START",
+      "empty_title": "Choose your starting level",
+      "empty_desc": "Take the placement test so we can tailor your path.",
+      "empty_cta": "Take the placement test",
+      "continue": "Continue",
+      "replay": "Replay",
+      "start": "Start",
+      "module_label": "Module",
+      "progress_label": "Progress",
+      "score_label": "Score:"
+    },
+    "daily": {
+      "tag": "Daily Challenge",
+      "todo_title": "Your challenge is waiting",
+      "todo_desc": "A mini-lesson to keep your streak alive.",
+      "done_title": "Daily challenge done",
+      "done_desc": "Nice work — come back tomorrow.",
+      "cta": "Take the challenge",
+      "completed_label": "Done today"
+    },
+    "path": {
+      "title": "Your path",
+      "see_all": "See the whole path",
+      "module_aria": "Module"
+    },
+    "recommended": {
+      "title": "Recommended for you",
+      "see_all": "Browse catalogue",
+      "start": "Start"
+    },
+    "shortcuts": {
+      "title": "Shortcuts",
+      "placement": {
+        "label": "Level test",
+        "desc": "Assess your CEFR level"
+      },
+      "leaderboard": {
+        "label": "Leaderboard",
+        "desc": "See your weekly league"
+      },
+      "profile": {
+        "label": "My profile",
+        "desc": "Your info and achievements"
+      },
+      "glossary": {
+        "label": "Glossary",
+        "desc": "Grammar reference"
       }
     }
   }

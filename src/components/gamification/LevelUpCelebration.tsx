@@ -4,8 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Crown, Sparkles } from 'lucide-react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Character3DAvatar } from '@/components/characters/Character3DAvatar';
-import { CHARACTERS } from '@/data/characters';
+import { Spark } from '@/components/spark/Spark';
 import { springPop } from '@/lib/animations';
 import { levelUpSequence } from '@/lib/confetti';
 
@@ -26,8 +25,6 @@ const LEVEL_DESCRIPTIONS: Record<string, { titleKey: string; descKey: string }> 
   C2: { titleKey: 'levelup.c2.title', descKey: 'levelup.c2.desc' },
 };
 
-const DEFAULT_MASCOT_ID = 'marie';
-
 type Phase = 'previous' | 'transition' | 'reveal';
 
 export function LevelUpCelebration({
@@ -43,9 +40,6 @@ export function LevelUpCelebration({
     titleKey: 'levelup.generic.title',
     descKey: 'levelup.generic.desc',
   };
-
-  const mascot = CHARACTERS.find((c) => c.id === DEFAULT_MASCOT_ID) ?? CHARACTERS[0];
-  const mascotEvolution = mascot?.evolution[mascot.evolution.length - 1] ?? mascot?.evolution[0];
 
   const [phase, setPhase] = useState<Phase>(previousLevel ? 'previous' : 'reveal');
 
@@ -201,7 +195,7 @@ export function LevelUpCelebration({
           </AnimatePresence>
 
           <AnimatePresence>
-            {phase === 'reveal' && mascot && mascotEvolution && (
+            {phase === 'reveal' && (
               <motion.div
                 key="mascot"
                 initial={{ opacity: 0, scale: 0, y: 40 }}
@@ -218,13 +212,7 @@ export function LevelUpCelebration({
                 }}
                 className="pt-2"
               >
-                <Character3DAvatar
-                  character={mascot}
-                  evolution={mascotEvolution}
-                  isSelected={true}
-                  onClick={() => {}}
-                  size={80}
-                />
+                <Spark mood="celebrating" size={80} embers />
               </motion.div>
             )}
           </AnimatePresence>

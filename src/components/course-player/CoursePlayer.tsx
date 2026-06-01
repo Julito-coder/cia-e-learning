@@ -14,7 +14,7 @@ import { ListeningStep } from './ListeningStep';
 import { FinalQuizStep } from './FinalQuizStep';
 import { readCoursePlayerProgress, writeCoursePlayerProgress, clearCoursePlayerProgress } from '@/lib/courseProgress';
 import { SparkPresence } from '@/components/spark';
-import type { MascotMood } from '@/components/characters/MascotPresence';
+import type { SparkMood } from '@/components/spark/Spark';
 import { useUserProgress } from '@/hooks/useUserProgress';
 
 interface Props {
@@ -57,7 +57,7 @@ export function CoursePlayer({ content, courseTitle, onExit, onComplete }: Props
   const [finalScore, setFinalScore] = useState(0);
   const [startedAt] = useState(() => Date.now());
   const [durationSeconds, setDurationSeconds] = useState(0);
-  const [mascotMood, setMascotMood] = useState<MascotMood>('idle');
+  const [mascotMood, setMascotMood] = useState<SparkMood>('idle');
 
   const step = content.steps[currentStep];
   const totalSteps = content.steps.length;

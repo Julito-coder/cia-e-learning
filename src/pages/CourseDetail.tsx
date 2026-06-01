@@ -15,7 +15,7 @@ import { useUserProgress, isLevelAccessible } from '@/hooks/useUserProgress';
 import { getNewlyUnlockedModules, isModuleComplete, computeLevelFromProgress } from '@/hooks/useModuleUnlock';
 import { useDailyChallenge } from '@/hooks/useDailyChallenge';
 import { getDailyLesson } from '@/lib/dailyChallenge';
-import { readCourseProgressMap, writeCourseProgressMap } from '@/lib/courseProgress';
+import { readCourseProgressMap, writeCourseProgressMap, setLastLessonOpened } from '@/lib/courseProgress';
 import { toast } from 'sonner';
 import { notify } from '@/lib/notify';
 
@@ -268,7 +268,19 @@ export default function CourseDetail() {
                     <Lock className="h-4 w-4" /> Niveau {displayCourse.level} requis
                   </Button>
                 ) : content ? (
-                  <Button size="lg" className="w-full gap-2" onClick={() => setPlaying(true)}>
+                  <Button
+                    size="lg"
+                    className="w-full gap-2"
+                    onClick={() => {
+                      setLastLessonOpened({
+                        courseId: displayCourse.id,
+                        moduleId: curriculumData?.module?.id,
+                        title: displayCourse.title,
+                        level: displayCourse.level,
+                      });
+                      setPlaying(true);
+                    }}
+                  >
                     <Play className="h-4 w-4" />
                     {isCompleted ? 'Refaire le cours' : courseProgress ? 'Continuer le cours' : 'Commencer le cours'}
                   </Button>
