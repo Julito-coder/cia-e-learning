@@ -292,10 +292,16 @@
       "title": "Who is it for?",
       "b2c_title": "Remote learner",
       "b2c_desc": "You want to learn from home, at your pace, with a real pedagogical method.",
+      "b2c_stat_value": "60+",
+      "b2c_stat_label": "nationalities welcomed",
       "cia_title": "CIA student",
       "cia_desc": "You're preparing your stay in Antibes or extending your training. Full access included in your enrollment.",
+      "cia_stat_value": "10,000",
+      "cia_stat_label": "students / year in Antibes",
       "school_title": "School & company",
       "school_desc": "Train your teams or complement your students' programme. Tailored solution available.",
+      "school_stat_value": "40 years",
+      "school_stat_label": "of expertise — since 1985",
       "learn_more": "Learn more"
     },
     "pricing": {

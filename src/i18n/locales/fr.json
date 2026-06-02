@@ -319,10 +319,16 @@
       "title": "À qui c'est fait ?",
       "b2c_title": "Apprenant à distance",
       "b2c_desc": "Tu veux apprendre depuis chez toi, à ton rythme, avec une vraie méthode pédagogique.",
+      "b2c_stat_value": "60+",
+      "b2c_stat_label": "nationalités accueillies",
       "cia_title": "Étudiant CIA",
       "cia_desc": "Tu prépares ton séjour à Antibes ou tu prolonges ta formation. Accès complet inclus dans ton inscription.",
+      "cia_stat_value": "10 000",
+      "cia_stat_label": "étudiants / an à Antibes",
       "school_title": "École & entreprise",
       "school_desc": "Tu veux former tes équipes ou compléter le programme de tes étudiants. Solution sur-mesure disponible.",
+      "school_stat_value": "40 ans",
+      "school_stat_label": "d'expertise — depuis 1985",
       "learn_more": "En savoir plus"
     },
     "pricing": {
