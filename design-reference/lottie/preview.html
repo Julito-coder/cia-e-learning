@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Spark Lottie — preview</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
+    <style>
+      body { background:#0C0F18; color:#fff; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; margin:0; padding:48px 24px; }
+      h1 { font-weight:800; letter-spacing:-0.02em; font-size: 48px; margin: 0 0 8px; }
+      .sub { color: rgba(255,255,255,.6); margin: 0 0 40px; font-size:14px; font-family:'JetBrains Mono', monospace; letter-spacing: .15em; text-transform: uppercase; }
+      .grid { display:grid; grid-template-columns: repeat(5, 1fr); gap: 16px; max-width: 1300px; margin: 0 auto; }
+      .card { background:#181C28; border-radius: 24px; padding: 16px; text-align:center; border:1px solid rgba(255,255,255,.06); }
+      .anim { width:100%; aspect-ratio: 2/3; }
+      .label { margin-top: 10px; font-weight:700; }
+      .file { font-family:'JetBrains Mono', monospace; font-size:11px; color:rgba(255,255,255,.45); margin-top:4px; }
+      @media (max-width: 980px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+    </style>
+  </head>
+  <body>
+    <div style="max-width:1300px;margin:0 auto;">
+      <div class="sub">— SPARK MASCOT · LOTTIE</div>
+      <h1>5 animations</h1>
+      <div class="grid">
+        <div class="card"><div class="anim" data-anim="spark-idle.json"></div><div class="label">Idle</div><div class="file">spark-idle.json</div></div>
+        <div class="card"><div class="anim" data-anim="spark-talking.json"></div><div class="label">Talking</div><div class="file">spark-talking.json</div></div>
+        <div class="card"><div class="anim" data-anim="spark-encouraging.json"></div><div class="label">Encouraging</div><div class="file">spark-encouraging.json</div></div>
+        <div class="card"><div class="anim" data-anim="spark-celebrating.json"></div><div class="label">Celebrating</div><div class="file">spark-celebrating.json</div></div>
+        <div class="card"><div class="anim" data-anim="spark-sad.json"></div><div class="label">Sad</div><div class="file">spark-sad.json</div></div>
+      </div>
+    </div>
+    <script>
+      document.querySelectorAll('[data-anim]').forEach(el => {
+        lottie.loadAnimation({
+          container: el,
+          renderer: 'svg',
+          loop: true,
+          autoplay: true,
+          path: el.dataset.anim,
+        });
+      });
+    </script>
+  </body>
+</html>
