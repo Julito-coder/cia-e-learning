@@ -41,7 +41,7 @@ export function ModuleDrawer(props: ModuleDrawerProps) {
 
   const renderHeroIcon = () => {
     if (state === 'locked') return <Lock className="h-9 w-9 text-muted-foreground" />;
-    if (state === 'completed') return <Check className="h-9 w-9 text-green-600" strokeWidth={3} />;
+    if (state === 'completed') return <Check className="h-9 w-9 text-success-600" strokeWidth={3} />;
     if (icon.kind === 'emoji') return <span className="text-4xl">{icon.value}</span>;
     const Icon = icon.value;
     return <Icon className="h-9 w-9 text-cia-blue-700" strokeWidth={2.2} />;

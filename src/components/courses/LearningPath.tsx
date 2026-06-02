@@ -221,14 +221,14 @@ export function LearningPath({ modules }: LearningPathProps) {
               onClick={(e) => { if (!speedTestUnlocked) e.preventDefault(); }}
               className={`relative w-16 h-16 md:w-20 md:h-20 rounded-full border-4 flex items-center justify-center transition-all duration-300 ${
                 speedTestUnlocked
-                  ? 'border-yellow-400 bg-gradient-to-br from-yellow-400 to-orange-500 text-white shadow-lg shadow-yellow-400/40 hover:scale-110 cursor-pointer'
+                  ? 'border-cia-gold-400 bg-gradient-to-br from-cia-gold-400 to-streak-500 text-white shadow-lg shadow-cia-gold-400/40 hover:scale-110 cursor-pointer'
                   : 'border-muted bg-muted text-muted-foreground cursor-not-allowed'
               }`}
             >
               {speedTestUnlocked ? <Zap className="h-7 w-7 md:h-8 md:w-8" fill="currentColor" /> : <Lock className="h-5 w-5 md:h-6 md:w-6" />}
             </Link>
             <div className="mt-1.5 md:mt-2 text-center w-24 md:w-28 mx-auto">
-              <Badge variant="outline" className="text-[9px] md:text-[10px] font-bold mb-0.5 border-yellow-400 text-yellow-600 dark:text-yellow-400">⚡ {level}</Badge>
+              <Badge variant="outline" className="text-[9px] md:text-[10px] font-bold mb-0.5 border-cia-gold-400 text-cia-gold-600 dark:text-cia-gold-400">⚡ {level}</Badge>
               <p className="text-[11px] md:text-xs font-bold leading-tight line-clamp-2">Test de vitesse</p>
               {speedTestBest > 0 && (
                 <p className="text-[10px] text-muted-foreground mt-0.5">🏆 {speedTestBest}</p>
