@@ -103,9 +103,9 @@ export default function DailyChallenge() {
             initial={{ scale: 0, rotate: -45 }}
             animate={{ scale: 1, rotate: 0 }}
             transition={{ duration: 0.6, ease: [0.34, 1.56, 0.64, 1] }}
-            className="relative inline-flex items-center justify-center h-16 w-16 rounded-2xl bg-gradient-to-br from-orange-400 to-red-500 shadow-lg"
+            className="relative inline-flex items-center justify-center h-16 w-16 rounded-2xl bg-gradient-to-br from-streak-500 to-cia-red-500 shadow-lg"
           >
-            <div className="absolute inset-0 rounded-2xl bg-orange-400/40 blur-xl -z-10 animate-pulse" />
+            <div className="absolute inset-0 rounded-2xl bg-streak-500/40 blur-xl -z-10 animate-pulse" />
             <motion.div
               animate={{ scale: [1, 1.15, 1], rotate: [0, -6, 6, 0] }}
               transition={{ repeat: Infinity, duration: 2.2, ease: 'easeInOut' }}
@@ -113,7 +113,7 @@ export default function DailyChallenge() {
               <Flame className="h-9 w-9 text-white" />
             </motion.div>
           </motion.div>
-          <Badge className="bg-orange-500 text-white">DÉFI DU JOUR</Badge>
+          <Badge className="bg-streak-500 text-white">DÉFI DU JOUR</Badge>
         </div>
         <h1 className="font-display text-3xl md:text-4xl text-primary mb-1">Leçon du jour</h1>
         <p className="text-muted-foreground text-sm flex items-center justify-center gap-2">
@@ -126,7 +126,7 @@ export default function DailyChallenge() {
           className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cia-streak/15 text-cia-streak font-extrabold relative"
         >
           {streak >= 7 && (
-            <span className="absolute inset-0 rounded-full bg-orange-400/30 blur-lg -z-10 animate-pulse" />
+            <span className="absolute inset-0 rounded-full bg-streak-500/30 blur-lg -z-10 animate-pulse" />
           )}
           <Flame className="h-5 w-5" />
           <AnimatedCounter target={streak} duration={800} /> {streak > 1 ? 'jours' : 'jour'} de série
@@ -181,15 +181,15 @@ export default function DailyChallenge() {
         >
         <Card className={`p-6 rounded-3xl mb-8 border-2 ${
           isDoneToday
-            ? 'bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/20 border-green-400'
-            : 'bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-950/30 dark:to-red-950/20 border-orange-300'
+            ? 'bg-gradient-to-br from-success-50 to-success-50 dark:from-success-700/30 dark:to-success-700/20 border-success-500'
+            : 'bg-gradient-to-br from-cia-gold-50 to-cia-red-50 dark:from-cia-gold-900/30 dark:to-cia-red-900/20 border-streak-500/50'
         }`}>
           {isDoneToday && (
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ type: 'spring', stiffness: 320, damping: 18 }}
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-500 text-white text-xs font-bold mb-3"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-success-500 text-white text-xs font-bold mb-3"
             >
               <Check className="h-3.5 w-3.5" /> FAIT AUJOURD'HUI
             </motion.div>
@@ -200,7 +200,7 @@ export default function DailyChallenge() {
 
           {isDoneToday ? (
             <div className="text-center py-2">
-              <p className="text-sm font-bold text-green-700 dark:text-green-400 mb-2">
+              <p className="text-sm font-bold text-success-700 dark:text-success-500 mb-2">
                 🎉 Bravo ! Reviens demain pour maintenir ta série.
               </p>
               <p className="text-xs text-muted-foreground mb-4 inline-flex items-center gap-1">
@@ -218,7 +218,7 @@ export default function DailyChallenge() {
               <Button
                 onClick={() => navigate(`/cours/${dailyLesson.lessonId}?daily=1`)}
                 size="lg"
-                className="w-full rounded-2xl gap-2 bg-gradient-to-r from-orange-500 via-red-500 to-orange-500 bg-[length:200%_100%] hover:bg-[position:100%_0] transition-all duration-700 font-bold shadow-lg hover:shadow-xl"
+                className="w-full rounded-2xl gap-2 bg-gradient-to-r from-streak-500 via-cia-red-500 to-streak-500 bg-[length:200%_100%] hover:bg-[position:100%_0] transition-all duration-700 font-bold shadow-lg hover:shadow-xl"
               >
                 <Play className="h-5 w-5" /> Commencer le défi
               </Button>
@@ -240,7 +240,7 @@ export default function DailyChallenge() {
         <div className="flex items-center justify-between mb-3">
           <h3 className="font-display text-lg flex items-center gap-2">
             <motion.span animate={{ rotate: [0, -10, 10, 0] }} transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}>
-              <Trophy className="h-5 w-5 text-yellow-500" />
+              <Trophy className="h-5 w-5 text-cia-gold-500" />
             </motion.span>
             Top des séries
           </h3>
@@ -263,7 +263,7 @@ export default function DailyChallenge() {
                   transition={{ delay: i * 0.04, duration: 0.3 }}
                   className={`flex items-center gap-3 p-3 rounded-2xl border ${isMe ? 'bg-primary/10 border-primary ring-2 ring-primary/30 animate-pulse-soft' : 'bg-card border-border/40'}`}
                 >
-                  <div className={`w-8 text-center font-extrabold ${i === 0 ? 'text-yellow-500' : i < 3 ? 'text-primary' : 'text-muted-foreground'}`}>
+                  <div className={`w-8 text-center font-extrabold ${i === 0 ? 'text-cia-gold-500' : i < 3 ? 'text-primary' : 'text-muted-foreground'}`}>
                     {i === 0 ? (
                       <motion.span
                         animate={{ rotate: 360 }}
