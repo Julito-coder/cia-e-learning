@@ -181,13 +181,13 @@ export default function SpeedTest() {
         <Link to="/programme" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6">
           <ArrowLeft className="h-4 w-4" /> Programme
         </Link>
-        <Card className="p-8 text-center rounded-3xl bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-950/30 dark:to-orange-950/20 border-2 border-yellow-300 relative overflow-hidden">
+        <Card className="p-8 text-center rounded-3xl bg-gradient-to-br from-cia-gold-50 to-cia-gold-100 dark:from-cia-gold-900/30 dark:to-cia-gold-900/20 border-2 border-cia-gold-300 relative overflow-hidden">
           <div className="absolute -top-10 -right-10 h-40 w-40 rounded-full bg-cia-gold-400/20 blur-3xl pointer-events-none" />
           <motion.div
             initial={{ scale: 0, rotate: -45 }}
             animate={{ scale: 1, rotate: 0 }}
             transition={{ duration: 0.6, ease: [0.34, 1.56, 0.64, 1] }}
-            className="inline-flex h-20 w-20 rounded-3xl bg-gradient-to-br from-yellow-400 to-orange-500 items-center justify-center mb-4 shadow-xl relative"
+            className="inline-flex h-20 w-20 rounded-3xl bg-gradient-to-br from-cia-gold-400 to-streak-500 items-center justify-center mb-4 shadow-xl relative"
           >
             <div className="absolute inset-0 rounded-3xl bg-cia-gold-400/40 blur-xl -z-10" />
             <motion.div animate={{ rotate: [0, -8, 8, 0] }} transition={{ repeat: Infinity, duration: 2.4, ease: 'easeInOut' }}>
@@ -222,13 +222,13 @@ export default function SpeedTest() {
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.5, type: 'spring', stiffness: 300 }}
-              className="mb-6 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 text-sm font-bold"
+              className="mb-6 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cia-gold-100 dark:bg-cia-gold-800/30 text-cia-gold-700 dark:text-cia-gold-300 text-sm font-bold"
             >
               <Trophy className="h-4 w-4" /> Ton record : <AnimatedCounter target={bestScore} duration={800} /> bonnes réponses
             </motion.div>
           )}
 
-          <Button size="lg" onClick={start} className="w-full rounded-2xl text-base font-bold gap-2 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 shadow-lg hover:shadow-xl transition-shadow">
+          <Button size="lg" onClick={start} className="w-full rounded-2xl text-base font-bold gap-2 bg-gradient-to-r from-cia-gold-500 to-streak-500 hover:from-cia-gold-600 hover:to-streak-500 shadow-lg hover:shadow-xl transition-shadow">
             <Zap className="h-5 w-5" /> Commencer le test
           </Button>
         </Card>
@@ -243,14 +243,14 @@ export default function SpeedTest() {
     const reduced = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     return (
       <div className="container py-8 max-w-2xl">
-        <Card className="p-8 text-center rounded-3xl bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-950/30 dark:to-orange-950/20 border-2 border-yellow-300 relative overflow-hidden">
+        <Card className="p-8 text-center rounded-3xl bg-gradient-to-br from-cia-gold-50 to-cia-gold-100 dark:from-cia-gold-900/30 dark:to-cia-gold-900/20 border-2 border-cia-gold-300 relative overflow-hidden">
           {newRecord && !reduced && (
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
               {Array.from({ length: 24 }).map((_, i) => {
                 const left = Math.random() * 100;
                 const delay = Math.random() * 0.4;
                 const duration = 2 + Math.random() * 1.4;
-                const colors = ['bg-cia-gold-400', 'bg-orange-400', 'bg-cia-blue-500', 'bg-cia-success'];
+                const colors = ['bg-cia-gold-400', 'bg-streak-500', 'bg-cia-blue-500', 'bg-cia-success'];
                 return (
                   <motion.span
                     key={i}
@@ -269,7 +269,7 @@ export default function SpeedTest() {
               initial={{ scale: 0, rotate: -10 }}
               animate={{ scale: 1, rotate: 0 }}
               transition={{ type: 'spring', stiffness: 300, damping: 15 }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-yellow-400 text-white text-sm font-bold mb-4"
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cia-gold-400 text-white text-sm font-bold mb-4"
             >
               <Crown className="h-4 w-4" /> NOUVEAU RECORD !
             </motion.div>
@@ -279,7 +279,7 @@ export default function SpeedTest() {
             animate={{ scale: 1, rotate: 0 }}
             transition={{ duration: 0.8, ease: [0.34, 1.56, 0.64, 1] }}
           >
-            <Trophy className="h-16 w-16 mx-auto mb-4 text-yellow-500 drop-shadow-lg" />
+            <Trophy className="h-16 w-16 mx-auto mb-4 text-cia-gold-500 drop-shadow-lg" />
           </motion.div>
           <h1 className="font-display text-3xl text-primary mb-2">Terminé !</h1>
           <p className="text-muted-foreground mb-6">Bravo pour ce challenge {level}</p>
@@ -315,7 +315,7 @@ export default function SpeedTest() {
           </motion.div>
 
           <div className="flex gap-3">
-            <Button onClick={start} size="lg" className="flex-1 rounded-2xl gap-2 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600">
+            <Button onClick={start} size="lg" className="flex-1 rounded-2xl gap-2 bg-gradient-to-r from-cia-gold-500 to-streak-500 hover:from-cia-gold-600 hover:to-streak-500">
               <RotateCcw className="h-4 w-4" /> Rejouer
             </Button>
             <Button onClick={() => navigate('/programme')} size="lg" variant="outline" className="flex-1 rounded-2xl">
