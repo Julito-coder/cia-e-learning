@@ -42,11 +42,11 @@ const STATE_STYLES: Record<ModuleNodeState, {
     shadow:    'shadow-[0_6px_0_0] shadow-cia-gold-700/50',
   },
   completed: {
-    bgClass:   'bg-gradient-to-br from-green-400 to-green-600',
+    bgClass:   'bg-gradient-to-br from-success-500 to-success-700',
     iconColor: 'text-white',
     ring:      '',
     scale:     1,
-    shadow:    'shadow-[0_4px_0_0] shadow-green-800/40',
+    shadow:    'shadow-[0_4px_0_0_hsl(var(--success-700)/0.40)]',
   },
 };
 
