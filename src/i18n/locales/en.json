@@ -21,7 +21,7 @@
     "test": "Level test",
     "level": "Level {{level}}",
     "progression": "Progress",
-    "xpTotal": "⚡ Total XP"
+    "xpTotal": "⚡ Total Tokens"
   },
   "stats": {
     "coursesCompleted": "Courses completed",
@@ -71,7 +71,7 @@
       "level_asc": "Level (A1 → C2)",
       "level_desc": "Level (C2 → A1)",
       "duration_asc": "Duration (short → long)",
-      "xp_desc": "XP (high → low)",
+      "xp_desc": "Tokens (high → low)",
       "alpha": "Alphabetical"
     }
   },
@@ -136,19 +136,19 @@
     },
     "first_xp": {
       "title": "First steps",
-      "desc": "You earned your first XP."
+      "desc": "You earned your first token."
     },
     "xp_500": {
       "title": "Apprentice",
-      "desc": "You reached 500 XP."
+      "desc": "You reached 500 tokens."
     },
     "xp_2500": {
       "title": "Motivated learner",
-      "desc": "You reached 2,500 XP."
+      "desc": "You reached 2,500 tokens."
     },
     "xp_10000": {
       "title": "Expert",
-      "desc": "You reached 10,000 XP."
+      "desc": "You reached 10,000 tokens."
     },
     "streak_7": {
       "title": "One week",
@@ -232,7 +232,7 @@
     }
   },
   "indicators": {
-    "xp_tooltip": "{{count}} total XP earned",
+    "xp_tooltip": "{{count}} total tokens earned",
     "streak_tooltip": "{{count}} day(s) in a row · Come back tomorrow to keep your streak!",
     "level_tooltip": "Current level: {{level}}",
     "league_tooltip": "{{league}} league this week"
@@ -261,7 +261,7 @@
       "step3_title": "Practice every day",
       "step3_desc": "Daily challenge + interactive lessons so nothing fades.",
       "step4_title": "Progress and climb",
-      "step4_desc": "XP, levels, weekly leagues: motivation, every day."
+      "step4_desc": "Tokens, levels, weekly leagues: motivation, every day."
     },
     "cecr": {
       "title": "From beginner to bilingual.",
@@ -281,10 +281,10 @@
     },
     "gamification": {
       "title": "A real method. With a healthy dose of motivation.",
-      "xp_title": "Earn XP with every lesson.",
+      "xp_title": "Earn tokens with every lesson.",
       "xp_desc": "Each exercise gives points. Reach the next level by completing your weekly goals.",
       "daily_title": "One lesson. Every day.",
-      "daily_desc": "Come back each day for your XP bonus and grow your streak. No pressure — just 5 minutes.",
+      "daily_desc": "Come back each day for your tokens bonus and grow your streak. No pressure — just 5 minutes.",
       "league_title": "Compete with other learners.",
       "league_desc": "Three leagues, weekly leaderboard. Finish at the top and climb up."
     },
@@ -292,10 +292,16 @@
       "title": "Who is it for?",
       "b2c_title": "Remote learner",
       "b2c_desc": "You want to learn from home, at your pace, with a real pedagogical method.",
+      "b2c_stat_value": "60+",
+      "b2c_stat_label": "nationalities welcomed",
       "cia_title": "CIA student",
       "cia_desc": "You're preparing your stay in Antibes or extending your training. Full access included in your enrollment.",
+      "cia_stat_value": "10,000",
+      "cia_stat_label": "students / year in Antibes",
       "school_title": "School & company",
       "school_desc": "Train your teams or complement your students' programme. Tailored solution available.",
+      "school_stat_value": "40 years",
+      "school_stat_label": "of expertise — since 1985",
       "learn_more": "Learn more"
     },
     "pricing": {
@@ -563,8 +569,8 @@
   },
   "classement": {
     "title": "Leaderboard",
-    "subtitle": "Compare your weekly XP with other learners.",
-    "weeklyXp": "Weekly XP",
+    "subtitle": "Compare your weekly tokens with other learners.",
+    "weeklyXp": "Weekly tokens",
     "rank": "Rank",
     "player": "Learner",
     "you": "You",
@@ -605,7 +611,7 @@
     "alreadyDone": "Daily challenge complete!",
     "comeBack": "Come back tomorrow to keep your streak.",
     "streakLabel": "Current streak",
-    "bonus": "+{{xp}} XP bonus",
+    "bonus": "+{{xp}} tokens bonus",
     "history": "History",
     "noHistory": "No history yet."
   },
@@ -651,8 +657,8 @@
       "createCourse": "Create a course",
       "viewAnalytics": "View analytics",
       "subscriptions": "Subscriptions",
-      "xpActivity": "Recent XP activity",
-      "xpActivityDesc": "Latest XP gains recorded",
+      "xpActivity": "Recent Tokens activity",
+      "xpActivityDesc": "Latest Tokens gains recorded",
       "noXp": "No activity recorded"
     },
     "users": {
@@ -740,7 +746,7 @@
       "period_90": "90 days",
       "kpi_users": "Users",
       "kpi_active": "Active",
-      "kpi_xp": "XP earned ({{period}}d)",
+      "kpi_xp": "Tokens earned ({{period}}d)",
       "kpi_streak": "Avg streak",
       "levelDist": "CEFR level distribution",
       "levelDistDesc": "Learner distribution",
@@ -748,9 +754,9 @@
       "topCourses": "Most completed courses",
       "topCoursesDesc": "Top 8 by 100% completion",
       "noCompletion": "No completions recorded",
-      "xpTrend": "XP trend",
-      "xpTrendDesc": "XP earned per week (last {{period}} days)",
-      "noXpPeriod": "No XP gained in this period"
+      "xpTrend": "Tokens trend",
+      "xpTrendDesc": "Tokens earned per week (last {{period}} days)",
+      "noXpPeriod": "No Tokens gained in this period"
     },
     "subs": {
       "title": "Subscription management",
@@ -792,7 +798,7 @@
       "welcome": "Welcome email",
       "welcomeDesc": "Sent on account creation",
       "digest": "Weekly digest",
-      "digestDesc": "XP earned, leaderboard, streak",
+      "digestDesc": "Tokens earned, leaderboard, streak",
       "inactivity": "Inactivity nudge",
       "inactivityDesc": "After 7 days without sign-in",
       "savedOk": "Preference saved",
@@ -822,7 +828,7 @@
     "next": "Continue",
     "previous": "Back",
     "finish": "Finish",
-    "bonusXp": "+50 welcome XP!",
+    "bonusXp": "+50 welcome tokens!",
     "welcome": {
       "title": "Welcome to Antibes!",
       "subtitle": "I'll guide you to start your French journey. Takes 1 minute.",
@@ -853,7 +859,7 @@
     "coach": {
       "xp": {
         "title": "Your dashboard",
-        "desc": "XP, daily streak and league: all up here, top right."
+        "desc": "Tokens, daily streak and league: all up here, top right."
       },
       "programme": {
         "title": "The Programme",
@@ -865,11 +871,11 @@
       },
       "daily": {
         "title": "Daily challenge",
-        "desc": "One lesson a day for streak and bonus XP."
+        "desc": "One lesson a day for streak and bonus tokens."
       },
       "classement": {
         "title": "Leaderboard & Leagues",
-        "desc": "Compare weekly XP with others. Promotions every Monday!"
+        "desc": "Compare weekly tokens with others. Promotions every Monday!"
       }
     }
   },

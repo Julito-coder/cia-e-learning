@@ -135,7 +135,7 @@ export function CoursePlayer({ content, courseTitle, onExit, onComplete }: Props
           {xpPreview > 0 && !completed && (
             <Badge variant="secondary" className="gap-1 shrink-0 hidden sm:inline-flex">
               <Sparkles className="h-3.5 w-3.5 text-cia-gold-500" />
-              <span className="font-mono">+{xpPreview} XP</span>
+              <span className="font-mono">+{xpPreview} tokens</span>
             </Badge>
           )}
         </div>
@@ -241,7 +241,7 @@ function CompletionScreen({
       <div className="grid grid-cols-3 gap-3">
         <div className="p-4 rounded-xl bg-cia-gold-50 border border-cia-gold-200">
           <p className="text-2xl font-bold font-mono text-cia-gold-700">+{xpEarned}</p>
-          <p className="text-xs text-muted-foreground mt-1">XP</p>
+          <p className="text-xs text-muted-foreground mt-1">Tokens</p>
         </div>
         <div className="p-4 rounded-xl bg-muted border">
           <p className="text-2xl font-bold font-mono">{totalSteps}</p>

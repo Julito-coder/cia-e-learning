@@ -193,7 +193,7 @@ export function XPBurst({ x, y, amount, onComplete }: XPBurstProps) {
           ease: [0.16, 1, 0.3, 1],
         }}
       >
-        +{displayed} XP
+        +{displayed} tokens
       </motion.div>
 
       {particles.map((p) => (

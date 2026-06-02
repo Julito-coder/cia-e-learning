@@ -65,7 +65,7 @@ export function UserIndicators({ compact = false, align = 'horizontal' }: UserIn
               <Badge variant="xp" className="gap-1.5 px-2.5 py-1">
                 <Sparkles className="h-3.5 w-3.5" />
                 <span className="tabular-nums">{displayedXP.toLocaleString('fr-FR')}</span>
-                {!compact && <span className="text-xs opacity-70">XP</span>}
+                {!compact && <span className="text-xs opacity-70">Tokens</span>}
               </Badge>
             </motion.div>
           </TooltipTrigger>

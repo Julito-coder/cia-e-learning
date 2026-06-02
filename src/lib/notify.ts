@@ -33,7 +33,7 @@ export const notify = {
 
   // ----- Gamification -----
   xp: (amount: number, source?: string) =>
-    sonnerToast.success(`+${amount} XP`, {
+    sonnerToast.success(`+${amount} tokens`, {
       description: source,
       duration: DURATIONS.gamification,
       icon: '⚡',
@@ -43,7 +43,7 @@ export const notify = {
     sonnerToast.success(
       `Défi du jour validé !`,
       {
-        description: `Série : ${days} jour${days > 1 ? 's' : ''}${xp ? ` · +${xp} XP` : ''}`,
+        description: `Série : ${days} jour${days > 1 ? 's' : ''}${xp ? ` · +${xp} tokens` : ''}`,
         duration: DURATIONS.gamification,
         icon: '🔥',
       },

@@ -196,7 +196,7 @@ export function LeagueView() {
       ) : members.length === 0 ? (
         <Card className="p-10 text-center rounded-3xl">
           <p className="text-muted-foreground font-bold">Aucun apprenant dans cette ligue.</p>
-          <p className="text-xs text-muted-foreground mt-2">Gagnez de l'XP cette semaine pour apparaître ici !</p>
+          <p className="text-xs text-muted-foreground mt-2">Gagnez des tokens cette semaine pour apparaître ici !</p>
         </Card>
       ) : (
         <motion.div layout className="space-y-2">

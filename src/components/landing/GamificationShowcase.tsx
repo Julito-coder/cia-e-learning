@@ -41,7 +41,7 @@ export function GamificationShowcase() {
               <Sparkles className="h-6 w-6" />
             </div>
             <p className="font-display text-4xl mb-1">
-              <CountUp to={1250} /> <span className="text-base text-white/60 font-sans">XP</span>
+              <CountUp to={1250} /> <span className="text-base text-white/60 font-sans">Tokens</span>
             </p>
             <h3 className="font-display text-lg mt-4">{t('landing.gamification.xp_title')}</h3>
             <p className="text-sm text-white/70 mt-2 leading-relaxed">{t('landing.gamification.xp_desc')}</p>
