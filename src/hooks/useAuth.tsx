@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext, useContext } from 'react';
+import { useState, useEffect, createContext, useContext, useCallback, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import type { Session, User } from '@supabase/supabase-js';
 import { setActiveProgressUser } from '@/lib/courseProgress';
@@ -28,42 +28,79 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const initializedRef = useRef(false);
+
+  const syncAdminRole = useCallback(async (userId?: string) => {
+    if (!userId) {
+      setIsAdmin(false);
+      return;
+    }
+
+    try {
+      const { data, error } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', userId)
+        .eq('role', 'admin')
+        .maybeSingle();
+
+      if (error) {
+        console.warn('[auth] user_roles lookup failed', error.message);
+        setIsAdmin(false);
+        return;
+      }
+
+      setIsAdmin(!!data);
+    } catch (error) {
+      console.warn('[auth] user_roles lookup exception', error);
+      setIsAdmin(false);
+    }
+  }, []);
+
+  const applySession = useCallback((nextSession: Session | null) => {
+    setSession(nextSession);
+    setActiveProgressUser(nextSession?.user?.id);
+  }, []);
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      setSession(session);
-      setActiveProgressUser(session?.user?.id);
-      if (session?.user) {
-        const { data } = await supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', session.user.id)
-          .eq('role', 'admin')
-          .maybeSingle();
-        setIsAdmin(!!data);
-      } else {
+    let mounted = true;
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+      if (!mounted || !initializedRef.current) return;
+
+      applySession(nextSession);
+      void syncAdminRole(nextSession?.user?.id);
+    });
+
+    const initializeAuth = async () => {
+      try {
+        const { data: { session: initialSession } } = await supabase.auth.getSession();
+
+        if (!mounted) return;
+
+        applySession(initialSession);
+        initializedRef.current = true;
+        setIsLoading(false);
+        void syncAdminRole(initialSession?.user?.id);
+      } catch (error) {
+        console.error('[auth] getSession failed', error);
+
+        if (!mounted) return;
+
+        applySession(null);
+        initializedRef.current = true;
         setIsAdmin(false);
+        setIsLoading(false);
       }
-      setIsLoading(false);
-    });
+    };
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setActiveProgressUser(session?.user?.id);
-      if (session?.user) {
-        supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', session.user.id)
-          .eq('role', 'admin')
-          .maybeSingle()
-          .then(({ data }) => setIsAdmin(!!data));
-      }
-      setIsLoading(false);
-    });
+    void initializeAuth();
 
-    return () => subscription.unsubscribe();
-  }, []);
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
+  }, [applySession, syncAdminRole]);
 
   const signIn = async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
