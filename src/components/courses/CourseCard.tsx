@@ -22,12 +22,12 @@ export interface CourseCardProps {
 }
 
 const LEVEL_BG: Record<string, string> = {
-  A1: 'from-emerald-400/30 to-emerald-200/10',
-  A2: 'from-green-400/30 to-green-200/10',
-  B1: 'from-sky-400/30 to-sky-200/10',
-  B2: 'from-blue-400/30 to-blue-200/10',
-  C1: 'from-violet-400/30 to-violet-200/10',
-  C2: 'from-purple-400/30 to-purple-200/10',
+  A1: 'from-success-500/30 to-success-100/10',
+  A2: 'from-success-600/30 to-success-500/10',
+  B1: 'from-cia-blue-300/30 to-cia-blue-100/10',
+  B2: 'from-cia-blue-500/30 to-cia-blue-200/10',
+  C1: 'from-cia-spark-mid/30 to-cia-spark-light/10',
+  C2: 'from-cia-blue-700/30 to-cia-blue-300/10',
 };
 
 export function CourseCard(props: CourseCardProps) {
