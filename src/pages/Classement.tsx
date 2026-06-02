@@ -74,7 +74,7 @@ const PodiumCard = ({ entry, rank, isMe, mode }: { entry: LeaderboardEntry; rank
       <div className="mt-2 px-3 py-1 rounded-full bg-cia-xp/15 text-cia-xp text-xs font-bold">
         {mode === 'streak'
           ? <span className="inline-flex items-center gap-1 text-cia-streak">🔥 {entry.daily_streak ?? 0} j</span>
-          : <>⚡ {entry.total_xp.toLocaleString()} XP</>}
+          : <>⚡ {entry.total_xp.toLocaleString()} tokens</>}
       </div>
       <p className={`mt-1 text-[10px] font-extrabold tracking-wider ${config.color}`}>#{rank} • {config.label}</p>
     </Card>
@@ -292,7 +292,7 @@ export default function Classement() {
                 <Flame className="h-6 w-6" />
                 <div className="flex-1">
                   <p className="text-xs font-bold opacity-90">VOTRE POSITION</p>
-                  <p className="font-extrabold">#{myRank} • {totalXP.toLocaleString()} XP</p>
+                  <p className="font-extrabold">#{myRank} • {totalXP.toLocaleString()} tokens</p>
                 </div>
                 <p className="text-xs opacity-90">Continuez pour entrer dans le top 50 !</p>
               </div>

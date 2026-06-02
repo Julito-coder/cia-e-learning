@@ -82,7 +82,7 @@ export default function Profil() {
 
               <div className="space-y-1.5">
                 <div className="flex items-baseline justify-between text-xs">
-                  <span className="font-bold">{totalXP.toLocaleString()} XP</span>
+                  <span className="font-bold">{totalXP.toLocaleString()} tokens</span>
                   <span className="text-muted-foreground">
                     {xpProgress.current} / {xpProgress.needed}
                   </span>
