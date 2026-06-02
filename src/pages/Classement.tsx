@@ -43,9 +43,9 @@ const Avatar = ({ entry, size = 'md' }: { entry: LeaderboardEntry; size?: 'sm' |
 
 const PodiumCard = ({ entry, rank, isMe, mode }: { entry: LeaderboardEntry; rank: 1 | 2 | 3; isMe: boolean; mode: Mode }) => {
   const config = {
-    1: { icon: Crown, color: 'text-yellow-500', bg: 'bg-gradient-to-b from-yellow-100 to-yellow-50 dark:from-yellow-900/30 dark:to-yellow-900/10', border: 'border-yellow-400', height: 'md:h-64', label: 'OR' },
-    2: { icon: Medal, color: 'text-slate-400', bg: 'bg-gradient-to-b from-slate-100 to-slate-50 dark:from-slate-800/40 dark:to-slate-800/10', border: 'border-slate-300', height: 'md:h-56', label: 'ARGENT' },
-    3: { icon: Medal, color: 'text-orange-500', bg: 'bg-gradient-to-b from-orange-100 to-orange-50 dark:from-orange-900/30 dark:to-orange-900/10', border: 'border-orange-400', height: 'md:h-52', label: 'BRONZE' },
+    1: { icon: Crown, color: 'text-cia-gold-500', bg: 'bg-gradient-to-b from-cia-gold-100 to-cia-gold-50 dark:from-cia-gold-800/30 dark:to-cia-gold-800/10', border: 'border-cia-gold-400', height: 'md:h-64', label: 'OR' },
+    2: { icon: Medal, color: 'text-ink-400', bg: 'bg-gradient-to-b from-ink-100 to-ink-50 dark:from-ink-800/40 dark:to-ink-800/10', border: 'border-ink-300', height: 'md:h-56', label: 'ARGENT' },
+    3: { icon: Medal, color: 'text-streak-500', bg: 'bg-gradient-to-b from-streak-500/15 to-cia-gold-50 dark:from-streak-500/30 dark:to-cia-gold-800/10', border: 'border-streak-500/60', height: 'md:h-52', label: 'BRONZE' },
   }[rank];
   const Icon = config.icon;
   const delay = (rank === 1 ? 0.2 : rank === 2 ? 0.05 : 0.35);
@@ -58,8 +58,8 @@ const PodiumCard = ({ entry, rank, isMe, mode }: { entry: LeaderboardEntry; rank
     <Card className={`${config.bg} ${config.height} border-2 ${config.border} ${isMe ? 'ring-4 ring-primary/40' : ''} flex flex-col items-center justify-end p-4 rounded-3xl relative overflow-hidden transition-transform hover:scale-105`}>
       {rank === 1 && (
         <>
-          <Sparkles className="absolute top-3 right-3 h-5 w-5 text-yellow-500 animate-pulse" />
-          <div className="absolute inset-0 -z-10 bg-gradient-radial from-yellow-300/40 via-transparent to-transparent blur-2xl animate-pulse" />
+          <Sparkles className="absolute top-3 right-3 h-5 w-5 text-cia-gold-500 animate-pulse" />
+          <div className="absolute inset-0 -z-10 bg-gradient-radial from-cia-gold-300/40 via-transparent to-transparent blur-2xl animate-pulse" />
         </>
       )}
       <motion.div
@@ -218,9 +218,9 @@ export default function Classement() {
           initial={{ scale: 0, rotate: -45 }}
           animate={{ scale: 1, rotate: 0 }}
           transition={{ duration: 0.6, ease: [0.34, 1.56, 0.64, 1] }}
-          className="inline-flex items-center justify-center h-14 w-14 sm:h-16 sm:w-16 rounded-2xl bg-gradient-to-br from-yellow-400 to-orange-500 mb-3 shadow-lg relative"
+          className="inline-flex items-center justify-center h-14 w-14 sm:h-16 sm:w-16 rounded-2xl bg-gradient-to-br from-cia-gold-400 to-streak-500 mb-3 shadow-lg relative"
         >
-          <div className="absolute inset-0 rounded-2xl bg-yellow-400/40 blur-xl -z-10" />
+          <div className="absolute inset-0 rounded-2xl bg-cia-gold-400/40 blur-xl -z-10" />
           <Trophy className="h-7 w-7 sm:h-9 sm:w-9 text-white" />
         </motion.div>
         <h1 className="font-display text-2xl sm:text-3xl md:text-4xl text-primary mb-2">Classement</h1>
