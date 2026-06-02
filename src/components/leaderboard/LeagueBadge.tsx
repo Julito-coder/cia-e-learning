@@ -5,23 +5,23 @@ const CONFIG: Record<League, { label: string; icon: typeof Trophy; gradient: str
   or: {
     label: 'OR',
     icon: Crown,
-    gradient: 'bg-gradient-to-br from-yellow-300 via-yellow-400 to-amber-500',
-    ring: 'ring-yellow-400/60',
-    text: 'text-yellow-900',
+    gradient: 'bg-gradient-to-br from-cia-gold-300 via-cia-gold-400 to-cia-gold-600',
+    ring: 'ring-cia-gold-400/60',
+    text: 'text-cia-gold-900',
   },
   argent: {
     label: 'ARGENT',
     icon: Trophy,
-    gradient: 'bg-gradient-to-br from-slate-200 via-slate-300 to-slate-400',
-    ring: 'ring-slate-300/60',
-    text: 'text-slate-800',
+    gradient: 'bg-gradient-to-br from-ink-200 via-ink-300 to-ink-500',
+    ring: 'ring-ink-300/60',
+    text: 'text-ink-800',
   },
   bronze: {
     label: 'BRONZE',
     icon: Medal,
-    gradient: 'bg-gradient-to-br from-orange-300 via-orange-400 to-orange-600',
-    ring: 'ring-orange-400/60',
-    text: 'text-orange-950',
+    gradient: 'bg-gradient-to-br from-cia-gold-500 via-streak-500 to-cia-red-700',
+    ring: 'ring-streak-500/60',
+    text: 'text-cia-red-900',
   },
 };
 
