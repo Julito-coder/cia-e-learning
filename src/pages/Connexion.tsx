@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { AuthShell } from '@/components/auth/AuthShell';
 import { AuthTabs } from '@/components/auth/AuthTabs';
@@ -50,6 +51,7 @@ export default function Connexion() {
   const [lastName, setLastName] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const { signIn, signUp, user } = useAuth();
   const navigate = useNavigate();
 
@@ -68,6 +70,24 @@ export default function Connexion() {
   }, [searchParams]);
 
   const redirectTo = searchParams.get('redirect') || '/dashboard';
+
+  const handleGoogleSignIn = async () => {
+    setGoogleLoading(true);
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}${redirectTo}`,
+      },
+    });
+    if (error) {
+      toast.error(`Connexion Google impossible : ${error.message}`);
+      setGoogleLoading(false);
+    }
+    // Sur succès, Supabase redirige vers Google puis revient sur redirectTo ;
+    // le SDK consomme le code dans l'URL (detectSessionInUrl) et le hook
+    // useAuth déclenche la navigation finale. Pas de reset du loading ici :
+    // la page va être démontée par la redirection.
+  };
 
   useEffect(() => {
     if (user) navigate(redirectTo, { replace: true });
@@ -150,24 +170,19 @@ export default function Connexion() {
         <CardContent className="p-6 space-y-4">
           <AuthTabs value={tab} onChange={switchTab} />
 
-          {/* SSO — Google & Apple are placeholder-disabled for V1.
-              Sprint 3 will wire up Google via supabase.auth.signInWithOAuth({provider:'google'}).
+          {/* SSO — Google live via supabase.auth.signInWithOAuth({provider:'google'}).
               Apple requires an Apple Developer account ($99/yr) — deferred. */}
           <div className="space-y-2">
             <Button
               type="button"
               variant="outline"
               size="lg"
-              className="w-full gap-2 opacity-60 cursor-not-allowed"
-              disabled
-              aria-disabled="true"
-              title="Bientôt disponible"
+              className="w-full gap-2"
+              onClick={handleGoogleSignIn}
+              disabled={googleLoading || loading}
             >
-              <GoogleIcon />
+              {googleLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <GoogleIcon />}
               Continuer avec Google
-              <span className="ml-auto text-[10px] uppercase tracking-wider text-muted-foreground">
-                bientôt
-              </span>
             </Button>
             <Button
               type="button"
