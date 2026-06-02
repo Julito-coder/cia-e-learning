@@ -192,7 +192,7 @@ export default function CourseDetail() {
                 <div>
                   <p className="font-bold text-amber-700 dark:text-amber-400">Cours verrouillé</p>
                   <p className="text-sm text-amber-600 dark:text-amber-500">
-                    Atteignez le niveau {displayCourse.level} (5000 XP par niveau) pour débloquer ce cours.
+                    Atteignez le niveau {displayCourse.level} (5000 tokens par niveau) pour débloquer ce cours.
                     Votre niveau actuel : {cecrLevel}
                   </p>
                 </div>

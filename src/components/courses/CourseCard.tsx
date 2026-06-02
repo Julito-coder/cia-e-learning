@@ -83,7 +83,7 @@ export function CourseCard(props: CourseCardProps) {
               <span className="inline-flex items-center gap-1"><BookOpen className="h-3 w-3" /> {totalLessons} leçons</span>
             )}
             {xpReward != null && (
-              <span className="inline-flex items-center gap-1 text-xp"><Zap className="h-3 w-3" /> {xpReward} XP</span>
+              <span className="inline-flex items-center gap-1 text-xp"><Zap className="h-3 w-3" /> {xpReward} tokens</span>
             )}
           </div>
 
