@@ -13,8 +13,8 @@ const ICONS: Record<AchievementIcon, React.ComponentType<{ className?: string }>
 const RARITY_STYLES: Record<AchievementRarity, string> = {
   common:    'from-cia-blue-50 to-cia-blue-100 border-cia-blue-300 text-cia-blue-700',
   rare:      'from-cia-gold-50 to-cia-gold-100 border-cia-gold-300 text-cia-gold-700',
-  epic:      'from-purple-50 to-purple-100 border-purple-300 text-purple-700',
-  legendary: 'from-amber-100 to-orange-100 border-orange-400 text-orange-700 shadow-glow',
+  epic:      'from-cia-spark-light/15 to-cia-spark-mid/20 border-cia-spark-mid/60 text-cia-blue-700',
+  legendary: 'from-cia-gold-100 to-cia-gold-200 border-cia-gold-400 text-cia-gold-700 shadow-glow',
 };
 
 interface AchievementToastProps {
