@@ -63,7 +63,7 @@ export function StreakMilestone({ streak, open, onClose }: StreakMilestoneProps)
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-w-md overflow-hidden border-0 bg-gradient-to-br from-orange-600 via-red-500 to-orange-700 text-white p-0 [&>button]:hidden">
+      <DialogContent className="max-w-md overflow-hidden border-0 bg-gradient-to-br from-streak-500 via-cia-red-500 to-streak-500 text-white p-0 [&>button]:hidden">
         <div className="relative px-8 py-10 text-center space-y-4 min-h-[460px] flex flex-col items-center justify-center">
           <motion.div
             className="absolute inset-0 -z-10 pointer-events-none"
@@ -74,7 +74,7 @@ export function StreakMilestone({ streak, open, onClose }: StreakMilestoneProps)
               : { duration: 2.2, repeat: Infinity, repeatType: 'reverse' }
             }
           >
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[160%] h-[160%] bg-[radial-gradient(circle,_rgba(254,178,53,0.45)_0%,_transparent_60%)] blur-3xl" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[160%] h-[160%] bg-[radial-gradient(circle,_hsl(var(--cia-gold-500)/0.45)_0%,_transparent_60%)] blur-3xl" />
           </motion.div>
 
           <motion.div
