@@ -12,8 +12,8 @@ const ICONS: Record<AchievementIcon, React.ComponentType<{ className?: string }>
 const RARITY_RING: Record<AchievementRarity, string> = {
   common:    'bg-gradient-to-br from-cia-blue-100 to-cia-blue-200 text-cia-blue-700',
   rare:      'bg-gradient-to-br from-cia-gold-100 to-cia-gold-200 text-cia-gold-700',
-  epic:      'bg-gradient-to-br from-purple-100 to-purple-200 text-purple-700',
-  legendary: 'bg-gradient-to-br from-amber-100 to-orange-200 text-orange-700',
+  epic:      'bg-gradient-to-br from-cia-spark-light/20 to-cia-spark-mid/25 text-cia-blue-700',
+  legendary: 'bg-gradient-to-br from-cia-gold-100 to-cia-gold-200 text-cia-gold-700',
 };
 
 interface Props {
