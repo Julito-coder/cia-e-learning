@@ -38,13 +38,13 @@ export interface GlossaryTerm {
 }
 
 export const CECR_LEVELS: { value: CECRLevel; label: string; color: string }[] = [
-  { value: 'A0', label: 'A0 — Initiation', color: 'bg-lime-100 text-lime-800' },
-  { value: 'A1', label: 'A1 — Découverte', color: 'bg-emerald-100 text-emerald-800' },
-  { value: 'A2', label: 'A2 — Survie', color: 'bg-green-100 text-green-800' },
-  { value: 'B1', label: 'B1 — Seuil', color: 'bg-sky-100 text-sky-800' },
-  { value: 'B2', label: 'B2 — Avancé', color: 'bg-blue-100 text-blue-800' },
-  { value: 'C1', label: 'C1 — Autonome', color: 'bg-violet-100 text-violet-800' },
-  { value: 'C2', label: 'C2 — Maîtrise', color: 'bg-purple-100 text-purple-800' },
+  { value: 'A0', label: 'A0 — Initiation', color: 'bg-ink-100 text-ink-700' },
+  { value: 'A1', label: 'A1 — Découverte', color: 'bg-success-50 text-success-700' },
+  { value: 'A2', label: 'A2 — Survie', color: 'bg-success-100 text-success-700' },
+  { value: 'B1', label: 'B1 — Seuil', color: 'bg-cia-blue-50 text-cia-blue-700' },
+  { value: 'B2', label: 'B2 — Avancé', color: 'bg-cia-blue-100 text-cia-blue-700' },
+  { value: 'C1', label: 'C1 — Autonome', color: 'bg-cia-spark-light/15 text-cia-blue-700' },
+  { value: 'C2', label: 'C2 — Maîtrise', color: 'bg-cia-blue-200 text-cia-blue-800' },
 ];
 
 export const COURSE_THEMES: CourseTheme[] = [
