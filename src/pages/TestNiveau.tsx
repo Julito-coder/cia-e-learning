@@ -26,7 +26,7 @@ const levelDescriptions: Record<CECRLevel, string> = {
 };
 
 const levelColors: Record<CECRLevel, string> = {
-  A0: 'bg-lime-500', A1: 'bg-emerald-500', A2: 'bg-green-500', B1: 'bg-accent', B2: 'bg-blue-500', C1: 'bg-violet-500', C2: 'bg-purple-500',
+  A0: 'bg-ink-400', A1: 'bg-success-500', A2: 'bg-success-600', B1: 'bg-accent', B2: 'bg-cia-blue-500', C1: 'bg-cia-spark-mid', C2: 'bg-cia-blue-700',
 };
 
 export default function TestNiveau() {
