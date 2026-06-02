@@ -24,9 +24,9 @@ function getTier(streak: number): FlameTier {
   if (streak >= 100) {
     return {
       size: 20,
-      color: 'text-orange-500',
+      color: 'text-streak-500',
       fill: 'url(#streakGoldGradient)',
-      glow: 'drop-shadow-[0_0_8px_rgba(255,215,0,0.7)]',
+      glow: 'drop-shadow-[0_0_8px_hsl(var(--cia-gold-500)/0.7)]',
       hasAnimation: true,
       hasCrown: true,
       hasGradient: true,
@@ -35,9 +35,9 @@ function getTier(streak: number): FlameTier {
   if (streak >= 30) {
     return {
       size: 20,
-      color: 'text-red-500',
+      color: 'text-cia-red-500',
       fill: 'currentColor',
-      glow: 'drop-shadow-[0_0_6px_rgba(239,68,68,0.6)]',
+      glow: 'drop-shadow-[0_0_6px_hsl(var(--cia-red-500)/0.6)]',
       hasAnimation: true,
       hasCrown: false,
       hasGradient: false,
@@ -46,9 +46,9 @@ function getTier(streak: number): FlameTier {
   if (streak >= 14) {
     return {
       size: 18,
-      color: 'text-orange-500',
+      color: 'text-streak-500',
       fill: 'currentColor',
-      glow: 'drop-shadow-[0_0_5px_rgba(249,115,22,0.55)]',
+      glow: 'drop-shadow-[0_0_5px_hsl(var(--streak-500)/0.55)]',
       hasAnimation: true,
       hasCrown: false,
       hasGradient: false,
@@ -57,9 +57,9 @@ function getTier(streak: number): FlameTier {
   if (streak >= 7) {
     return {
       size: 16,
-      color: 'text-orange-500',
+      color: 'text-streak-500',
       fill: 'currentColor',
-      glow: 'drop-shadow-[0_0_4px_rgba(249,115,22,0.4)]',
+      glow: 'drop-shadow-[0_0_4px_hsl(var(--streak-500)/0.4)]',
       hasAnimation: true,
       hasCrown: false,
       hasGradient: false,
@@ -68,7 +68,7 @@ function getTier(streak: number): FlameTier {
   if (streak >= 3) {
     return {
       size: 14,
-      color: 'text-orange-500',
+      color: 'text-streak-500',
       fill: 'currentColor',
       glow: '',
       hasAnimation: true,
