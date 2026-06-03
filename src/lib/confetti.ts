@@ -9,7 +9,23 @@ const CIA_COLORS = [
   '#FFFFFF',
 ];
 
-const GOLD_PALETTE = ['#CCAE62', '#E8C97A', '#F2D89A', '#FFFFFF', '#FFD700'];
+/**
+ * Palette LevelUp — charte v2 §8 : « confettis bleus + blancs,
+ * pas dorés en solide ». Réservée à `levelUpSequence`.
+ */
+const LEVELUP_BLUE_WHITE = [
+  '#1E90FF', // cia-spark-mid
+  '#5FB3FF', // cia-spark-light
+  '#7CC3FF', // cia-spark-ember
+  '#FFFFFF',
+  '#0A3D62', // cia-spark-deep (accent)
+];
+
+/**
+ * Palette legendary — réservée aux achievements rares (g-shine),
+ * non au LevelUp lui-même.
+ */
+const LEGENDARY_PALETTE = ['#CCAE62', '#E8C97A', '#F2D89A', '#FFFFFF', '#FFE9A8'];
 
 function reducedMotion(): boolean {
   return typeof window !== 'undefined'
@@ -92,13 +108,13 @@ export function sustainedRain(opts: { colors?: string[]; duration?: number } = {
 
 /**
  * Séquence complète pour un level-up : burst central → sides → rain.
- * Durée totale ~3 secondes.
+ * Durée totale ~3 secondes. Charte v2 §8 : « bleus + blancs, pas dorés ».
  */
 export function levelUpSequence() {
   if (reducedMotion()) return;
-  centerBurst({ colors: GOLD_PALETTE, particleCount: 100 });
-  window.setTimeout(() => sideBursts(), 400);
-  window.setTimeout(() => sustainedRain({ duration: 2000 }), 800);
+  centerBurst({ colors: LEVELUP_BLUE_WHITE, particleCount: 100 });
+  window.setTimeout(() => sideBursts({ colors: LEVELUP_BLUE_WHITE }), 400);
+  window.setTimeout(() => sustainedRain({ colors: LEVELUP_BLUE_WHITE, duration: 2000 }), 800);
 }
 
 /**
@@ -123,8 +139,8 @@ export function achievementPing(
   const palettes: Record<string, string[]> = {
     common:    ['#0A3D62', '#2E5984', '#FFFFFF'],
     rare:      ['#CCAE62', '#E8C97A', '#FFFFFF'],
-    epic:      ['#7C3AED', '#A78BFA', '#FFFFFF'],
-    legendary: ['#FF6B35', '#CCAE62', '#FFD700', '#FFFFFF'],
+    epic:      ['#1E90FF', '#5FB3FF', '#0A3D62', '#FFFFFF'], // cia-spark, pas violet brut
+    legendary: LEGENDARY_PALETTE, // g-shine doré (charte §8)
   };
   confetti({
     particleCount: rarity === 'legendary' ? 50 : rarity === 'epic' ? 35 : 20,

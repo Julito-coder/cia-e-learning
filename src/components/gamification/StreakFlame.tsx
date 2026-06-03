@@ -20,13 +20,22 @@ interface FlameTier {
   hasGradient: boolean;
 }
 
+/**
+ * 6 paliers — charte v2 §8 :
+ *   0       → gris (flamme inactive)
+ *   1–2     → orange clair
+ *   3–6     → orange vif
+ *   7–29    → rouge-orange
+ *   30–99   → rouge profond
+ *   100+    → blanc-chaud + couronne
+ */
 function getTier(streak: number): FlameTier {
   if (streak >= 100) {
     return {
       size: 20,
-      color: 'text-streak-500',
+      color: 'text-cia-gold-300',
       fill: 'url(#streakGoldGradient)',
-      glow: 'drop-shadow-[0_0_8px_hsl(var(--cia-gold-500)/0.7)]',
+      glow: 'drop-shadow-[0_0_10px_hsl(var(--cia-gold-300)/0.8)]',
       hasAnimation: true,
       hasCrown: true,
       hasGradient: true,
@@ -43,18 +52,18 @@ function getTier(streak: number): FlameTier {
       hasGradient: false,
     };
   }
-  if (streak >= 14) {
+  if (streak >= 7) {
     return {
       size: 18,
       color: 'text-streak-500',
       fill: 'currentColor',
-      glow: 'drop-shadow-[0_0_5px_hsl(var(--streak-500)/0.55)]',
+      glow: 'drop-shadow-[0_0_5px_hsl(var(--cia-red-500)/0.5)]',
       hasAnimation: true,
       hasCrown: false,
       hasGradient: false,
     };
   }
-  if (streak >= 7) {
+  if (streak >= 3) {
     return {
       size: 16,
       color: 'text-streak-500',
@@ -65,10 +74,11 @@ function getTier(streak: number): FlameTier {
       hasGradient: false,
     };
   }
-  if (streak >= 3) {
+  if (streak >= 1) {
+    // Orange clair — palier introduit par la charte v2 (« 1-2 orange clair »)
     return {
       size: 14,
-      color: 'text-streak-500',
+      color: 'text-streak-500/60',
       fill: 'currentColor',
       glow: '',
       hasAnimation: true,
@@ -76,7 +86,7 @@ function getTier(streak: number): FlameTier {
       hasGradient: false,
     };
   }
-  // 0-2 : flamme inactive grise
+  // 0 — flamme inactive grise
   return {
     size: 14,
     color: 'text-muted-foreground',
@@ -129,9 +139,10 @@ export function StreakFlame({ streak, animateOnChange = true, sizeOverride }: St
           <svg width="0" height="0" className="absolute" aria-hidden="true">
             <defs>
               <linearGradient id="streakGoldGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%"   stopColor="#FFD700" />
-                <stop offset="50%"  stopColor="#FFA500" />
-                <stop offset="100%" stopColor="#FF4500" />
+                {/* Charte v2 §8 — palier 100+ : « blanc-chaud + couronne » */}
+                <stop offset="0%"   stopColor="#FFFFFF" />
+                <stop offset="50%"  stopColor="#FFE9A8" />
+                <stop offset="100%" stopColor="hsl(var(--cia-gold-500))" />
               </linearGradient>
             </defs>
           </svg>
