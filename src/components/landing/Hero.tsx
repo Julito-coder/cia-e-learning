@@ -37,7 +37,7 @@ export function Hero() {
             {/* Glass badge institution */}
             <motion.div variants={staggerItem} className="flex justify-center lg:justify-start">
               <div className="inline-flex glass rounded-full px-4 py-2 gap-2 items-center text-sm font-medium text-cia-blue-700 shadow-glass">
-                <Sparkles className="h-4 w-4 text-cia-gold-500" />
+                <Sparkles className="h-4 w-4 text-cia-gold-700" />
                 <span>{t('landing.hero.badge')}</span>
               </div>
             </motion.div>
@@ -94,7 +94,7 @@ export function Hero() {
                 </div>
               </div>
               <div className="glass-adaptive rounded-2xl p-3 text-center shadow-sm">
-                <TrendingUp className="h-4 w-4 mx-auto mb-1 text-cia-gold-500" />
+                <TrendingUp className="h-4 w-4 mx-auto mb-1 text-cia-gold-700" />
                 <div className="font-display font-extrabold text-2xl md:text-3xl text-cia-gold-600 tabular-nums">
                   95%
                 </div>

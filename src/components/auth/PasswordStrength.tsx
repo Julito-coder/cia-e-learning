@@ -12,8 +12,8 @@ const segmentColors = [
 const labelColors = [
   'text-muted-foreground',
   'text-destructive',
-  'text-streak-500',
-  'text-cia-gold-600',
+  'text-cia-red-600',
+  'text-cia-gold-700',
   'text-cia-success',
 ];
 
