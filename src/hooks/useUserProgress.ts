@@ -122,7 +122,7 @@ export function useUserProgress() {
         });
         if (error) {
           console.error('[addXP] award_xp failed', error);
-          toast.error(`Erreur tokens: ${error.message}`);
+          toast.error(`Erreur XP: ${error.message}`);
           return { leveledUp: false, newLevel: cecrLevel };
         }
         const result = data as AwardXPResult | null;

@@ -69,7 +69,7 @@ export function useOnboarding() {
       if (newXP != null && newLevel) {
         window.dispatchEvent(new CustomEvent('xp-update', { detail: { xp: newXP, level: newLevel } }));
       }
-      toast.success(`+${xp} tokens de bienvenue !`);
+      toast.success(`+${xp} XP de bienvenue !`);
     }
     return { awarded: !!result?.awarded };
   }, [user]);
