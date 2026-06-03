@@ -83,7 +83,7 @@ export default function AdminSettings() {
         <div className="space-y-3">
           {[
             { key: 'welcome', label: 'Email de bienvenue', desc: 'Envoyé à la création du compte', val: welcome, on: onWelcome },
-            { key: 'digest', label: 'Récapitulatif hebdomadaire', desc: 'Tokens gagnés, classement, série', val: digest, on: onDigest },
+            { key: 'digest', label: 'Récapitulatif hebdomadaire', desc: 'XP gagnés, classement, série', val: digest, on: onDigest },
             { key: 'inactivity', label: 'Relance d\'inactivité', desc: 'Après 7 jours sans connexion', val: inactivity, on: onInactivity },
           ].map((row) => (
             <div key={row.key} className="flex items-center justify-between gap-4 py-1">

@@ -115,7 +115,7 @@ export default function AdminAnalytics() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard label="Utilisateurs" value={kpis.totalUsers} icon={Users} tint="primary" loading={loading} />
         <StatCard label="Actifs" value={kpis.activeUsers} icon={UserCheck} tint="success" loading={loading} />
-        <StatCard label={`Tokens gagnés (${period}j)`} value={kpis.totalXP.toLocaleString('fr-FR')} icon={Zap} tint="gold" loading={loading} />
+        <StatCard label={`XP gagnés (${period}j)`} value={kpis.totalXP.toLocaleString('fr-FR')} icon={Zap} tint="gold" loading={loading} />
         <StatCard label="Série moyenne" value={`${kpis.avgStreak} j`} icon={Flame} tint="destructive" loading={loading} />
       </div>
 
@@ -162,12 +162,12 @@ export default function AdminAnalytics() {
         </AdminSectionCard>
       </div>
 
-      <AdminSectionCard title="Tendance tokens" description={`Tokens gagnés par semaine (derniers ${period} jours)`}>
+      <AdminSectionCard title="Tendance XP" description={`XP gagnés par semaine (derniers ${period} jours)`}>
         <div className="h-[260px]">
           {loading ? (
             <Skeleton className="h-full w-full rounded-lg" />
           ) : weeklyXP.length === 0 ? (
-            <div className="flex items-center justify-center h-full text-sm text-muted-foreground">Aucun gain de tokens sur la période</div>
+            <div className="flex items-center justify-center h-full text-sm text-muted-foreground">Aucun gain de XP sur la période</div>
           ) : (
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={weeklyXP}>
