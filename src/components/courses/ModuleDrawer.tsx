@@ -90,7 +90,7 @@ export function ModuleDrawer(props: ModuleDrawerProps) {
             <div className="bg-cia-gold-50 rounded-xl p-3 text-center">
               <Sparkles className="h-4 w-4 mx-auto mb-1 text-cia-gold-500" />
               <div className="font-display font-bold text-cia-gold-600 tabular-nums">+{xpReward}</div>
-              <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Tokens</div>
+              <div className="text-[10px] uppercase tracking-wider text-muted-foreground">XP</div>
             </div>
           </div>
 
