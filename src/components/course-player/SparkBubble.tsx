@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Spark, type SparkMood } from '@/components/spark/Spark';
+import { SparkMini } from '@/components/spark/SparkMini';
 
 interface Props {
   message: string;
-  /** Mood applied to Spark while the bubble is visible. Default 'talking'. */
+  /** Mood applied to Spark while the bubble is visible. Default 'talking'.
+   *  Ignored when size ≤ 48 (charte v2 §2 : SparkMini sans bouche). */
   mood?: SparkMood;
   /** Spark size in px. Default 48. */
   size?: number;
@@ -18,6 +20,8 @@ interface Props {
  * SparkBubble — Spark mascot + dialogue bubble.
  * Drop-in replacement for the old CharacterBubble (Marie & co), now using
  * the official Spark mascot for all narrative bubbles in the course player.
+ *
+ * Sous 48px : bascule sur SparkMini (charte v2 §2).
  */
 export function SparkBubble({
   message,
@@ -53,7 +57,11 @@ export function SparkBubble({
         className="shrink-0"
         title="Spark"
       >
-        <Spark mood={mood} size={size} halo={false} />
+        {size <= 48 ? (
+          <SparkMini size={size} />
+        ) : (
+          <Spark mood={mood} size={size} halo={false} />
+        )}
       </motion.div>
       <div className="min-w-0 flex-1">
         <div className="relative mt-1.5 bg-cia-blue-50 dark:bg-cia-blue-900/30 border-2 border-cia-spark-mid/30 rounded-2xl rounded-tl-sm px-4 py-2.5">

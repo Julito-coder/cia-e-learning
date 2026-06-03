@@ -92,6 +92,7 @@ export default {
             light: 'hsl(var(--cia-spark-light))',
             mid:   'hsl(var(--cia-spark-mid))',
             deep:  'hsl(var(--cia-spark-deep))',
+            ember: 'hsl(var(--cia-spark-ember))',
           },
           /* Legacy aliases */
           navy:        "hsl(var(--cia-navy))",
