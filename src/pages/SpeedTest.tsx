@@ -77,7 +77,7 @@ export default function SpeedTest() {
     setNewRecord(record);
     if (xp > 0) {
       await addXP(xp, 'speed_test', level);
-      toast.success(`+${xp} tokens gagnés !`);
+      toast.success(`+${xp} XP gagnés !`);
     }
   }, [addXP, bestKey, bestScore]);
 
@@ -200,8 +200,8 @@ export default function SpeedTest() {
           <div className="grid grid-cols-3 gap-3 mb-6 text-sm">
             {[
               { Icon: Timer, color: 'text-primary', big: '90 sec', sub: 'de challenge' },
-              { Icon: Zap, color: 'text-cia-xp', big: '+10 tokens', sub: 'par bonne rép.' },
-              { Icon: Crown, color: 'text-cia-gold-500', big: '+50 tokens', sub: 'si record' },
+              { Icon: Zap, color: 'text-cia-xp', big: '+10 XP', sub: 'par bonne rép.' },
+              { Icon: Crown, color: 'text-cia-gold-500', big: '+50 XP', sub: 'si record' },
             ].map((s, i) => (
               <motion.div
                 key={i}
@@ -311,7 +311,7 @@ export default function SpeedTest() {
             transition={{ delay: 0.6, type: 'spring' }}
             className="mb-6 inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-cia-xp/15 text-cia-xp font-extrabold"
           >
-            <Zap className="h-5 w-5" /> +<AnimatedCounter target={xpEarned} duration={900} /> tokens
+            <Zap className="h-5 w-5" /> +<AnimatedCounter target={xpEarned} duration={900} /> XP
           </motion.div>
 
           <div className="flex gap-3">
