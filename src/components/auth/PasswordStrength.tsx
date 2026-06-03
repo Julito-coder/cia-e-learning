@@ -4,16 +4,16 @@ import { computePasswordScore, passwordStrengthLabels } from '@/lib/validators/a
 const segmentColors = [
   'bg-muted',
   'bg-destructive',
-  'bg-orange-500',
-  'bg-yellow-500',
+  'bg-streak-500',
+  'bg-cia-gold-500',
   'bg-cia-success',
 ];
 
 const labelColors = [
   'text-muted-foreground',
   'text-destructive',
-  'text-orange-500',
-  'text-yellow-600',
+  'text-cia-red-600',
+  'text-cia-gold-700',
   'text-cia-success',
 ];
 

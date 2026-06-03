@@ -187,12 +187,12 @@ export default function CourseDetail() {
           <div className="lg:col-span-2 space-y-6">
             {/* Locked banner */}
             {locked && (
-              <div className="flex items-center gap-4 p-4 rounded-xl bg-amber-50 border-2 border-amber-200 dark:bg-amber-950 dark:border-amber-800">
-                <Lock className="h-8 w-8 text-amber-600" />
+              <div className="flex items-center gap-4 p-4 rounded-xl bg-cia-gold-50 border-2 border-cia-gold-200 dark:bg-cia-gold-900 dark:border-cia-gold-800">
+                <Lock className="h-8 w-8 text-cia-gold-600" />
                 <div>
-                  <p className="font-bold text-amber-700 dark:text-amber-400">Cours verrouillé</p>
-                  <p className="text-sm text-amber-600 dark:text-amber-500">
-                    Atteignez le niveau {displayCourse.level} (5000 tokens par niveau) pour débloquer ce cours.
+                  <p className="font-bold text-cia-gold-700 dark:text-cia-gold-400">Cours verrouillé</p>
+                  <p className="text-sm text-cia-gold-600 dark:text-cia-gold-500">
+                    Atteignez le niveau {displayCourse.level} (5000 XP par niveau) pour débloquer ce cours.
                     Votre niveau actuel : {cecrLevel}
                   </p>
                 </div>
@@ -201,11 +201,11 @@ export default function CourseDetail() {
 
             {/* Completed banner */}
             {!locked && isCompleted && (
-              <div className="flex items-center gap-4 p-4 rounded-xl bg-green-50 border-2 border-green-200 dark:bg-green-950 dark:border-green-800">
-                <Trophy className="h-8 w-8 text-green-600" />
+              <div className="flex items-center gap-4 p-4 rounded-xl bg-success-50 border-2 border-success-100 dark:bg-success-700 dark:border-success-700">
+                <Trophy className="h-8 w-8 text-success-600" />
                 <div>
-                  <p className="font-bold text-green-700 dark:text-green-400">Cours terminé !</p>
-                  <p className="text-sm text-green-600 dark:text-green-500">Score : {displayScore}/100</p>
+                  <p className="font-bold text-success-700 dark:text-success-500">Cours terminé !</p>
+                  <p className="text-sm text-success-600 dark:text-success-500">Score : {displayScore}/100</p>
                 </div>
               </div>
             )}

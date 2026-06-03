@@ -46,7 +46,7 @@ const Avatar = ({ entry }: { entry: LeagueMember }) => {
 function MemberRow({ entry, rank, zone, isMe }: { entry: LeagueMember; rank: number; zone: 'promo' | 'safe' | 'releg'; isMe: boolean }) {
   const zoneStyle =
     zone === 'promo'
-      ? 'border-l-4 border-l-emerald-500 bg-emerald-50/40 dark:bg-emerald-950/10'
+      ? 'border-l-4 border-l-success-500 bg-success-50/40 dark:bg-success-700/10'
       : zone === 'releg'
       ? 'border-l-4 border-l-destructive bg-destructive/5'
       : 'border-l-4 border-l-transparent';
@@ -58,7 +58,7 @@ function MemberRow({ entry, rank, zone, isMe }: { entry: LeagueMember; rank: num
       transition={{ duration: 0.3 }}
       className={`flex items-center gap-3 p-3 rounded-2xl ${zoneStyle} ${isMe ? 'bg-primary/10 ring-2 ring-primary' : 'hover:bg-muted/50'} border border-border/40 ${isMe ? '' : 'bg-card'} transition-colors`}
     >
-      <div className={`w-8 text-center font-extrabold ${rank <= 3 ? 'text-emerald-600' : 'text-muted-foreground'}`}>#{rank}</div>
+      <div className={`w-8 text-center font-extrabold ${rank <= 3 ? 'text-success-600' : 'text-muted-foreground'}`}>#{rank}</div>
       <Avatar entry={entry} />
       <div className="flex-1 min-w-0">
         <p className="font-bold text-sm truncate">
@@ -66,7 +66,7 @@ function MemberRow({ entry, rank, zone, isMe }: { entry: LeagueMember; rank: num
         </p>
         <p className="text-xs text-muted-foreground">Niveau {entry.cecr_level || 'A1'}</p>
       </div>
-      {zone === 'promo' && <ArrowUp className="h-4 w-4 text-emerald-600 animate-pulse" />}
+      {zone === 'promo' && <ArrowUp className="h-4 w-4 text-success-600 animate-pulse" />}
       {zone === 'releg' && <ArrowDown className="h-4 w-4 text-destructive animate-pulse" />}
       <div className="px-3 py-1.5 rounded-full bg-cia-xp/15 text-cia-xp text-xs font-bold">⚡ {entry.weekly_xp.toLocaleString()}</div>
     </motion.div>
@@ -156,12 +156,12 @@ export function LeagueView() {
             exit={{ opacity: 0, scale: 0.95, y: -10 }}
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
           >
-            <Card className={`relative p-4 rounded-2xl border-2 overflow-hidden ${lastResult.outcome === 'promoted' ? 'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-300' : lastResult.outcome === 'demoted' ? 'bg-red-50 dark:bg-red-950/30 border-red-300' : 'bg-muted/30 border-border'}`}>
+            <Card className={`relative p-4 rounded-2xl border-2 overflow-hidden ${lastResult.outcome === 'promoted' ? 'bg-success-50 dark:bg-success-700/30 border-success-100' : lastResult.outcome === 'demoted' ? 'bg-cia-red-50 dark:bg-cia-red-900/30 border-cia-red-300' : 'bg-muted/30 border-border'}`}>
               <button onClick={dismissResult} aria-label="Fermer" className="absolute top-2 right-2 p-1 rounded-full hover:bg-background/60 text-muted-foreground">
                 <X className="h-3.5 w-3.5" />
               </button>
               <div className="flex items-center gap-3 pr-6">
-                {lastResult.outcome === 'promoted' && <Sparkles className="h-5 w-5 text-emerald-600 animate-pulse" />}
+                {lastResult.outcome === 'promoted' && <Sparkles className="h-5 w-5 text-success-600 animate-pulse" />}
                 {lastResult.outcome === 'demoted' && <ArrowDown className="h-5 w-5 text-destructive" />}
                 {lastResult.outcome === 'stayed' && <ShieldCheck className="h-5 w-5 text-muted-foreground" />}
                 <p className="text-sm font-bold">
@@ -196,7 +196,7 @@ export function LeagueView() {
       ) : members.length === 0 ? (
         <Card className="p-10 text-center rounded-3xl">
           <p className="text-muted-foreground font-bold">Aucun apprenant dans cette ligue.</p>
-          <p className="text-xs text-muted-foreground mt-2">Gagnez des tokens cette semaine pour apparaître ici !</p>
+          <p className="text-xs text-muted-foreground mt-2">Gagnez des XP cette semaine pour apparaître ici !</p>
         </Card>
       ) : (
         <motion.div layout className="space-y-2">

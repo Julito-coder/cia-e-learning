@@ -139,8 +139,8 @@ export default function AdminDashboard() {
       </div>
 
       <AdminSectionCard
-        title="Activité tokens récente"
-        description="Les derniers gains de tokens enregistrés sur la plateforme"
+        title="Activité XP récente"
+        description="Les derniers gains de XP enregistrés sur la plateforme"
       >
         {loading ? (
           <div className="space-y-2">

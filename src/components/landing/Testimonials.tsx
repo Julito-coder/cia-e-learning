@@ -13,8 +13,15 @@ const TESTIMONIALS = [
 export function Testimonials() {
   const { t } = useTranslation();
   return (
-    <section className="py-20 lg:py-24">
-      <div className="container">
+    <section className="relative py-20 lg:py-24 overflow-hidden">
+      {/* Charte v2 §6 — gradient signature `g-sunset` (red → rose → gold)
+          posé en arrière-plan adouci pour signaler le registre « passion /
+          témoignages » sans casser la lisibilité des cards. */}
+      <div
+        className="absolute inset-0 bg-g-sunset opacity-20 pointer-events-none"
+        aria-hidden="true"
+      />
+      <div className="container relative">
         <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl text-center mb-14 tracking-tight">
           {t('landing.testimonials.title')}
         </h2>
@@ -27,8 +34,8 @@ export function Testimonials() {
         >
           {TESTIMONIALS.map((item) => (
             <motion.div key={item.name} variants={staggerItem}>
-              <Card className="p-7 h-full flex flex-col">
-                <Quote className="h-7 w-7 text-cia-gold-400 mb-3" />
+              <Card className="p-7 h-full flex flex-col bg-card/95 backdrop-blur-sm">
+                <Quote className="h-7 w-7 text-cia-gold-700 mb-3" />
                 <p className="text-base leading-relaxed text-foreground/90 flex-1">"{item.quote}"</p>
                 <div className="mt-5 flex items-center gap-3">
                   <div className={`h-11 w-11 rounded-full ${item.accent} flex items-center justify-center font-bold text-sm`}>

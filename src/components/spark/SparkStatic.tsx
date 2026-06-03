@@ -146,7 +146,7 @@ export const SparkStatic = React.forwardRef<HTMLDivElement, SparkStaticProps>(
             {[0, 1, 2].map((i) => (
               <span
                 key={i}
-                className="absolute block rounded-full bg-cia-gold-400 anim-ember"
+                className="absolute block rounded-full bg-cia-spark-ember anim-ember"
                 style={{
                   left: `${30 + i * 20}%`,
                   bottom: '30%',

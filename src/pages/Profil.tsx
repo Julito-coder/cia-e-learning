@@ -71,7 +71,7 @@ export default function Profil() {
                   <Zap className="h-3 w-3" /> {cecrLevel}
                 </Badge>
                 <Badge variant="secondary" className="rounded-full gap-1.5 px-3 py-1">
-                  <Flame className="h-3 w-3 text-orange-500" /> {streak} j
+                  <Flame className="h-3 w-3 text-streak-500" /> {streak} j
                 </Badge>
                 {league && (
                   <Badge variant="secondary" className="rounded-full gap-1.5 px-3 py-1">
@@ -82,7 +82,7 @@ export default function Profil() {
 
               <div className="space-y-1.5">
                 <div className="flex items-baseline justify-between text-xs">
-                  <span className="font-bold">{totalXP.toLocaleString()} tokens</span>
+                  <span className="font-bold">{totalXP.toLocaleString()} XP</span>
                   <span className="text-muted-foreground">
                     {xpProgress.current} / {xpProgress.needed}
                   </span>

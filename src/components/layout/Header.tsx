@@ -14,7 +14,7 @@ import { LanguageSwitcher } from './LanguageSwitcher';
 import { MobileDrawer } from './MobileDrawer';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
-import { Spark } from '@/components/spark/Spark';
+import { SparkMini } from '@/components/spark/SparkMini';
 
 const NAV: { to: string; key: string; onboard?: string }[] = [
   { to: '/catalogue',    key: 'nav.catalogue',       onboard: 'nav-catalogue' },
@@ -68,9 +68,9 @@ export function Header() {
             </Button>
             <Link to="/" className="flex items-center gap-2 min-w-0" aria-label="CIA E-Learning, retour à l'accueil">
               <img src="/cia-logo-2.png" alt="" className="h-8 sm:h-10 w-auto select-none shrink-0" draggable={false} />
-              {/* Spark mini accompanies the wordmark — official CIA mascot identity */}
+              {/* SparkMini (charte v2 §2 : ≤48px = blob + 2 points blancs, sans bouche) */}
               <span className="shrink-0 hidden xs:inline-flex" aria-hidden="true">
-                <Spark mood="idle" size={28} halo={false} />
+                <SparkMini size={28} />
               </span>
               <div className="hidden sm:block leading-tight">
                 <p className="font-display text-sm text-primary">CIA</p>

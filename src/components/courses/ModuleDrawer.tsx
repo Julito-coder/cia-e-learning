@@ -41,7 +41,7 @@ export function ModuleDrawer(props: ModuleDrawerProps) {
 
   const renderHeroIcon = () => {
     if (state === 'locked') return <Lock className="h-9 w-9 text-muted-foreground" />;
-    if (state === 'completed') return <Check className="h-9 w-9 text-green-600" strokeWidth={3} />;
+    if (state === 'completed') return <Check className="h-9 w-9 text-success-600" strokeWidth={3} />;
     if (icon.kind === 'emoji') return <span className="text-4xl">{icon.value}</span>;
     const Icon = icon.value;
     return <Icon className="h-9 w-9 text-cia-blue-700" strokeWidth={2.2} />;
@@ -90,7 +90,7 @@ export function ModuleDrawer(props: ModuleDrawerProps) {
             <div className="bg-cia-gold-50 rounded-xl p-3 text-center">
               <Sparkles className="h-4 w-4 mx-auto mb-1 text-cia-gold-500" />
               <div className="font-display font-bold text-cia-gold-600 tabular-nums">+{xpReward}</div>
-              <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Tokens</div>
+              <div className="text-[10px] uppercase tracking-wider text-muted-foreground">XP</div>
             </div>
           </div>
 

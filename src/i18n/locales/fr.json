@@ -21,7 +21,7 @@
     "test": "Test de niveau",
     "level": "Niveau {{level}}",
     "progression": "Progression",
-    "xpTotal": "⚡ Tokens total"
+    "xpTotal": "⚡ XP total"
   },
   "stats": {
     "coursesCompleted": "Cours terminés",
@@ -71,7 +71,7 @@
       "level_asc": "Niveau (A1 → C2)",
       "level_desc": "Niveau (C2 → A1)",
       "duration_asc": "Durée (court → long)",
-      "xp_desc": "Tokens (élevé → bas)",
+      "xp_desc": "XP (élevé → bas)",
       "alpha": "Alphabétique"
     }
   },
@@ -136,19 +136,19 @@
     },
     "first_xp": {
       "title": "Premiers pas",
-      "desc": "Tu as gagné ton premier token."
+      "desc": "Tu as gagné ton premier XP."
     },
     "xp_500": {
       "title": "Apprenti",
-      "desc": "Tu as atteint 500 tokens."
+      "desc": "Tu as atteint 500 XP."
     },
     "xp_2500": {
       "title": "Élève motivé",
-      "desc": "Tu as atteint 2 500 tokens."
+      "desc": "Tu as atteint 2 500 XP."
     },
     "xp_10000": {
       "title": "Expert",
-      "desc": "Tu as atteint 10 000 tokens."
+      "desc": "Tu as atteint 10 000 XP."
     },
     "streak_7": {
       "title": "Une semaine",
@@ -259,7 +259,7 @@
     }
   },
   "indicators": {
-    "xp_tooltip": "{{count}} tokens gagnés au total",
+    "xp_tooltip": "{{count}} XP gagnés au total",
     "streak_tooltip": "{{count}} jour(s) consécutifs · Reviens demain pour ne pas casser ta série !",
     "level_tooltip": "Niveau actuel : {{level}}",
     "league_tooltip": "Ligue {{league}} cette semaine"
@@ -288,7 +288,7 @@
       "step3_title": "Pratique chaque jour",
       "step3_desc": "Défi quotidien + leçons interactives pour ne rien oublier.",
       "step4_title": "Progresse et grimpe",
-      "step4_desc": "Tokens, niveaux, ligues hebdomadaires : la motivation au quotidien."
+      "step4_desc": "XP, niveaux, ligues hebdomadaires : la motivation au quotidien."
     },
     "cecr": {
       "title": "De débutant à bilingue.",
@@ -308,10 +308,10 @@
     },
     "gamification": {
       "title": "Une vraie méthode. Et une bonne dose de motivation.",
-      "xp_title": "Gagne des tokens à chaque leçon.",
+      "xp_title": "Gagne des XP à chaque leçon.",
       "xp_desc": "Chaque exercice rapporte des points. Atteins le niveau suivant en complétant tes objectifs hebdomadaires.",
       "daily_title": "Une leçon. Tous les jours.",
-      "daily_desc": "Reviens chaque jour pour gagner ton bonus tokens et grossir ton streak. Pas de pression — juste 5 minutes.",
+      "daily_desc": "Reviens chaque jour pour gagner ton bonus XP et grossir ton streak. Pas de pression — juste 5 minutes.",
       "league_title": "Affronte les autres apprenants.",
       "league_desc": "Trois ligues, classement hebdo. Termine dans le top et grimpe à la suivante."
     },
@@ -481,7 +481,7 @@
     "next": "Continuer",
     "previous": "Précédent",
     "finish": "Terminer",
-    "bonusXp": "+50 tokens de bienvenue !",
+    "bonusXp": "+50 XP de bienvenue !",
     "welcome": {
       "title": "Bienvenue à Antibes !",
       "subtitle": "Je vais te guider pour démarrer ton aventure en français. Ça prend 1 minute.",
@@ -512,7 +512,7 @@
     "coach": {
       "xp": {
         "title": "Ton tableau de bord",
-        "desc": "Tokens, série quotidienne et ligue : tout est ici, en haut à droite."
+        "desc": "XP, série quotidienne et ligue : tout est ici, en haut à droite."
       },
       "programme": {
         "title": "Le Programme",
@@ -524,11 +524,11 @@
       },
       "daily": {
         "title": "Défi du jour",
-        "desc": "Une leçon par jour pour entretenir ta série et gagner du bonus tokens."
+        "desc": "Une leçon par jour pour entretenir ta série et gagner du bonus XP."
       },
       "classement": {
         "title": "Classement & Ligues",
-        "desc": "Compare tes tokens hebdo aux autres apprenants. Promotions chaque lundi !"
+        "desc": "Compare tes XP hebdo aux autres apprenants. Promotions chaque lundi !"
       }
     }
   },
@@ -625,8 +625,8 @@
   },
   "classement": {
     "title": "Classement",
-    "subtitle": "Compare tes tokens hebdomadaires aux autres apprenants.",
-    "weeklyXp": "Tokens de la semaine",
+    "subtitle": "Compare tes XP hebdomadaires aux autres apprenants.",
+    "weeklyXp": "XP de la semaine",
     "rank": "Rang",
     "player": "Apprenant",
     "you": "Toi",
@@ -667,7 +667,7 @@
     "alreadyDone": "Défi du jour validé !",
     "comeBack": "Reviens demain pour continuer ta série.",
     "streakLabel": "Série actuelle",
-    "bonus": "+{{xp}} tokens bonus",
+    "bonus": "+{{xp}} XP bonus",
     "history": "Historique",
     "noHistory": "Pas d'historique pour l'instant."
   },
@@ -713,8 +713,8 @@
       "createCourse": "Créer un cours",
       "viewAnalytics": "Voir analytics",
       "subscriptions": "Abonnements",
-      "xpActivity": "Activité Tokens récente",
-      "xpActivityDesc": "Les derniers gains de tokens enregistrés",
+      "xpActivity": "Activité XP récente",
+      "xpActivityDesc": "Les derniers gains de XP enregistrés",
       "noXp": "Aucune activité enregistrée"
     },
     "users": {
@@ -802,7 +802,7 @@
       "period_90": "90 jours",
       "kpi_users": "Utilisateurs",
       "kpi_active": "Actifs",
-      "kpi_xp": "Tokens gagnés ({{period}}j)",
+      "kpi_xp": "XP gagnés ({{period}}j)",
       "kpi_streak": "Série moyenne",
       "levelDist": "Répartition par niveau CECRL",
       "levelDistDesc": "Distribution des apprenants",
@@ -810,9 +810,9 @@
       "topCourses": "Cours les plus complétés",
       "topCoursesDesc": "Top 8 par complétion 100%",
       "noCompletion": "Aucune complétion enregistrée",
-      "xpTrend": "Tendance Tokens",
-      "xpTrendDesc": "Tokens gagnés par semaine (derniers {{period}} jours)",
-      "noXpPeriod": "Aucun gain de tokens sur la période"
+      "xpTrend": "Tendance XP",
+      "xpTrendDesc": "XP gagnés par semaine (derniers {{period}} jours)",
+      "noXpPeriod": "Aucun gain de XP sur la période"
     },
     "subs": {
       "title": "Gestion des abonnements",
@@ -854,7 +854,7 @@
       "welcome": "Email de bienvenue",
       "welcomeDesc": "Envoyé à la création du compte",
       "digest": "Récapitulatif hebdomadaire",
-      "digestDesc": "Tokens gagnés, classement, série",
+      "digestDesc": "XP gagnés, classement, série",
       "inactivity": "Relance d'inactivité",
       "inactivityDesc": "Après 7 jours sans connexion",
       "savedOk": "Préférence enregistrée",
