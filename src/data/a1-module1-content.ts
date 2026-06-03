@@ -568,7 +568,7 @@ export const a1Module1Content: CourseContent[] = [
     steps: [
       {
         id: 'L10-1', type: 'lesson', title: '🎓 Examen Module A1.1 — Premiers pas en français',
-        content: `🏆 **Examen du Module A1.1**\n\nCet examen teste **toutes les compétences** apprises dans ce module :\n\n📋 **Contenu de l'examen :**\n- 15 questions variées\n- Salutations, présentation, sons, tu/vous\n- Chiffres, nationalités, jours/mois\n- Commander au café\n\n⏱️ **Barème :**\n- Chaque bonne réponse = 1 point\n- Score minimum pour valider : 10/15 (67%)\n- Score parfait = 50 tokens bonus !\n\n🏅 **Récompense :**\n- Badge « Bienvenue à Antibes » 🏖️\n- 50 tokens pour le module validé\n\nBonne chance ! 🍀`,
+        content: `🏆 **Examen du Module A1.1**\n\nCet examen teste **toutes les compétences** apprises dans ce module :\n\n📋 **Contenu de l'examen :**\n- 15 questions variées\n- Salutations, présentation, sons, tu/vous\n- Chiffres, nationalités, jours/mois\n- Commander au café\n\n⏱️ **Barème :**\n- Chaque bonne réponse = 1 point\n- Score minimum pour valider : 10/15 (67%)\n- Score parfait = 50 XP bonus !\n\n🏅 **Récompense :**\n- Badge « Bienvenue à Antibes » 🏖️\n- 50 XP pour le module validé\n\nBonne chance ! 🍀`,
         tip: '💡 Prenez votre temps et relisez bien chaque question avant de répondre.'
       },
       {

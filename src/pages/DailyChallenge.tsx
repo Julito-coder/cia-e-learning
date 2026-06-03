@@ -225,7 +225,7 @@ export default function DailyChallenge() {
             </motion.div>
           )}
           <p className="text-[11px] text-center text-muted-foreground mt-3">
-            +25 tokens bonus si tu termines aujourd'hui ⚡
+            +25 XP bonus si tu termines aujourd'hui ⚡
           </p>
         </Card>
         </motion.div>
