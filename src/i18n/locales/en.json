@@ -348,6 +348,13 @@
     }
   },
   "curriculum": {
+    "unit_label": "UNIT",
+    "unit_progress": "{{done}} / {{total}} modules",
+    "bubble_continue": "Keep going, you're almost there!",
+    "bubble_keep_going": "{{count}} module left to finish this unit.",
+    "bubble_keep_going_plural": "{{count}} modules left to finish this unit.",
+    "bubble_start_unit": "Ready? Let's start this unit!",
+    "unit_complete_toast": "🎉 Unit {{level}} completed!",
     "title": "Learning path",
     "subtitle": "Your journey from A1 to C2 — current level:",
     "your_level": "You are here",
@@ -368,6 +375,7 @@
       "continue_cta": "Continue",
       "completed_cta": "Replay module",
       "locked_cta": "Locked",
+      "simulate_complete": "Simulate completion (demo)",
       "close": "Close"
     }
   },

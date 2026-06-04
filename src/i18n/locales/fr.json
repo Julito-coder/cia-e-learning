@@ -381,6 +381,13 @@
     "module": "Module",
     "coming_soon": "Modules en préparation. Disponibles bientôt.",
     "you_are_here": "Tu es ici",
+    "unit_label": "UNITÉ",
+    "unit_progress": "{{done}} / {{total}} modules",
+    "bubble_continue": "Continue, tu y es presque !",
+    "bubble_keep_going": "Encore {{count}} module pour finir l'unité.",
+    "bubble_keep_going_plural": "Encore {{count}} modules pour finir l'unité.",
+    "bubble_start_unit": "Prêt(e) ? On commence cette unité !",
+    "unit_complete_toast": "🎉 Unité {{level}} complétée !",
     "state": {
       "locked": "verrouillé",
       "available": "disponible",
@@ -395,6 +402,7 @@
       "continue_cta": "Continuer",
       "completed_cta": "Refaire le module",
       "locked_cta": "Verrouillé",
+      "simulate_complete": "Simuler la complétion (démo)",
       "close": "Fermer"
     }
   },
