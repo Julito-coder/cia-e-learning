@@ -368,6 +368,7 @@
       "continue_cta": "Continue",
       "completed_cta": "Replay module",
       "locked_cta": "Locked",
+      "simulate_complete": "Simulate completion (demo)",
       "close": "Close"
     }
   },

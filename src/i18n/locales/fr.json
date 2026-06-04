@@ -395,6 +395,7 @@
       "continue_cta": "Continuer",
       "completed_cta": "Refaire le module",
       "locked_cta": "Verrouillé",
+      "simulate_complete": "Simuler la complétion (démo)",
       "close": "Fermer"
     }
   },
