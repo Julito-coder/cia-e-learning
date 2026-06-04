@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { ArrowRight, Play, RotateCcw, Sparkles } from 'lucide-react';
 import { Card } from '@/components/ui/card';
@@ -13,36 +13,43 @@ interface Props {
   lastLesson: LastLessonView | null;
 }
 
+const HOVER = { y: -4, scale: 1.005 };
+const TAP = { scale: 0.98 };
+
 export function ResumeCard({ lastLesson }: Props) {
   const { t } = useTranslation();
+  const reduced = useReducedMotion();
+  const hoverProps = reduced ? {} : { whileHover: HOVER, whileTap: TAP };
 
   if (!lastLesson) {
     // New learner empty state — CTA to placement test
     return (
-      <Card variant="elevated" tone="blue" className="p-7 md:p-8 h-full flex flex-col gap-4">
-        <p className="font-mono text-[11px] uppercase tracking-wider text-cia-blue-500">
-          {t('dashboard.resume.tag_start')}
-        </p>
-        <div className="flex-1">
-          <h2 className="font-display font-extrabold text-2xl md:text-3xl text-cia-blue-900 dark:text-foreground">
-            {t('dashboard.resume.empty_title')}
-          </h2>
-          <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-            {t('dashboard.resume.empty_desc')}
+      <motion.div {...hoverProps} transition={{ type: 'spring', stiffness: 300, damping: 24 }}>
+        <Card className="shadow-elev-lg p-7 md:p-8 h-full flex flex-col gap-4">
+          <p className="font-mono text-[11px] uppercase tracking-[.2em] text-cia-blue-500">
+            {t('dashboard.resume.tag_start')}
           </p>
-        </div>
-        <Button asChild variant="gradient" size="lg" className="self-start gap-2 group">
-          <Link to="/test-niveau">
-            <Sparkles className="h-4 w-4" />
-            {t('dashboard.resume.empty_cta')}
-            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-          </Link>
-        </Button>
-      </Card>
+          <div className="flex-1">
+            <h2 className="font-display font-extrabold text-2xl md:text-3xl text-cia-blue-900 dark:text-foreground tracking-[-0.01em]">
+              {t('dashboard.resume.empty_title')}
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
+              {t('dashboard.resume.empty_desc')}
+            </p>
+          </div>
+          <Button asChild size="cta" className="self-start gap-2 group">
+            <Link to="/test-niveau">
+              <Sparkles className="h-4 w-4" />
+              {t('dashboard.resume.empty_cta')}
+              <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-[3px]" />
+            </Link>
+          </Button>
+        </Card>
+      </motion.div>
     );
   }
 
-  // Compute lesson-internal progress (steps / totalQuestions)
+  // Compute lesson-internal progress
   const playerProgress = readCoursePlayerProgress(lastLesson.courseId);
   const totalQuestions = playerProgress?.totalQuestions ?? 0;
   const step = playerProgress?.step ?? 0;
@@ -61,14 +68,10 @@ export function ResumeCard({ lastLesson }: Props) {
   const Icon = lastLesson.completed ? RotateCcw : Play;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.35, delay: 0.08 }}
-    >
-      <Card variant="elevated" tone="blue" className="p-7 md:p-8 h-full flex flex-col gap-4">
+    <motion.div {...hoverProps} transition={{ type: 'spring', stiffness: 300, damping: 24 }}>
+      <Card className="shadow-elev-lg p-7 md:p-8 h-full flex flex-col gap-4">
         <div className="flex items-center justify-between gap-3">
-          <p className="font-mono text-[11px] uppercase tracking-wider text-cia-blue-500">
+          <p className="font-mono text-[11px] uppercase tracking-[.2em] text-cia-blue-500">
             {t('dashboard.resume.tag_resume')}
           </p>
           {lastLesson.level && (
@@ -106,11 +109,11 @@ export function ResumeCard({ lastLesson }: Props) {
           </div>
         )}
 
-        <Button asChild variant="gradient" size="lg" className="self-start gap-2 group">
+        <Button asChild size="cta" className="self-start gap-2 group">
           <Link to={`/cours/${lastLesson.courseId}`}>
             <Icon className="h-4 w-4" />
             {ctaLabel}
-            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+            <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-[3px]" />
           </Link>
         </Button>
       </Card>

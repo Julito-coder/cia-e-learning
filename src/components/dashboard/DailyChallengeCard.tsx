@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Flame, ArrowRight, Check } from 'lucide-react';
 import { Card } from '@/components/ui/card';
@@ -13,23 +13,23 @@ interface Props {
   loading?: boolean;
 }
 
+const HOVER = { y: -4, scale: 1.005 };
+const TAP = { scale: 0.98 };
+
 export function DailyChallengeCard({ streak, isDoneToday, loading }: Props) {
   const { t } = useTranslation();
+  const reduced = useReducedMotion();
+  const hoverProps = reduced ? {} : { whileHover: HOVER, whileTap: TAP };
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.35, delay: 0.12 }}
+      {...hoverProps}
+      transition={{ type: 'spring', stiffness: 300, damping: 24 }}
       className="h-full"
     >
-      <Card
-        variant={isDoneToday ? 'default' : 'gradient'}
-        tone="gold"
-        className="p-6 md:p-7 h-full flex flex-col gap-4"
-      >
+      <Card className="shadow-elev-lg p-6 md:p-7 h-full flex flex-col gap-4">
         <div className="flex items-center justify-between gap-2">
-          <Badge variant={isDoneToday ? 'success' : 'gold'} className="gap-1.5">
+          <Badge variant={isDoneToday ? 'success' : 'default'} className="gap-1.5">
             <Flame className="h-3 w-3" />
             {t('dashboard.daily.tag')}
           </Badge>
@@ -56,10 +56,18 @@ export function DailyChallengeCard({ streak, isDoneToday, loading }: Props) {
             {t('dashboard.daily.completed_label')}
           </div>
         ) : (
-          <Button asChild variant="gold" size="lg" className="self-start gap-2 group" disabled={loading}>
+          /* Ghost CTA — charte v2 §3 : secondaire pour ne pas concurrencer le
+             primaire bleu de ResumeCard. Bordure ink-200, hover spark-mid,
+             pas de 3D, pas de doré. */
+          <Button
+            asChild
+            variant="outline"
+            className="self-start gap-2 group h-12 border-ink-200 hover:border-cia-spark-mid hover:bg-cia-blue-50/40 text-cia-blue-700 dark:text-cia-blue-300"
+            disabled={loading}
+          >
             <Link to="/defi-du-jour">
               {t('dashboard.daily.cta')}
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-[3px]" />
             </Link>
           </Button>
         )}
