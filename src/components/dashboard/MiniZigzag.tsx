@@ -51,7 +51,9 @@ function pickWindow(level: CECRLevel): NodeData[] {
 
 const STATE_BG: Record<NodeState, string> = {
   completed: 'bg-gradient-to-br from-success-500 to-success-700 text-white',
-  current: 'bg-gradient-to-br from-cia-gold-300 to-cia-gold-500 text-cia-blue-900 ring-4 ring-cia-gold-400/40',
+  /* Charte v2 §8 — module current : « bleu, halo bleu + ring, pulse »
+     (l'aplat doré précédent contrevenait à la règle « or banni des aplats »). */
+  current: 'bg-cia-blue-500 text-white ring-4 ring-cia-spark-mid/40',
   available: 'bg-card text-cia-blue-700 ring-2 ring-cia-blue-200',
   locked: 'bg-muted text-muted-foreground/60',
 };
@@ -103,7 +105,7 @@ export function MiniZigzag({ currentLevel }: Props) {
                 )}
                 {node.state === 'current' && (
                   <motion.span
-                    className="absolute -inset-2 rounded-full bg-cia-gold-400/30 pointer-events-none"
+                    className="absolute -inset-2 rounded-full bg-cia-spark-mid/30 pointer-events-none"
                     animate={{ scale: [1, 1.15, 1], opacity: [0.6, 0.2, 0.6] }}
                     transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
                     aria-hidden="true"
