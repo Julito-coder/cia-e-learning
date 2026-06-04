@@ -1,27 +1,24 @@
-import { useState, useMemo } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useMemo, useCallback, useRef } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/ui/badge';
-import { slideUp } from '@/lib/animations';
+import { LevelBadge } from '@/components/courses/LevelBadge';
 import { curriculum } from '@/data/curriculum';
 import { useUserProgress } from '@/hooks/useUserProgress';
+import { useDailyChallenge } from '@/hooks/useDailyChallenge';
 import { ModuleNode, type ModuleNodeState } from '@/components/courses/ModuleNode';
 import { ZigzagPath } from '@/components/courses/ZigzagPath';
 import { ModuleDrawer } from '@/components/courses/ModuleDrawer';
-import { SparkPresence } from '@/components/spark';
+import { Spark } from '@/components/spark/Spark';
+import { StreakFlame } from '@/components/gamification/StreakFlame';
+import { XPBurst } from '@/components/gamification/XPBurst';
+import { levelUpSequence } from '@/lib/confetti';
+import { notify } from '@/lib/notify';
 import { getModuleIcon } from '@/lib/moduleIcon';
 import type { CECRLevel } from '@/data/demo-courses';
+import { Sparkles, Flame } from 'lucide-react';
 
 const LEVELS: CECRLevel[] = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
-
-const LEVEL_HEADER_GRADIENTS: Record<string, string> = {
-  A1: 'from-cia-blue-50 to-cia-blue-100',
-  A2: 'from-cia-blue-100 to-cia-gold-50',
-  B1: 'from-cia-gold-50 to-cia-gold-100',
-  B2: 'from-cia-gold-100 to-cia-blue-100',
-  C1: 'from-cia-blue-100 to-cia-blue-200',
-  C2: 'from-cia-blue-200 to-cia-red-100',
-};
 
 interface ModuleWithMeta {
   id: string;
@@ -42,36 +39,58 @@ interface SectionWithMeta {
   modules: ModuleWithMeta[];
 }
 
+interface RewardEvent {
+  /** Center coordinates (viewport) for the XPBurst origin. */
+  x: number;
+  y: number;
+  xp: number;
+  /** Identifier so React re-renders the burst on every event. */
+  key: number;
+}
+
 export default function Curriculum() {
   const { t } = useTranslation();
-  const { cecrLevel } = useUserProgress();
+  const { cecrLevel, totalXP } = useUserProgress();
+  const { streak } = useDailyChallenge();
+  const reduced = useReducedMotion();
 
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
+  /** Modules « complétés à la volée » dans cette session (démo,
+   *  ne touche pas la BDD — sprint 4). */
+  const [demoCompleted, setDemoCompleted] = useState<Set<string>>(() => new Set());
+  const [reward, setReward] = useState<RewardEvent | null>(null);
+  const [sparkMood, setSparkMood] = useState<'encouraging' | 'celebrating'>('encouraging');
+  /** Refs vers chaque bouton de nœud — sert à localiser le centre pour le XPBurst. */
+  const nodeRefs = useRef<Map<string, HTMLElement>>(new Map());
 
   const sections: SectionWithMeta[] = useMemo(() => {
     const userIdx = LEVELS.indexOf(cecrLevel as CECRLevel);
-
     return LEVELS.map((level) => {
       const data = curriculum.find((c) => c.level === level);
       const levelIdx = LEVELS.indexOf(level);
-
       const modulesRaw = data?.modules ?? [];
-      let currentMarked = false;
 
+      let currentMarked = false;
       const modules: ModuleWithMeta[] = modulesRaw.map((m, idx) => {
         const lessonsCount = m.lessons?.length ?? 0;
-        const progress: number = 0;
+        const isDemoCompleted = demoCompleted.has(m.id);
+        const progress: number = isDemoCompleted ? 100 : 0;
 
         let state: ModuleNodeState;
-        if (levelIdx > userIdx + 1) {
-          state = 'locked';
-        } else if (progress === 100) {
+        if (isDemoCompleted) {
           state = 'completed';
+        } else if (levelIdx > userIdx + 1) {
+          state = 'locked';
         } else if (level === cecrLevel && !currentMarked) {
           state = 'current';
           currentMarked = true;
-        } else {
+        } else if (levelIdx === userIdx + 1 && idx === 0 && !currentMarked) {
+          // Premier module du niveau suivant = available (incite à avancer)
           state = 'available';
+        } else if (levelIdx <= userIdx) {
+          state = 'available';
+        } else {
+          state = 'locked';
         }
 
         return {
@@ -94,7 +113,7 @@ export default function Curriculum() {
         modules,
       };
     });
-  }, [cecrLevel, t]);
+  }, [cecrLevel, t, demoCompleted]);
 
   const selectedModule = useMemo(() => {
     if (!selectedKey) return null;
@@ -105,94 +124,278 @@ export default function Curriculum() {
     return null;
   }, [selectedKey, sections]);
 
+  /** Total des modules complétés (tous niveaux) — pilote la fierté globale. */
+  const totalCompleted = useMemo(
+    () => sections.reduce((acc, s) => acc + s.modules.filter((m) => m.state === 'completed').length, 0),
+    [sections],
+  );
+  const totalModules = useMemo(
+    () => sections.reduce((acc, s) => acc + s.modules.length, 0),
+    [sections],
+  );
+
+  /** Séquence récompense — démo uniquement.
+   *  XPBurst au centre du nœud, mood Spark celebrating 1.5 s,
+   *  path fill via re-calcul des sections, et si l'unité est terminée :
+   *  confetti `levelUpSequence` (bleu + blanc) + toast. */
+  const handleSimulateComplete = useCallback(
+    (moduleId: string, xpReward: number) => {
+      const el = nodeRefs.current.get(moduleId);
+      let x = window.innerWidth / 2;
+      let y = window.innerHeight / 2;
+      if (el) {
+        const r = el.getBoundingClientRect();
+        x = r.left + r.width / 2;
+        y = r.top + r.height / 2;
+      }
+
+      setDemoCompleted((prev) => {
+        const next = new Set(prev);
+        next.add(moduleId);
+        return next;
+      });
+      setReward({ x, y, xp: xpReward, key: Date.now() });
+      setSparkMood('celebrating');
+
+      const sparkTimer = window.setTimeout(() => setSparkMood('encouraging'), 1800);
+
+      // Si toute l'unité est terminée → mini level-up (confetti + toast)
+      window.setTimeout(() => {
+        const section = sections.find((s) => s.modules.some((m) => m.id === moduleId));
+        if (!section) return;
+        const remaining = section.modules.filter(
+          (m) => m.id !== moduleId && m.state !== 'completed',
+        ).length;
+        if (remaining === 0) {
+          levelUpSequence();
+          notify.success(t('curriculum.unit_complete_toast', { level: section.level }));
+        }
+      }, 200);
+
+      return () => window.clearTimeout(sparkTimer);
+    },
+    [sections, t],
+  );
+
+  /* ===== Reveal premium : sub-header + sections en stagger ===== */
+  const sectionItem = reduced
+    ? { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { duration: 0.2 } } }
+    : {
+        hidden: { opacity: 0, y: 20 },
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: { type: 'spring' as const, stiffness: 220, damping: 24 },
+        },
+      };
+
   return (
-    <div className="container mx-auto px-4 py-10">
-      <motion.div initial="hidden" animate="visible" variants={slideUp}>
-        <h1 className="font-display font-bold text-3xl md:text-4xl mb-2 text-center">{t('curriculum.title')}</h1>
-        <p className="text-muted-foreground text-center mb-10">
-          {t('curriculum.subtitle')} <Badge variant="level" className="ml-2">{cecrLevel}</Badge>
-        </p>
-      </motion.div>
-
-      <div className="space-y-16 max-w-2xl mx-auto">
-        {sections.map((section, sIdx) => (
-          <motion.section
-            key={section.level}
-            id={`niveau-${section.level.toLowerCase()}`}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.5, delay: sIdx * 0.05 }}
-          >
-            <div className={`rounded-3xl bg-gradient-to-br ${LEVEL_HEADER_GRADIENTS[section.level]} px-6 py-5 mb-8 shadow-sm`}>
-              <div className="flex items-center gap-4">
-                <div className="h-14 w-14 rounded-2xl bg-white/80 backdrop-blur shadow-sm flex items-center justify-center font-display font-extrabold text-xl text-cia-blue-700">
-                  {section.level}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h2 className="font-display font-bold text-xl text-cia-blue-700 truncate">
-                    {section.title || t(`landing.cecr.${section.level.toLowerCase()}_label`)}
-                  </h2>
-                  <p className="text-xs text-cia-blue-700/70 line-clamp-2">
-                    {section.objective || t(`landing.cecr.${section.level.toLowerCase()}_desc`)}
-                  </p>
-                </div>
-              </div>
+    <div className="relative pb-20">
+      {/* Sub-header sticky — titre parcours + cluster stats compact.
+          Glass discret sous le header global de l'app. */}
+      <div className="sticky top-14 sm:top-16 z-30 backdrop-blur-md bg-background/80 border-b border-ink-100">
+        <div className="container max-w-3xl py-3 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3 min-w-0">
+            <LevelBadge level={cecrLevel} size={36} />
+            <div className="min-w-0">
+              <p className="font-mono text-[10px] uppercase tracking-[.2em] text-cia-blue-500">
+                {t('curriculum.title')}
+              </p>
+              <p className="font-display font-extrabold text-sm md:text-base text-foreground truncate tabular-nums">
+                {totalCompleted} / {totalModules}{' '}
+                <span className="text-muted-foreground font-normal">modules</span>
+              </p>
             </div>
+          </div>
 
-            {section.modules.length === 0 ? (
-              <div className="text-center py-8 text-sm text-muted-foreground italic">
-                {t('curriculum.coming_soon')}
+          {/* Cluster stats compact — pas tout UserIndicators pour rester sobre */}
+          <div className="flex items-center gap-2 shrink-0">
+            <Badge variant="streak" className="gap-1.5 px-2 py-1">
+              <StreakFlame streak={streak} />
+              <span className="tabular-nums text-xs">{streak}</span>
+            </Badge>
+            <Badge variant="xp" className="gap-1.5 px-2 py-1 hidden xs:inline-flex">
+              <Sparkles className="h-3 w-3" />
+              <span className="tabular-nums text-xs">{totalXP.toLocaleString('fr-FR')}</span>
+            </Badge>
+          </div>
+        </div>
+      </div>
+
+      <main className="container max-w-2xl py-6 sm:py-10 space-y-12">
+        {sections.map((section) => {
+          const sectionCompleted = section.modules.filter((m) => m.state === 'completed').length;
+          const sectionTotal = section.modules.length;
+          /** Position du nœud current dans cette section (pour la bulle Spark). */
+          const currentIdx = section.modules.findIndex((m) => m.state === 'current');
+          const remaining = sectionTotal - sectionCompleted;
+          const bubbleText = (() => {
+            if (sectionCompleted === 0) return t('curriculum.bubble_start_unit');
+            if (remaining === 1) return t('curriculum.bubble_continue');
+            return t(
+              remaining > 1 ? 'curriculum.bubble_keep_going_plural' : 'curriculum.bubble_keep_going',
+              { count: remaining },
+            );
+          })();
+
+          return (
+            <motion.section
+              key={section.level}
+              id={`niveau-${section.level.toLowerCase()}`}
+              variants={sectionItem}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-80px' }}
+            >
+              {/* Header d'unité — radius 24px, fond blanc, bordure ink-100 */}
+              <div className="rounded-3xl bg-card border border-ink-100 px-5 py-4 mb-6 shadow-sm flex items-center gap-4">
+                <LevelBadge level={section.level} size={48} />
+                <div className="flex-1 min-w-0">
+                  <p className="font-mono text-[10px] uppercase tracking-[.2em] text-cia-blue-500">
+                    {t('curriculum.unit_label')} · {section.level}
+                  </p>
+                  <h2 className="font-display font-extrabold text-lg md:text-xl text-foreground truncate tracking-[-0.01em]">
+                    {section.title || section.objective || section.level}
+                  </h2>
+                </div>
+                {sectionTotal > 0 && (
+                  <div className="text-right shrink-0">
+                    <p className="font-display font-extrabold tabular-nums text-cia-blue-700 dark:text-cia-blue-300">
+                      {sectionCompleted}
+                      <span className="text-muted-foreground font-normal">/{sectionTotal}</span>
+                    </p>
+                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                      {t('curriculum.module')}
+                    </p>
+                  </div>
+                )}
               </div>
-            ) : (
-              <div className="relative" style={{ minHeight: section.modules.length * 110 }}>
-                <ZigzagPath modulesCount={section.modules.length} level={section.level} />
 
-                <div className="relative flex flex-col gap-12 pt-4">
-                  {section.modules.map((mod, mIdx) => {
-                    const side = mIdx % 2 === 0 ? 'justify-start' : 'justify-end';
-                    const icon = getModuleIcon(mod.title, mod.theme);
-                    const isCurrent = mod.state === 'current';
+              {section.modules.length === 0 ? (
+                <div className="text-center py-8 text-sm text-muted-foreground italic">
+                  {t('curriculum.coming_soon')}
+                </div>
+              ) : (
+                <div
+                  className="relative"
+                  style={{ minHeight: section.modules.length * 110 + 40 }}
+                >
+                  <ZigzagPath
+                    modulesCount={section.modules.length}
+                    completedCount={sectionCompleted}
+                  />
 
-                    return (
-                      <div
-                        key={mod.id}
-                        className={`flex ${side}`}
-                        style={{
-                          paddingLeft:  mIdx % 2 === 0 ? '12%' : 0,
-                          paddingRight: mIdx % 2 === 1 ? '12%' : 0,
-                        }}
-                      >
-                        <div className="relative flex items-center gap-3">
-                          {isCurrent && (
+                  <motion.div
+                    className="relative flex flex-col gap-12 pt-4"
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: '-50px' }}
+                    variants={
+                      reduced
+                        ? { hidden: {}, visible: { transition: { duration: 0 } } }
+                        : { hidden: {}, visible: { transition: { staggerChildren: 0.08, delayChildren: 0.15 } } }
+                    }
+                  >
+                    {section.modules.map((mod, mIdx) => {
+                      const sideRight = mIdx % 2 === 1;
+                      const icon = getModuleIcon(mod.title, mod.theme);
+                      const isCurrent = mod.state === 'current';
+                      const showBubble = isCurrent && mIdx === currentIdx;
+
+                      return (
+                        <motion.div
+                          key={mod.id}
+                          variants={
+                            reduced
+                              ? { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { duration: 0.2 } } }
+                              : {
+                                  hidden: { opacity: 0, scale: 0.85 },
+                                  visible: {
+                                    opacity: 1,
+                                    scale: 1,
+                                    transition: { type: 'spring', damping: 12, stiffness: 220, mass: 0.8 },
+                                  },
+                                }
+                          }
+                          className={`flex ${sideRight ? 'justify-end' : 'justify-start'}`}
+                          style={{
+                            paddingLeft:  sideRight ? 0 : '12%',
+                            paddingRight: sideRight ? '12%' : 0,
+                          }}
+                        >
+                          <div className="relative flex items-center gap-3">
+                            {/* Spark compagnon + bulle contextuelle — collé au nœud current */}
+                            {showBubble && (
+                              <div
+                                className={`absolute top-1/2 -translate-y-1/2 hidden sm:flex items-center gap-2 ${
+                                  sideRight ? 'right-full mr-3 flex-row-reverse' : 'left-full ml-3'
+                                }`}
+                              >
+                                <Spark mood={sparkMood} size={56} halo />
+                                <motion.div
+                                  initial={{ opacity: 0, y: 6, scale: 0.95 }}
+                                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                                  transition={{
+                                    delay: 0.6,
+                                    type: 'spring',
+                                    stiffness: 300,
+                                    damping: 22,
+                                  }}
+                                  className="relative max-w-[200px] bg-card border border-cia-spark-mid/30 rounded-2xl px-3 py-2 shadow-elev-lg"
+                                >
+                                  <p className="text-xs font-semibold text-foreground leading-snug">
+                                    {bubbleText}
+                                  </p>
+                                  <span
+                                    aria-hidden="true"
+                                    className={`absolute top-1/2 -translate-y-1/2 h-3 w-3 rotate-45 bg-card border-cia-spark-mid/30 ${
+                                      sideRight
+                                        ? 'left-[-7px] border-l border-b'
+                                        : 'right-[-7px] border-r border-t'
+                                    }`}
+                                  />
+                                </motion.div>
+                              </div>
+                            )}
+
                             <div
-                              className={`absolute ${
-                                mIdx % 2 === 0 ? 'left-full ml-3' : 'right-full mr-3'
-                              } top-1/2 -translate-y-1/2 hidden sm:block`}
+                              ref={(el) => {
+                                if (el) nodeRefs.current.set(mod.id, el);
+                                else nodeRefs.current.delete(mod.id);
+                              }}
                             >
-                              <SparkPresence
-                                mood="encouraging"
-                                size={56}
+                              <ModuleNode
+                                index={mIdx}
+                                title={mod.title}
+                                icon={icon}
+                                state={mod.state}
+                                onClick={() => setSelectedKey(mod.id)}
                               />
                             </div>
-                          )}
-
-                          <ModuleNode
-                            index={mIdx}
-                            title={mod.title}
-                            icon={icon}
-                            state={mod.state}
-                            onClick={() => setSelectedKey(mod.id)}
-                          />
-                        </div>
-                      </div>
-                    );
-                  })}
+                          </div>
+                        </motion.div>
+                      );
+                    })}
+                  </motion.div>
                 </div>
-              </div>
-            )}
-          </motion.section>
-        ))}
+              )}
+            </motion.section>
+          );
+        })}
+      </main>
+
+      {/* Mobile : barre flottante avec Spark + bulle (toujours visible) */}
+      <div
+        className="fixed bottom-20 right-4 z-40 sm:hidden flex items-end gap-2 pointer-events-none"
+        aria-hidden="true"
+      >
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.4, type: 'spring', stiffness: 220, damping: 20 }}
+        >
+          <Spark mood={sparkMood} size={56} halo />
+        </motion.div>
       </div>
 
       {selectedModule && (
@@ -210,6 +413,20 @@ export default function Curriculum() {
           durationMinutes={selectedModule.module.durationMinutes}
           xpReward={selectedModule.module.xpReward}
           progress={selectedModule.module.progress}
+          onSimulateComplete={() =>
+            handleSimulateComplete(selectedModule.module.id, selectedModule.module.xpReward)
+          }
+        />
+      )}
+
+      {/* Séquence récompense : XPBurst au centre du nœud cliqué. */}
+      {reward && (
+        <XPBurst
+          key={reward.key}
+          x={reward.x}
+          y={reward.y}
+          amount={reward.xp}
+          onComplete={() => setReward(null)}
         />
       )}
     </div>
