@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useRef } from 'react';
+import { useState, useMemo, useCallback, useRef, useEffect } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/ui/badge';
@@ -15,10 +15,40 @@ import { XPBurst } from '@/components/gamification/XPBurst';
 import { levelUpSequence } from '@/lib/confetti';
 import { notify } from '@/lib/notify';
 import { getModuleIcon } from '@/lib/moduleIcon';
+import {
+  computeParcoursCoords,
+  computeParcoursTotalHeight,
+} from '@/lib/curriculumPath';
+import { UnitDecor } from '@/components/parcours/decor/UnitDecor';
+import { AmbientEmbers } from '@/components/parcours/AmbientEmbers';
+import { XPChestNode, type ChestState } from '@/components/parcours/XPChestNode';
+import { TrophyNode, type TrophyState } from '@/components/parcours/TrophyNode';
 import type { CECRLevel } from '@/data/demo-courses';
-import { Sparkles, Flame } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
+
+/**
+ * Item du parcours — un module, un coffre (palier bonus tous les 3 modules)
+ * ou un trophée (fin d'unité). Tous placés sur la même spline.
+ */
+type ParcoursItem =
+  | { kind: 'module';  module: { id: string; number: number; title: string; theme?: string; totalLessons: number; durationMinutes: number; xpReward: number; progress: number; state: ModuleNodeState } }
+  | { kind: 'chest';   chestId: string; state: ChestState; xpReward: number; afterModuleId: string }
+  | { kind: 'trophy';  trophyId: string; state: TrophyState };
 
 const LEVELS: CECRLevel[] = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+
+/**
+ * Teinte du tracé par section CECR — progression visible d'un coup d'œil
+ * (Batch A Bloc 2). Cohérent avec `LevelBadge` (charte v2 §8).
+ */
+const CECR_PATH_TINT: Partial<Record<CECRLevel, string>> = {
+  A1: 'hsl(var(--success-500))',
+  A2: 'hsl(var(--success-600))',
+  B1: 'hsl(var(--cia-blue-400))',
+  B2: 'hsl(var(--cia-blue-500))',
+  C1: 'hsl(var(--cia-blue-700))',
+  C2: 'hsl(var(--cia-red-500))',
+};
 
 interface ModuleWithMeta {
   id: string;
@@ -59,9 +89,45 @@ export default function Curriculum() {
    *  ne touche pas la BDD — sprint 4). */
   const [demoCompleted, setDemoCompleted] = useState<Set<string>>(() => new Set());
   const [reward, setReward] = useState<RewardEvent | null>(null);
-  const [sparkMood, setSparkMood] = useState<'encouraging' | 'celebrating'>('encouraging');
+  const [sparkMood, setSparkMood] = useState<'encouraging' | 'celebrating' | 'idle'>('encouraging');
+  /** Bloc 5 — oscillation idle : toggle court pour casser le statique
+   *  (6-10s random, désactivé sous reduced-motion). */
+  const [sparkOscillate, setSparkOscillate] = useState(false);
   /** Refs vers chaque bouton de nœud — sert à localiser le centre pour le XPBurst. */
   const nodeRefs = useRef<Map<string, HTMLElement>>(new Map());
+
+  /* Bloc 5 — idle ambient : toutes les 6-10s, Spark cligne / oscille brièvement
+     (uniquement si pas en mode celebrating). Gated reduced-motion. */
+  useEffect(() => {
+    if (reduced) return;
+    if (sparkMood === 'celebrating') return;
+    const schedule = () => {
+      const delay = 6000 + Math.random() * 4000;
+      return window.setTimeout(() => {
+        // Tirage : 60 % oscillation, 30 % mood swap 800 ms, 10 % rien
+        const r = Math.random();
+        if (r < 0.6) {
+          setSparkOscillate(true);
+          window.setTimeout(() => setSparkOscillate(false), 600);
+        } else if (r < 0.9) {
+          setSparkMood((m) => (m === 'encouraging' ? 'idle' : 'encouraging'));
+          window.setTimeout(
+            () => setSparkMood((m) => (m === 'celebrating' ? m : 'encouraging')),
+            900,
+          );
+        }
+      }, delay);
+    };
+    const id = schedule();
+    const interval = window.setInterval(() => {
+      window.clearTimeout(id);
+      schedule();
+    }, 9000);
+    return () => {
+      window.clearTimeout(id);
+      window.clearInterval(interval);
+    };
+  }, [reduced, sparkMood]);
 
   const sections: SectionWithMeta[] = useMemo(() => {
     const userIdx = LEVELS.indexOf(cecrLevel as CECRLevel);
@@ -227,7 +293,6 @@ export default function Curriculum() {
           const sectionCompleted = section.modules.filter((m) => m.state === 'completed').length;
           const sectionTotal = section.modules.length;
           /** Position du nœud current dans cette section (pour la bulle Spark). */
-          const currentIdx = section.modules.findIndex((m) => m.state === 'current');
           const remaining = sectionTotal - sectionCompleted;
           const bubbleText = (() => {
             if (sectionCompleted === 0) return t('curriculum.bubble_start_unit');
@@ -275,18 +340,142 @@ export default function Curriculum() {
                 <div className="text-center py-8 text-sm text-muted-foreground italic">
                   {t('curriculum.coming_soon')}
                 </div>
-              ) : (
+              ) : (() => {
+                /* Bloc 4 — items enrichis : module → chest (tous les 3) → trophy fin. */
+                const items: ParcoursItem[] = [];
+                section.modules.forEach((m, i) => {
+                  items.push({ kind: 'module', module: m });
+                  // Insérer un coffre après chaque 3e module (sauf le dernier)
+                  if ((i + 1) % 3 === 0 && i < section.modules.length - 1) {
+                    items.push({
+                      kind: 'chest',
+                      chestId: `${section.level}-chest-${i}`,
+                      state: m.state === 'completed' ? 'openable' : 'locked',
+                      xpReward: 150,
+                      afterModuleId: m.id,
+                    });
+                  }
+                });
+                // Trophée fin d'unité
+                const allCompleted = section.modules.every((m) => m.state === 'completed');
+                items.push({
+                  kind: 'trophy',
+                  trophyId: `${section.level}-trophy`,
+                  state: allCompleted ? 'unlocked' : 'locked',
+                });
+
+                /* Bloc 1 — spline continue + positionnement absolu sur les items. */
+                const coords = computeParcoursCoords(
+                  items.map((it) => ({ kind: it.kind })),
+                );
+                const sectionHeight = computeParcoursTotalHeight(items.length);
+                const fillRatio =
+                  items.length > 1
+                    ? sectionCompleted / Math.max(1, items.length - 1)
+                    : sectionCompleted;
+                const tint = CECR_PATH_TINT[section.level];
+                /** Index dans items du module current — pour bulle Spark + braises. */
+                const currentItemIdx = items.findIndex(
+                  (it) => it.kind === 'module' && it.module.state === 'current',
+                );
+                const currentCoord = currentItemIdx >= 0 ? coords[currentItemIdx] : null;
+
+                return (
                 <div
                   className="relative"
-                  style={{ minHeight: section.modules.length * 110 + 40 }}
+                  style={{ height: sectionHeight }}
                 >
+                  {/* Bloc 3a — Décor latéral Côte d'Azur (z-0, derrière) */}
+                  <UnitDecor level={section.level} height={sectionHeight} />
+
                   <ZigzagPath
-                    modulesCount={section.modules.length}
-                    completedCount={sectionCompleted}
+                    coords={coords}
+                    stroke={tint}
+                    fillRatio={fillRatio}
                   />
 
+                  {/* Bloc 3c — Braises ambiance autour du nœud current */}
+                  {currentCoord && (
+                    <div
+                      className="absolute"
+                      style={{
+                        left: `calc(${currentCoord.x}% - 45px)`,
+                        top: currentCoord.y - 220,
+                        zIndex: 1,
+                      }}
+                    >
+                      <AmbientEmbers count={4} height={220} />
+                    </div>
+                  )}
+
+                  {/* Bloc 5 — Spark vivant : un seul rendu par section, position
+                      animée le long de la spline (spring 180/22) quand le current
+                      change. Idle ambient via `sparkOscillate` toutes les 6-10s. */}
+                  {currentCoord && (
+                    <motion.div
+                      className="absolute z-20 pointer-events-none hidden sm:block"
+                      initial={false}
+                      animate={
+                        reduced
+                          ? { left: `${currentCoord.x}%`, top: currentCoord.y }
+                          : {
+                              left: `${currentCoord.x}%`,
+                              top: currentCoord.y,
+                            }
+                      }
+                      transition={
+                        reduced
+                          ? { duration: 0 }
+                          : { type: 'spring', stiffness: 180, damping: 22 }
+                      }
+                      style={{ willChange: 'transform' }}
+                    >
+                      <div
+                        className="absolute top-1/2 -translate-y-1/2 flex items-center gap-2"
+                        style={{
+                          [currentCoord.side === 'left' ? 'left' : 'right']: '3.5rem',
+                          flexDirection: currentCoord.side === 'right' ? 'row-reverse' : 'row',
+                        }}
+                      >
+                        <motion.div
+                          animate={
+                            reduced
+                              ? { scale: 1 }
+                              : { scale: sparkOscillate ? [1, 1.08, 0.98, 1] : 1 }
+                          }
+                          transition={{ duration: 0.6, ease: 'easeInOut' }}
+                        >
+                          <Spark mood={sparkMood} size={56} halo />
+                        </motion.div>
+                        <motion.div
+                          initial={{ opacity: 0, y: 6, scale: 0.95 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          transition={{
+                            delay: 0.6,
+                            type: 'spring',
+                            stiffness: 300,
+                            damping: 22,
+                          }}
+                          className="relative max-w-[200px] bg-card border border-cia-spark-mid/30 rounded-2xl px-3 py-2 shadow-elev-lg"
+                        >
+                          <p className="text-xs font-semibold text-foreground leading-snug">
+                            {bubbleText}
+                          </p>
+                          <span
+                            aria-hidden="true"
+                            className={`absolute top-1/2 -translate-y-1/2 h-3 w-3 rotate-45 bg-card border-cia-spark-mid/30 ${
+                              currentCoord.side === 'right'
+                                ? 'left-[-7px] border-l border-b'
+                                : 'right-[-7px] border-r border-t'
+                            }`}
+                          />
+                        </motion.div>
+                      </div>
+                    </motion.div>
+                  )}
+
                   <motion.div
-                    className="relative flex flex-col gap-12 pt-4"
+                    className="relative w-full h-full"
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, margin: '-50px' }}
@@ -296,89 +485,77 @@ export default function Curriculum() {
                         : { hidden: {}, visible: { transition: { staggerChildren: 0.08, delayChildren: 0.15 } } }
                     }
                   >
-                    {section.modules.map((mod, mIdx) => {
-                      const sideRight = mIdx % 2 === 1;
-                      const icon = getModuleIcon(mod.title, mod.theme);
-                      const isCurrent = mod.state === 'current';
-                      const showBubble = isCurrent && mIdx === currentIdx;
-
+                    {items.map((item, itemIdx) => {
+                      const coord = coords[itemIdx];
+                      const itemKey =
+                        item.kind === 'module' ? item.module.id :
+                        item.kind === 'chest'  ? item.chestId    :
+                                                 item.trophyId;
+                      const itemVariants = reduced
+                        ? { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { duration: 0.2 } } }
+                        : {
+                            hidden: { opacity: 0, scale: 0.85 },
+                            visible: {
+                              opacity: 1,
+                              scale: 1,
+                              transition: { type: 'spring' as const, damping: 12, stiffness: 220, mass: 0.8 },
+                            },
+                          };
                       return (
                         <motion.div
-                          key={mod.id}
-                          variants={
-                            reduced
-                              ? { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { duration: 0.2 } } }
-                              : {
-                                  hidden: { opacity: 0, scale: 0.85 },
-                                  visible: {
-                                    opacity: 1,
-                                    scale: 1,
-                                    transition: { type: 'spring', damping: 12, stiffness: 220, mass: 0.8 },
-                                  },
-                                }
-                          }
-                          className={`flex ${sideRight ? 'justify-end' : 'justify-start'}`}
+                          key={itemKey}
+                          variants={itemVariants}
+                          className="absolute"
                           style={{
-                            paddingLeft:  sideRight ? 0 : '12%',
-                            paddingRight: sideRight ? '12%' : 0,
+                            left: `${coord.x}%`,
+                            top: coord.y,
+                            transform: 'translate(-50%, -50%)',
                           }}
                         >
                           <div className="relative flex items-center gap-3">
-                            {/* Spark compagnon + bulle contextuelle — collé au nœud current */}
-                            {showBubble && (
+                            {item.kind === 'module' && (
                               <div
-                                className={`absolute top-1/2 -translate-y-1/2 hidden sm:flex items-center gap-2 ${
-                                  sideRight ? 'right-full mr-3 flex-row-reverse' : 'left-full ml-3'
-                                }`}
+                                ref={(el) => {
+                                  if (el) nodeRefs.current.set(item.module.id, el);
+                                  else nodeRefs.current.delete(item.module.id);
+                                }}
                               >
-                                <Spark mood={sparkMood} size={56} halo />
-                                <motion.div
-                                  initial={{ opacity: 0, y: 6, scale: 0.95 }}
-                                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                                  transition={{
-                                    delay: 0.6,
-                                    type: 'spring',
-                                    stiffness: 300,
-                                    damping: 22,
-                                  }}
-                                  className="relative max-w-[200px] bg-card border border-cia-spark-mid/30 rounded-2xl px-3 py-2 shadow-elev-lg"
-                                >
-                                  <p className="text-xs font-semibold text-foreground leading-snug">
-                                    {bubbleText}
-                                  </p>
-                                  <span
-                                    aria-hidden="true"
-                                    className={`absolute top-1/2 -translate-y-1/2 h-3 w-3 rotate-45 bg-card border-cia-spark-mid/30 ${
-                                      sideRight
-                                        ? 'left-[-7px] border-l border-b'
-                                        : 'right-[-7px] border-r border-t'
-                                    }`}
-                                  />
-                                </motion.div>
+                                <ModuleNode
+                                  index={item.module.number - 1}
+                                  title={item.module.title}
+                                  icon={getModuleIcon(item.module.title, item.module.theme)}
+                                  state={item.module.state}
+                                  onClick={() => setSelectedKey(item.module.id)}
+                                />
                               </div>
                             )}
 
-                            <div
-                              ref={(el) => {
-                                if (el) nodeRefs.current.set(mod.id, el);
-                                else nodeRefs.current.delete(mod.id);
-                              }}
-                            >
-                              <ModuleNode
-                                index={mIdx}
-                                title={mod.title}
-                                icon={icon}
-                                state={mod.state}
-                                onClick={() => setSelectedKey(mod.id)}
+                            {item.kind === 'chest' && (
+                              <XPChestNode
+                                state={item.state}
+                                xpReward={item.xpReward}
+                                onClick={() => {
+                                  // Démo : ouverture immédiate sans animation
+                                  // d'ouverture (= Batch B). On déclenche juste
+                                  // un XPBurst pour le feedback.
+                                  if (item.state === 'openable') {
+                                    handleSimulateComplete(item.afterModuleId, item.xpReward);
+                                  }
+                                }}
                               />
-                            </div>
+                            )}
+
+                            {item.kind === 'trophy' && (
+                              <TrophyNode state={item.state} level={section.level} />
+                            )}
                           </div>
                         </motion.div>
                       );
                     })}
                   </motion.div>
                 </div>
-              )}
+                );
+              })()}
             </motion.section>
           );
         })}
