@@ -1,54 +1,39 @@
 import { motion, useReducedMotion } from 'framer-motion';
+import {
+  buildParcoursSplinePath,
+  computeParcoursTotalHeight,
+  type ParcoursNodeCoord,
+} from '@/lib/curriculumPath';
 
 interface ZigzagPathProps {
-  modulesCount: number;
-  /** Number of completed modules — drives the solid fill ratio
-   *  on top of the dashed track. Default 0. */
-  completedCount?: number;
-}
-
-const X_LEFT  = 22;
-const X_RIGHT = 78;
-const Y_STEP  = 100;
-const Y_START = 50;
-
-function generateZigzagPath(modulesCount: number): string {
-  if (modulesCount < 2) return '';
-
-  const positions = Array.from({ length: modulesCount }, (_, i) => ({
-    x: i % 2 === 0 ? X_LEFT : X_RIGHT,
-    y: Y_START + i * Y_STEP,
-  }));
-
-  let path = `M ${positions[0].x} ${positions[0].y}`;
-  for (let i = 1; i < positions.length; i++) {
-    const prev = positions[i - 1];
-    const curr = positions[i];
-    const cp1x = prev.x;
-    const cp1y = prev.y + Y_STEP * 0.5;
-    const cp2x = curr.x;
-    const cp2y = curr.y - Y_STEP * 0.5;
-    path += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${curr.x} ${curr.y}`;
-  }
-  return path;
+  /** Nœuds positionnés sur la spline (Parcours partage la même source). */
+  coords: ParcoursNodeCoord[];
+  /** Couleur HSL CSS (ex. `hsl(var(--cia-blue-500))`) pour le tracé. */
+  stroke?: string;
+  /** Ratio 0–1 indiquant la portion déjà parcourue (modules complétés). */
+  fillRatio?: number;
 }
 
 /**
- * Charte v2 §8 / §13.2 — chemin pointillé du curriculum.
- * Stroke `cia-blue-500` à 35 % d'opacité, `stroke-dasharray: 2 12`,
- * `linecap: round`. Se dessine au scroll (whileInView) sur 2.4 s ease-out-expo.
+ * Chemin du Parcours — **spline continue lisse** (Batch A).
  *
- * Un second tracé en **plein** se superpose pour matérialiser les segments
- * déjà parcourus (modules completed), avec `pathLength = completedCount /
- * (modulesCount - 1)` animé via spring quand le compteur change.
+ * Volontairement différent de la charte v2 §8 (`stroke-dasharray: 2 12`) :
+ * Batch A repasse le tracé en **plein élégant**, plus lisible et plus
+ * « vraie route » que le pointillé qui devenait du bruit visuel à grande
+ * échelle. Le « segment parcouru » est rendu par un second path superposé
+ * avec `pathLength` animé.
+ *
+ * Coordonnées partagées avec `Curriculum.tsx` via `lib/curriculumPath.ts` :
+ * les nœuds DOM tombent exactement sur les extrema du tracé.
  */
-export function ZigzagPath({ modulesCount, completedCount = 0 }: ZigzagPathProps) {
+export function ZigzagPath({ coords, stroke, fillRatio = 0 }: ZigzagPathProps) {
   const reduced = useReducedMotion();
-  if (modulesCount < 2) return null;
+  if (coords.length < 2) return null;
 
-  const pathD = generateZigzagPath(modulesCount);
-  const viewBoxHeight = Y_START * 2 + (modulesCount - 1) * Y_STEP;
-  const fillRatio = Math.min(1, Math.max(0, completedCount / (modulesCount - 1)));
+  const pathD = buildParcoursSplinePath(coords);
+  const viewBoxHeight = computeParcoursTotalHeight(coords.length);
+  const clampedFill = Math.min(1, Math.max(0, fillRatio));
+  const strokeColor = stroke ?? 'hsl(var(--cia-blue-500))';
 
   return (
     <svg
@@ -57,13 +42,13 @@ export function ZigzagPath({ modulesCount, completedCount = 0 }: ZigzagPathProps
       preserveAspectRatio="none"
       aria-hidden="true"
     >
-      {/* Tracé pointillé global (charte v2 §8 « stroke-dasharray: 2 12 ») */}
+      {/* Tracé de fond — couleur de la section, opacité douce, plein lisse */}
       <motion.path
         d={pathD}
-        stroke="hsl(var(--cia-blue-500))"
-        strokeWidth="2"
+        stroke={strokeColor}
+        strokeWidth="3"
         strokeLinecap="round"
-        strokeDasharray="2 12"
+        strokeLinejoin="round"
         fill="none"
         opacity="0.35"
         initial={reduced ? { pathLength: 1 } : { pathLength: 0 }}
@@ -71,20 +56,21 @@ export function ZigzagPath({ modulesCount, completedCount = 0 }: ZigzagPathProps
         viewport={{ once: true, margin: '-80px' }}
         transition={{ duration: 2.4, ease: [0.16, 1, 0.3, 1] }}
       />
-      {/* Tracé plein qui remplit la portion déjà parcourue */}
+      {/* Tracé « parcouru » — opaque, plus épais, animé sur progression */}
       <motion.path
         d={pathD}
-        stroke="hsl(var(--cia-blue-500))"
-        strokeWidth="3"
+        stroke={strokeColor}
+        strokeWidth="4"
         strokeLinecap="round"
+        strokeLinejoin="round"
         fill="none"
-        opacity="0.85"
+        opacity="0.95"
         initial={{ pathLength: 0 }}
-        animate={{ pathLength: fillRatio }}
+        animate={{ pathLength: clampedFill }}
         transition={
           reduced
             ? { duration: 0 }
-            : { type: 'spring', stiffness: 90, damping: 20, delay: 0.2 }
+            : { type: 'spring', stiffness: 90, damping: 22, delay: 0.2 }
         }
       />
     </svg>

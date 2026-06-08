@@ -15,10 +15,29 @@ import { XPBurst } from '@/components/gamification/XPBurst';
 import { levelUpSequence } from '@/lib/confetti';
 import { notify } from '@/lib/notify';
 import { getModuleIcon } from '@/lib/moduleIcon';
+import {
+  computeParcoursCoords,
+  computeParcoursTotalHeight,
+  PARCOURS_LAYOUT,
+  type ParcoursNodeCoord,
+} from '@/lib/curriculumPath';
 import type { CECRLevel } from '@/data/demo-courses';
-import { Sparkles, Flame } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 
 const LEVELS: CECRLevel[] = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+
+/**
+ * Teinte du tracé par section CECR — progression visible d'un coup d'œil
+ * (Batch A Bloc 2). Cohérent avec `LevelBadge` (charte v2 §8).
+ */
+const CECR_PATH_TINT: Partial<Record<CECRLevel, string>> = {
+  A1: 'hsl(var(--success-500))',
+  A2: 'hsl(var(--success-600))',
+  B1: 'hsl(var(--cia-blue-400))',
+  B2: 'hsl(var(--cia-blue-500))',
+  C1: 'hsl(var(--cia-blue-700))',
+  C2: 'hsl(var(--cia-red-500))',
+};
 
 interface ModuleWithMeta {
   id: string;
@@ -275,18 +294,32 @@ export default function Curriculum() {
                 <div className="text-center py-8 text-sm text-muted-foreground italic">
                   {t('curriculum.coming_soon')}
                 </div>
-              ) : (
+              ) : (() => {
+                /* Bloc 1 — spline continue + positionnement absolu.
+                   Source unique (`curriculumPath.ts`) pour les coords du
+                   path SVG ET du DOM des nœuds → connecteurs cohérents. */
+                const coords = computeParcoursCoords(
+                  section.modules.map(() => ({ kind: 'module' as const })),
+                );
+                const sectionHeight = computeParcoursTotalHeight(section.modules.length);
+                const fillRatio =
+                  section.modules.length > 1
+                    ? sectionCompleted / (section.modules.length - 1)
+                    : sectionCompleted;
+                const tint = CECR_PATH_TINT[section.level];
+                return (
                 <div
                   className="relative"
-                  style={{ minHeight: section.modules.length * 110 + 40 }}
+                  style={{ height: sectionHeight }}
                 >
                   <ZigzagPath
-                    modulesCount={section.modules.length}
-                    completedCount={sectionCompleted}
+                    coords={coords}
+                    stroke={tint}
+                    fillRatio={fillRatio}
                   />
 
                   <motion.div
-                    className="relative flex flex-col gap-12 pt-4"
+                    className="relative w-full h-full"
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, margin: '-50px' }}
@@ -297,7 +330,8 @@ export default function Curriculum() {
                     }
                   >
                     {section.modules.map((mod, mIdx) => {
-                      const sideRight = mIdx % 2 === 1;
+                      const coord = coords[mIdx];
+                      const sideRight = coord.side === 'right';
                       const icon = getModuleIcon(mod.title, mod.theme);
                       const isCurrent = mod.state === 'current';
                       const showBubble = isCurrent && mIdx === currentIdx;
@@ -317,14 +351,16 @@ export default function Curriculum() {
                                   },
                                 }
                           }
-                          className={`flex ${sideRight ? 'justify-end' : 'justify-start'}`}
+                          className="absolute"
                           style={{
-                            paddingLeft:  sideRight ? 0 : '12%',
-                            paddingRight: sideRight ? '12%' : 0,
+                            left: `${coord.x}%`,
+                            top: coord.y,
+                            transform: 'translate(-50%, -50%)',
                           }}
                         >
                           <div className="relative flex items-center gap-3">
-                            {/* Spark compagnon + bulle contextuelle — collé au nœud current */}
+                            {/* Spark compagnon + bulle contextuelle — placé du
+                                bon côté selon le `side` du nœud (Bloc 5). */}
                             {showBubble && (
                               <div
                                 className={`absolute top-1/2 -translate-y-1/2 hidden sm:flex items-center gap-2 ${
@@ -378,7 +414,8 @@ export default function Curriculum() {
                     })}
                   </motion.div>
                 </div>
-              )}
+                );
+              })()}
             </motion.section>
           );
         })}
