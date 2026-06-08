@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useRef } from 'react';
+import { useState, useMemo, useCallback, useRef, useEffect } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/ui/badge';
@@ -89,9 +89,45 @@ export default function Curriculum() {
    *  ne touche pas la BDD — sprint 4). */
   const [demoCompleted, setDemoCompleted] = useState<Set<string>>(() => new Set());
   const [reward, setReward] = useState<RewardEvent | null>(null);
-  const [sparkMood, setSparkMood] = useState<'encouraging' | 'celebrating'>('encouraging');
+  const [sparkMood, setSparkMood] = useState<'encouraging' | 'celebrating' | 'idle'>('encouraging');
+  /** Bloc 5 — oscillation idle : toggle court pour casser le statique
+   *  (6-10s random, désactivé sous reduced-motion). */
+  const [sparkOscillate, setSparkOscillate] = useState(false);
   /** Refs vers chaque bouton de nœud — sert à localiser le centre pour le XPBurst. */
   const nodeRefs = useRef<Map<string, HTMLElement>>(new Map());
+
+  /* Bloc 5 — idle ambient : toutes les 6-10s, Spark cligne / oscille brièvement
+     (uniquement si pas en mode celebrating). Gated reduced-motion. */
+  useEffect(() => {
+    if (reduced) return;
+    if (sparkMood === 'celebrating') return;
+    const schedule = () => {
+      const delay = 6000 + Math.random() * 4000;
+      return window.setTimeout(() => {
+        // Tirage : 60 % oscillation, 30 % mood swap 800 ms, 10 % rien
+        const r = Math.random();
+        if (r < 0.6) {
+          setSparkOscillate(true);
+          window.setTimeout(() => setSparkOscillate(false), 600);
+        } else if (r < 0.9) {
+          setSparkMood((m) => (m === 'encouraging' ? 'idle' : 'encouraging'));
+          window.setTimeout(
+            () => setSparkMood((m) => (m === 'celebrating' ? m : 'encouraging')),
+            900,
+          );
+        }
+      }, delay);
+    };
+    const id = schedule();
+    const interval = window.setInterval(() => {
+      window.clearTimeout(id);
+      schedule();
+    }, 9000);
+    return () => {
+      window.clearTimeout(id);
+      window.clearInterval(interval);
+    };
+  }, [reduced, sparkMood]);
 
   const sections: SectionWithMeta[] = useMemo(() => {
     const userIdx = LEVELS.indexOf(cecrLevel as CECRLevel);
@@ -257,7 +293,6 @@ export default function Curriculum() {
           const sectionCompleted = section.modules.filter((m) => m.state === 'completed').length;
           const sectionTotal = section.modules.length;
           /** Position du nœud current dans cette section (pour la bulle Spark). */
-          const currentIdx = section.modules.findIndex((m) => m.state === 'current');
           const remaining = sectionTotal - sectionCompleted;
           const bubbleText = (() => {
             if (sectionCompleted === 0) return t('curriculum.bubble_start_unit');
@@ -373,6 +408,72 @@ export default function Curriculum() {
                     </div>
                   )}
 
+                  {/* Bloc 5 — Spark vivant : un seul rendu par section, position
+                      animée le long de la spline (spring 180/22) quand le current
+                      change. Idle ambient via `sparkOscillate` toutes les 6-10s. */}
+                  {currentCoord && (
+                    <motion.div
+                      className="absolute z-20 pointer-events-none hidden sm:block"
+                      initial={false}
+                      animate={
+                        reduced
+                          ? { left: `${currentCoord.x}%`, top: currentCoord.y }
+                          : {
+                              left: `${currentCoord.x}%`,
+                              top: currentCoord.y,
+                            }
+                      }
+                      transition={
+                        reduced
+                          ? { duration: 0 }
+                          : { type: 'spring', stiffness: 180, damping: 22 }
+                      }
+                      style={{ willChange: 'transform' }}
+                    >
+                      <div
+                        className="absolute top-1/2 -translate-y-1/2 flex items-center gap-2"
+                        style={{
+                          [currentCoord.side === 'left' ? 'left' : 'right']: '3.5rem',
+                          flexDirection: currentCoord.side === 'right' ? 'row-reverse' : 'row',
+                        }}
+                      >
+                        <motion.div
+                          animate={
+                            reduced
+                              ? { scale: 1 }
+                              : { scale: sparkOscillate ? [1, 1.08, 0.98, 1] : 1 }
+                          }
+                          transition={{ duration: 0.6, ease: 'easeInOut' }}
+                        >
+                          <Spark mood={sparkMood} size={56} halo />
+                        </motion.div>
+                        <motion.div
+                          initial={{ opacity: 0, y: 6, scale: 0.95 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          transition={{
+                            delay: 0.6,
+                            type: 'spring',
+                            stiffness: 300,
+                            damping: 22,
+                          }}
+                          className="relative max-w-[200px] bg-card border border-cia-spark-mid/30 rounded-2xl px-3 py-2 shadow-elev-lg"
+                        >
+                          <p className="text-xs font-semibold text-foreground leading-snug">
+                            {bubbleText}
+                          </p>
+                          <span
+                            aria-hidden="true"
+                            className={`absolute top-1/2 -translate-y-1/2 h-3 w-3 rotate-45 bg-card border-cia-spark-mid/30 ${
+                              currentCoord.side === 'right'
+                                ? 'left-[-7px] border-l border-b'
+                                : 'right-[-7px] border-r border-t'
+                            }`}
+                          />
+                        </motion.div>
+                      </div>
+                    </motion.div>
+                  )}
+
                   <motion.div
                     className="relative w-full h-full"
                     initial="hidden"
@@ -386,7 +487,6 @@ export default function Curriculum() {
                   >
                     {items.map((item, itemIdx) => {
                       const coord = coords[itemIdx];
-                      const sideRight = coord.side === 'right';
                       const itemKey =
                         item.kind === 'module' ? item.module.id :
                         item.kind === 'chest'  ? item.chestId    :
@@ -413,41 +513,6 @@ export default function Curriculum() {
                           }}
                         >
                           <div className="relative flex items-center gap-3">
-                            {/* Spark compagnon + bulle contextuelle — placé du
-                                bon côté selon le `side` du nœud (Bloc 5). */}
-                            {item.kind === 'module' && itemIdx === currentItemIdx && (
-                              <div
-                                className={`absolute top-1/2 -translate-y-1/2 hidden sm:flex items-center gap-2 ${
-                                  sideRight ? 'right-full mr-3 flex-row-reverse' : 'left-full ml-3'
-                                }`}
-                              >
-                                <Spark mood={sparkMood} size={56} halo />
-                                <motion.div
-                                  initial={{ opacity: 0, y: 6, scale: 0.95 }}
-                                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                                  transition={{
-                                    delay: 0.6,
-                                    type: 'spring',
-                                    stiffness: 300,
-                                    damping: 22,
-                                  }}
-                                  className="relative max-w-[200px] bg-card border border-cia-spark-mid/30 rounded-2xl px-3 py-2 shadow-elev-lg"
-                                >
-                                  <p className="text-xs font-semibold text-foreground leading-snug">
-                                    {bubbleText}
-                                  </p>
-                                  <span
-                                    aria-hidden="true"
-                                    className={`absolute top-1/2 -translate-y-1/2 h-3 w-3 rotate-45 bg-card border-cia-spark-mid/30 ${
-                                      sideRight
-                                        ? 'left-[-7px] border-l border-b'
-                                        : 'right-[-7px] border-r border-t'
-                                    }`}
-                                  />
-                                </motion.div>
-                              </div>
-                            )}
-
                             {item.kind === 'module' && (
                               <div
                                 ref={(el) => {
