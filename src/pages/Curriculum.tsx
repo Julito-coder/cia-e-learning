@@ -209,6 +209,19 @@ export default function Curriculum() {
   /** Lookup pré-calculé : moduleId → nextModuleId (déterminé avant commit). */
   const pendingNextRef = useRef<string | null>(null);
 
+  /** Bloc 3 — détection scroll manuel. L'auto-scroll de fin de séquence
+   *  ne force pas si l'utilisateur scrolle depuis < 1.5 s. */
+  const lastUserScrollRef = useRef(0);
+  useEffect(() => {
+    const onScroll = () => { lastUserScrollRef.current = Date.now(); };
+    window.addEventListener('wheel', onScroll, { passive: true });
+    window.addEventListener('touchmove', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('wheel', onScroll);
+      window.removeEventListener('touchmove', onScroll);
+    };
+  }, []);
+
   /** Séquence récompense étagée (Batch B) — la timeline est dans
    *  `parcoursSequencer.ts`. Chaque beat est routé vers son state visible. */
   const sequence = useCompletionSequence(
@@ -254,8 +267,9 @@ export default function Curriculum() {
       },
       onAutoScroll: () => {
         if (!pendingNextRef.current) return;
+        // Respecte un scroll manuel récent (< 1.5 s) — ne force pas l'utilisateur.
+        if (Date.now() - lastUserScrollRef.current < 1500) return;
         const el = nodeRefs.current.get(pendingNextRef.current);
-        // Ne force pas si l'utilisateur est en train de scroller (cas mobile)
         el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       },
       onSparkReset: () => setSparkMood('encouraging'),
