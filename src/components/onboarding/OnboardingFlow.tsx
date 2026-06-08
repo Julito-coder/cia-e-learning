@@ -23,18 +23,21 @@ export function OnboardingFlow() {
   const [phase, setPhase] = useState<Phase>('welcome');
   const [open, setOpen] = useState(false);
   const [profile, setProfile] = useState<Profile | null>(null);
+  const disableAutoOpenInPreview = import.meta.env.DEV;
 
   // Auto-open when needed (and not on /test-niveau page)
   useEffect(() => {
     if (loading) return;
     const forceWelcome = new URLSearchParams(location.search).get('welcome') === '1';
     const onTestPage = location.pathname === '/test-niveau';
-    if ((needsOnboarding || forceWelcome) && !onTestPage) {
+    if (forceWelcome && !onTestPage) {
       setOpen(true);
-    } else if (!needsOnboarding && !forceWelcome) {
+    } else if (disableAutoOpenInPreview || onTestPage || !needsOnboarding) {
       setOpen(false);
+    } else {
+      setOpen(true);
     }
-  }, [needsOnboarding, loading, location.pathname, location.search]);
+  }, [disableAutoOpenInPreview, needsOnboarding, loading, location.pathname, location.search]);
 
   const close = async (markCompleted = true) => {
     setOpen(false);
