@@ -102,6 +102,9 @@ export default function Curriculum() {
   const xpCounterRef = useRef<HTMLSpanElement>(null);
   /** Coffres ouverts dans cette session (démo, pas de mutation BDD). */
   const [openedChests, setOpenedChests] = useState<Set<string>>(() => new Set());
+  /** Refs vers chaque section CECR — Bloc 5 : hook de transition d'univers
+   *  (scroll vers le niveau suivant après le beat unit-complete). */
+  const sectionRefs = useRef<Map<CECRLevel, HTMLElement>>(new Map());
 
   /* Bloc 5 — idle ambient : toutes les 6-10s, Spark cligne / oscille brièvement
      (uniquement si pas en mode celebrating). Gated reduced-motion. */
@@ -264,9 +267,25 @@ export default function Curriculum() {
         const remaining = section.modules.filter(
           (m) => m.id !== id && m.state !== 'completed',
         ).length;
-        if (remaining === 0) {
-          levelUpSequence();
-          notify.success(t('curriculum.unit_complete_toast', { level: section.level }));
+        if (remaining !== 0) return;
+
+        // Bloc 5 — beat fin d'unité : confetti bleu+blanc + toast.
+        levelUpSequence();
+        notify.success(t('curriculum.unit_complete_toast', { level: section.level }));
+
+        // Hook de transition d'univers (Batch A.2 plus tard) : on amorce
+        // l'entrée dans la section suivante par un scroll doux. C'est le
+        // point d'extension où A.2 pourra brancher une vraie transition
+        // d'univers (palette/atmosphère).
+        const idx = LEVELS.indexOf(section.level);
+        const nextLevel = idx >= 0 ? LEVELS[idx + 1] : undefined;
+        if (nextLevel) {
+          window.setTimeout(() => {
+            // Respecte un scroll manuel (cohérent avec onAutoScroll)
+            if (Date.now() - lastUserScrollRef.current < 1500) return;
+            const nextEl = sectionRefs.current.get(nextLevel);
+            nextEl?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 1200);
         }
       },
       onAutoScroll: () => {
@@ -366,6 +385,10 @@ export default function Curriculum() {
             <motion.section
               key={section.level}
               id={`niveau-${section.level.toLowerCase()}`}
+              ref={(el) => {
+                if (el) sectionRefs.current.set(section.level, el);
+                else sectionRefs.current.delete(section.level);
+              }}
               variants={sectionItem}
               initial="hidden"
               whileInView="visible"
