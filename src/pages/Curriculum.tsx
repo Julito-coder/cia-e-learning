@@ -526,11 +526,11 @@ export default function Curriculum() {
                       style={{ willChange: 'transform' }}
                     >
                       <div
-                        className="absolute top-1/2 -translate-y-1/2 flex items-center gap-2"
-                        style={{
-                          [currentCoord.side === 'left' ? 'left' : 'right']: '3.5rem',
-                          flexDirection: currentCoord.side === 'right' ? 'row-reverse' : 'row',
-                        }}
+                        className={`absolute top-1/2 -translate-y-1/2 flex items-center gap-2 ${
+                          currentCoord.side === 'right'
+                            ? 'left-full ml-3 flex-row'         // nœud à X=78% → satellite à droite (côté extérieur)
+                            : 'right-full mr-3 flex-row-reverse' // nœud à X=22% → satellite à gauche (côté extérieur)
+                        }`}
                       >
                         <motion.div
                           animate={
