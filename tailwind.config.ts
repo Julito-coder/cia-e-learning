@@ -155,6 +155,14 @@ export default {
           silver: 'hsl(var(--league-silver))',
           gold:   'hsl(var(--league-gold))',
         },
+        cecr: {
+          a1: 'hsl(var(--cecr-a1))',
+          a2: 'hsl(var(--cecr-a2))',
+          b1: 'hsl(var(--cecr-b1))',
+          b2: 'hsl(var(--cecr-b2))',
+          c1: 'hsl(var(--cecr-c1))',
+          c2: 'hsl(var(--cecr-c2))',
+        },
       },
       borderRadius: {
         sm:   "calc(var(--radius) - 8px)",   /* 8px */

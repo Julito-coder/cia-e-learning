@@ -83,10 +83,7 @@ export function ModuleNode({ index, title, icon, state, onClick, staticBreath }:
   const renderIcon = () => {
     if (state === 'locked')    return <Lock className="h-5 w-5" />;
     if (state === 'completed') return <Check className="h-9 w-9" strokeWidth={3.5} />;
-    if (icon.kind === 'emoji') {
-      return <span className="text-3xl select-none">{icon.value}</span>;
-    }
-    const Icon = icon.value;
+    const Icon = icon;
     return <Icon className="h-7 w-7" strokeWidth={2.2} />;
   };
 
