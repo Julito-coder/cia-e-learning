@@ -19,6 +19,7 @@ import {
   computeParcoursCoords,
   computeParcoursTotalHeight,
 } from '@/lib/curriculumPath';
+import { WORLD_AMBIANCE } from '@/lib/parcoursUniverses';
 import { UnitDecor } from '@/components/parcours/decor/UnitDecor';
 import { AmbientEmbers } from '@/components/parcours/AmbientEmbers';
 import { XPChestNode, type ChestState } from '@/components/parcours/XPChestNode';
@@ -42,16 +43,16 @@ type ParcoursItem =
 const LEVELS: CECRLevel[] = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 
 /**
- * Teinte du tracé par section CECR — progression visible d'un coup d'œil
- * (Batch A Bloc 2). Cohérent avec `LevelBadge` (charte v2 §8).
+ * Teinte du tracé par section — dérivée de WORLD_AMBIANCE pour rester
+ * synchronisée avec l'univers de chaque niveau.
  */
 const CECR_PATH_TINT: Partial<Record<CECRLevel, string>> = {
-  A1: 'hsl(var(--success-500))',
-  A2: 'hsl(var(--success-600))',
-  B1: 'hsl(var(--cia-blue-400))',
-  B2: 'hsl(var(--cia-blue-500))',
-  C1: 'hsl(var(--cia-blue-700))',
-  C2: 'hsl(var(--cia-red-500))',
+  A1: WORLD_AMBIANCE.A1.pathStroke,
+  A2: WORLD_AMBIANCE.A2.pathStroke,
+  B1: WORLD_AMBIANCE.B1.pathStroke,
+  B2: WORLD_AMBIANCE.B2.pathStroke,
+  C1: WORLD_AMBIANCE.C1.pathStroke,
+  C2: WORLD_AMBIANCE.C2.pathStroke,
 };
 
 interface ModuleWithMeta {
@@ -401,6 +402,7 @@ export default function Curriculum() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: '-80px' }}
+              className={`relative rounded-4xl ${WORLD_AMBIANCE[section.level]?.bg ?? ''} px-3 sm:px-5 py-6 -mx-3 sm:-mx-5`}
             >
               {/* Header d'unité — radius 24px, fond blanc, bordure ink-100 */}
               <div className="rounded-3xl bg-card border border-ink-100 px-5 py-4 mb-6 shadow-sm flex items-center gap-4">
