@@ -1,11 +1,9 @@
-import { useEffect } from 'react';
-import { createPortal } from 'react-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { X, BookOpen, Map, Trophy, Flame, Heart, Book, User, LogOut, ClipboardCheck, Home, type LucideIcon } from 'lucide-react';
+import { BookOpen, Map, Trophy, Flame, Heart, Book, User, LogOut, ClipboardCheck, Home, type LucideIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { UserIndicators } from './UserIndicators';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import { useAuth } from '@/hooks/useAuth';
@@ -41,36 +39,13 @@ export function MobileDrawer({ open, onClose }: MobileDrawerProps) {
   const { t } = useTranslation();
   const { user, signOut } = useAuth();
 
-  useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
-    window.addEventListener('keydown', onKey);
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    return () => {
-      window.removeEventListener('keydown', onKey);
-      document.body.style.overflow = prevOverflow;
-    };
-  }, [open, onClose]);
-
-  if (typeof document === 'undefined') return null;
-
-  return createPortal(
-    <AnimatePresence>
-      {open && (
-        <>
-          <motion.div
-            className="fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm"
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            onClick={onClose}
-          />
-          <motion.aside
-            className="fixed inset-y-0 left-0 z-[101] w-[85%] max-w-sm bg-card border-r border-border/40 shadow-2xl flex flex-col"
-            initial={{ x: '-100%' }} animate={{ x: 0 }} exit={{ x: '-100%' }}
-            transition={{ type: 'spring', stiffness: 300, damping: 32 }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-center justify-between px-5 py-4 border-b border-border/40">
+  return (
+    <Sheet open={open} onOpenChange={(v) => { if (!v) onClose(); }}>
+      <SheetContent
+        side="left"
+        className="w-[85%] max-w-sm p-0 flex flex-col gap-0"
+      >
+        <div className="flex items-center justify-between px-5 py-4 border-b border-border/40">
               <div className="flex items-center gap-2">
                 <img src="/cia-logo-2.png" alt="CIA" className="h-8 w-auto" loading="lazy" decoding="async" />
                 <div>
@@ -78,9 +53,6 @@ export function MobileDrawer({ open, onClose }: MobileDrawerProps) {
                   <p className="text-[10px] text-muted-foreground font-semibold">e-learning</p>
                 </div>
               </div>
-              <Button variant="ghost" size="icon" onClick={onClose} aria-label="Fermer">
-                <X className="h-5 w-5" />
-              </Button>
             </div>
 
             {user && (
@@ -143,10 +115,7 @@ export function MobileDrawer({ open, onClose }: MobileDrawerProps) {
                 </Link>
               )}
             </div>
-          </motion.aside>
-        </>
-      )}
-    </AnimatePresence>,
-    document.body
+      </SheetContent>
+    </Sheet>
   );
 }
