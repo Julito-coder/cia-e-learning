@@ -23,6 +23,10 @@ import { UnitDecor } from '@/components/parcours/decor/UnitDecor';
 import { AmbientEmbers } from '@/components/parcours/AmbientEmbers';
 import { XPChestNode, type ChestState } from '@/components/parcours/XPChestNode';
 import { TrophyNode, type TrophyState } from '@/components/parcours/TrophyNode';
+import { CompletionStamp } from '@/components/parcours/CompletionStamp';
+import { UnlockPulse } from '@/components/parcours/UnlockPulse';
+import { useCompletionSequence } from '@/lib/parcoursSequencer';
+import { useSfx } from '@/hooks/useSfx';
 import type { CECRLevel } from '@/data/demo-courses';
 import { Sparkles } from 'lucide-react';
 
@@ -95,6 +99,15 @@ export default function Curriculum() {
   const [sparkOscillate, setSparkOscillate] = useState(false);
   /** Refs vers chaque bouton de nœud — sert à localiser le centre pour le XPBurst. */
   const nodeRefs = useRef<Map<string, HTMLElement>>(new Map());
+  /** Ref vers le compteur XP du sub-header — cible du « +N XP » fly du coffre. */
+  const xpCounterRef = useRef<HTMLSpanElement>(null);
+  /** Coffres ouverts dans cette session (démo, pas de mutation BDD). */
+  const [openedChests, setOpenedChests] = useState<Set<string>>(() => new Set());
+  /** Refs vers chaque section CECR — Bloc 5 : hook de transition d'univers
+   *  (scroll vers le niveau suivant après le beat unit-complete). */
+  const sectionRefs = useRef<Map<CECRLevel, HTMLElement>>(new Map());
+  /** SFX opt-in (Bloc 6) — muet par défaut. */
+  const { play: playSfx } = useSfx();
 
   /* Bloc 5 — idle ambient : toutes les 6-10s, Spark cligne / oscille brièvement
      (uniquement si pas en mode celebrating). Gated reduced-motion. */
@@ -200,47 +213,120 @@ export default function Curriculum() {
     [sections],
   );
 
-  /** Séquence récompense — démo uniquement.
-   *  XPBurst au centre du nœud, mood Spark celebrating 1.5 s,
-   *  path fill via re-calcul des sections, et si l'unité est terminée :
-   *  confetti `levelUpSequence` (bleu + blanc) + toast. */
-  const handleSimulateComplete = useCallback(
-    (moduleId: string, xpReward: number) => {
-      const el = nodeRefs.current.get(moduleId);
-      let x = window.innerWidth / 2;
-      let y = window.innerHeight / 2;
-      if (el) {
-        const r = el.getBoundingClientRect();
-        x = r.left + r.width / 2;
-        y = r.top + r.height / 2;
-      }
+  /** Bloc 1 — orchestrateur de complétion (3 s étagés). */
+  const [stampedId, setStampedId] = useState<string | null>(null);
+  const [unlockingId, setUnlockingId] = useState<string | null>(null);
+  /** Lookup pré-calculé : moduleId → nextModuleId (déterminé avant commit). */
+  const pendingNextRef = useRef<string | null>(null);
 
-      setDemoCompleted((prev) => {
-        const next = new Set(prev);
-        next.add(moduleId);
-        return next;
-      });
-      setReward({ x, y, xp: xpReward, key: Date.now() });
-      setSparkMood('celebrating');
+  /** Bloc 3 — détection scroll manuel. L'auto-scroll de fin de séquence
+   *  ne force pas si l'utilisateur scrolle depuis < 1.5 s. */
+  const lastUserScrollRef = useRef(0);
+  useEffect(() => {
+    const onScroll = () => { lastUserScrollRef.current = Date.now(); };
+    window.addEventListener('wheel', onScroll, { passive: true });
+    window.addEventListener('touchmove', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('wheel', onScroll);
+      window.removeEventListener('touchmove', onScroll);
+    };
+  }, []);
 
-      const sparkTimer = window.setTimeout(() => setSparkMood('encouraging'), 1800);
-
-      // Si toute l'unité est terminée → mini level-up (confetti + toast)
-      window.setTimeout(() => {
-        const section = sections.find((s) => s.modules.some((m) => m.id === moduleId));
+  /** Séquence récompense étagée (Batch B) — la timeline est dans
+   *  `parcoursSequencer.ts`. Chaque beat est routé vers son state visible. */
+  const sequence = useCompletionSequence(
+    {
+      onStamp: (id) => {
+        setStampedId(id);
+        playSfx('pop');
+      },
+      onBurst: (id) => {
+        const el = nodeRefs.current.get(id);
+        let x = window.innerWidth / 2;
+        let y = window.innerHeight / 2;
+        if (el) {
+          const r = el.getBoundingClientRect();
+          x = r.left + r.width / 2;
+          y = r.top + r.height / 2;
+        }
+        // xp value passé via ref pour éviter de réinventer les beats signatures
+        setReward({ x, y, xp: pendingXpRef.current, key: Date.now() });
+      },
+      onCommit: (id) => {
+        setDemoCompleted((prev) => {
+          const next = new Set(prev);
+          next.add(id);
+          return next;
+        });
+        setSparkMood('celebrating');
+        playSfx('whoosh');
+      },
+      onStampEnd: () => setStampedId(null),
+      onUnlockPop: () => {
+        if (pendingNextRef.current) {
+          setUnlockingId(pendingNextRef.current);
+          window.setTimeout(() => setUnlockingId(null), 900);
+        }
+      },
+      onUnitComplete: (id) => {
+        const section = sections.find((s) => s.modules.some((m) => m.id === id));
         if (!section) return;
         const remaining = section.modules.filter(
-          (m) => m.id !== moduleId && m.state !== 'completed',
+          (m) => m.id !== id && m.state !== 'completed',
         ).length;
-        if (remaining === 0) {
-          levelUpSequence();
-          notify.success(t('curriculum.unit_complete_toast', { level: section.level }));
-        }
-      }, 200);
+        if (remaining !== 0) return;
 
-      return () => window.clearTimeout(sparkTimer);
+        // Bloc 5 — beat fin d'unité : confetti bleu+blanc + toast + fanfare.
+        levelUpSequence();
+        playSfx('fanfare');
+        notify.success(t('curriculum.unit_complete_toast', { level: section.level }));
+
+        // Hook de transition d'univers (Batch A.2 plus tard) : on amorce
+        // l'entrée dans la section suivante par un scroll doux. C'est le
+        // point d'extension où A.2 pourra brancher une vraie transition
+        // d'univers (palette/atmosphère).
+        const idx = LEVELS.indexOf(section.level);
+        const nextLevel = idx >= 0 ? LEVELS[idx + 1] : undefined;
+        if (nextLevel) {
+          window.setTimeout(() => {
+            // Respecte un scroll manuel (cohérent avec onAutoScroll)
+            if (Date.now() - lastUserScrollRef.current < 1500) return;
+            const nextEl = sectionRefs.current.get(nextLevel);
+            nextEl?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 1200);
+        }
+      },
+      onAutoScroll: () => {
+        if (!pendingNextRef.current) return;
+        // Respecte un scroll manuel récent (< 1.5 s) — ne force pas l'utilisateur.
+        if (Date.now() - lastUserScrollRef.current < 1500) return;
+        const el = nodeRefs.current.get(pendingNextRef.current);
+        el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      },
+      onSparkReset: () => setSparkMood('encouraging'),
+      onEnd: () => {
+        pendingNextRef.current = null;
+      },
     },
-    [sections, t],
+    !!reduced,
+  );
+  const pendingXpRef = useRef(0);
+
+  /** Lance la chorégraphie pour `moduleId`. Calcule à l'avance le
+   *  nœud suivant (pour l'unlock pop + l'auto-scroll). */
+  const handleSimulateComplete = useCallback(
+    (moduleId: string, xpReward: number) => {
+      const section = sections.find((s) => s.modules.some((m) => m.id === moduleId));
+      if (!section) return;
+      const idx = section.modules.findIndex((m) => m.id === moduleId);
+      const next = idx >= 0 && idx + 1 < section.modules.length
+        ? section.modules[idx + 1].id
+        : null;
+      pendingNextRef.current = next;
+      pendingXpRef.current = xpReward;
+      sequence.run(moduleId);
+    },
+    [sections, sequence],
   );
 
   /* ===== Reveal premium : sub-header + sections en stagger ===== */
@@ -282,7 +368,7 @@ export default function Curriculum() {
             </Badge>
             <Badge variant="xp" className="gap-1.5 px-2 py-1 hidden xs:inline-flex">
               <Sparkles className="h-3 w-3" />
-              <span className="tabular-nums text-xs">{totalXP.toLocaleString('fr-FR')}</span>
+              <span ref={xpCounterRef} className="tabular-nums text-xs">{totalXP.toLocaleString('fr-FR')}</span>
             </Badge>
           </div>
         </div>
@@ -307,6 +393,10 @@ export default function Curriculum() {
             <motion.section
               key={section.level}
               id={`niveau-${section.level.toLowerCase()}`}
+              ref={(el) => {
+                if (el) sectionRefs.current.set(section.level, el);
+                else sectionRefs.current.delete(section.level);
+              }}
               variants={sectionItem}
               initial="hidden"
               whileInView="visible"
@@ -347,10 +437,15 @@ export default function Curriculum() {
                   items.push({ kind: 'module', module: m });
                   // Insérer un coffre après chaque 3e module (sauf le dernier)
                   if ((i + 1) % 3 === 0 && i < section.modules.length - 1) {
+                    const chestId = `${section.level}-chest-${i}`;
+                    const chestState: ChestState =
+                      openedChests.has(chestId) ? 'opened'
+                      : m.state === 'completed' ? 'openable'
+                      : 'locked';
                     items.push({
                       kind: 'chest',
-                      chestId: `${section.level}-chest-${i}`,
-                      state: m.state === 'completed' ? 'openable' : 'locked',
+                      chestId,
+                      state: chestState,
                       xpReward: 150,
                       afterModuleId: m.id,
                     });
@@ -519,6 +614,7 @@ export default function Curriculum() {
                                   if (el) nodeRefs.current.set(item.module.id, el);
                                   else nodeRefs.current.delete(item.module.id);
                                 }}
+                                className="relative"
                               >
                                 <ModuleNode
                                   index={item.module.number - 1}
@@ -527,6 +623,10 @@ export default function Curriculum() {
                                   state={item.module.state}
                                   onClick={() => setSelectedKey(item.module.id)}
                                 />
+                                {/* Bloc 2 — Stamp overlay (T=0 → T=600 ms) */}
+                                <CompletionStamp show={stampedId === item.module.id} />
+                                {/* Bloc 2 — Unlock pulse (T=1600 → T=2500 ms) */}
+                                <UnlockPulse show={unlockingId === item.module.id} />
                               </div>
                             )}
 
@@ -534,13 +634,15 @@ export default function Curriculum() {
                               <XPChestNode
                                 state={item.state}
                                 xpReward={item.xpReward}
-                                onClick={() => {
-                                  // Démo : ouverture immédiate sans animation
-                                  // d'ouverture (= Batch B). On déclenche juste
-                                  // un XPBurst pour le feedback.
-                                  if (item.state === 'openable') {
-                                    handleSimulateComplete(item.afterModuleId, item.xpReward);
-                                  }
+                                xpFlyTargetRef={xpCounterRef}
+                                onOpenComplete={(xp) => {
+                                  setOpenedChests((prev) => {
+                                    const next = new Set(prev);
+                                    next.add(item.chestId);
+                                    return next;
+                                  });
+                                  playSfx('chime');
+                                  notify.success(`+${xp} XP du coffre !`);
                                 }}
                               />
                             )}
