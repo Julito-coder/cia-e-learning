@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, BookOpen, Map, Trophy, Flame, Heart, Book, User, LogOut, ClipboardCheck, Home, type LucideIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -39,19 +41,34 @@ export function MobileDrawer({ open, onClose }: MobileDrawerProps) {
   const { t } = useTranslation();
   const { user, signOut } = useAuth();
 
-  return (
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [open, onClose]);
+
+  if (typeof document === 'undefined') return null;
+
+  return createPortal(
     <AnimatePresence>
       {open && (
         <>
           <motion.div
-            className="fixed inset-0 z-[60] bg-black/40 backdrop-blur-sm"
+            className="fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm"
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             onClick={onClose}
           />
           <motion.aside
-            className="fixed inset-y-0 left-0 z-[61] w-[85%] max-w-sm bg-card border-r border-border/40 shadow-2xl flex flex-col"
+            className="fixed inset-y-0 left-0 z-[101] w-[85%] max-w-sm bg-card border-r border-border/40 shadow-2xl flex flex-col"
             initial={{ x: '-100%' }} animate={{ x: 0 }} exit={{ x: '-100%' }}
             transition={{ type: 'spring', stiffness: 300, damping: 32 }}
+            onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between px-5 py-4 border-b border-border/40">
               <div className="flex items-center gap-2">
@@ -129,6 +146,7 @@ export function MobileDrawer({ open, onClose }: MobileDrawerProps) {
           </motion.aside>
         </>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }

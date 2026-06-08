@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Menu, User, LogOut } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -29,6 +29,12 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const location = useLocation();
+
+  // Safety net: close the mobile drawer on any route change
+  useEffect(() => {
+    setDrawerOpen(false);
+  }, [location.pathname]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
