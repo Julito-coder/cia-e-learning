@@ -18,9 +18,9 @@ import { getModuleIcon } from '@/lib/moduleIcon';
 import {
   computeParcoursCoords,
   computeParcoursTotalHeight,
-  PARCOURS_LAYOUT,
-  type ParcoursNodeCoord,
 } from '@/lib/curriculumPath';
+import { UnitDecor } from '@/components/parcours/decor/UnitDecor';
+import { AmbientEmbers } from '@/components/parcours/AmbientEmbers';
 import type { CECRLevel } from '@/data/demo-courses';
 import { Sparkles } from 'lucide-react';
 
@@ -307,16 +307,37 @@ export default function Curriculum() {
                     ? sectionCompleted / (section.modules.length - 1)
                     : sectionCompleted;
                 const tint = CECR_PATH_TINT[section.level];
+                /** Bloc 3 — coord du nœud current dans cette section (pour
+                 *  positionner les braises ambiantes). */
+                const currentCoord = currentIdx >= 0 ? coords[currentIdx] : null;
+
                 return (
                 <div
                   className="relative"
                   style={{ height: sectionHeight }}
                 >
+                  {/* Bloc 3a — Décor latéral Côte d'Azur (z-0, derrière) */}
+                  <UnitDecor level={section.level} height={sectionHeight} />
+
                   <ZigzagPath
                     coords={coords}
                     stroke={tint}
                     fillRatio={fillRatio}
                   />
+
+                  {/* Bloc 3c — Braises ambiance autour du nœud current */}
+                  {currentCoord && (
+                    <div
+                      className="absolute"
+                      style={{
+                        left: `calc(${currentCoord.x}% - 45px)`,
+                        top: currentCoord.y - 220,
+                        zIndex: 1,
+                      }}
+                    >
+                      <AmbientEmbers count={4} height={220} />
+                    </div>
+                  )}
 
                   <motion.div
                     className="relative w-full h-full"
