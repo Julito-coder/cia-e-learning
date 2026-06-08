@@ -170,7 +170,7 @@ export function XPChestNode({ state, xpReward, xpFlyTargetRef, onOpenComplete }:
                 ? { duration: 0.6, delay: 0.2, times: [0, 0.3, 0.8, 1], ease: [0.34, 1.56, 0.64, 1] }
                 : { type: 'spring', damping: 20, stiffness: 280 }
             }
-            style={{ transformOrigin: '8px 22px', transformBox: 'fill-box' as 'fill-box' }}
+            style={{ transformOrigin: '8px 22px', transformBox: 'fill-box' as const }}
           >
             <path
               d="M 8 22 Q 8 12 16 12 L 40 12 Q 48 12 48 22 Z"

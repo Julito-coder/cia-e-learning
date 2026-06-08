@@ -26,6 +26,7 @@ import { TrophyNode, type TrophyState } from '@/components/parcours/TrophyNode';
 import { CompletionStamp } from '@/components/parcours/CompletionStamp';
 import { UnlockPulse } from '@/components/parcours/UnlockPulse';
 import { useCompletionSequence } from '@/lib/parcoursSequencer';
+import { useSfx } from '@/hooks/useSfx';
 import type { CECRLevel } from '@/data/demo-courses';
 import { Sparkles } from 'lucide-react';
 
@@ -105,6 +106,8 @@ export default function Curriculum() {
   /** Refs vers chaque section CECR — Bloc 5 : hook de transition d'univers
    *  (scroll vers le niveau suivant après le beat unit-complete). */
   const sectionRefs = useRef<Map<CECRLevel, HTMLElement>>(new Map());
+  /** SFX opt-in (Bloc 6) — muet par défaut. */
+  const { play: playSfx } = useSfx();
 
   /* Bloc 5 — idle ambient : toutes les 6-10s, Spark cligne / oscille brièvement
      (uniquement si pas en mode celebrating). Gated reduced-motion. */
@@ -233,7 +236,10 @@ export default function Curriculum() {
    *  `parcoursSequencer.ts`. Chaque beat est routé vers son state visible. */
   const sequence = useCompletionSequence(
     {
-      onStamp: (id) => setStampedId(id),
+      onStamp: (id) => {
+        setStampedId(id);
+        playSfx('pop');
+      },
       onBurst: (id) => {
         const el = nodeRefs.current.get(id);
         let x = window.innerWidth / 2;
@@ -253,6 +259,7 @@ export default function Curriculum() {
           return next;
         });
         setSparkMood('celebrating');
+        playSfx('whoosh');
       },
       onStampEnd: () => setStampedId(null),
       onUnlockPop: () => {
@@ -269,8 +276,9 @@ export default function Curriculum() {
         ).length;
         if (remaining !== 0) return;
 
-        // Bloc 5 — beat fin d'unité : confetti bleu+blanc + toast.
+        // Bloc 5 — beat fin d'unité : confetti bleu+blanc + toast + fanfare.
         levelUpSequence();
+        playSfx('fanfare');
         notify.success(t('curriculum.unit_complete_toast', { level: section.level }));
 
         // Hook de transition d'univers (Batch A.2 plus tard) : on amorce
@@ -633,6 +641,7 @@ export default function Curriculum() {
                                     next.add(item.chestId);
                                     return next;
                                   });
+                                  playSfx('chime');
                                   notify.success(`+${xp} XP du coffre !`);
                                 }}
                               />
