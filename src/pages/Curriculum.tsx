@@ -98,6 +98,10 @@ export default function Curriculum() {
   const [sparkOscillate, setSparkOscillate] = useState(false);
   /** Refs vers chaque bouton de nœud — sert à localiser le centre pour le XPBurst. */
   const nodeRefs = useRef<Map<string, HTMLElement>>(new Map());
+  /** Ref vers le compteur XP du sub-header — cible du « +N XP » fly du coffre. */
+  const xpCounterRef = useRef<HTMLSpanElement>(null);
+  /** Coffres ouverts dans cette session (démo, pas de mutation BDD). */
+  const [openedChests, setOpenedChests] = useState<Set<string>>(() => new Set());
 
   /* Bloc 5 — idle ambient : toutes les 6-10s, Spark cligne / oscille brièvement
      (uniquement si pas en mode celebrating). Gated reduced-motion. */
@@ -337,7 +341,7 @@ export default function Curriculum() {
             </Badge>
             <Badge variant="xp" className="gap-1.5 px-2 py-1 hidden xs:inline-flex">
               <Sparkles className="h-3 w-3" />
-              <span className="tabular-nums text-xs">{totalXP.toLocaleString('fr-FR')}</span>
+              <span ref={xpCounterRef} className="tabular-nums text-xs">{totalXP.toLocaleString('fr-FR')}</span>
             </Badge>
           </div>
         </div>
@@ -402,10 +406,15 @@ export default function Curriculum() {
                   items.push({ kind: 'module', module: m });
                   // Insérer un coffre après chaque 3e module (sauf le dernier)
                   if ((i + 1) % 3 === 0 && i < section.modules.length - 1) {
+                    const chestId = `${section.level}-chest-${i}`;
+                    const chestState: ChestState =
+                      openedChests.has(chestId) ? 'opened'
+                      : m.state === 'completed' ? 'openable'
+                      : 'locked';
                     items.push({
                       kind: 'chest',
-                      chestId: `${section.level}-chest-${i}`,
-                      state: m.state === 'completed' ? 'openable' : 'locked',
+                      chestId,
+                      state: chestState,
                       xpReward: 150,
                       afterModuleId: m.id,
                     });
@@ -594,13 +603,14 @@ export default function Curriculum() {
                               <XPChestNode
                                 state={item.state}
                                 xpReward={item.xpReward}
-                                onClick={() => {
-                                  // Démo : ouverture immédiate sans animation
-                                  // d'ouverture (= Batch B). On déclenche juste
-                                  // un XPBurst pour le feedback.
-                                  if (item.state === 'openable') {
-                                    handleSimulateComplete(item.afterModuleId, item.xpReward);
-                                  }
+                                xpFlyTargetRef={xpCounterRef}
+                                onOpenComplete={(xp) => {
+                                  setOpenedChests((prev) => {
+                                    const next = new Set(prev);
+                                    next.add(item.chestId);
+                                    return next;
+                                  });
+                                  notify.success(`+${xp} XP du coffre !`);
                                 }}
                               />
                             )}
