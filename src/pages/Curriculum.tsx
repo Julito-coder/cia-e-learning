@@ -19,6 +19,9 @@ import {
   computeParcoursCoords,
   computeParcoursTotalHeight,
 } from '@/lib/curriculumPath';
+import { WORLD_AMBIANCE } from '@/lib/parcoursUniverses';
+import { smoothScrollTo } from '@/lib/smoothScroll';
+import { WorldBanner } from '@/components/parcours/WorldBanner';
 import { UnitDecor } from '@/components/parcours/decor/UnitDecor';
 import { AmbientEmbers } from '@/components/parcours/AmbientEmbers';
 import { XPChestNode, type ChestState } from '@/components/parcours/XPChestNode';
@@ -42,16 +45,16 @@ type ParcoursItem =
 const LEVELS: CECRLevel[] = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 
 /**
- * Teinte du tracé par section CECR — progression visible d'un coup d'œil
- * (Batch A Bloc 2). Cohérent avec `LevelBadge` (charte v2 §8).
+ * Teinte du tracé par section — dérivée de WORLD_AMBIANCE pour rester
+ * synchronisée avec l'univers de chaque niveau.
  */
 const CECR_PATH_TINT: Partial<Record<CECRLevel, string>> = {
-  A1: 'hsl(var(--success-500))',
-  A2: 'hsl(var(--success-600))',
-  B1: 'hsl(var(--cia-blue-400))',
-  B2: 'hsl(var(--cia-blue-500))',
-  C1: 'hsl(var(--cia-blue-700))',
-  C2: 'hsl(var(--cia-red-500))',
+  A1: WORLD_AMBIANCE.A1.pathStroke,
+  A2: WORLD_AMBIANCE.A2.pathStroke,
+  B1: WORLD_AMBIANCE.B1.pathStroke,
+  B2: WORLD_AMBIANCE.B2.pathStroke,
+  C1: WORLD_AMBIANCE.C1.pathStroke,
+  C2: WORLD_AMBIANCE.C2.pathStroke,
 };
 
 interface ModuleWithMeta {
@@ -108,6 +111,8 @@ export default function Curriculum() {
   const sectionRefs = useRef<Map<CECRLevel, HTMLElement>>(new Map());
   /** SFX opt-in (Bloc 6) — muet par défaut. */
   const { play: playSfx } = useSfx();
+  /** Bloc 4 — panneau de monde affiché pendant la transition d'unité. */
+  const [worldBannerLevel, setWorldBannerLevel] = useState<CECRLevel | null>(null);
 
   /* Bloc 5 — idle ambient : toutes les 6-10s, Spark cligne / oscille brièvement
      (uniquement si pas en mode celebrating). Gated reduced-motion. */
@@ -281,18 +286,27 @@ export default function Curriculum() {
         playSfx('fanfare');
         notify.success(t('curriculum.unit_complete_toast', { level: section.level }));
 
-        // Hook de transition d'univers (Batch A.2 plus tard) : on amorce
-        // l'entrée dans la section suivante par un scroll doux. C'est le
-        // point d'extension où A.2 pourra brancher une vraie transition
-        // d'univers (palette/atmosphère).
+        // Bloc 4 — Transition d'univers fluide & ralentie.
+        // - Panneau « Bienvenue dans : … » glisse depuis le haut.
+        // - Scroll custom ease-in-out cubic 1.5 s (au lieu du smooth
+        //   browser ~300 ms qui était trop sec).
+        // - Le cross-fade de fond est automatique : chaque section a
+        //   son propre `bg-gradient` (Bloc 2) → la traversée du fold
+        //   produit le fondu visuel naturel.
         const idx = LEVELS.indexOf(section.level);
         const nextLevel = idx >= 0 ? LEVELS[idx + 1] : undefined;
         if (nextLevel) {
+          // Panneau de monde affiché ~2.5 s
+          window.setTimeout(() => setWorldBannerLevel(nextLevel), 800);
+          window.setTimeout(() => setWorldBannerLevel(null), 3300);
+          // Scroll ralenti vers la nouvelle section (delay 1.2 s post-confetti)
           window.setTimeout(() => {
-            // Respecte un scroll manuel (cohérent avec onAutoScroll)
             if (Date.now() - lastUserScrollRef.current < 1500) return;
             const nextEl = sectionRefs.current.get(nextLevel);
-            nextEl?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            if (!nextEl) return;
+            const headerOffset = 100; // sub-header sticky
+            const targetY = nextEl.getBoundingClientRect().top + window.scrollY - headerOffset;
+            smoothScrollTo(targetY, 1500);
           }, 1200);
         }
       },
@@ -401,6 +415,7 @@ export default function Curriculum() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: '-80px' }}
+              className={`relative rounded-4xl ${WORLD_AMBIANCE[section.level]?.bg ?? ''} px-3 sm:px-5 py-6 -mx-3 sm:-mx-5`}
             >
               {/* Header d'unité — radius 24px, fond blanc, bordure ink-100 */}
               <div className="rounded-3xl bg-card border border-ink-100 px-5 py-4 mb-6 shadow-sm flex items-center gap-4">
@@ -526,11 +541,11 @@ export default function Curriculum() {
                       style={{ willChange: 'transform' }}
                     >
                       <div
-                        className="absolute top-1/2 -translate-y-1/2 flex items-center gap-2"
-                        style={{
-                          [currentCoord.side === 'left' ? 'left' : 'right']: '3.5rem',
-                          flexDirection: currentCoord.side === 'right' ? 'row-reverse' : 'row',
-                        }}
+                        className={`absolute top-1/2 -translate-y-1/2 flex items-center gap-2 ${
+                          currentCoord.side === 'right'
+                            ? 'left-full ml-3 flex-row'         // nœud à X=78% → satellite à droite (côté extérieur)
+                            : 'right-full mr-3 flex-row-reverse' // nœud à X=22% → satellite à gauche (côté extérieur)
+                        }`}
                       >
                         <motion.div
                           animate={
@@ -697,6 +712,9 @@ export default function Curriculum() {
           }
         />
       )}
+
+      {/* Bloc 4 — Panneau de monde transition d'univers */}
+      <WorldBanner level={worldBannerLevel} />
 
       {/* Séquence récompense : XPBurst au centre du nœud cliqué. */}
       {reward && (
