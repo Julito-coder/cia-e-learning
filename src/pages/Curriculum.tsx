@@ -23,6 +23,9 @@ import { UnitDecor } from '@/components/parcours/decor/UnitDecor';
 import { AmbientEmbers } from '@/components/parcours/AmbientEmbers';
 import { XPChestNode, type ChestState } from '@/components/parcours/XPChestNode';
 import { TrophyNode, type TrophyState } from '@/components/parcours/TrophyNode';
+import { CompletionStamp } from '@/components/parcours/CompletionStamp';
+import { UnlockPulse } from '@/components/parcours/UnlockPulse';
+import { useCompletionSequence } from '@/lib/parcoursSequencer';
 import type { CECRLevel } from '@/data/demo-courses';
 import { Sparkles } from 'lucide-react';
 
@@ -200,47 +203,85 @@ export default function Curriculum() {
     [sections],
   );
 
-  /** Séquence récompense — démo uniquement.
-   *  XPBurst au centre du nœud, mood Spark celebrating 1.5 s,
-   *  path fill via re-calcul des sections, et si l'unité est terminée :
-   *  confetti `levelUpSequence` (bleu + blanc) + toast. */
-  const handleSimulateComplete = useCallback(
-    (moduleId: string, xpReward: number) => {
-      const el = nodeRefs.current.get(moduleId);
-      let x = window.innerWidth / 2;
-      let y = window.innerHeight / 2;
-      if (el) {
-        const r = el.getBoundingClientRect();
-        x = r.left + r.width / 2;
-        y = r.top + r.height / 2;
-      }
+  /** Bloc 1 — orchestrateur de complétion (3 s étagés). */
+  const [stampedId, setStampedId] = useState<string | null>(null);
+  const [unlockingId, setUnlockingId] = useState<string | null>(null);
+  /** Lookup pré-calculé : moduleId → nextModuleId (déterminé avant commit). */
+  const pendingNextRef = useRef<string | null>(null);
 
-      setDemoCompleted((prev) => {
-        const next = new Set(prev);
-        next.add(moduleId);
-        return next;
-      });
-      setReward({ x, y, xp: xpReward, key: Date.now() });
-      setSparkMood('celebrating');
-
-      const sparkTimer = window.setTimeout(() => setSparkMood('encouraging'), 1800);
-
-      // Si toute l'unité est terminée → mini level-up (confetti + toast)
-      window.setTimeout(() => {
-        const section = sections.find((s) => s.modules.some((m) => m.id === moduleId));
+  /** Séquence récompense étagée (Batch B) — la timeline est dans
+   *  `parcoursSequencer.ts`. Chaque beat est routé vers son state visible. */
+  const sequence = useCompletionSequence(
+    {
+      onStamp: (id) => setStampedId(id),
+      onBurst: (id) => {
+        const el = nodeRefs.current.get(id);
+        let x = window.innerWidth / 2;
+        let y = window.innerHeight / 2;
+        if (el) {
+          const r = el.getBoundingClientRect();
+          x = r.left + r.width / 2;
+          y = r.top + r.height / 2;
+        }
+        // xp value passé via ref pour éviter de réinventer les beats signatures
+        setReward({ x, y, xp: pendingXpRef.current, key: Date.now() });
+      },
+      onCommit: (id) => {
+        setDemoCompleted((prev) => {
+          const next = new Set(prev);
+          next.add(id);
+          return next;
+        });
+        setSparkMood('celebrating');
+      },
+      onStampEnd: () => setStampedId(null),
+      onUnlockPop: () => {
+        if (pendingNextRef.current) {
+          setUnlockingId(pendingNextRef.current);
+          window.setTimeout(() => setUnlockingId(null), 900);
+        }
+      },
+      onUnitComplete: (id) => {
+        const section = sections.find((s) => s.modules.some((m) => m.id === id));
         if (!section) return;
         const remaining = section.modules.filter(
-          (m) => m.id !== moduleId && m.state !== 'completed',
+          (m) => m.id !== id && m.state !== 'completed',
         ).length;
         if (remaining === 0) {
           levelUpSequence();
           notify.success(t('curriculum.unit_complete_toast', { level: section.level }));
         }
-      }, 200);
-
-      return () => window.clearTimeout(sparkTimer);
+      },
+      onAutoScroll: () => {
+        if (!pendingNextRef.current) return;
+        const el = nodeRefs.current.get(pendingNextRef.current);
+        // Ne force pas si l'utilisateur est en train de scroller (cas mobile)
+        el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      },
+      onSparkReset: () => setSparkMood('encouraging'),
+      onEnd: () => {
+        pendingNextRef.current = null;
+      },
     },
-    [sections, t],
+    !!reduced,
+  );
+  const pendingXpRef = useRef(0);
+
+  /** Lance la chorégraphie pour `moduleId`. Calcule à l'avance le
+   *  nœud suivant (pour l'unlock pop + l'auto-scroll). */
+  const handleSimulateComplete = useCallback(
+    (moduleId: string, xpReward: number) => {
+      const section = sections.find((s) => s.modules.some((m) => m.id === moduleId));
+      if (!section) return;
+      const idx = section.modules.findIndex((m) => m.id === moduleId);
+      const next = idx >= 0 && idx + 1 < section.modules.length
+        ? section.modules[idx + 1].id
+        : null;
+      pendingNextRef.current = next;
+      pendingXpRef.current = xpReward;
+      sequence.run(moduleId);
+    },
+    [sections, sequence],
   );
 
   /* ===== Reveal premium : sub-header + sections en stagger ===== */
@@ -519,6 +560,7 @@ export default function Curriculum() {
                                   if (el) nodeRefs.current.set(item.module.id, el);
                                   else nodeRefs.current.delete(item.module.id);
                                 }}
+                                className="relative"
                               >
                                 <ModuleNode
                                   index={item.module.number - 1}
@@ -527,6 +569,10 @@ export default function Curriculum() {
                                   state={item.module.state}
                                   onClick={() => setSelectedKey(item.module.id)}
                                 />
+                                {/* Bloc 2 — Stamp overlay (T=0 → T=600 ms) */}
+                                <CompletionStamp show={stampedId === item.module.id} />
+                                {/* Bloc 2 — Unlock pulse (T=1600 → T=2500 ms) */}
+                                <UnlockPulse show={unlockingId === item.module.id} />
                               </div>
                             )}
 
