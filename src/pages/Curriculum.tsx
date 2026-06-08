@@ -21,8 +21,19 @@ import {
 } from '@/lib/curriculumPath';
 import { UnitDecor } from '@/components/parcours/decor/UnitDecor';
 import { AmbientEmbers } from '@/components/parcours/AmbientEmbers';
+import { XPChestNode, type ChestState } from '@/components/parcours/XPChestNode';
+import { TrophyNode, type TrophyState } from '@/components/parcours/TrophyNode';
 import type { CECRLevel } from '@/data/demo-courses';
 import { Sparkles } from 'lucide-react';
+
+/**
+ * Item du parcours — un module, un coffre (palier bonus tous les 3 modules)
+ * ou un trophée (fin d'unité). Tous placés sur la même spline.
+ */
+type ParcoursItem =
+  | { kind: 'module';  module: { id: string; number: number; title: string; theme?: string; totalLessons: number; durationMinutes: number; xpReward: number; progress: number; state: ModuleNodeState } }
+  | { kind: 'chest';   chestId: string; state: ChestState; xpReward: number; afterModuleId: string }
+  | { kind: 'trophy';  trophyId: string; state: TrophyState };
 
 const LEVELS: CECRLevel[] = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 
@@ -295,21 +306,44 @@ export default function Curriculum() {
                   {t('curriculum.coming_soon')}
                 </div>
               ) : (() => {
-                /* Bloc 1 — spline continue + positionnement absolu.
-                   Source unique (`curriculumPath.ts`) pour les coords du
-                   path SVG ET du DOM des nœuds → connecteurs cohérents. */
+                /* Bloc 4 — items enrichis : module → chest (tous les 3) → trophy fin. */
+                const items: ParcoursItem[] = [];
+                section.modules.forEach((m, i) => {
+                  items.push({ kind: 'module', module: m });
+                  // Insérer un coffre après chaque 3e module (sauf le dernier)
+                  if ((i + 1) % 3 === 0 && i < section.modules.length - 1) {
+                    items.push({
+                      kind: 'chest',
+                      chestId: `${section.level}-chest-${i}`,
+                      state: m.state === 'completed' ? 'openable' : 'locked',
+                      xpReward: 150,
+                      afterModuleId: m.id,
+                    });
+                  }
+                });
+                // Trophée fin d'unité
+                const allCompleted = section.modules.every((m) => m.state === 'completed');
+                items.push({
+                  kind: 'trophy',
+                  trophyId: `${section.level}-trophy`,
+                  state: allCompleted ? 'unlocked' : 'locked',
+                });
+
+                /* Bloc 1 — spline continue + positionnement absolu sur les items. */
                 const coords = computeParcoursCoords(
-                  section.modules.map(() => ({ kind: 'module' as const })),
+                  items.map((it) => ({ kind: it.kind })),
                 );
-                const sectionHeight = computeParcoursTotalHeight(section.modules.length);
+                const sectionHeight = computeParcoursTotalHeight(items.length);
                 const fillRatio =
-                  section.modules.length > 1
-                    ? sectionCompleted / (section.modules.length - 1)
+                  items.length > 1
+                    ? sectionCompleted / Math.max(1, items.length - 1)
                     : sectionCompleted;
                 const tint = CECR_PATH_TINT[section.level];
-                /** Bloc 3 — coord du nœud current dans cette section (pour
-                 *  positionner les braises ambiantes). */
-                const currentCoord = currentIdx >= 0 ? coords[currentIdx] : null;
+                /** Index dans items du module current — pour bulle Spark + braises. */
+                const currentItemIdx = items.findIndex(
+                  (it) => it.kind === 'module' && it.module.state === 'current',
+                );
+                const currentCoord = currentItemIdx >= 0 ? coords[currentItemIdx] : null;
 
                 return (
                 <div
@@ -350,28 +384,27 @@ export default function Curriculum() {
                         : { hidden: {}, visible: { transition: { staggerChildren: 0.08, delayChildren: 0.15 } } }
                     }
                   >
-                    {section.modules.map((mod, mIdx) => {
-                      const coord = coords[mIdx];
+                    {items.map((item, itemIdx) => {
+                      const coord = coords[itemIdx];
                       const sideRight = coord.side === 'right';
-                      const icon = getModuleIcon(mod.title, mod.theme);
-                      const isCurrent = mod.state === 'current';
-                      const showBubble = isCurrent && mIdx === currentIdx;
-
+                      const itemKey =
+                        item.kind === 'module' ? item.module.id :
+                        item.kind === 'chest'  ? item.chestId    :
+                                                 item.trophyId;
+                      const itemVariants = reduced
+                        ? { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { duration: 0.2 } } }
+                        : {
+                            hidden: { opacity: 0, scale: 0.85 },
+                            visible: {
+                              opacity: 1,
+                              scale: 1,
+                              transition: { type: 'spring' as const, damping: 12, stiffness: 220, mass: 0.8 },
+                            },
+                          };
                       return (
                         <motion.div
-                          key={mod.id}
-                          variants={
-                            reduced
-                              ? { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { duration: 0.2 } } }
-                              : {
-                                  hidden: { opacity: 0, scale: 0.85 },
-                                  visible: {
-                                    opacity: 1,
-                                    scale: 1,
-                                    transition: { type: 'spring', damping: 12, stiffness: 220, mass: 0.8 },
-                                  },
-                                }
-                          }
+                          key={itemKey}
+                          variants={itemVariants}
                           className="absolute"
                           style={{
                             left: `${coord.x}%`,
@@ -382,7 +415,7 @@ export default function Curriculum() {
                           <div className="relative flex items-center gap-3">
                             {/* Spark compagnon + bulle contextuelle — placé du
                                 bon côté selon le `side` du nœud (Bloc 5). */}
-                            {showBubble && (
+                            {item.kind === 'module' && itemIdx === currentItemIdx && (
                               <div
                                 className={`absolute top-1/2 -translate-y-1/2 hidden sm:flex items-center gap-2 ${
                                   sideRight ? 'right-full mr-3 flex-row-reverse' : 'left-full ml-3'
@@ -415,20 +448,41 @@ export default function Curriculum() {
                               </div>
                             )}
 
-                            <div
-                              ref={(el) => {
-                                if (el) nodeRefs.current.set(mod.id, el);
-                                else nodeRefs.current.delete(mod.id);
-                              }}
-                            >
-                              <ModuleNode
-                                index={mIdx}
-                                title={mod.title}
-                                icon={icon}
-                                state={mod.state}
-                                onClick={() => setSelectedKey(mod.id)}
+                            {item.kind === 'module' && (
+                              <div
+                                ref={(el) => {
+                                  if (el) nodeRefs.current.set(item.module.id, el);
+                                  else nodeRefs.current.delete(item.module.id);
+                                }}
+                              >
+                                <ModuleNode
+                                  index={item.module.number - 1}
+                                  title={item.module.title}
+                                  icon={getModuleIcon(item.module.title, item.module.theme)}
+                                  state={item.module.state}
+                                  onClick={() => setSelectedKey(item.module.id)}
+                                />
+                              </div>
+                            )}
+
+                            {item.kind === 'chest' && (
+                              <XPChestNode
+                                state={item.state}
+                                xpReward={item.xpReward}
+                                onClick={() => {
+                                  // Démo : ouverture immédiate sans animation
+                                  // d'ouverture (= Batch B). On déclenche juste
+                                  // un XPBurst pour le feedback.
+                                  if (item.state === 'openable') {
+                                    handleSimulateComplete(item.afterModuleId, item.xpReward);
+                                  }
+                                }}
                               />
-                            </div>
+                            )}
+
+                            {item.kind === 'trophy' && (
+                              <TrophyNode state={item.state} level={section.level} />
+                            )}
                           </div>
                         </motion.div>
                       );
