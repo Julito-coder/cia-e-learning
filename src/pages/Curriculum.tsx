@@ -20,6 +20,8 @@ import {
   computeParcoursTotalHeight,
 } from '@/lib/curriculumPath';
 import { WORLD_AMBIANCE } from '@/lib/parcoursUniverses';
+import { smoothScrollTo } from '@/lib/smoothScroll';
+import { WorldBanner } from '@/components/parcours/WorldBanner';
 import { UnitDecor } from '@/components/parcours/decor/UnitDecor';
 import { AmbientEmbers } from '@/components/parcours/AmbientEmbers';
 import { XPChestNode, type ChestState } from '@/components/parcours/XPChestNode';
@@ -109,6 +111,8 @@ export default function Curriculum() {
   const sectionRefs = useRef<Map<CECRLevel, HTMLElement>>(new Map());
   /** SFX opt-in (Bloc 6) — muet par défaut. */
   const { play: playSfx } = useSfx();
+  /** Bloc 4 — panneau de monde affiché pendant la transition d'unité. */
+  const [worldBannerLevel, setWorldBannerLevel] = useState<CECRLevel | null>(null);
 
   /* Bloc 5 — idle ambient : toutes les 6-10s, Spark cligne / oscille brièvement
      (uniquement si pas en mode celebrating). Gated reduced-motion. */
@@ -282,18 +286,27 @@ export default function Curriculum() {
         playSfx('fanfare');
         notify.success(t('curriculum.unit_complete_toast', { level: section.level }));
 
-        // Hook de transition d'univers (Batch A.2 plus tard) : on amorce
-        // l'entrée dans la section suivante par un scroll doux. C'est le
-        // point d'extension où A.2 pourra brancher une vraie transition
-        // d'univers (palette/atmosphère).
+        // Bloc 4 — Transition d'univers fluide & ralentie.
+        // - Panneau « Bienvenue dans : … » glisse depuis le haut.
+        // - Scroll custom ease-in-out cubic 1.5 s (au lieu du smooth
+        //   browser ~300 ms qui était trop sec).
+        // - Le cross-fade de fond est automatique : chaque section a
+        //   son propre `bg-gradient` (Bloc 2) → la traversée du fold
+        //   produit le fondu visuel naturel.
         const idx = LEVELS.indexOf(section.level);
         const nextLevel = idx >= 0 ? LEVELS[idx + 1] : undefined;
         if (nextLevel) {
+          // Panneau de monde affiché ~2.5 s
+          window.setTimeout(() => setWorldBannerLevel(nextLevel), 800);
+          window.setTimeout(() => setWorldBannerLevel(null), 3300);
+          // Scroll ralenti vers la nouvelle section (delay 1.2 s post-confetti)
           window.setTimeout(() => {
-            // Respecte un scroll manuel (cohérent avec onAutoScroll)
             if (Date.now() - lastUserScrollRef.current < 1500) return;
             const nextEl = sectionRefs.current.get(nextLevel);
-            nextEl?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            if (!nextEl) return;
+            const headerOffset = 100; // sub-header sticky
+            const targetY = nextEl.getBoundingClientRect().top + window.scrollY - headerOffset;
+            smoothScrollTo(targetY, 1500);
           }, 1200);
         }
       },
@@ -699,6 +712,9 @@ export default function Curriculum() {
           }
         />
       )}
+
+      {/* Bloc 4 — Panneau de monde transition d'univers */}
+      <WorldBanner level={worldBannerLevel} />
 
       {/* Séquence récompense : XPBurst au centre du nœud cliqué. */}
       {reward && (
