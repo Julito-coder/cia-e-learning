@@ -82,6 +82,14 @@
     --gems-500:   210 100% 56%;
     --bonus-500:  250 100% 68%;
 
+    /* CECR scale — couleur distincte par niveau (Parcours simplify) */
+    --cecr-a1: 156 69% 41%;   /* #22B07D vert */
+    --cecr-a2: 175 85% 37%;   /* #0FB5A6 turquoise */
+    --cecr-b1: 210 100% 56%;  /* #1E90FF spark mid */
+    --cecr-b2: 208 81% 21%;   /* #0A3D62 navy */
+    --cecr-c1: 260 46% 42%;   /* #5B3A9E violet */
+    --cecr-c2: 345 79% 40%;   /* #B71540 red */
+
     /* ============================================
      * Mappings shadcn (light)
      * ============================================ */
