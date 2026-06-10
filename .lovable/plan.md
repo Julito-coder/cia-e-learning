@@ -1,18 +1,43 @@
-## Objectif
+## Périmètre
 
-Remplacer le picto actuel (h-20 `/picto.png`) en haut de la page Inscription/Connexion par le logo complet « Centre International d'Antibes — Don't learn French. Live it. » fourni, et le rendre plus visible.
+Nettoyage gold / étoiles **uniquement sur la landing page (Hero, sections marketing), la page Inscription/Connexion et la page TestNiveau (CTA principal)**. La gamification (Ligue Or, XP, achievements, streaks, coffres) reste intacte.
 
-## Étapes
+## Modifications
 
-1. **Asset** — créer un pointeur Lovable Asset pour `LOGO_CIA-2.png` (via `lovable-assets create`) plutôt qu'embarquer le binaire dans le repo, et l'importer dans `src/components/auth/AuthShell.tsx`.
-2. **AuthShell.tsx** :
-   - Remplacer `src="/picto.png"` par l'asset importé.
-   - Passer la hauteur de `h-20` à `h-36 md:h-44` pour qu'il prenne plus de place (le logo contient déjà le nom + baseline).
-   - Adapter l'`alt` à « Centre International d'Antibes — Don't learn French. Live it. ».
-   - Supprimer la ligne baseline texte `auth.shellBaseline` en bas du shell (devenue redondante avec la baseline déjà gravée dans le logo) pour éviter le doublon visuel.
-3. **Pas de changement** ailleurs : header/footer, autres pages, i18n des labels formulaire restent inchangés.
+### 1. `src/components/landing/Hero.tsx`
+- Retirer les deux halos `bg-cia-gold-300/30` et `bg-cia-gold-400/20` derrière Spark → remplacer par **un seul halo bleu** `bg-g-spark` (radial bleu charte §6) + un halo `bg-cia-spark-mid/20 blur-3xl` plus large.
+- Supprimer les deux confettis emoji `✨` et `⭐` flottants.
+- Retirer le blob d'arrière-plan `bg-g-sun` (top-right gold) et `bg-g-dawn` (centre gold→blue) → ne garder que `bg-g-sea` (bleu) en bas-gauche + un second halo bleu doux pour équilibrer.
+- Badge institution : remplacer l'icône `<Sparkles>` couleur `text-cia-gold-700` par `text-cia-spark-mid`.
+- Titre hero : le `bg-g-shine` (gradient gold) sur `title_part2` → remplacer par `bg-g-spark` ou `bg-g-sea` clip-text (mots-clés en bleu Spark).
+- Stat « 95% » : icône `text-cia-gold-700` + chiffre `text-cia-gold-600` → passer à `text-cia-spark-mid` + `text-cia-blue-700`.
+- Bouton CTA `variant="gradient"` (g-dawn gold→blue) → `variant="spark"` (g-spark radial bleu, déjà défini dans `button.tsx`).
 
-## Détails techniques
+### 2. `src/pages/TestNiveau.tsx`
+- Bouton « Commencer maintenant » (variant `gold`) → `variant="spark"` (bleu radial g-spark).
+- Auditer la page pour autres usages `cia-gold` / `variant="gold"` / `variant="gradient"` purement décoratifs et les passer en bleu Spark.
 
-- Le composant `AuthShell` est partagé entre `/connexion`, `/inscription`, `/mot-de-passe-oublie` et `/reset-password`. La modification s'appliquera donc à ces 4 écrans, ce qui est cohérent (même branding).
-- Le logo est sur fond blanc opaque ; le shell a déjà un fond clair (`bg-gradient-to-b from-background to-muted/30`), donc pas de retouche de contraste.
+### 3. Autres sections landing — supprimer le gold décoratif uniquement
+Pour chaque fichier listé ci-dessous, je passe `text-cia-gold-*`, `bg-cia-gold-*`, `bg-g-shine`, `bg-g-sun`, `bg-g-dawn`, `bg-g-sunset` (quand purement décoratif et non sémantique gamification/passion) vers du bleu Spark équivalent :
+- `CTASection.tsx`
+- `HowItWorks.tsx`
+- `CECRJourney.tsx`
+- `Personas.tsx`
+- `Pricing.tsx`
+- `Testimonials.tsx` (icône Quote en gold → spark)
+- `GamificationShowcase.tsx` — **exception** : c'est une vitrine de gamification, on garde la « Ligue Or » en gold (sémantique).
+- `Header.tsx` / footer si gold décoratif présent
+
+### 4. Page Inscription / Connexion
+- `AuthShell.tsx`, `AuthTabs.tsx`, `PasswordStrength.tsx` : remplacer toute couleur gold décorative par bleu Spark. `PasswordStrength` garde les couleurs sémantiques (destructive / success) mais ses paliers gold deviennent bleus.
+
+### 5. Ce qui NE change PAS
+- Gamification : `LeagueBadge`, `LeagueView`, `Achievements`, `XPBurst`, `StreakFlame`, `StreakMilestone`, `Classement`, `Profil`, `Abonnement`, parcours (`TrophyNode`, `ChestStars`, `XPChestNode`, `XPFlyIndicator`), `CoursePlayer`, `FlashcardStep`, `LevelUpCelebration`, `ComboBadge`, `RadialTimer`, `SpeedTest`, `DailyChallenge`, `Glossaire`, `NotFound`, admin/*.
+- Tokens CSS et Tailwind (`--cia-gold-*`, `bg-g-shine`, etc.) ne sont **pas** supprimés — ils restent disponibles pour les écrans gamifiés.
+- Variants `gold` et `gradient` du bouton restent dans `button.tsx` (utilisés ailleurs).
+
+## Vérification
+- Capture preview du Hero après modif → vérifier absence de jaune et présence du halo bleu derrière Spark.
+- Capture page Inscription → vérifier absence de gold parasite.
+- Capture page TestNiveau → vérifier le bouton en bleu Spark.
+- Build implicite via la chaîne Lovable.
