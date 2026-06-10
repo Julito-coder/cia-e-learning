@@ -211,7 +211,7 @@ export default {
         'g-dawn':    'linear-gradient(135deg, hsl(var(--cia-gold-500)) 0%, hsl(var(--cia-spark-light)) 60%, hsl(var(--cia-blue-500)) 100%)',
         'g-sunset':  'linear-gradient(135deg, hsl(var(--cia-red-500)) 0%, hsl(var(--cia-red-300)) 45%, hsl(var(--cia-gold-500)) 100%)',
         'g-mistral': 'linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(var(--cia-blue-50)) 100%)',
-        'g-spark':   'radial-gradient(circle at 50% 30%, hsl(0 0% 100%) 0%, hsl(var(--cia-spark-light)) 30%, hsl(var(--cia-spark-mid)) 60%, hsl(var(--cia-blue-500)) 100%)',
+        'g-spark':   'radial-gradient(circle at 50% 35%, hsl(var(--cia-spark-light) / 0.55) 0%, hsl(var(--cia-spark-mid)) 55%, hsl(var(--cia-blue-700)) 100%)',
         'g-shine':   'linear-gradient(90deg, hsl(var(--cia-gold-500)) 0%, hsl(45 100% 83%) 50%, hsl(var(--cia-gold-500)) 100%)',
         /* Legacy gradient aliases */
         'gradient-sun':        'linear-gradient(135deg, hsl(var(--cia-gold-200)) 0%, hsl(var(--cia-gold-400)) 50%, hsl(var(--cia-gold-500)) 100%)',
