@@ -50,7 +50,6 @@ export default defineConfig(({ mode }) => ({
               return "data-vendor";
             }
             if (
-              id.includes("framer-motion") ||
               id.includes("lottie-react") ||
               id.includes("canvas-confetti")
             ) {
