@@ -6,7 +6,7 @@ const segmentColors = [
   'bg-muted',
   'bg-destructive',
   'bg-streak-500',
-  'bg-cia-gold-500',
+  'bg-cia-spark-mid',
   'bg-cia-success',
 ];
 
@@ -14,7 +14,7 @@ const labelColors = [
   'text-muted-foreground',
   'text-destructive',
   'text-cia-red-600',
-  'text-cia-gold-700',
+  'text-cia-spark-mid',
   'text-cia-success',
 ];
 

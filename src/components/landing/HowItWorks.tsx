@@ -5,9 +5,9 @@ import { staggerContainer, staggerItem } from '@/lib/animations';
 
 const STEPS = [
   { icon: Target,        bg: 'bg-cia-blue-50 text-cia-blue-700', titleKey: 'landing.how_it_works.step1_title', descKey: 'landing.how_it_works.step1_desc' },
-  { icon: GraduationCap, bg: 'bg-cia-gold/15 text-cia-gold-600', titleKey: 'landing.how_it_works.step2_title', descKey: 'landing.how_it_works.step2_desc' },
+  { icon: GraduationCap, bg: 'bg-cia-spark-light/20 text-cia-spark-mid', titleKey: 'landing.how_it_works.step2_title', descKey: 'landing.how_it_works.step2_desc' },
   { icon: Flame,         bg: 'bg-streak/15 text-streak',          titleKey: 'landing.how_it_works.step3_title', descKey: 'landing.how_it_works.step3_desc' },
-  { icon: Trophy,        bg: 'bg-cia-gold/15 text-cia-gold-600', titleKey: 'landing.how_it_works.step4_title', descKey: 'landing.how_it_works.step4_desc' },
+  { icon: Trophy,        bg: 'bg-cia-spark-light/20 text-cia-spark-mid', titleKey: 'landing.how_it_works.step4_title', descKey: 'landing.how_it_works.step4_desc' },
 ];
 
 export function HowItWorks() {

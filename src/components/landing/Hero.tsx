@@ -13,7 +13,7 @@ export function Hero() {
     <section className="relative overflow-hidden bg-g-mistral pt-16 pb-20 md:pt-24 md:pb-28">
       {/* Background décoratifs flottants */}
       <div
-        className="absolute -top-32 -right-32 w-[28rem] h-[28rem] rounded-full bg-g-sun opacity-25 blur-3xl pointer-events-none"
+        className="absolute -top-32 -right-32 w-[28rem] h-[28rem] rounded-full bg-cia-spark-mid/15 blur-3xl pointer-events-none"
         aria-hidden="true"
       />
       <div
@@ -21,7 +21,7 @@ export function Hero() {
         aria-hidden="true"
       />
       <div
-        className="absolute top-1/3 left-1/4 w-64 h-64 rounded-full bg-g-dawn opacity-10 blur-3xl pointer-events-none"
+        className="absolute top-1/3 left-1/4 w-64 h-64 rounded-full bg-cia-spark-light/15 blur-3xl pointer-events-none"
         aria-hidden="true"
       />
 
@@ -37,19 +37,19 @@ export function Hero() {
             {/* Glass badge institution */}
             <motion.div variants={staggerItem} className="flex justify-center lg:justify-start">
               <div className="inline-flex glass rounded-full px-4 py-2 gap-2 items-center text-sm font-medium text-cia-blue-700 shadow-glass">
-                <Sparkles className="h-4 w-4 text-cia-gold-700" />
+                <Sparkles className="h-4 w-4 text-cia-spark-mid" />
                 <span>{t('landing.hero.badge')}</span>
               </div>
             </motion.div>
 
-            {/* Heading hero — title_part1 plain, title_part2 in gradient gold-shine */}
+            {/* Heading hero — title_part1 plain, title_part2 in Spark blue gradient */}
             <motion.h1
               variants={staggerItem}
               className="font-display font-extrabold text-5xl md:text-6xl lg:text-7xl tracking-tight leading-[1.05] text-cia-blue-900"
             >
               {t('landing.hero.title_part1')}
               <br />
-              <span className="bg-g-shine bg-clip-text text-transparent anim-shine">
+              <span className="bg-g-sea bg-clip-text text-transparent">
                 {t('landing.hero.title_part2')}
               </span>
             </motion.h1>
@@ -67,7 +67,7 @@ export function Hero() {
               variants={staggerItem}
               className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start pt-2"
             >
-              <Button asChild variant="gradient" size="cta" className="rounded-2xl group">
+              <Button asChild variant="spark" size="cta" className="rounded-2xl group">
                 <Link to="/test-niveau" className="gap-2">
                   <Sparkles className="h-4 w-4" />
                   {t('landing.hero.cta_primary')}
@@ -94,8 +94,8 @@ export function Hero() {
                 </div>
               </div>
               <div className="glass-adaptive rounded-2xl p-3 text-center shadow-sm">
-                <TrendingUp className="h-4 w-4 mx-auto mb-1 text-cia-gold-700" />
-                <div className="font-display font-extrabold text-2xl md:text-3xl text-cia-gold-600 tabular-nums">
+                <TrendingUp className="h-4 w-4 mx-auto mb-1 text-cia-spark-mid" />
+                <div className="font-display font-extrabold text-2xl md:text-3xl text-cia-blue-700 tabular-nums">
                   95%
                 </div>
                 <div className="text-[10px] uppercase tracking-wider text-muted-foreground mt-0.5">
@@ -121,13 +121,13 @@ export function Hero() {
             transition={{ type: 'spring', damping: 14, stiffness: 180, delay: 0.3 }}
             className="relative flex justify-center items-center order-first lg:order-last py-4"
           >
-            {/* Halo doré ambient derrière mascotte */}
+            {/* Halo bleu ambient derrière mascotte (charte §6 — g-spark) */}
             <div
-              className="absolute inset-0 m-auto w-72 h-72 rounded-full bg-cia-gold-300/30 blur-3xl pointer-events-none"
+              className="absolute inset-0 m-auto w-72 h-72 rounded-full bg-g-spark opacity-30 blur-3xl pointer-events-none"
               aria-hidden="true"
             />
             <div
-              className="absolute inset-0 m-auto w-56 h-56 rounded-full bg-cia-gold-400/20 blur-2xl pointer-events-none"
+              className="absolute inset-0 m-auto w-56 h-56 rounded-full bg-cia-spark-mid/25 blur-2xl pointer-events-none"
               aria-hidden="true"
             />
 
@@ -138,24 +138,6 @@ export function Hero() {
             <div className="relative z-10 md:hidden">
               <SparkPresence mood="encouraging" size={180} embers />
             </div>
-
-            {/* Confetti décoratifs flottants */}
-            <motion.div
-              className="absolute top-8 right-4 text-2xl"
-              animate={{ y: [0, -8, 0], rotate: [0, 10, 0] }}
-              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-              aria-hidden="true"
-            >
-              ✨
-            </motion.div>
-            <motion.div
-              className="absolute top-1/3 -right-2 text-xl"
-              animate={{ y: [0, -10, 0], rotate: [0, 15, 0] }}
-              transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-              aria-hidden="true"
-            >
-              ⭐
-            </motion.div>
           </motion.div>
         </div>
       </div>

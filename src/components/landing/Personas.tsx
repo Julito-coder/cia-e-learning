@@ -50,7 +50,7 @@ function PersonaCard({ Icon, titleKey, descKey, statValueKey, statLabelKey, t }:
 
         <div className="mt-auto">
           <div className="border-t border-cia-blue-100 pt-4 mb-4">
-            <p className="font-display text-2xl font-extrabold text-cia-gold-600 tabular-nums">
+            <p className="font-display text-2xl font-extrabold text-cia-spark-mid tabular-nums">
               {t(statValueKey)}
             </p>
             <p className="text-xs uppercase tracking-wider text-muted-foreground mt-0.5">
