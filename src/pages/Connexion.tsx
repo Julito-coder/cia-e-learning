@@ -80,8 +80,8 @@ export default function Connexion() {
     const result = await lovable.auth.signInWithOAuth('google', {
       redirect_uri: `${window.location.origin}${redirectTo}`,
     });
-    if (error) {
-      toast.error(t('auth.googleError', { message: error.message }));
+    if (result.error) {
+      toast.error(t('auth.googleError', { message: result.error.message ?? String(result.error) }));
       setGoogleLoading(false);
     }
   };
@@ -174,8 +174,7 @@ export default function Connexion() {
         <CardContent className="p-6 space-y-4">
           <AuthTabs value={tab} onChange={switchTab} />
 
-          {/* SSO — Google live via supabase.auth.signInWithOAuth({provider:'google'}).
-              Apple requires an Apple Developer account ($99/yr) — deferred. */}
+          {/* SSO — Apple + Google managés par Lovable Cloud. */}
           <div className="space-y-2">
             <Button
               type="button"
@@ -192,16 +191,12 @@ export default function Connexion() {
               type="button"
               variant="outline"
               size="lg"
-              className="w-full gap-2 opacity-60 cursor-not-allowed"
-              disabled
-              aria-disabled="true"
-              title={t('auth.comingSoon')}
+              className="w-full gap-2"
+              onClick={handleAppleSignIn}
+              disabled={appleLoading || loading}
             >
-              <AppleIcon />
+              {appleLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <AppleIcon />}
               {t('auth.continueWithApple')}
-              <span className="ml-auto text-[10px] uppercase tracking-wider text-muted-foreground">
-                {t('auth.comingSoonShort')}
-              </span>
             </Button>
           </div>
 
