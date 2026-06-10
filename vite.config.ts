@@ -25,58 +25,12 @@ export default defineConfig(({ mode }) => ({
     dedupe: ["react", "react-dom", "react/jsx-runtime", "react/jsx-dev-runtime"],
   },
   build: {
-    // Manual vendor chunks keep the per-route lazy chunks small and let
-    // long-term caching work properly when only app code changes.
-    rollupOptions: {
-      output: {
-        manualChunks(id) {
-          if (id.includes("node_modules")) {
-            if (
-              id.includes("react-router-dom") ||
-              id.includes("/react-dom/") ||
-              id.includes("/react/") ||
-              id.includes("react-i18next") ||
-              id.includes("@tanstack/react-query") ||
-              id.includes("react-hook-form") ||
-              id.includes("@hookform") ||
-              id.includes("/scheduler/")
-            ) {
-              return "react-vendor";
-            }
-            if (
-              id.includes("@supabase") ||
-              id.includes("zod")
-            ) {
-              return "data-vendor";
-            }
-            if (
-              id.includes("i18next") ||
-              id.includes("date-fns")
-            ) {
-              // react-i18next is handled above with react-vendor to avoid
-              // a "createContext of undefined" race between chunks.
-              if (id.includes("react-i18next")) return "react-vendor";
-              return "i18n-vendor";
-            }
-            if (id.includes("@radix-ui")) {
-              return "radix-vendor";
-            }
-          }
-          // Pedagogical content (17 module files + course-content.ts) is
-          // eagerly pulled in by useDailyChallenge via the Header.
-          // Split into its own chunk so the main bundle stays lean.
-          // Sprint 4 will migrate these to Supabase and drop the chunk.
-          if (
-            id.includes("/src/data/") &&
-            (id.includes("-content") ||
-              id.includes("curriculum") ||
-              id.includes("course-content"))
-          ) {
-            return "pedago-content";
-          }
-        },
-      },
-    },
-    chunkSizeWarningLimit: 600,
+    // No manual vendor chunking. A custom manualChunks split previously caused
+    // React-dependent libraries (Radix, React Query, React Hook Form, framer-motion,
+    // etc.) to load in a separate chunk before the React runtime was fully
+    // initialised, producing production-only "createContext of undefined" /
+    // "forwardRef of undefined" crashes. Letting Rollup compute the chunk
+    // graph automatically guarantees correct module ordering.
+    chunkSizeWarningLimit: 1200,
   },
 }));
