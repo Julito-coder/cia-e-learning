@@ -85,12 +85,12 @@ export default function ContactCia() {
             </CardDescription>
           </CardHeader>
           <CardContent className="mt-auto">
-            <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="block">
-              <Button className="w-full bg-[#25D366] hover:bg-[#1ebe5d] text-white shadow-none">
+            <Button asChild className="w-full bg-[#25D366] hover:bg-[#1ebe5d] text-white shadow-none">
+              <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
                 <MessageCircle className="h-4 w-4 mr-2" />
                 Ouvrir WhatsApp
-              </Button>
-            </a>
+              </a>
+            </Button>
             <p className="text-xs text-muted-foreground mt-2 text-center">
               Vous serez redirigé vers WhatsApp.
             </p>
