@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Zap, Trophy, Timer, ArrowLeft, RotateCcw, Crown, Lock } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
@@ -26,6 +27,7 @@ function shuffleQuestion(q: SpeedQuestion): SpeedQuestion {
 }
 
 export default function SpeedTest() {
+  const { t } = useTranslation();
   const { level: levelParam } = useParams();
   const level = (levelParam as CECRLevel) || 'A1';
   const navigate = useNavigate();
@@ -162,12 +164,12 @@ export default function SpeedTest() {
           <div className="inline-flex h-16 w-16 rounded-2xl bg-muted items-center justify-center mb-4">
             <Lock className="h-8 w-8 text-muted-foreground" />
           </div>
-          <h1 className="font-display text-2xl text-primary mb-2">Test de vitesse {level} verrouillé</h1>
+          <h1 className="font-display text-2xl text-primary mb-2">{t('speedTest.lockedTitle', { level })}</h1>
           <p className="text-muted-foreground text-sm mb-6">
-            Termine au moins un module du niveau {level} à 100% pour débloquer ce challenge chronométré.
+            {t('speedTest.lockedBody', { level })}
           </p>
           <Link to="/programme">
-            <Button className="rounded-xl">Retourner au programme</Button>
+            <Button className="rounded-xl">{t('speedTest.backToProgramme')}</Button>
           </Link>
         </Card>
       </div>
@@ -281,14 +283,14 @@ export default function SpeedTest() {
           >
             <Trophy className="h-16 w-16 mx-auto mb-4 text-cia-gold-500 drop-shadow-lg" />
           </motion.div>
-          <h1 className="font-display text-3xl text-primary mb-2">Terminé !</h1>
-          <p className="text-muted-foreground mb-6">Bravo pour ce challenge {level}</p>
+          <h1 className="font-display text-3xl text-primary mb-2">{t('speedTest.doneTitle')}</h1>
+          <p className="text-muted-foreground mb-6">{t('speedTest.doneSubtitle', { level })}</p>
 
           <div className="grid grid-cols-3 gap-3 mb-6">
             {[
-              { v: score, suffix: '', cls: 'text-cia-success', border: 'border-cia-success/30', label: 'Bonnes' },
-              { v: errors, suffix: '', cls: 'text-destructive', border: 'border-destructive/30', label: 'Erreurs' },
-              { v: accuracy, suffix: '%', cls: 'text-primary', border: 'border-primary/30', label: 'Précision' },
+              { v: score, suffix: '', cls: 'text-cia-success', border: 'border-cia-success/30', label: t('speedTest.correct') },
+              { v: errors, suffix: '', cls: 'text-destructive', border: 'border-destructive/30', label: t('speedTest.errors') },
+              { v: accuracy, suffix: '%', cls: 'text-primary', border: 'border-primary/30', label: t('speedTest.accuracy') },
             ].map((s, i) => (
               <motion.div
                 key={i}
@@ -316,10 +318,10 @@ export default function SpeedTest() {
 
           <div className="flex gap-3">
             <Button onClick={start} size="lg" className="flex-1 rounded-2xl gap-2 bg-gradient-to-r from-cia-gold-500 to-streak-500 hover:from-cia-gold-600 hover:to-streak-500">
-              <RotateCcw className="h-4 w-4" /> Rejouer
+              <RotateCcw className="h-4 w-4" /> {t('speedTest.replay')}
             </Button>
             <Button onClick={() => navigate('/programme')} size="lg" variant="outline" className="flex-1 rounded-2xl">
-              Programme
+              {t('nav.curriculum')}
             </Button>
           </div>
         </Card>
@@ -345,7 +347,7 @@ export default function SpeedTest() {
           <motion.div layout className="px-3 py-1 rounded-full bg-destructive/15 text-destructive text-sm font-bold">
             ✗ <AnimatedCounter target={errors} duration={300} />
           </motion.div>
-          <Button size="sm" variant="ghost" onClick={stop} className="text-xs">Stop</Button>
+          <Button size="sm" variant="ghost" onClick={stop} className="text-xs">{t('speedTest.stop')}</Button>
         </div>
       </div>
 

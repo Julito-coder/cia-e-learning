@@ -1,5 +1,6 @@
 import { useState, useEffect, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Lock, Eye, EyeOff, CheckCircle, Loader2, Check, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
@@ -13,6 +14,7 @@ import { PasswordStrength } from '@/components/auth/PasswordStrength';
 import { resetSchema } from '@/lib/validators/auth';
 
 export default function ResetPassword() {
+  const { t } = useTranslation();
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -77,14 +79,14 @@ export default function ResetPassword() {
 
   if (!isValidSession) {
     return (
-      <AuthShell title="Lien invalide" subtitle="Ce lien de réinitialisation n'est plus valide.">
+      <AuthShell title={t('auth.invalidLinkTitle')} subtitle={t('auth.invalidLinkSubtitle')}>
         <Card className="border-border/60 shadow-xl rounded-2xl">
           <CardContent className="p-6 text-center space-y-4">
             <p className="text-sm text-muted-foreground">
-              Veuillez demander un nouveau lien pour réinitialiser votre mot de passe.
+              {t('auth.invalidLinkBody')}
             </p>
             <Button onClick={() => navigate('/mot-de-passe-oublie')} className="w-full">
-              Demander un nouveau lien
+              {t('auth.requestNewLink')}
             </Button>
           </CardContent>
         </Card>
@@ -94,8 +96,8 @@ export default function ResetPassword() {
 
   return (
     <AuthShell
-      title="Nouveau mot de passe"
-      subtitle="Choisissez un nouveau mot de passe sécurisé"
+      title={t('auth.resetTitle')}
+      subtitle={t('auth.resetSubtitle')}
     >
       <Card className="border-border/60 shadow-xl rounded-2xl">
         <CardContent className="p-6">
@@ -116,10 +118,10 @@ export default function ResetPassword() {
                   <CheckCircle className="h-8 w-8 text-cia-success" />
                 </motion.div>
                 <h2 className="text-lg font-semibold text-foreground">
-                  Mot de passe modifié !
+                  {t('auth.resetSuccess')}
                 </h2>
                 <p className="text-sm text-muted-foreground">
-                  Redirection dans {countdown}…
+                  {t('auth.resetRedirect', { count: countdown })}
                 </p>
               </motion.div>
             ) : (
@@ -131,7 +133,7 @@ export default function ResetPassword() {
                 animate={{ opacity: 1 }}
               >
                 <div className="space-y-1.5">
-                  <Label htmlFor="password">Nouveau mot de passe</Label>
+                  <Label htmlFor="password">{t('auth.newPassword')}</Label>
                   <div className="relative">
                     <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input
@@ -149,7 +151,7 @@ export default function ResetPassword() {
                       type="button"
                       onClick={() => setShowPassword((v) => !v)}
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                      aria-label={showPassword ? 'Masquer' : 'Afficher'}
+                      aria-label={showPassword ? t('auth.hide') : t('auth.show')}
                     >
                       {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
@@ -158,7 +160,7 @@ export default function ResetPassword() {
                 </div>
 
                 <div className="space-y-1.5">
-                  <Label htmlFor="confirmPassword">Confirmer le mot de passe</Label>
+                  <Label htmlFor="confirmPassword">{t('auth.confirmPassword')}</Label>
                   <div className="relative">
                     <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input
@@ -176,12 +178,12 @@ export default function ResetPassword() {
                   </div>
                   {matchesState === 'match' && (
                     <p className="text-[11px] text-cia-success flex items-center gap-1">
-                      <Check className="h-3 w-3" /> Les mots de passe correspondent
+                      <Check className="h-3 w-3" /> {t('auth.passwordsMatch')}
                     </p>
                   )}
                   {matchesState === 'mismatch' && (
                     <p className="text-[11px] text-destructive flex items-center gap-1">
-                      <X className="h-3 w-3" /> Les mots de passe ne correspondent pas
+                      <X className="h-3 w-3" /> {t('auth.passwordsDiffer')}
                     </p>
                   )}
                 </div>
@@ -196,10 +198,10 @@ export default function ResetPassword() {
                     {loading ? (
                       <>
                         <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                        Modification…
+                        {t('auth.updating')}
                       </>
                     ) : (
-                      'Modifier le mot de passe'
+                      t('auth.updatePassword')
                     )}
                   </Button>
                 </motion.div>

@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { ArrowLeft, Clock, FileText, Headphones, Video, BookOpen, Mic, Play, Trophy, Lock } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -10,6 +11,7 @@ import { LevelBadge } from '@/components/courses/LevelBadge';
 import { demoCourses } from '@/data/demo-courses';
 import { getCourseContent } from '@/data/course-content';
 import { getLessonById, curriculum } from '@/data/curriculum';
+import { getEntryLessonForModule, getRegistryModule } from '@/data/contentRegistry';
 import { CoursePlayer } from '@/components/course-player/CoursePlayer';
 import { useUserProgress, isLevelAccessible } from '@/hooks/useUserProgress';
 import { getNewlyUnlockedModules, isModuleComplete, computeLevelFromProgress } from '@/hooks/useModuleUnlock';
@@ -19,29 +21,46 @@ import { readCourseProgressMap, writeCourseProgressMap, setLastLessonOpened } fr
 import { toast } from 'sonner';
 import { notify } from '@/lib/notify';
 
-const contentTypeLabels: Record<string, { label: string; icon: React.ElementType }> = {
-  text: { label: 'Texte', icon: FileText },
-  audio: { label: 'Audio', icon: Headphones },
-  video: { label: 'Vidéo', icon: Video },
-  qcm: { label: 'QCM', icon: BookOpen },
-  'drag-drop': { label: 'Glisser-déposer', icon: BookOpen },
-  'fill-blank': { label: 'Texte à trous', icon: FileText },
-  flashcard: { label: 'Flashcards', icon: BookOpen },
-  voice: { label: 'Enregistrement vocal', icon: Mic },
+const contentTypeIcons: Record<string, { i18nKey: string; icon: React.ElementType }> = {
+  text:         { i18nKey: 'courseDetail.contentType.text',       icon: FileText },
+  audio:        { i18nKey: 'courseDetail.contentType.audio',      icon: Headphones },
+  video:        { i18nKey: 'courseDetail.contentType.video',      icon: Video },
+  qcm:          { i18nKey: 'courseDetail.contentType.qcm',        icon: BookOpen },
+  'drag-drop':  { i18nKey: 'courseDetail.contentType.dragDrop',   icon: BookOpen },
+  'fill-blank': { i18nKey: 'courseDetail.contentType.fillBlank',  icon: FileText },
+  flashcard:    { i18nKey: 'courseDetail.contentType.flashcard',  icon: BookOpen },
+  voice:        { i18nKey: 'courseDetail.contentType.voice',      icon: Mic },
+  lesson:       { i18nKey: 'courseDetail.contentType.lesson',     icon: FileText },
+  listening:    { i18nKey: 'courseDetail.contentType.listening',  icon: Headphones },
+  'final-quiz': { i18nKey: 'courseDetail.contentType.finalQuiz',  icon: Trophy },
 };
 
 export default function CourseDetail() {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   // Le défi du jour autorise tous les niveaux, sans restriction d'accès.
   const isDailyChallenge = searchParams.get('daily') === '1';
   
+  // Failsafe : older surfaces may still link to `/cours/${moduleId}` (e.g.
+  // `A1.1`). Resolve those to the canonical first lesson of the module so
+  // we never land on the misleading "Cours introuvable" screen.
+  const moduleEntry = id ? getRegistryModule(id) : undefined;
+  useEffect(() => {
+    if (!moduleEntry) return;
+    const entry = getEntryLessonForModule(moduleEntry.moduleId);
+    if (entry) {
+      const next = `/cours/${entry.lessonId}${isDailyChallenge ? '?daily=1' : ''}`;
+      navigate(next, { replace: true });
+    }
+  }, [moduleEntry, navigate, isDailyChallenge]);
+
   // Check if this is a curriculum lesson (lesson-N) or a legacy demo course
   const isCurriculumLesson = id?.startsWith('lesson-');
   const lessonId = isCurriculumLesson ? parseInt(id!.replace('lesson-', '')) : null;
   const curriculumData = lessonId ? getLessonById(lessonId) : null;
-  
+
   const course = isCurriculumLesson ? null : demoCourses.find((c) => c.id === id);
   const content = id ? getCourseContent(id) : undefined;
   const [playing, setPlaying] = useState(false);
@@ -67,9 +86,9 @@ export default function CourseDetail() {
   if (!displayCourse) {
     return (
       <div className="container py-16 text-center">
-        <p className="text-lg text-muted-foreground">Cours introuvable.</p>
+        <p className="text-lg text-muted-foreground">{t('courseDetail.notFound')}</p>
         <Link to="/programme">
-          <Button variant="outline" className="mt-4">Retour au programme</Button>
+          <Button variant="outline" className="mt-4">{t('courseDetail.backToProgramme')}</Button>
         </Link>
       </div>
     );
@@ -95,7 +114,7 @@ export default function CourseDetail() {
           // Award XP based on score
           const xpEarned = Math.max(5, Math.round(score * 5));
           const { leveledUp, newLevel } = await addXP(xpEarned, 'course_completion', displayCourse.id);
-          notify.xp(xpEarned, 'Cours terminé');
+          notify.xp(xpEarned, t('courseDetail.completedToast'));
 
           // Daily challenge bonus :
           // - soit la leçon ouverte EST la leçon du jour pour son niveau (entrée naturelle depuis le programme),
@@ -108,7 +127,7 @@ export default function CourseDetail() {
               setTimeout(() => notify.streak(res.newStreak, res.xp), 600);
             } else if (isDailyChallenge) {
               setTimeout(() => {
-                toast(`✅ Défi du jour déjà validé aujourd'hui — pas de bonus supplémentaire.`, { duration: 4000 });
+                toast(t('courseDetail.dailyAlreadyDone'), { duration: 4000 });
               }, 600);
             }
           }
@@ -165,15 +184,15 @@ export default function CourseDetail() {
         <div className="absolute bottom-0 left-0 right-0 p-6 text-primary-foreground">
           <div className="container">
             <Link to="/programme" className="inline-flex items-center gap-1 text-sm opacity-80 hover:opacity-100 mb-3">
-              <ArrowLeft className="h-4 w-4" /> Programme
+              <ArrowLeft className="h-4 w-4" /> {t('nav.curriculum')}
             </Link>
             <div className="flex items-center gap-2 mb-2">
               <LevelBadge level={displayCourse.level} />
               <Badge variant="outline" className="text-primary-foreground border-primary-foreground/30">
                 {displayCourse.theme}
               </Badge>
-              {displayCourse.isNew && <Badge className="bg-accent text-accent-foreground">Nouveau</Badge>}
-              {locked && <Badge className="bg-destructive text-destructive-foreground">🔒 Verrouillé</Badge>}
+              {displayCourse.isNew && <Badge className="bg-accent text-accent-foreground">{t('course.new')}</Badge>}
+              {locked && <Badge className="bg-destructive text-destructive-foreground">🔒 {t('courseDetail.lockedBadge')}</Badge>}
             </div>
             <h1 className="font-display text-2xl md:text-3xl font-bold">{displayCourse.title}</h1>
             <p className="text-sm font-mono opacity-70 mt-1">{displayCourse.code}</p>
@@ -190,10 +209,9 @@ export default function CourseDetail() {
               <div className="flex items-center gap-4 p-4 rounded-xl bg-cia-gold-50 border-2 border-cia-gold-200 dark:bg-cia-gold-900 dark:border-cia-gold-800">
                 <Lock className="h-8 w-8 text-cia-gold-600" />
                 <div>
-                  <p className="font-bold text-cia-gold-700 dark:text-cia-gold-400">Cours verrouillé</p>
+                  <p className="font-bold text-cia-gold-700 dark:text-cia-gold-400">{t('courseDetail.lockedTitle')}</p>
                   <p className="text-sm text-cia-gold-600 dark:text-cia-gold-500">
-                    Atteignez le niveau {displayCourse.level} (5000 XP par niveau) pour débloquer ce cours.
-                    Votre niveau actuel : {cecrLevel}
+                    {t('courseDetail.lockedDescription', { required: displayCourse.level, current: cecrLevel })}
                   </p>
                 </div>
               </div>
@@ -204,27 +222,28 @@ export default function CourseDetail() {
               <div className="flex items-center gap-4 p-4 rounded-xl bg-success-50 border-2 border-success-100 dark:bg-success-700 dark:border-success-700">
                 <Trophy className="h-8 w-8 text-success-600" />
                 <div>
-                  <p className="font-bold text-success-700 dark:text-success-500">Cours terminé !</p>
-                  <p className="text-sm text-success-600 dark:text-success-500">Score : {displayScore}/100</p>
+                  <p className="font-bold text-success-700 dark:text-success-500">{t('courseDetail.completedTitle')}</p>
+                  <p className="text-sm text-success-600 dark:text-success-500">{t('courseDetail.scoreLabel', { score: displayScore })}</p>
                 </div>
               </div>
             )}
 
             <Card>
-              <CardHeader><CardTitle>Description</CardTitle></CardHeader>
+              <CardHeader><CardTitle>{t('courseDetail.descriptionTitle')}</CardTitle></CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">{displayCourse.description}</p>
               </CardContent>
             </Card>
 
             <Card>
-              <CardHeader><CardTitle>Contenu du cours</CardTitle></CardHeader>
+              <CardHeader><CardTitle>{t('courseDetail.contentTitle')}</CardTitle></CardHeader>
               <CardContent>
                 <div className="space-y-3">
                   {content ? (
                     content.steps.map((s, i) => {
-                      const typeInfo = contentTypeLabels[s.type] || { label: s.type, icon: BookOpen };
-                      const Icon = typeInfo.icon;
+                      const typeInfo = contentTypeIcons[s.type];
+                      const Icon = typeInfo?.icon ?? BookOpen;
+                      const typeLabel = typeInfo ? t(typeInfo.i18nKey) : s.type;
                       return (
                         <div key={s.id} className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
                           <span className="h-7 w-7 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">
@@ -234,13 +253,13 @@ export default function CourseDetail() {
                             <Icon className="h-4 w-4 text-primary" />
                           </div>
                           <span className="text-sm font-medium">{s.title}</span>
-                          <Badge variant="outline" className="ml-auto text-xs capitalize">{s.type}</Badge>
+                          <Badge variant="outline" className="ml-auto text-xs">{typeLabel}</Badge>
                         </div>
                       );
                     })
                   ) : (
                     displayCourse.contentTypes.map((type) => {
-                      const info = contentTypeLabels[type];
+                      const info = contentTypeIcons[type];
                       if (!info) return null;
                       const Icon = info.icon;
                       return (
@@ -248,8 +267,8 @@ export default function CourseDetail() {
                           <div className="h-8 w-8 rounded-md bg-primary/10 flex items-center justify-center">
                             <Icon className="h-4 w-4 text-primary" />
                           </div>
-                          <span className="text-sm font-medium">{info.label}</span>
-                          <Badge variant="outline" className="ml-auto text-xs">Bientôt</Badge>
+                          <span className="text-sm font-medium">{t(info.i18nKey)}</span>
+                          <Badge variant="outline" className="ml-auto text-xs">{t('courseDetail.comingSoon')}</Badge>
                         </div>
                       );
                     })
@@ -265,7 +284,7 @@ export default function CourseDetail() {
               <CardContent className="p-5 space-y-4">
                 {locked ? (
                   <Button size="lg" className="w-full gap-2" disabled>
-                    <Lock className="h-4 w-4" /> Niveau {displayCourse.level} requis
+                    <Lock className="h-4 w-4" /> {t('courseDetail.levelRequired', { level: displayCourse.level })}
                   </Button>
                 ) : content ? (
                   <Button
@@ -282,23 +301,27 @@ export default function CourseDetail() {
                     }}
                   >
                     <Play className="h-4 w-4" />
-                    {isCompleted ? 'Refaire le cours' : courseProgress ? 'Continuer le cours' : 'Commencer le cours'}
+                    {isCompleted
+                      ? t('courseDetail.redo')
+                      : courseProgress
+                        ? t('courseDetail.continue')
+                        : t('courseDetail.start')}
                   </Button>
                 ) : (
                   <Button size="lg" className="w-full gap-2" disabled>
-                    <Play className="h-4 w-4" /> Bientôt disponible
+                    <Play className="h-4 w-4" /> {t('courseDetail.comingSoonCta')}
                   </Button>
                 )}
                 {content && !locked && (
                   <p className="text-xs text-muted-foreground text-center">
-                    {content.steps.length} étapes interactives
+                    {t('courseDetail.stepsCount', { count: content.steps.length })}
                   </p>
                 )}
                 {displayScore !== undefined && (
                   <>
                     <Separator />
                     <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">Score</span>
+                      <span className="text-muted-foreground">{t('courseDetail.score')}</span>
                       <span className="font-medium">{displayScore}/100</span>
                     </div>
                   </>
@@ -306,7 +329,7 @@ export default function CourseDetail() {
                 <Separator />
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Clock className="h-4 w-4" />
-                  Durée estimée : {displayCourse.duration} minutes
+                  {t('courseDetail.estimatedDuration', { minutes: displayCourse.duration })}
                 </div>
               </CardContent>
             </Card>

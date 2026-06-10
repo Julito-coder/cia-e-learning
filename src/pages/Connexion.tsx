@@ -1,5 +1,6 @@
 import { useState, useEffect, FormEvent } from 'react';
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Mail, Lock, Eye, EyeOff, Loader2, User as UserIcon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
@@ -41,6 +42,7 @@ function AppleIcon() {
 }
 
 export default function Connexion() {
+  const { t } = useTranslation();
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const initialTab: Tab = location.pathname === '/inscription' ? 'signup' : 'login';
@@ -78,8 +80,8 @@ export default function Connexion() {
     const result = await lovable.auth.signInWithOAuth('google', {
       redirect_uri: `${window.location.origin}${redirectTo}`,
     });
-    if (result.error) {
-      toast.error(`Connexion Google impossible : ${result.error.message ?? result.error}`);
+    if (error) {
+      toast.error(t('auth.googleError', { message: error.message }));
       setGoogleLoading(false);
     }
   };
@@ -131,7 +133,7 @@ export default function Connexion() {
         const { error } = await signIn(email, password);
         if (error) toast.error(error.message);
         else {
-          toast.success('Connexion réussie');
+          toast.success(t('auth.loginSuccess'));
           navigate(redirectTo);
         }
       } else {
@@ -149,7 +151,7 @@ export default function Connexion() {
         });
         if (error) toast.error(error.message);
         else {
-          toast.success('Bienvenue ! On démarre ton aventure 🇫🇷');
+          toast.success(t('auth.signupSuccess'));
           navigate('/dashboard?welcome=1');
         }
       }
@@ -165,12 +167,8 @@ export default function Connexion() {
 
   return (
     <AuthShell
-      title={isLogin ? 'Bienvenue !' : 'Créer un compte'}
-      subtitle={
-        isLogin
-          ? 'Connectez-vous pour accéder à vos cours'
-          : 'Rejoignez la plateforme e-learning du CIA'
-      }
+      title={isLogin ? t('auth.welcomeTitle') : t('auth.createAccount')}
+      subtitle={isLogin ? t('auth.loginSubtitle') : t('auth.signupSubtitle')}
     >
       <Card className="border-border/60 shadow-xl rounded-2xl">
         <CardContent className="p-6 space-y-4">
@@ -188,18 +186,22 @@ export default function Connexion() {
               disabled={googleLoading || loading}
             >
               {googleLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <GoogleIcon />}
-              Continuer avec Google
+              {t('auth.continueWithGoogle')}
             </Button>
             <Button
               type="button"
               variant="outline"
               size="lg"
-              className="w-full gap-2"
-              onClick={handleAppleSignIn}
-              disabled={appleLoading || googleLoading || loading}
+              className="w-full gap-2 opacity-60 cursor-not-allowed"
+              disabled
+              aria-disabled="true"
+              title={t('auth.comingSoon')}
             >
-              {appleLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <AppleIcon />}
-              Continuer avec Apple
+              <AppleIcon />
+              {t('auth.continueWithApple')}
+              <span className="ml-auto text-[10px] uppercase tracking-wider text-muted-foreground">
+                {t('auth.comingSoonShort')}
+              </span>
             </Button>
           </div>
 
@@ -210,7 +212,7 @@ export default function Connexion() {
             </div>
             <div className="relative flex justify-center">
               <span className="bg-card px-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                ou avec ton email
+                {t('auth.orWithEmail')}
               </span>
             </div>
           </div>
@@ -228,14 +230,14 @@ export default function Connexion() {
               {!isLogin && (
                 <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-1.5">
-                    <Label htmlFor="firstName">Prénom</Label>
+                    <Label htmlFor="firstName">{t('auth.firstName')}</Label>
                     <div className="relative">
                       <UserIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                       <Input
                         id="firstName"
                         value={firstName}
                         onChange={(e) => setFirstName(e.target.value)}
-                        placeholder="Marie"
+                        placeholder={t('auth.firstNamePlaceholder')}
                         className="pl-9"
                         maxLength={50}
                         aria-invalid={!!errors.firstName}
@@ -246,12 +248,12 @@ export default function Connexion() {
                     )}
                   </div>
                   <div className="space-y-1.5">
-                    <Label htmlFor="lastName">Nom</Label>
+                    <Label htmlFor="lastName">{t('auth.lastName')}</Label>
                     <Input
                       id="lastName"
                       value={lastName}
                       onChange={(e) => setLastName(e.target.value)}
-                      placeholder="Dupont"
+                      placeholder={t('auth.lastNamePlaceholder')}
                       maxLength={50}
                       aria-invalid={!!errors.lastName}
                     />
@@ -263,7 +265,7 @@ export default function Connexion() {
               )}
 
               <div className="space-y-1.5">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">{t('auth.email')}</Label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
@@ -271,7 +273,7 @@ export default function Connexion() {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="votre@email.com"
+                    placeholder={t('auth.emailPlaceholder')}
                     className="pl-10"
                     autoComplete="email"
                     required
@@ -285,13 +287,13 @@ export default function Connexion() {
 
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="password">Mot de passe</Label>
+                  <Label htmlFor="password">{t('auth.password')}</Label>
                   {isLogin && (
                     <Link
                       to="/mot-de-passe-oublie"
                       className="text-xs text-accent hover:underline"
                     >
-                      Mot de passe oublié ?
+                      {t('auth.forgotPassword')}
                     </Link>
                   )}
                 </div>
@@ -313,7 +315,7 @@ export default function Connexion() {
                     type="button"
                     onClick={() => setShowPassword((v) => !v)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                    aria-label={showPassword ? 'Masquer' : 'Afficher'}
+                    aria-label={showPassword ? t('auth.hide') : t('auth.show')}
                   >
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
@@ -334,24 +336,24 @@ export default function Connexion() {
                   {loading ? (
                     <>
                       <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                      {isLogin ? 'Connexion…' : 'Création…'}
+                      {isLogin ? t('auth.signingIn') : t('auth.signingUp')}
                     </>
                   ) : isLogin ? (
-                    'Se connecter'
+                    t('auth.signIn')
                   ) : (
-                    "Créer mon compte"
+                    t('auth.signUp')
                   )}
                 </Button>
               </motion.div>
 
               {!isLogin && (
                 <p className="text-[11px] text-muted-foreground text-center leading-relaxed">
-                  En créant ton compte, tu acceptes nos{' '}
+                  {t('auth.legalPrefix')}{' '}
                   {/* TODO(sprint-3): wire /cgu and /confidentialite routes when legal copy is ready */}
-                  <a href="/cgu" className="underline hover:text-foreground">CGU</a>
-                  {' '}et notre{' '}
+                  <a href="/cgu" className="underline hover:text-foreground">{t('auth.legalTerms')}</a>
+                  {' '}{t('auth.legalAnd')}{' '}
                   <a href="/confidentialite" className="underline hover:text-foreground">
-                    politique de confidentialité
+                    {t('auth.legalPrivacy')}
                   </a>
                   .
                 </p>
@@ -360,24 +362,24 @@ export default function Connexion() {
               <div className="text-center text-sm text-muted-foreground">
                 {isLogin ? (
                   <>
-                    Pas encore de compte ?{' '}
+                    {t('auth.noAccountYet')}{' '}
                     <button
                       type="button"
                       onClick={() => switchTab('signup')}
                       className="text-accent hover:underline font-medium"
                     >
-                      S'inscrire
+                      {t('auth.signUp')}
                     </button>
                   </>
                 ) : (
                   <>
-                    Déjà un compte ?{' '}
+                    {t('auth.alreadyAccount')}{' '}
                     <button
                       type="button"
                       onClick={() => switchTab('login')}
                       className="text-accent hover:underline font-medium"
                     >
-                      Se connecter
+                      {t('auth.signIn')}
                     </button>
                   </>
                 )}
