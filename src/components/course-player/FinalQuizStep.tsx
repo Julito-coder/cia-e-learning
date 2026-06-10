@@ -77,7 +77,7 @@ export function FinalQuizStep({ step, onNext }: Props) {
             <Star key={i} className={cn('h-6 w-6', i < score ? 'text-accent fill-accent' : 'text-muted')} />
           ))}
         </div>
-        <Button variant="gradient" size="cta" className="w-full gap-2" onClick={() => onNext(passed)}>
+        <Button variant="default" size="cta" className="w-full gap-2" onClick={() => onNext(passed)}>
           {passed ? t('player.finishCourse') : t('player.backToCourse')}
           <ArrowRight className="h-4 w-4" />
         </Button>
@@ -140,7 +140,7 @@ export function FinalQuizStep({ step, onNext }: Props) {
       <StepFeedback status={answered ? (isCorrect ? 'correct' : 'incorrect') : 'idle'} />
 
       {answered && (
-        <Button variant="gradient" size="cta" className="w-full gap-2" onClick={handleContinue}>
+        <Button variant="default" size="cta" className="w-full gap-2" onClick={handleContinue}>
           {qIndex + 1 >= step.questions.length ? t('player.seeResult') : t('player.nextQuestion')}
           <ArrowRight className="h-4 w-4" />
         </Button>

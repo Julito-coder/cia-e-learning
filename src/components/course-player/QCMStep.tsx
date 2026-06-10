@@ -40,31 +40,37 @@ export function QCMStep({ step, onNext }: Props) {
         <CardContent className="p-6">
           <p className="text-lg font-medium mb-6">{step.question}</p>
           <div className="grid gap-3">
-            {step.options.map((opt, i) => (
+            {step.options.map((opt, i) => {
+              const isWrongPicked = answered && selected === i && i !== step.correctIndex;
+              return (
               <motion.button
-                whileTap={{ scale: answered ? 1 : 0.99 }}
+                whileTap={{ scale: answered ? 1 : 0.97 }}
+                animate={isWrongPicked ? { x: [-4, 4, -3, 3, 0] } : { x: 0 }}
+                transition={isWrongPicked ? { duration: 0.3, ease: 'easeOut' } : { duration: 0.2 }}
                 key={i}
                 onClick={() => handleSelect(i)}
                 disabled={answered}
                 className={cn(
-                  'w-full text-left p-4 rounded-xl border-2 transition-all duration-200 font-medium',
-                  !answered && 'hover:border-primary hover:bg-primary/5 cursor-pointer',
-                  answered && i === step.correctIndex && 'border-success bg-success/10 text-success',
-                  answered && selected === i && i !== step.correctIndex && 'border-destructive bg-destructive/10 text-destructive',
-                  !answered && selected === i && 'border-primary bg-primary/10',
+                  'w-full text-left p-4 rounded-2xl border-2 transition-colors duration-200 font-medium min-h-touch',
+                  'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-cia-spark-mid/30',
+                  !answered && 'hover:border-cia-blue-500 hover:bg-cia-blue-50/40 cursor-pointer',
+                  answered && i === step.correctIndex && 'border-success-500 bg-success-500/10 text-success-700',
+                  isWrongPicked && 'border-error-500 bg-error-500/10 text-error-600',
+                  !answered && selected === i && 'border-cia-blue-500 bg-cia-blue-50/40',
                   answered && i !== step.correctIndex && selected !== i && 'opacity-50',
                 )}
               >
                 <div className="flex items-center gap-3">
-                  <span className="h-8 w-8 rounded-full border-2 flex items-center justify-center text-sm font-bold shrink-0">
+                  <span className="h-8 w-8 rounded-full border-2 flex items-center justify-center text-sm font-bold shrink-0 tabular-nums">
                     {String.fromCharCode(65 + i)}
                   </span>
                   <span>{opt}</span>
-                  {answered && i === step.correctIndex && <CheckCircle2 className="h-5 w-5 text-success ml-auto" />}
-                  {answered && selected === i && i !== step.correctIndex && <XCircle className="h-5 w-5 text-destructive ml-auto" />}
+                  {answered && i === step.correctIndex && <CheckCircle2 className="h-5 w-5 text-success-600 ml-auto" />}
+                  {isWrongPicked && <XCircle className="h-5 w-5 text-error-500 ml-auto" />}
                 </div>
               </motion.button>
-            ))}
+              );
+            })}
           </div>
         </CardContent>
       </Card>
@@ -75,7 +81,7 @@ export function QCMStep({ step, onNext }: Props) {
       />
 
       {answered && (
-        <Button variant="gradient" size="cta" className="w-full gap-2" onClick={() => onNext(isCorrect)}>
+        <Button variant="default" size="cta" className="w-full gap-2" onClick={() => onNext(isCorrect)}>
           {t('player.continue')} <ArrowRight className="h-4 w-4" />
         </Button>
       )}
