@@ -324,7 +324,8 @@
       "daily_title": "Une leçon. Tous les jours.",
       "daily_desc": "Reviens chaque jour pour gagner ton bonus XP et grossir ton streak. Pas de pression — juste 5 minutes.",
       "league_title": "Affronte les autres apprenants.",
-      "league_desc": "Trois ligues, classement hebdo. Termine dans le top et grimpe à la suivante."
+      "league_desc": "Trois ligues, classement hebdo. Termine dans le top et grimpe à la suivante.",
+      "league_gold": "Liga Oro"
     },
     "personas": {
       "title": "À qui c'est fait ?",
@@ -376,7 +377,24 @@
       "cia_cta": "Activer mon accès"
     },
     "testimonials": {
-      "title": "Ce qu'en disent nos étudiants"
+      "title": "Ce qu'en disent nos étudiants",
+      "items": [
+        {
+          "quote": "Practico todos los días en la pausa del almuerzo. En 3 meses pasé de A2 a B1.",
+          "name": "Sofia M.",
+          "meta": "B1 · Italia"
+        },
+        {
+          "quote": "El reto diario me salvó del olvido. Se convirtió en mi rutina matinal.",
+          "name": "Carlos R.",
+          "meta": "B2 · Brasil"
+        },
+        {
+          "quote": "Tras mi estancia en Antibes, la app me permitió seguir sin perder lo aprendido.",
+          "name": "Anna K.",
+          "meta": "C1 · Alemania"
+        }
+      ]
     },
     "cta_final": {
       "title": "Prêt à parler français pour de vrai ?",
@@ -694,6 +712,25 @@
       "firstNameRequired": "Nombre obligatorio",
       "invalidCredentials": "Correo o contraseña incorrectos",
       "sessionInvalid": "Enlace inválido o caducado"
+    },
+    "appleError": "Error al iniciar sesión con Apple: {{message}}",
+    "shellBaseline": "Centre International d'Antibes — desde 1985",
+    "validation": {
+      "emailRequired": "Email obligatorio",
+      "emailInvalid": "Email no válido",
+      "emailTooLong": "Email demasiado largo",
+      "passwordRequired": "Contraseña obligatoria",
+      "passwordMin": "Al menos 6 caracteres",
+      "passwordMax": "Contraseña demasiado larga",
+      "nameMax": "Máximo 50 caracteres",
+      "passwordsDontMatch": "Las contraseñas no coinciden"
+    },
+    "passwordStrength": {
+      "tooShort": "Demasiado corta",
+      "weak": "Débil",
+      "ok": "Correcta",
+      "good": "Buena",
+      "strong": "Fuerte"
     }
   },
   "classement": {

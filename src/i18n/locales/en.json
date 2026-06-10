@@ -297,7 +297,8 @@
       "daily_title": "One lesson. Every day.",
       "daily_desc": "Come back each day for your XP bonus and grow your streak. No pressure — just 5 minutes.",
       "league_title": "Compete with other learners.",
-      "league_desc": "Three leagues, weekly leaderboard. Finish at the top and climb up."
+      "league_desc": "Three leagues, weekly leaderboard. Finish at the top and climb up.",
+      "league_gold": "Gold League"
     },
     "personas": {
       "title": "Who is it for?",
@@ -349,7 +350,24 @@
       "cia_cta": "Activate my access"
     },
     "testimonials": {
-      "title": "What our students say"
+      "title": "What our students say",
+      "items": [
+        {
+          "quote": "I practice every day during my lunch break. In 3 months I went from A2 to B1.",
+          "name": "Sofia M.",
+          "meta": "B1 · Italy"
+        },
+        {
+          "quote": "The daily challenge saved me from forgetting. It became my morning routine.",
+          "name": "Carlos R.",
+          "meta": "B2 · Brazil"
+        },
+        {
+          "quote": "After my stay in Antibes, the app let me keep going without losing what I'd learned.",
+          "name": "Anna K.",
+          "meta": "C1 · Germany"
+        }
+      ]
     },
     "cta_final": {
       "title": "Ready to actually speak French?",
@@ -638,6 +656,25 @@
       "firstNameRequired": "First name is required",
       "invalidCredentials": "Invalid email or password",
       "sessionInvalid": "Invalid or expired link"
+    },
+    "appleError": "Apple sign-in failed: {{message}}",
+    "shellBaseline": "Centre International d'Antibes — since 1985",
+    "validation": {
+      "emailRequired": "Email required",
+      "emailInvalid": "Invalid email",
+      "emailTooLong": "Email too long",
+      "passwordRequired": "Password required",
+      "passwordMin": "At least 6 characters",
+      "passwordMax": "Password too long",
+      "nameMax": "Maximum 50 characters",
+      "passwordsDontMatch": "Passwords don't match"
+    },
+    "passwordStrength": {
+      "tooShort": "Too short",
+      "weak": "Weak",
+      "ok": "Okay",
+      "good": "Good",
+      "strong": "Strong"
     }
   },
   "classement": {
