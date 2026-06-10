@@ -12,10 +12,10 @@ dist
 dist-ssr
 *.local
 
-# Environment variables (never commit, copy .env.example → .env locally)
-.env
-.env.*
-!.env.example
+# Environment variables — Lovable-managed .env files must be committed so the
+# production build can read VITE_* values. Only local override files are ignored.
+.env.local
+.env.*.local
 
 # Editor directories and files
 .vscode/*
