@@ -15,7 +15,7 @@ export function AuthShell({ title, subtitle, children }: AuthShellProps) {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.35, ease: 'easeOut' }}
-        className="w-full max-w-2xl"
+        className="w-full max-w-md"
       >
         <div className="text-center mb-8">
           <motion.img
