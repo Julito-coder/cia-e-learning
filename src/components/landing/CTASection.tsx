@@ -22,7 +22,7 @@ export function CTASection() {
         <p className="mt-4 text-lg text-white/80">{t('landing.cta_final.subtitle')}</p>
         <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
           <Link to="/test-niveau">
-            <Button variant="spark" size="cta" className="w-full sm:w-auto group bg-white text-cia-blue-900 hover:bg-white/90 hover:brightness-100 [background-image:none]">
+            <Button size="cta" className="w-full sm:w-auto group bg-white text-cia-blue-900 hover:bg-white/90 shadow-3d-blue">
               {t('landing.cta_final.cta_primary')}
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </Button>
