@@ -1,4 +1,5 @@
 import { useState, useEffect, FormEvent } from 'react';
+import { lovable } from '@/integrations/lovable/index';
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Mail, Lock, Eye, EyeOff, Loader2, User as UserIcon } from 'lucide-react';
