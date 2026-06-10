@@ -9,8 +9,8 @@ export function CTASection() {
   const { t } = useTranslation();
   return (
     <section className="relative overflow-hidden py-20 lg:py-28 bg-g-sea text-white">
-      <div className="absolute -top-32 -right-20 w-[28rem] h-[28rem] rounded-full bg-g-sun opacity-20 blur-3xl pointer-events-none" aria-hidden="true" />
-      <div className="absolute -bottom-40 -left-20 w-[28rem] h-[28rem] rounded-full bg-g-spark opacity-15 blur-3xl pointer-events-none" aria-hidden="true" />
+      <div className="absolute -top-32 -right-20 w-[28rem] h-[28rem] rounded-full bg-cia-spark-light/20 blur-3xl pointer-events-none" aria-hidden="true" />
+      <div className="absolute -bottom-40 -left-20 w-[28rem] h-[28rem] rounded-full bg-g-spark opacity-25 blur-3xl pointer-events-none" aria-hidden="true" />
       <motion.div
         className="container relative text-center max-w-3xl"
         variants={scalePop}
@@ -22,7 +22,7 @@ export function CTASection() {
         <p className="mt-4 text-lg text-white/80">{t('landing.cta_final.subtitle')}</p>
         <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
           <Link to="/test-niveau">
-            <Button variant="gold" size="cta" className="w-full sm:w-auto group">
+            <Button variant="spark" size="cta" className="w-full sm:w-auto group bg-white text-cia-blue-900 hover:bg-white/90 hover:brightness-100 [background-image:none]">
               {t('landing.cta_final.cta_primary')}
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </Button>
