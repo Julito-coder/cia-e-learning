@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 interface AuthTabsProps {
   value: 'login' | 'signup';
@@ -6,9 +7,10 @@ interface AuthTabsProps {
 }
 
 export function AuthTabs({ value, onChange }: AuthTabsProps) {
+  const { t } = useTranslation();
   const tabs: Array<{ id: 'login' | 'signup'; label: string }> = [
-    { id: 'login', label: 'Connexion' },
-    { id: 'signup', label: 'Inscription' },
+    { id: 'login', label: t('auth.tab_login') },
+    { id: 'signup', label: t('auth.tab_signup') },
   ];
   return (
     <div className="relative grid grid-cols-2 bg-muted/60 rounded-xl p-1 mb-5">
