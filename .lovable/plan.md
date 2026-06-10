@@ -1,45 +1,20 @@
-## Diagnostic
+## Plan
 
-L'appli publiée (`https://cia-e-learning.lovable.app`) renvoie un HTML quasi vide (`<div id="root"></div>` sans bundle exécutable utile). Cause racine identifiée :
+1. Remplacer la stratégie actuelle de `manualChunks` par une configuration sans découpage manuel des dépendances `node_modules`.
+2. Laisser Vite/Rollup reconstruire automatiquement le graphe de chunks pour éviter toute exécution anticipée de libs React avant `react` / `react-dom`.
+3. Conserver uniquement les réglages sûrs de résolution (`alias`, `dedupe`) et retirer la logique de classement paquet par paquet qui est devenue fragile.
+4. Vérifier le résultat sur le build publié en ciblant le symptôme exact : disparition des erreurs `createContext` / `forwardRef` et chargement normal de l’app.
 
-- Le projet est un stack Vite classique qui lit `VITE_SUPABASE_URL` et `VITE_SUPABASE_PUBLISHABLE_KEY` depuis `.env` au moment du **build**.
-- Le fichier `.gitignore` actuel ignore `.env` ET `.env.*` :
-  ```
-  .env
-  .env.*
-  !.env.example
-  ```
-- Résultat : lors du build de production sur Lovable, `.env` et `.env.production` ne sont pas présents. `src/integrations/supabase/client.ts` reçoit `undefined` pour l'URL/clé Supabase → exception au chargement → React ne monte jamais → page blanche.
+## Résultat attendu
 
-Le preview fonctionne car la sandbox a les fichiers `.env` locaux.
+- Plus de page blanche en production.
+- Plus de régression à chaque ajout d’une nouvelle librairie React.
+- Une configuration Vite plus simple, maintenable et robuste.
 
-## Correctif
+## Détails techniques
 
-Modifier `.gitignore` pour **dé-ignorer** les fichiers d'env gérés par Lovable, tout en conservant l'exclusion des fichiers locaux personnels :
-
-```
-# Avant
-.env
-.env.*
-!.env.example
-
-# Après
-.env.local
-.env.*.local
-```
-
-Cela permet à `.env`, `.env.development` et `.env.production` (gérés automatiquement par Lovable Cloud et le go-live Stripe) d'être inclus dans le build.
-
-## Étapes
-
-1. Modifier `.gitignore` : remplacer le bloc `.env` / `.env.*` / `!.env.example` par `.env.local` et `.env.*.local`.
-2. Republier le projet (les valeurs publiques Supabase + le token Stripe `pk_live_` seront alors présents dans le build prod).
-
-## Vérification après republish
-
-- Charger `https://cia-e-learning.lovable.app` → le dashboard s'affiche.
-- Vérifier qu'aucun "Stripe payments are not configured" n'apparaît (le `pk_live_` est bien embarqué).
-
-## Note sécurité
-
-Aucun secret sensible n'est exposé : ces variables `VITE_*` sont des clés publiques (anon Supabase + publishable Stripe), conçues pour être présentes dans le bundle client.
+- Le problème vient du fait que `manualChunks` impose un ordre de chargement implicite entre chunks qui cassent quand une librairie React (Radix, React Query, React Hook Form, etc.) est exécutée avant l’initialisation complète du runtime React.
+- La correction définitive la plus sûre est de supprimer le `manualChunks` custom pour les dépendances, au lieu d’entretenir une allowlist incomplète de wrappers React.
+- Je ne ferai pas de correction « paquet par paquet ».
+- Je garderai `dedupe` sur `react`, `react-dom` et les runtimes JSX pour éviter les doublons, mais sans forcer de séparation manuelle des vendors.
+- Validation prévue après implémentation : vérifier les chunks générés, contrôler les erreurs navigateur côté preview/published, puis confirmer que la landing et le lancement de l’app fonctionnent.
