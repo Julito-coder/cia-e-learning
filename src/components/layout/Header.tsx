@@ -71,14 +71,13 @@ export function Header() {
             >
               <Menu className="h-5 w-5" />
             </Button>
-            {/* Un seul marqueur de marque : le logo officiel CIA (hotfix
-                test & learn). La goutte SparkMini + le texte « CIA /
-                e-learning » qui doublonnaient ont été retirés du header.
-                Si Jules dépose `src/assets/branding/LOGO_CIA.png`,
-                remplacer le `src` ci-dessous. */}
+            {/* Un seul marqueur de marque : le logo officiel CIA `picto.png`
+                déposé dans les files du projet par Jules (hotfix test & learn).
+                La goutte SparkMini + le texte « CIA / e-learning » qui
+                doublonnaient ont été retirés du header. */}
             <Link to="/" className="flex items-center min-w-0" aria-label="CIA E-Learning, retour à l'accueil">
               <img
-                src="/cia-logo-2.png"
+                src="/picto.png"
                 alt="Centre International d'Antibes — E-Learning"
                 className="h-8 sm:h-10 w-auto select-none shrink-0"
                 draggable={false}
