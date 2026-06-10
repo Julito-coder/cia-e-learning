@@ -324,7 +324,8 @@
       "daily_title": "Une leçon. Tous les jours.",
       "daily_desc": "Reviens chaque jour pour gagner ton bonus XP et grossir ton streak. Pas de pression — juste 5 minutes.",
       "league_title": "Affronte les autres apprenants.",
-      "league_desc": "Trois ligues, classement hebdo. Termine dans le top et grimpe à la suivante."
+      "league_desc": "Trois ligues, classement hebdo. Termine dans le top et grimpe à la suivante.",
+      "league_gold": "Gold-Liga"
     },
     "personas": {
       "title": "À qui c'est fait ?",
@@ -376,7 +377,24 @@
       "cia_cta": "Activer mon accès"
     },
     "testimonials": {
-      "title": "Ce qu'en disent nos étudiants"
+      "title": "Ce qu'en disent nos étudiants",
+      "items": [
+        {
+          "quote": "Ich übe jeden Tag in der Mittagspause. In 3 Monaten ging es von A2 auf B1.",
+          "name": "Sofia M.",
+          "meta": "B1 · Italien"
+        },
+        {
+          "quote": "Die tägliche Herausforderung hat mich vor dem Vergessen bewahrt. Es ist meine Morgenroutine.",
+          "name": "Carlos R.",
+          "meta": "B2 · Brasilien"
+        },
+        {
+          "quote": "Nach meinem Aufenthalt in Antibes konnte ich dank der App dranbleiben.",
+          "name": "Anna K.",
+          "meta": "C1 · Deutschland"
+        }
+      ]
     },
     "cta_final": {
       "title": "Prêt à parler français pour de vrai ?",
@@ -694,6 +712,25 @@
       "firstNameRequired": "Vorname erforderlich",
       "invalidCredentials": "E-Mail oder Passwort falsch",
       "sessionInvalid": "Link ungültig oder abgelaufen"
+    },
+    "appleError": "Apple-Anmeldung fehlgeschlagen: {{message}}",
+    "shellBaseline": "Centre International d'Antibes — seit 1985",
+    "validation": {
+      "emailRequired": "E-Mail erforderlich",
+      "emailInvalid": "Ungültige E-Mail",
+      "emailTooLong": "E-Mail zu lang",
+      "passwordRequired": "Passwort erforderlich",
+      "passwordMin": "Mindestens 6 Zeichen",
+      "passwordMax": "Passwort zu lang",
+      "nameMax": "Maximal 50 Zeichen",
+      "passwordsDontMatch": "Passwörter stimmen nicht überein"
+    },
+    "passwordStrength": {
+      "tooShort": "Zu kurz",
+      "weak": "Schwach",
+      "ok": "Okay",
+      "good": "Gut",
+      "strong": "Stark"
     }
   },
   "classement": {

@@ -92,7 +92,7 @@ export default function Connexion() {
       redirect_uri: `${window.location.origin}${redirectTo}`,
     });
     if (result.error) {
-      toast.error(`Connexion Apple impossible : ${result.error.message ?? result.error}`);
+      toast.error(t('auth.appleError', { message: result.error.message ?? String(result.error) }));
       setAppleLoading(false);
     }
   };

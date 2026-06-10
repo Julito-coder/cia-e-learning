@@ -64,7 +64,7 @@ export function GamificationShowcase() {
             <div className="h-12 w-12 rounded-2xl bg-cia-gold/20 text-cia-gold flex items-center justify-center mb-5">
               <Crown className="h-6 w-6" />
             </div>
-            <p className="font-display text-4xl mb-1 text-cia-gold">Ligue Or</p>
+            <p className="font-display text-4xl mb-1 text-cia-gold">{t('landing.gamification.league_gold')}</p>
             <h3 className="font-display text-lg mt-4">{t('landing.gamification.league_title')}</h3>
             <p className="text-sm text-white/70 mt-2 leading-relaxed">{t('landing.gamification.league_desc')}</p>
           </motion.div>
