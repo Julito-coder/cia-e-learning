@@ -96,8 +96,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     void initializeAuth();
 
+    // Safety net: if getSession() never resolves (tab resumed from background,
+ // frozen network, ...) unblock the UI after 2.5s so we never show an
+ // infinite loader.
+    const safetyTimer = window.setTimeout(() => {
+      if (!mounted || initializedRef.current) return;
+      console.warn('[auth] getSession timed out — unblocking UI');
+      initializedRef.current = true;
+      setIsLoading(false);
+    }, 2500);
+
     return () => {
       mounted = false;
+      window.clearTimeout(safetyTimer);
       subscription.unsubscribe();
     };
   }, [applySession, syncAdminRole]);

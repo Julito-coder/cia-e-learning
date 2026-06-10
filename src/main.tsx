@@ -4,6 +4,8 @@ import "./i18n";
 import "./index.css";
 
 const PREVIEW_RECOVERY_KEY = "__cia_preview_recovery__";
+const PREVIEW_RECOVERY_WINDOW_MS = 10_000;
+const PREVIEW_RECOVERY_MAX = 1;
 const chunkLoadErrorPatterns = [
   /Failed to fetch dynamically imported module/i,
   /Importing a module script failed/i,
@@ -26,11 +28,36 @@ const isRecoverablePreviewError = (value: unknown) =>
   chunkLoadErrorPatterns.some((pattern) => pattern.test(getErrorMessage(value)));
 
 const recoverPreview = (reason: string) => {
+  const now = Date.now();
   try {
-    if (window.sessionStorage.getItem(PREVIEW_RECOVERY_KEY) === reason) return;
-    window.sessionStorage.setItem(PREVIEW_RECOVERY_KEY, reason);
+    const raw = window.sessionStorage.getItem(PREVIEW_RECOVERY_KEY);
+    let count = 0;
+    let firstAt = now;
+    if (raw) {
+      try {
+        const parsed = JSON.parse(raw) as { count?: number; firstAt?: number };
+        if (parsed && typeof parsed.firstAt === "number" && now - parsed.firstAt < PREVIEW_RECOVERY_WINDOW_MS) {
+          count = typeof parsed.count === "number" ? parsed.count : 0;
+          firstAt = parsed.firstAt;
+        }
+      } catch {
+        // Treat malformed entries as a fresh window.
+      }
+    }
+
+    if (count >= PREVIEW_RECOVERY_MAX) {
+      console.warn(
+        `[preview-recovery] Suppressing reload (reason=${reason}); ${count} recovery already within ${PREVIEW_RECOVERY_WINDOW_MS}ms.`,
+      );
+      return;
+    }
+
+    window.sessionStorage.setItem(
+      PREVIEW_RECOVERY_KEY,
+      JSON.stringify({ count: count + 1, firstAt, reason }),
+    );
   } catch {
-    // Ignore sessionStorage access issues and still try a hard refresh.
+    // sessionStorage may be unavailable; fall through to a single reload attempt.
   }
 
   window.location.reload();
@@ -58,11 +85,3 @@ window.addEventListener("unhandledrejection", (event) => {
 });
 
 createRoot(document.getElementById("root")!).render(<App />);
-
-window.requestAnimationFrame(() => {
-  try {
-    window.sessionStorage.removeItem(PREVIEW_RECOVERY_KEY);
-  } catch {
-    // Ignore sessionStorage access issues.
-  }
-});
