@@ -671,9 +671,6 @@ export default function Curriculum() {
           durationMinutes={selectedModule.module.durationMinutes}
           xpReward={selectedModule.module.xpReward}
           progress={selectedModule.module.progress}
-          onSimulateComplete={() =>
-            handleSimulateComplete(selectedModule.module.id, selectedModule.module.xpReward)
-          }
         />
       )}
 

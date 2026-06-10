@@ -1,4 +1,4 @@
-import { ArrowRight, BookOpen, Clock, Sparkles, Lock, Check, Zap } from 'lucide-react';
+import { ArrowRight, BookOpen, Clock, Sparkles, Lock, Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
@@ -26,9 +26,6 @@ interface ModuleDrawerProps {
   durationMinutes: number;
   xpReward: number;
   progress: number;
-  /** Optionnel — affiche un bouton « Simuler la complétion (démo) »
-   *  pour déclencher la séquence récompense depuis le Parcours. */
-  onSimulateComplete?: () => void;
 }
 
 export function ModuleDrawer(props: ModuleDrawerProps) {
@@ -36,7 +33,6 @@ export function ModuleDrawer(props: ModuleDrawerProps) {
   const {
     open, onOpenChange, moduleId, index, title, theme, description,
     icon, state, level, totalLessons, durationMinutes, xpReward, progress,
-    onSimulateComplete,
   } = props;
 
   const ctaLabel =
@@ -151,24 +147,6 @@ export function ModuleDrawer(props: ModuleDrawerProps) {
               >
                 {ctaLabel} <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-[3px]" />
               </Link>
-            </Button>
-          )}
-
-          {/* Démo : bouton « Simuler la complétion » pour déclencher la séquence
-              récompense (XPBurst + path fill + Spark celebrating). Présent
-              uniquement quand `onSimulateComplete` est fourni. */}
-          {isOpenable && onSimulateComplete && (
-            <Button
-              variant="outline"
-              size="sm"
-              className="w-full gap-2 text-cia-spark-mid border-cia-spark-mid/40 hover:bg-cia-blue-50/40"
-              onClick={() => {
-                onSimulateComplete();
-                onOpenChange(false);
-              }}
-            >
-              <Zap className="h-4 w-4" />
-              {t('curriculum.drawer.simulate_complete')}
             </Button>
           )}
 
