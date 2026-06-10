@@ -79,7 +79,7 @@ export function Header() {
               <img
                 src="/picto.png"
                 alt="Centre International d'Antibes — E-Learning"
-                className="h-8 sm:h-10 w-auto select-none shrink-0"
+                className="h-12 sm:h-14 w-auto select-none shrink-0"
                 draggable={false}
               />
             </Link>

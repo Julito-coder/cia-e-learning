@@ -10,9 +10,9 @@
     "leaderboard": "Rangliste",
     "daily_challenge": "Tages­challenge",
     "profile": "Mein Profil",
+    "dashboard": "Mon tableau de bord",
     "logout": "Abmelden",
-    "signup": "Registrieren",
-    "dashboard": "Mon tableau de bord"
+    "signup": "Registrieren"
   },
   "hero": {
     "greeting": "Hallo, {{name}}!",
@@ -95,13 +95,17 @@
     "detailByLevel": "Detail pro Niveau",
     "retake": "Test wiederholen",
     "seeCourses": "{{level}}-Kurse ansehen",
-    "placeholder": "Deine Antwort..."
+    "placeholder": "Deine Antwort...",
+    "alreadyTakenTitle": "Test bereits absolviert",
+    "alreadyTakenBody": "Du hast den Einstufungstest bereits abgelegt. Dein offizielles Niveau wurde nicht geändert, aber du kannst den Katalog frei erkunden.",
+    "alreadyTakenBodyWithDate": "Du hast den Einstufungstest am {{date}} abgelegt. Dein offizielles Niveau wurde nicht geändert, aber du kannst den Katalog frei erkunden.",
+    "seeCatalogue": "Katalog ansehen"
   },
   "footer": {
     "school": "Centre International d'Antibes — Französischschule seit 1985.",
     "learn": "Lernen",
     "theSchool": "Die Schule",
-    "legal": "Rechtliches",
+    "legal": "Impressum",
     "legalNotice": "Impressum",
     "privacy": "Datenschutz",
     "terms": "AGB",
@@ -187,6 +191,33 @@
       "desc": "Tu es promu en ligue or."
     }
   },
+  "profile": {
+    "title": "Mein Profil",
+    "identity": "Identität",
+    "personal_info": "Persönliche Daten",
+    "account": "Konto",
+    "firstName": "Vorname",
+    "lastName": "Nachname",
+    "nationality": "Nationalität",
+    "email": "E-Mail",
+    "interfaceLanguage": "Oberflächensprache",
+    "save": "Speichern",
+    "saved": "Änderungen gespeichert",
+    "error": "Ein Fehler ist aufgetreten",
+    "redoOnboarding": "Einführungstour wiederholen",
+    "redoPlacement": "Einstufungstest wiederholen",
+    "logout": "Abmelden",
+    "adminAccess": "Backoffice öffnen",
+    "achievements": {
+      "title": "🏅 Erfolge",
+      "all": "Alle",
+      "unlocked": "Freigeschaltet",
+      "locked": "Gesperrt",
+      "unlockedCount": "{{done}} / {{total}} freigeschaltet",
+      "empty": "Noch keine Erfolge in dieser Kategorie.",
+      "howToUnlock": "Lerne weiter, um diesen Erfolg freizuschalten."
+    }
+  },
   "player": {
     "continue": "Weiter",
     "next": "Nächste",
@@ -226,10 +257,17 @@
       "title": "Gut gemacht!",
       "steps": "Schritte",
       "time": "Zeit",
+      "correct": "Richtig",
       "next_course": "Nächster Kurs",
       "back_catalogue": "Zurück zum Katalog",
       "retry": "Erneut"
-    }
+    },
+    "step": "Schritt",
+    "sparkLabel": "Spark",
+    "xpEarned": "XP erhalten",
+    "bubbleCorrect": "Super, +5 XP!",
+    "bubbleWrong": "Fast! Weiter so.",
+    "generating": "Audio wird erzeugt..."
   },
   "indicators": {
     "xp_tooltip": "{{count}} XP insgesamt",
@@ -292,10 +330,16 @@
       "title": "À qui c'est fait ?",
       "b2c_title": "Apprenant à distance",
       "b2c_desc": "Tu veux apprendre depuis chez toi, à ton rythme, avec une vraie méthode pédagogique.",
+      "b2c_stat_value": "+150",
+      "b2c_stat_label": "vertretene Nationalitäten",
       "cia_title": "Étudiant CIA",
       "cia_desc": "Tu prépares ton séjour à Antibes ou tu prolonges ta formation. Accès complet inclus dans ton inscription.",
+      "cia_stat_value": "10.000",
+      "cia_stat_label": "Studierende pro Jahr in Antibes",
       "school_title": "École & entreprise",
       "school_desc": "Tu veux former tes équipes ou compléter le programme de tes étudiants. Solution sur-mesure disponible.",
+      "school_stat_value": "40 Jahre",
+      "school_stat_label": "Erfahrung — seit 1985",
       "learn_more": "En savoir plus"
     },
     "pricing": {
@@ -348,6 +392,13 @@
     "module": "Module",
     "coming_soon": "Modules en préparation. Disponibles bientôt.",
     "you_are_here": "Tu es ici",
+    "unit_label": "EINHEIT",
+    "unit_progress": "{{done}} / {{total}} Module",
+    "bubble_continue": "Weiter so, du bist fast da!",
+    "bubble_keep_going": "Noch {{count}} Modul, um die Einheit abzuschließen.",
+    "bubble_keep_going_plural": "Noch {{count}} Module, um die Einheit abzuschließen.",
+    "bubble_start_unit": "Bereit? Los geht's mit dieser Einheit!",
+    "unit_complete_toast": "🎉 Einheit {{level}} abgeschlossen!",
     "state": {
       "locked": "verrouillé",
       "available": "disponible",
@@ -362,6 +413,7 @@
       "continue_cta": "Continuer",
       "completed_cta": "Refaire le module",
       "locked_cta": "Verrouillé",
+      "simulate_complete": "Abschluss simulieren (Demo)",
       "close": "Fermer"
     }
   },
@@ -441,6 +493,80 @@
       "streak_medium": "Bravo, ne lâche pas !",
       "streak_long": "Tu es incroyable !",
       "done": "Bravo pour aujourd'hui !"
+    },
+    "tag": "TAGES-CHALLENGE",
+    "todayLessonTitle": "Heutige Lektion",
+    "streakLabel_one": "{{count}} Tag in Folge",
+    "streakLabel_other": "{{count}} Tage in Folge",
+    "chooseLevel": "Wähle dein Niveau",
+    "doneToday": "Heutige Challenge abgeschlossen!",
+    "moduleLabel": "Modul",
+    "doneMessage": "Komm morgen für eine neue Lektion wieder.",
+    "nextIn": "Nächste Challenge in {{time}}",
+    "redoLesson": "Lektion wiederholen",
+    "startCta": "Lektion starten",
+    "bonusHint": "+10 XP Bonus, wenn du heute abschließt",
+    "noLessonForLevel": "Für dieses Niveau ist noch keine Lektion verfügbar.",
+    "topStreaks": "Top-Streaks",
+    "seeAll": "Alle ansehen",
+    "firstToStart": "Sei der Erste, der startet!",
+    "you": "Du",
+    "learnerFallback": "Lernende"
+  },
+  "onboarding": {
+    "skip": "Vorerst überspringen",
+    "next": "Weiter",
+    "previous": "Zurück",
+    "finish": "Beenden",
+    "bonusXp": "+50 Willkommens-XP!",
+    "welcome": {
+      "title": "Willkommen in Antibes!",
+      "subtitle": "Ich führe dich in 1 Minute zum Start.",
+      "cta": "Reise starten"
+    },
+    "profile": {
+      "title": "Was ist dein Profil?",
+      "beginner": {
+        "label": "Absoluter Anfänger",
+        "desc": "Ich habe nie Französisch gelernt."
+      },
+      "falseBeginner": {
+        "label": "Wiedereinsteiger",
+        "desc": "Etwas Grundwissen, ist aber lange her."
+      },
+      "confirmed": {
+        "label": "Fortgeschritten",
+        "desc": "Ich will mich verbessern."
+      }
+    },
+    "level": {
+      "title": "Wie möchtest du starten?",
+      "subtitle": "Wähle die passende Option.",
+      "takeTest": "Einstufungstest machen",
+      "later": "Später, ich beginne mit A1",
+      "knowMine": "Ich kenne mein Niveau"
+    },
+    "coach": {
+      "xp": {
+        "title": "Dein Dashboard",
+        "desc": "XP, Serie und Liga: oben rechts."
+      },
+      "programme": {
+        "title": "Das Programm",
+        "desc": "Dein geführter Weg, Lektion für Lektion."
+      },
+      "catalogue": {
+        "title": "Der Katalog",
+        "desc": "Alle verfügbaren Lektionen, frei erkundbar."
+      },
+      "daily": {
+        "title": "Tagesherausforderung",
+        "desc": "Eine Lektion täglich für Serie und Bonus-XP."
+      },
+      "classement": {
+        "title": "Rangliste & Ligen",
+        "desc": "Wochen-XP vergleichen. Aufstiege jeden Montag!"
+      }
     }
   },
   "common": {
@@ -492,12 +618,37 @@
     "tab_login": "Anmelden",
     "tab_signup": "Registrieren",
     "email": "E-Mail",
+    "emailPlaceholder": "du@email.com",
     "password": "Passwort",
     "firstName": "Vorname",
+    "firstNamePlaceholder": "Marie",
     "lastName": "Nachname",
+    "lastNamePlaceholder": "Dein Nachname",
+    "show": "Anzeigen",
+    "hide": "Verbergen",
     "forgotPassword": "Passwort vergessen?",
     "signInCta": "Anmelden",
+    "signIn": "Anmelden",
     "signUpCta": "Konto erstellen",
+    "signUp": "Registrieren",
+    "signingIn": "Anmeldung...",
+    "signingUp": "Registrierung...",
+    "welcomeTitle": "Willkommen zurück!",
+    "createAccount": "Konto erstellen",
+    "loginSuccess": "Erfolgreich angemeldet!",
+    "signupSuccess": "Konto erstellt!",
+    "googleError": "Google-Fehler: {{message}}",
+    "continueWithGoogle": "Mit Google fortfahren",
+    "continueWithApple": "Mit Apple fortfahren",
+    "comingSoon": "Demnächst",
+    "comingSoonShort": "Bald",
+    "orWithEmail": "Oder mit E-Mail",
+    "legalPrefix": "Mit der Fortsetzung akzeptierst du unsere",
+    "legalTerms": "Bedingungen",
+    "legalAnd": "und",
+    "legalPrivacy": "Datenschutz",
+    "noAccountYet": "Noch kein Konto?",
+    "alreadyAccount": "Schon ein Konto?",
     "loginTitle": "Willkommen zurück",
     "loginSubtitle": "Melde dich an, um weiter zu lernen.",
     "signupTitle": "Erstelle dein Konto",
@@ -506,12 +657,23 @@
     "forgotSubtitle": "Erhalte einen Link zum Zurücksetzen deines Passworts.",
     "forgotCta": "Link senden",
     "forgotSent": "E-Mail gesendet",
+    "forgotSentBody": "Wenn die Adresse existiert, erhältst du eine E-Mail mit einem Link zum Zurücksetzen deines Passworts.",
     "forgotSentDesc": "Prüfe dein Postfach, um dein Passwort zurückzusetzen.",
+    "checkSpam": "Bitte auch den Spam-Ordner prüfen.",
+    "emailAddress": "E-Mail-Adresse",
+    "sending": "Senden...",
     "resetTitle": "Neues Passwort",
     "resetSubtitle": "Wähle ein neues, sicheres Passwort.",
     "resetCta": "Aktualisieren",
     "resetSuccess": "Passwort aktualisiert",
     "resetRedirect": "Weiterleitung in {{count}}s…",
+    "newPassword": "Neues Passwort",
+    "updatePassword": "Passwort aktualisieren",
+    "updating": "Aktualisierung...",
+    "invalidLinkTitle": "Ungültiger Link",
+    "invalidLinkSubtitle": "Dieser Link ist abgelaufen oder ungültig.",
+    "invalidLinkBody": "Bitte fordere einen neuen Link zum Zurücksetzen an.",
+    "requestNewLink": "Neuen Link anfordern",
     "confirmPassword": "Passwort bestätigen",
     "passwordsMatch": "Passwörter stimmen überein",
     "passwordsDiffer": "Passwörter stimmen nicht überein",
@@ -536,6 +698,13 @@
   },
   "classement": {
     "title": "Rangliste",
+    "heroSubtitle": "Tritt gegen andere Lernende an und steige im Ranking auf.",
+    "emptyTitle": "Noch keine Rangliste",
+    "emptyStreak": "Sei der Erste mit einer Streak!",
+    "emptyLevel": "Noch keine Lernenden auf diesem Niveau.",
+    "emptyGlobal": "Sei der Erste in der Rangliste!",
+    "yourPosition": "Deine Position",
+    "keepGoingTop50": "Weiter so für die Top 50!",
     "subtitle": "Vergleiche deine wöchentlichen XP mit anderen Lernenden.",
     "weeklyXp": "XP der Woche",
     "rank": "Rang",
@@ -554,21 +723,50 @@
   },
   "courseDetail": {
     "back": "Zurück zum Katalog",
+    "backToProgramme": "Zurück zum Programm",
     "level": "Stufe",
     "theme": "Thema",
     "duration": "Dauer",
     "sections": "Abschnitte",
     "start": "Kurs starten",
     "continue": "Kurs fortsetzen",
+    "redo": "Wiederholen",
     "review": "Kurs wiederholen",
     "progress": "Fortschritt",
     "completed": "Abgeschlossen",
+    "completedTitle": "Lektion abgeschlossen!",
+    "completedToast": "+{{xp}} XP erhalten",
+    "scoreLabel": "Punktzahl",
+    "score": "Score",
+    "descriptionTitle": "Description",
+    "contentTitle": "Lektionsinhalt",
+    "stepsCount": "{{count}} Schritte",
+    "estimatedDuration": "~ {{min}} Min.",
+    "comingSoon": "Demnächst verfügbar",
+    "comingSoonCta": "Zurück zum Katalog",
+    "levelRequired": "Niveau {{level}} erforderlich",
+    "lockedBadge": "Gesperrt",
     "addFavorite": "Zu Favoriten hinzufügen",
     "removeFavorite": "Aus Favoriten entfernen",
     "lockedTitle": "Premium-Kurs",
     "lockedDesc": "Aktiviere dein Abo, um auf diesen Kurs zuzugreifen.",
+    "lockedDescription": "Schließe Premium ab, um diese Lektion freizuschalten.",
     "lockedCta": "Abo anzeigen",
-    "notFound": "Kurs nicht gefunden"
+    "notFound": "Kurs nicht gefunden",
+    "dailyAlreadyDone": "Tages-Challenge bereits abgeschlossen",
+    "contentType": {
+      "text": "Text",
+      "audio": "Audio",
+      "video": "Video",
+      "qcm": "Quiz",
+      "dragDrop": "Drag & Drop",
+      "fillBlank": "Lückentext",
+      "flashcard": "Flashcards",
+      "voice": "Stimme",
+      "lesson": "Lektion",
+      "listening": "Hörverstehen",
+      "finalQuiz": "Abschlussquiz"
+    }
   },
   "dailyChallenge": {
     "title": "Tagesherausforderung",
@@ -589,7 +787,17 @@
     "timeLeft": "Verbleibende Zeit",
     "finished": "Fertig!",
     "score": "Punktzahl",
-    "retry": "Erneut versuchen"
+    "retry": "Erneut versuchen",
+    "lockedTitle": "Speed-Test gesperrt",
+    "lockedBody": "Schließe mindestens ein Modul dieses Niveaus ab, um ihn freizuschalten.",
+    "backToProgramme": "Zurück zum Programm",
+    "doneTitle": "Gut gemacht!",
+    "doneSubtitle": "Hier sind deine Ergebnisse.",
+    "correct": "Richtig",
+    "errors": "Fehler",
+    "accuracy": "Genauigkeit",
+    "replay": "Nochmal spielen",
+    "stop": "Stop"
   },
   "admin": {
     "breadcrumb": "Admin",
@@ -788,89 +996,6 @@
       "reindexDesc": "Erstellt den Suchindex neu.",
       "reindexBtn": "Starten",
       "reindexOk": "Glossar neu indiziert"
-    }
-  },
-  "profile": {
-    "title": "Mein Profil",
-    "identity": "Identität",
-    "personal_info": "Persönliche Daten",
-    "account": "Konto",
-    "firstName": "Vorname",
-    "lastName": "Nachname",
-    "nationality": "Nationalität",
-    "email": "E-Mail",
-    "interfaceLanguage": "Oberflächensprache",
-    "save": "Speichern",
-    "saved": "Änderungen gespeichert",
-    "error": "Ein Fehler ist aufgetreten",
-    "redoOnboarding": "Einführungstour wiederholen",
-    "redoPlacement": "Einstufungstest wiederholen",
-    "logout": "Abmelden",
-    "adminAccess": "Backoffice öffnen",
-    "achievements": {
-      "title": "🏅 Erfolge",
-      "all": "Alle",
-      "unlocked": "Freigeschaltet",
-      "locked": "Gesperrt",
-      "unlockedCount": "{{done}} / {{total}} freigeschaltet",
-      "empty": "Noch keine Erfolge in dieser Kategorie.",
-      "howToUnlock": "Lerne weiter, um diesen Erfolg freizuschalten."
-    }
-  },
-  "onboarding": {
-    "skip": "Vorerst überspringen",
-    "next": "Weiter",
-    "previous": "Zurück",
-    "finish": "Beenden",
-    "bonusXp": "+50 Willkommens-XP!",
-    "welcome": {
-      "title": "Willkommen in Antibes!",
-      "subtitle": "Ich führe dich in 1 Minute zum Start.",
-      "cta": "Reise starten"
-    },
-    "profile": {
-      "title": "Was ist dein Profil?",
-      "beginner": {
-        "label": "Absoluter Anfänger",
-        "desc": "Ich habe nie Französisch gelernt."
-      },
-      "falseBeginner": {
-        "label": "Wiedereinsteiger",
-        "desc": "Etwas Grundwissen, ist aber lange her."
-      },
-      "confirmed": {
-        "label": "Fortgeschritten",
-        "desc": "Ich will mich verbessern."
-      }
-    },
-    "level": {
-      "title": "Wie möchtest du starten?",
-      "subtitle": "Wähle die passende Option.",
-      "takeTest": "Einstufungstest machen",
-      "later": "Später, ich beginne mit A1",
-      "knowMine": "Ich kenne mein Niveau"
-    },
-    "coach": {
-      "xp": {
-        "title": "Dein Dashboard",
-        "desc": "XP, Serie und Liga: oben rechts."
-      },
-      "programme": {
-        "title": "Das Programm",
-        "desc": "Dein geführter Weg, Lektion für Lektion."
-      },
-      "catalogue": {
-        "title": "Der Katalog",
-        "desc": "Alle verfügbaren Lektionen, frei erkundbar."
-      },
-      "daily": {
-        "title": "Tagesherausforderung",
-        "desc": "Eine Lektion täglich für Serie und Bonus-XP."
-      },
-      "classement": {
-        "title": "Rangliste & Ligen",
-        "desc": "Wochen-XP vergleichen. Aufstiege jeden Montag!"
-      }
     }
   },
   "dashboard": {
