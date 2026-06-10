@@ -14,8 +14,9 @@ export function Footer() {
           {/* Marque */}
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <img src="/cia-logo-2.png" alt="CIA" className="h-10 rounded-xl" loading="lazy" decoding="async" />
-              <span className="font-display text-base">CIA · e-learning</span>
+              <a href="https://www.cia-france.com/" target="_blank" rel="noopener noreferrer">
+                <img src="/logo-cia-white.png" alt="Centre International d'Antibes" className="h-24 w-auto" loading="lazy" decoding="async" />
+              </a>
             </div>
             <p className="text-sm opacity-80 font-medium">{t('footer.tagline')}</p>
           </div>

@@ -1,44 +1,76 @@
-## Problème
 
-Au retour dans l'onglet, la preview reste blanche. Aucune erreur console, aucune interaction possible. Symptôme classique d'une **boucle de rechargement silencieuse** dans l'iframe Lovable.
+# Plan — Pages "Mon abonnement" et "Le Centre International d'Antibes"
 
-## Cause identifiée
+## 1. Navigation depuis l'avatar
+Ajouter 2 entrées dans le `DropdownMenu` du `Header` (avatar) :
+- **Mon abonnement** → `/abonnement`
+- **Le Centre International d'Antibes** → `/contact-cia`
 
-Dans `src/main.tsx`, le filet de sécurité "preview recovery" déclenche `window.location.reload()` dès qu'un `vite:preloadError` ou une erreur "chunk failed" arrive. C'est utile après un merge (les hashs de chunks changent), MAIS la garde anti-boucle est cassée :
+## 2. Page `/abonnement` — Mon abonnement (Premium 9,99 €/mois)
 
-```ts
-window.requestAnimationFrame(() => {
-  window.sessionStorage.removeItem(PREVIEW_RECOVERY_KEY); // ← efface la garde dès le 1er frame
-});
-```
+### Activation paiements
+- Activer **Stripe intégré Lovable** (`enable_stripe_payments`) — checkout managé, pas de clé à fournir.
+- Créer 1 produit récurrent : **Premium CIA** — 9,99 € / mois.
 
-Conséquence : à chaque reload, la clé est effacée avant le prochain `preloadError`, donc `recoverPreview()` peut re-reload indéfiniment. Quand on revient sur l'onglet après un merge, Vite tente de précharger un module périmé → preloadError → reload → preloadError → … → iframe blanche.
+### UI
+- Si **non abonné** : carte Hero "Premium" listant les bénéfices (accès complet A2→C2, tous les modules, prio TTS, badge premium) + bouton **« S'abonner — 9,99 €/mois »** → ouvre le Stripe Checkout (Edge function `create-checkout`).
+- Si **abonné** : carte d'état (plan actif, prochaine date de facturation, statut), bouton **« Gérer mon abonnement »** → portail client Stripe (Edge function `customer-portal`) pour mise à jour CB / annulation.
+- Page de retour `/abonnement?success=1` & `/abonnement?canceled=1` avec toasts.
 
-Le second risque, plus mineur : `useAuth` ne pose pas de timeout sur `supabase.auth.getSession()`. Si l'appel ne résout pas après reprise d'onglet (réseau gelé), `isLoading` reste `true` et `LandingOrRedirect` affiche le spinner — pas le symptôme actuel mais à durcir tant qu'on y est.
+### Backend
+- Adapter la table `subscriptions` existante (ajouter `stripe_customer_id`, `stripe_subscription_id`, `current_period_end`, `plan` étendu à `premium`).
+- Edge functions :
+  - `create-checkout` (verify_jwt=false, auth en code) — crée session Stripe en mode `subscription`.
+  - `customer-portal` — ouvre le portail de gestion.
+  - `check-subscription` — vérifie l'état Stripe et met à jour `subscriptions` (utilisé au mount de la page et au retour de checkout).
 
-## Correctifs
+### Verrouillage Premium (A2 → C2)
+- Hook `useSubscription()` (lit `subscriptions.plan + status`).
+- Dans `Catalogue`, `Curriculum` (`ModuleNode`/`LearningPath`), `CourseDetail` :
+  - Cours de niveau ≠ A1 → si non-premium : overlay cadenas + CTA "Passer Premium" qui route vers `/abonnement`.
+- Garde côté `CoursePlayer` pour empêcher le démarrage direct par URL.
 
-### 1. `src/main.tsx` — vraie garde anti-boucle (fix principal)
+## 3. Page `/contact-cia` — Le Centre International d'Antibes
 
-- Remplacer la clé booléenne par un compteur horodaté en `sessionStorage` : `{ count, firstAt }`.
-- Autoriser **au plus 1 recovery par fenêtre de 10 s**. Au-delà, on n'efface plus, on ne recharge plus, on `console.warn` et on laisse l'app monter normalement (ErrorBoundary prendra le relais si crash réel).
-- **Supprimer le `requestAnimationFrame` qui efface la clé**. La clé est nettoyée naturellement par expiration de la fenêtre 10 s lors d'un futur preloadError, ou jamais (sessionStorage = scope onglet, OK).
-- Conserver les 3 listeners (`vite:preloadError`, `error`, `unhandledrejection`) avec les mêmes patterns de message.
+Layout 2 colonnes (1 col mobile) avec 2 cartes :
 
-### 2. `src/hooks/useAuth.tsx` — timeout de sécurité (durcissement)
+### Carte 1 — WhatsApp
+- Icône WhatsApp, brève description.
+- Bouton **« Discuter sur WhatsApp »** → lien externe `https://api.whatsapp.com/send?phone=33604590420&text=&source=&data=` (`target=_blank`, `rel=noopener`).
 
-- Ajouter un `setTimeout(2500ms)` qui force `setIsLoading(false)` + `initializedRef.current = true` si `getSession()` n'a pas répondu. Évite tout écran de chargement infini au retour d'onglet.
+### Carte 2 — Message direct
+- Formulaire (sujet + message), validé via **zod**.
+- À l'envoi : appelle l'Edge function `send-contact-message` qui envoie un mail à **direct@cia-france.com** via Resend (gateway connector).
+- Le mail inclut automatiquement :
+  - Email du compte (depuis `auth.user.email`)
+  - Téléphone du profil (depuis `profiles.phone` — ajouter la colonne si absente, et un champ dans `PersonalInfoForm`)
+  - Nom / prénom
+  - Sujet + message
+  - `reply_to` = email du client
+- Confirmation toast + reset form. Bloque l'envoi si non authentifié.
 
-## Détails techniques
+### Backend
+- Connecter le **connector Resend** (gateway) → secret `RESEND_API_KEY` injecté.
+- Edge function `send-contact-message` :
+  - Vérifie le JWT, charge profil, valide payload zod.
+  - Appelle gateway Resend `POST /emails` avec `from: "CIA E-Learning <noreply@…>"`, `to: ["direct@cia-france.com"]`, `reply_to`, HTML formaté.
 
-- Pas de changement de comportement utilisateur en cas de vraie erreur de chunk après merge : le 1er reload se fait toujours. Seules les boucles sont coupées.
-- Aucun changement UI, aucun changement de routes, aucun changement backend.
-- Fichiers modifiés :
-  - `src/main.tsx`
-  - `src/hooks/useAuth.tsx`
+## 4. Routing
+Dans `src/App.tsx` :
+- Ajout des lazy routes `Abonnement` et `ContactCIA` sous `AppLayout`, protégées par `ProtectedRoute`.
 
-## Validation
+## 5. Traductions
+Ajouter clés dans les 6 locales (`fr/en/es/de/it/ru`) :
+- `nav.subscription`, `nav.contactCia`
+- libellés des deux pages (titres, CTA, états abonnement, formulaire contact).
 
-1. Vérifier dans la preview qu'aucun reload en boucle n'apparaît (Network ne doit pas répéter `/` toutes les ~500 ms).
-2. Quitter l'onglet 30 s, revenir → la page reste affichée (pas de blanc).
-3. Simuler un preloadError unique → un seul reload, puis l'app se monte.
+## 6. Détails techniques (résumé)
+- Stripe : seamless Lovable (pas de clé utilisateur, mode `subscription`, monnaie EUR).
+- Migrations : `ALTER TABLE subscriptions` + GRANTs ; `ALTER TABLE profiles ADD COLUMN phone TEXT`.
+- Edge functions sous `supabase/functions/{create-checkout,customer-portal,check-subscription,send-contact-message}/index.ts` avec CORS.
+- Resend via connector gateway (`https://connector-gateway.lovable.dev/resend/emails`).
+- Verrouillage Premium : composant `<PremiumLock>` réutilisable.
+
+## Hors-scope (à confirmer si besoin plus tard)
+- Période d'essai gratuite, codes promo, plans annuels.
+- Historique des messages contact côté admin.

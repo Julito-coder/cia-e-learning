@@ -8,6 +8,7 @@ export type EditableProfile = {
   nationality: string | null;
   interface_language: string | null;
   avatar_url: string | null;
+  phone: string | null;
 };
 
 export type ProfileSnapshot = EditableProfile & {
@@ -26,12 +27,10 @@ export function useProfile() {
   const refetch = useCallback(async () => {
     if (!user) { setProfile(null); setLoading(false); return; }
     setLoading(true);
-    const { data } = await supabase
-      .from('profiles')
-      .select('first_name, last_name, nationality, interface_language, avatar_url, email, cecr_level, total_xp, league, daily_streak')
-      .eq('user_id', user.id)
-      .maybeSingle();
-    if (data) setProfile(data as ProfileSnapshot);
+    // Sensitive PII columns (email/phone/nationality) are not readable via direct
+    // table select. Use the SECURITY DEFINER RPC that scopes to auth.uid().
+    const { data } = await supabase.rpc('get_my_profile');
+    if (data) setProfile(data as unknown as ProfileSnapshot);
     setLoading(false);
   }, [user]);
 

@@ -74,9 +74,8 @@ export default function DailyChallenge() {
 
   useEffect(() => {
     supabase
-      .from('profiles')
+      .from('leaderboard')
       .select('user_id, first_name, last_name, avatar_url, daily_streak, cecr_level')
-      .eq('is_active', true)
       .gt('daily_streak', 0)
       .order('daily_streak', { ascending: false })
       .limit(10)

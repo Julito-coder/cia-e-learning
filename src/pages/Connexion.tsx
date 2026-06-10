@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
+import { lovable } from '@/integrations/lovable';
 import { toast } from 'sonner';
 import { AuthShell } from '@/components/auth/AuthShell';
 import { AuthTabs } from '@/components/auth/AuthTabs';
@@ -54,6 +55,7 @@ export default function Connexion() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const [appleLoading, setAppleLoading] = useState(false);
   const { signIn, signUp, user } = useAuth();
   const navigate = useNavigate();
 
@@ -75,20 +77,24 @@ export default function Connexion() {
 
   const handleGoogleSignIn = async () => {
     setGoogleLoading(true);
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: `${window.location.origin}${redirectTo}`,
-      },
+    const result = await lovable.auth.signInWithOAuth('google', {
+      redirect_uri: `${window.location.origin}${redirectTo}`,
     });
     if (error) {
       toast.error(t('auth.googleError', { message: error.message }));
       setGoogleLoading(false);
     }
-    // Sur succès, Supabase redirige vers Google puis revient sur redirectTo ;
-    // le SDK consomme le code dans l'URL (detectSessionInUrl) et le hook
-    // useAuth déclenche la navigation finale. Pas de reset du loading ici :
-    // la page va être démontée par la redirection.
+  };
+
+  const handleAppleSignIn = async () => {
+    setAppleLoading(true);
+    const result = await lovable.auth.signInWithOAuth('apple', {
+      redirect_uri: `${window.location.origin}${redirectTo}`,
+    });
+    if (result.error) {
+      toast.error(`Connexion Apple impossible : ${result.error.message ?? result.error}`);
+      setAppleLoading(false);
+    }
   };
 
   useEffect(() => {

@@ -189,6 +189,7 @@ export type Database = {
           league: string
           nationality: string | null
           onboarding_completed_at: string | null
+          phone: string | null
           placement_test_taken_at: string | null
           total_xp: number
           updated_at: string
@@ -212,6 +213,7 @@ export type Database = {
           league?: string
           nationality?: string | null
           onboarding_completed_at?: string | null
+          phone?: string | null
           placement_test_taken_at?: string | null
           total_xp?: number
           updated_at?: string
@@ -235,6 +237,7 @@ export type Database = {
           league?: string
           nationality?: string | null
           onboarding_completed_at?: string | null
+          phone?: string | null
           placement_test_taken_at?: string | null
           total_xp?: number
           updated_at?: string
@@ -246,35 +249,59 @@ export type Database = {
       }
       subscriptions: {
         Row: {
+          cancel_at_period_end: boolean
           created_at: string
+          current_period_end: string | null
+          current_period_start: string | null
+          environment: string
           expires_at: string | null
           id: string
           plan: string
+          price_id: string | null
+          product_id: string | null
           promo_code: string | null
           starts_at: string
           status: string
+          stripe_customer_id: string | null
+          stripe_subscription_id: string | null
           updated_at: string
           user_id: string
         }
         Insert: {
+          cancel_at_period_end?: boolean
           created_at?: string
+          current_period_end?: string | null
+          current_period_start?: string | null
+          environment?: string
           expires_at?: string | null
           id?: string
           plan: string
+          price_id?: string | null
+          product_id?: string | null
           promo_code?: string | null
           starts_at?: string
           status?: string
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
           updated_at?: string
           user_id: string
         }
         Update: {
+          cancel_at_period_end?: boolean
           created_at?: string
+          current_period_end?: string | null
+          current_period_start?: string | null
+          environment?: string
           expires_at?: string | null
           id?: string
           plan?: string
+          price_id?: string | null
+          product_id?: string | null
           promo_code?: string | null
           starts_at?: string
           status?: string
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
           updated_at?: string
           user_id?: string
         }
@@ -446,18 +473,119 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      leaderboard: {
+        Row: {
+          avatar_url: string | null
+          cecr_level: string | null
+          daily_streak: number | null
+          first_name: string | null
+          last_name: string | null
+          league: string | null
+          total_xp: number | null
+          user_id: string | null
+          weekly_xp: number | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          cecr_level?: string | null
+          daily_streak?: number | null
+          first_name?: string | null
+          last_name?: string | null
+          league?: string | null
+          total_xp?: number | null
+          user_id?: string | null
+          weekly_xp?: number | null
+        }
+        Update: {
+          avatar_url?: string | null
+          cecr_level?: string | null
+          daily_streak?: number | null
+          first_name?: string | null
+          last_name?: string | null
+          league?: string | null
+          total_xp?: number | null
+          user_id?: string | null
+          weekly_xp?: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       add_weekly_xp: {
         Args: { _amount: number; _user_id: string }
         Returns: undefined
       }
+      admin_list_profiles: {
+        Args: { _level?: string }
+        Returns: {
+          avatar_url: string | null
+          cecr_level: string | null
+          created_at: string
+          daily_streak: number
+          email: string | null
+          first_name: string | null
+          id: string
+          interface_language: string | null
+          is_active: boolean | null
+          is_cia_student: boolean | null
+          last_daily_completed_at: string | null
+          last_name: string | null
+          league: string
+          nationality: string | null
+          onboarding_completed_at: string | null
+          phone: string | null
+          placement_test_taken_at: string | null
+          total_xp: number
+          updated_at: string
+          user_id: string
+          weekly_period_start: string | null
+          weekly_xp: number
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "profiles"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
       award_xp: {
         Args: { _amount: number; _source: string; _source_ref?: string }
         Returns: Json
       }
       current_week_monday: { Args: never; Returns: string }
+      get_my_profile: {
+        Args: never
+        Returns: {
+          avatar_url: string | null
+          cecr_level: string | null
+          created_at: string
+          daily_streak: number
+          email: string | null
+          first_name: string | null
+          id: string
+          interface_language: string | null
+          is_active: boolean | null
+          is_cia_student: boolean | null
+          last_daily_completed_at: string | null
+          last_name: string | null
+          league: string
+          nationality: string | null
+          onboarding_completed_at: string | null
+          phone: string | null
+          placement_test_taken_at: string | null
+          total_xp: number
+          updated_at: string
+          user_id: string
+          weekly_period_start: string | null
+          weekly_xp: number
+        }
+        SetofOptions: {
+          from: "*"
+          to: "profiles"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

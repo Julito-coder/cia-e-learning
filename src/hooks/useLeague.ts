@@ -62,9 +62,8 @@ export function useLeague(viewedLeague?: League) {
 
     const target = viewedLeague || currentLeague;
     const { data: list } = await supabase
-      .from('profiles')
+      .from('leaderboard')
       .select('user_id, first_name, last_name, avatar_url, weekly_xp, cecr_level, league')
-      .eq('is_active', true)
       .eq('league', target)
       .order('weekly_xp', { ascending: false })
       .limit(50);

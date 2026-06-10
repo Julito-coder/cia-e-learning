@@ -24,6 +24,8 @@ const SpeedTest = lazy(() => import('./pages/SpeedTest'));
 const DailyChallenge = lazy(() => import('./pages/DailyChallenge'));
 const Profil = lazy(() => import('./pages/Profil'));
 const Dashboard = lazy(() => import('./pages/Dashboard'));
+const Abonnement = lazy(() => import('./pages/Abonnement'));
+const ContactCia = lazy(() => import('./pages/ContactCia'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 // Admin bundle (recharts + 6 admin pages) — split from the user-facing bundle.
@@ -105,6 +107,22 @@ const App = () => (
                   <Route path="/mot-de-passe-oublie" element={<ForgotPassword />} />
                   <Route path="/reinitialiser-mot-de-passe" element={<ResetPassword />} />
                   <Route path="/favoris" element={<Catalogue />} />
+                  <Route
+                    path="/abonnement"
+                    element={
+                      <ProtectedRoute>
+                        <Abonnement />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/contact-cia"
+                    element={
+                      <ProtectedRoute>
+                        <ContactCia />
+                      </ProtectedRoute>
+                    }
+                  />
                 </Route>
 
                 {/* Back-office admin */}
