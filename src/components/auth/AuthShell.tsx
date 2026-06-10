@@ -26,7 +26,10 @@ export function AuthShell({ title, subtitle, children }: AuthShellProps) {
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.4, ease: 'backOut' }}
           />
-          <p className="font-display text-3xl md:text-4xl lg:text-5xl font-extrabold bg-g-sea bg-clip-text text-transparent tracking-tight leading-[1.1] mt-2 px-2">
+          <p
+            className="text-5xl md:text-6xl lg:text-7xl leading-[1.05] mt-3 px-2"
+            style={{ fontFamily: "'Sacramento', cursive", color: '#E63946' }}
+          >
             Don't learn French, live it
           </p>
           <h1 className="font-display text-2xl font-bold text-primary mt-3">{title}</h1>
