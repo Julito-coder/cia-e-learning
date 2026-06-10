@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface AuthShellProps {
   title: string;
@@ -8,6 +9,7 @@ interface AuthShellProps {
 }
 
 export function AuthShell({ title, subtitle, children }: AuthShellProps) {
+  const { t } = useTranslation();
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-12 bg-gradient-to-b from-background to-muted/30">
       <motion.div
@@ -32,7 +34,7 @@ export function AuthShell({ title, subtitle, children }: AuthShellProps) {
         </div>
         {children}
         <p className="mt-6 text-center text-[11px] text-muted-foreground">
-          Centre International d'Antibes — depuis 1985
+          {t('auth.shellBaseline')}
         </p>
       </motion.div>
     </div>
