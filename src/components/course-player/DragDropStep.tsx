@@ -104,13 +104,13 @@ export function DragDropStep({ step, onNext }: Props) {
       />
 
       {!answered && placed.length === step.correctOrder.length && (
-        <Button variant="gradient" size="cta" className="w-full" onClick={handleCheck}>
+        <Button variant="default" size="cta" className="w-full" onClick={handleCheck}>
           <CheckCircle2 className="h-4 w-4 mr-2" /> {t('player.check')}
         </Button>
       )}
 
       {answered && (
-        <Button variant="gradient" size="cta" className="w-full" onClick={() => onNext(isCorrect)}>
+        <Button variant="default" size="cta" className="w-full" onClick={() => onNext(isCorrect)}>
           {t('player.continue')} <ArrowRight className="h-4 w-4 ml-2" />
         </Button>
       )}

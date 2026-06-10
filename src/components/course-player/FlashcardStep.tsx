@@ -71,11 +71,11 @@ export function FlashcardStep({ step, onNext }: Props) {
           <ArrowLeft className="h-4 w-4 mr-1" /> {t('player.previous')}
         </Button>
         {index < step.cards.length - 1 ? (
-          <Button variant="gradient" size="cta" onClick={handleNext} className="flex-1">
+          <Button variant="default" size="cta" onClick={handleNext} className="flex-1">
             {t('player.next')} <ArrowRight className="h-4 w-4 ml-1" />
           </Button>
         ) : (
-          <Button variant="gradient" size="cta" onClick={onNext} className="flex-1">
+          <Button variant="default" size="cta" onClick={onNext} className="flex-1">
             {t('player.continue')} <ArrowRight className="h-4 w-4 ml-1" />
           </Button>
         )}

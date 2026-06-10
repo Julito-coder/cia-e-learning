@@ -84,7 +84,7 @@ export function FillBlankStep({ step, onNext }: Props) {
       />
 
       {answered && (
-        <Button variant="gradient" size="cta" className="w-full gap-2" onClick={() => onNext(isCorrect)}>
+        <Button variant="default" size="cta" className="w-full gap-2" onClick={() => onNext(isCorrect)}>
           {t('player.continue')} <ArrowRight className="h-4 w-4" />
         </Button>
       )}
