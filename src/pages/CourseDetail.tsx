@@ -14,6 +14,7 @@ import { getLessonById, curriculum } from '@/data/curriculum';
 import { getEntryLessonForModule, getRegistryModule } from '@/data/contentRegistry';
 import { CoursePlayer } from '@/components/course-player/CoursePlayer';
 import { useUserProgress, isLevelAccessible } from '@/hooks/useUserProgress';
+import { useAuth } from '@/hooks/useAuth';
 import { getNewlyUnlockedModules, isModuleComplete, computeLevelFromProgress } from '@/hooks/useModuleUnlock';
 import { useDailyChallenge } from '@/hooks/useDailyChallenge';
 import { getDailyLesson } from '@/lib/dailyChallenge';
@@ -68,6 +69,7 @@ export default function CourseDetail() {
   const [finalScore, setFinalScore] = useState(0);
   const { cecrLevel, addXP, setLevel } = useUserProgress();
   const { markDoneToday } = useDailyChallenge();
+  const { user, isLoading: authLoading } = useAuth();
 
   // Build a virtual course object for curriculum lessons
   const displayCourse = course || (curriculumData ? {
@@ -291,6 +293,12 @@ export default function CourseDetail() {
                     size="lg"
                     className="w-full gap-2"
                     onClick={() => {
+                      if (!authLoading && !user) {
+                        const redirect = `/cours/${displayCourse.id}${isDailyChallenge ? '?daily=1' : ''}`;
+                        toast(t('courseDetail.loginRequired', { defaultValue: 'Connecte-toi pour commencer le cours' }));
+                        navigate(`/connexion?redirect=${encodeURIComponent(redirect)}`);
+                        return;
+                      }
                       setLastLessonOpened({
                         courseId: displayCourse.id,
                         moduleId: curriculumData?.module?.id,
