@@ -34,7 +34,9 @@ export default defineConfig(({ mode }) => ({
             if (
               id.includes("react-router-dom") ||
               id.includes("/react-dom/") ||
-              id.includes("/react/")
+              id.includes("/react/") ||
+              id.includes("react-i18next") ||
+              id.includes("/scheduler/")
             ) {
               return "react-vendor";
             }
@@ -58,6 +60,9 @@ export default defineConfig(({ mode }) => ({
               id.includes("i18next") ||
               id.includes("date-fns")
             ) {
+              // react-i18next is handled above with react-vendor to avoid
+              // a "createContext of undefined" race between chunks.
+              if (id.includes("react-i18next")) return "react-vendor";
               return "i18n-vendor";
             }
             if (id.includes("@radix-ui")) {
