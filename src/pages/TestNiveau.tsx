@@ -30,7 +30,7 @@ const levelColors: Record<CECRLevel, string> = {
 };
 
 export default function TestNiveau() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const { setPlacementLevel, placementTestTakenAt } = useUserProgress();
   const [phase, setPhase] = useState<Phase>('intro');
@@ -182,13 +182,15 @@ export default function TestNiveau() {
         <Dialog open={alreadyTakenOpen} onOpenChange={setAlreadyTakenOpen}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Test déjà passé</DialogTitle>
+              <DialogTitle>{t('test.alreadyTakenTitle')}</DialogTitle>
               <DialogDescription>
-                Tu as déjà passé le test de placement{placementTestTakenAt ? ` le ${new Date(placementTestTakenAt).toLocaleDateString('fr-FR')}` : ''}. Ton niveau officiel n'a pas été modifié, mais tu peux explorer librement le catalogue.
+                {placementTestTakenAt
+                  ? t('test.alreadyTakenBodyWithDate', { date: new Date(placementTestTakenAt).toLocaleDateString(i18n.language) })
+                  : t('test.alreadyTakenBody')}
               </DialogDescription>
             </DialogHeader>
             <DialogFooter>
-              <Button onClick={() => navigate('/catalogue')}>Voir le catalogue</Button>
+              <Button onClick={() => navigate('/catalogue')}>{t('test.seeCatalogue')}</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>

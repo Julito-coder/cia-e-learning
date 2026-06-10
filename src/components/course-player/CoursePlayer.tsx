@@ -145,10 +145,10 @@ export function CoursePlayer({ content, courseTitle, onExit, onComplete }: Props
         setCorrectCount(newCorrect);
         setScoreBump((b) => b + 1);
         setMascotMood('encouraging');
-        showBubble(`Bravo, +5 XP !`, 'encouraging');
+        showBubble(t('player.bubbleCorrect'), 'encouraging');
       } else {
         setMascotMood('sad');
-        showBubble(`Presque ! On continue.`, 'sad');
+        showBubble(t('player.bubbleWrong'), 'sad');
       }
     }
 
@@ -288,7 +288,7 @@ export function CoursePlayer({ content, courseTitle, onExit, onComplete }: Props
                 )}
               </AnimatePresence>
             </div>
-            <p className="font-mono text-[10px] uppercase tracking-[.2em] text-white/70">Spark</p>
+            <p className="font-mono text-[10px] uppercase tracking-[.2em] text-white/70">{t('player.sparkLabel')}</p>
 
             {/* Score session */}
             <div className="text-center mt-2">
@@ -302,7 +302,7 @@ export function CoursePlayer({ content, courseTitle, onExit, onComplete }: Props
                 +{xpPreview}
               </motion.p>
               <p className="font-mono text-[10px] uppercase tracking-[.2em] text-white/70 mt-1">
-                XP gagnés
+                {t('player.xpEarned')}
               </p>
             </div>
           </div>
@@ -310,7 +310,7 @@ export function CoursePlayer({ content, courseTitle, onExit, onComplete }: Props
           {/* Progress bar — bg-g-shine charte §6 */}
           <div className="w-full space-y-2">
             <div className="flex justify-between text-[10px] font-mono uppercase tracking-[.2em] text-white/70">
-              <span>Étape</span>
+              <span>{t('player.step')}</span>
               <span className="tabular-nums">
                 {Math.min(currentStep + 1, totalSteps)} / {totalSteps}
               </span>
@@ -431,7 +431,7 @@ function CompletionScreen({
             {totalQuestions > 0 ? `${correctCount}/${totalQuestions}` : totalSteps}
           </p>
           <p className="text-[10px] uppercase tracking-[.2em] text-muted-foreground mt-1 font-mono">
-            {totalQuestions > 0 ? 'Bonnes' : t('player.completion.steps')}
+            {totalQuestions > 0 ? t('player.completion.correct') : t('player.completion.steps')}
           </p>
         </div>
         <div className="p-4 rounded-2xl bg-card border border-ink-100 shadow-elev-lg">

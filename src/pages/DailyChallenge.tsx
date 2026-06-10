@@ -26,9 +26,9 @@ type StreakRow = {
   cecr_level: string | null;
 };
 
-const todayLabel = () => {
+const todayLabel = (locale: string) => {
   const d = new Date();
-  return d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
+  return d.toLocaleDateString(locale, { weekday: 'long', day: 'numeric', month: 'long' });
 };
 
 function useTimeUntilMidnightParis() {
@@ -48,7 +48,7 @@ function useTimeUntilMidnightParis() {
 }
 
 export default function DailyChallenge() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { user } = useAuth();
   const navigate = useNavigate();
   const { selectedLevel, setSelectedLevel, dailyLesson, streak, isDoneToday } = useDailyChallenge();
@@ -86,14 +86,14 @@ export default function DailyChallenge() {
   const displayName = (e: StreakRow) => {
     const fn = (e.first_name || '').trim();
     const ln = (e.last_name || '').trim();
-    if (!fn && !ln) return 'Apprenant';
+    if (!fn && !ln) return t('daily.learnerFallback');
     return `${fn}${ln ? ' ' + ln[0] + '.' : ''}`;
   };
 
   return (
     <div className="container py-8 max-w-3xl">
       <Link to="/" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6">
-        <ArrowLeft className="h-4 w-4" /> Accueil
+        <ArrowLeft className="h-4 w-4" /> {t('nav.home')}
       </Link>
 
       {/* Header */}
@@ -113,11 +113,11 @@ export default function DailyChallenge() {
               <Flame className="h-9 w-9 text-white" />
             </motion.div>
           </motion.div>
-          <Badge className="bg-streak-500 text-white">DÉFI DU JOUR</Badge>
+          <Badge className="bg-streak-500 text-white">{t('daily.tag')}</Badge>
         </div>
-        <h1 className="font-display text-3xl md:text-4xl text-primary mb-1">Leçon du jour</h1>
+        <h1 className="font-display text-3xl md:text-4xl text-primary mb-1">{t('daily.todayLessonTitle')}</h1>
         <p className="text-muted-foreground text-sm flex items-center justify-center gap-2">
-          <Calendar className="h-4 w-4" /> {todayLabel()}
+          <Calendar className="h-4 w-4" /> {todayLabel(i18n.language)}
         </p>
         <motion.div
           initial={{ scale: 0.85, opacity: 0 }}
@@ -129,7 +129,7 @@ export default function DailyChallenge() {
             <span className="absolute inset-0 rounded-full bg-streak-500/30 blur-lg -z-10 animate-pulse" />
           )}
           <Flame className="h-5 w-5" />
-          <AnimatedCounter target={streak} duration={800} /> {streak > 1 ? 'jours' : 'jour'} de série
+          <AnimatedCounter target={streak} duration={800} /> {t('daily.streakLabel', { count: streak })}
         </motion.div>
 
         {/* Mascot with contextual bubble — desktop only */}
@@ -145,7 +145,7 @@ export default function DailyChallenge() {
 
       {/* Level selector */}
       <div className="mb-6">
-        <p className="text-xs font-bold text-muted-foreground mb-2 text-center">CHOISIS TON NIVEAU</p>
+        <p className="text-xs font-bold text-muted-foreground mb-2 text-center">{t('daily.chooseLevel')}</p>
         <div className="relative grid grid-cols-6 gap-2">
           {DAILY_LEVELS.map((lv) => (
             <motion.button
@@ -191,26 +191,26 @@ export default function DailyChallenge() {
               transition={{ type: 'spring', stiffness: 320, damping: 18 }}
               className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-success-500 text-white text-xs font-bold mb-3"
             >
-              <Check className="h-3.5 w-3.5" /> FAIT AUJOURD'HUI
+              <Check className="h-3.5 w-3.5" /> {t('daily.doneToday')}
             </motion.div>
           )}
           <Badge variant="outline" className="mb-2 font-bold">{selectedLevel} · {dailyLesson.moduleId}</Badge>
           <h2 className="font-display text-2xl mb-1">{dailyLesson.title}</h2>
-          <p className="text-sm text-muted-foreground mb-5">Module : {dailyLesson.moduleTitle}</p>
+          <p className="text-sm text-muted-foreground mb-5">{t('daily.moduleLabel', { module: dailyLesson.moduleTitle })}</p>
 
           {isDoneToday ? (
             <div className="text-center py-2">
               <p className="text-sm font-bold text-success-700 dark:text-success-500 mb-2">
-                🎉 Bravo ! Reviens demain pour maintenir ta série.
+                {t('daily.doneMessage')}
               </p>
               <p className="text-xs text-muted-foreground mb-4 inline-flex items-center gap-1">
-                Prochain défi dans&nbsp;
+                {t('daily.nextIn')}&nbsp;
                 <CountdownDigit value={tilMidnight.h} className="font-bold text-foreground" />h
                 <CountdownDigit value={tilMidnight.m} className="font-bold text-foreground" />m
                 <CountdownDigit value={tilMidnight.s} className="font-bold text-foreground" />s
               </p>
               <Button onClick={() => navigate(`/cours/${dailyLesson.lessonId}`)} variant="outline" className="rounded-xl">
-                Refaire la leçon
+                {t('daily.redoLesson')}
               </Button>
             </div>
           ) : (
@@ -220,18 +220,18 @@ export default function DailyChallenge() {
                 size="lg"
                 className="w-full rounded-2xl gap-2 bg-gradient-to-r from-streak-500 via-cia-red-500 to-streak-500 bg-[length:200%_100%] hover:bg-[position:100%_0] transition-all duration-700 font-bold shadow-lg hover:shadow-xl"
               >
-                <Play className="h-5 w-5" /> Commencer le défi
+                <Play className="h-5 w-5" /> {t('daily.startCta')}
               </Button>
             </motion.div>
           )}
           <p className="text-[11px] text-center text-muted-foreground mt-3">
-            +25 XP bonus si tu termines aujourd'hui ⚡
+            {t('daily.bonusHint')}
           </p>
         </Card>
         </motion.div>
       ) : (
         <Card className="p-6 text-center rounded-3xl mb-8">
-          <p className="text-muted-foreground">Pas de leçon disponible pour ce niveau pour le moment.</p>
+          <p className="text-muted-foreground">{t('daily.noLessonForLevel')}</p>
         </Card>
       )}
 
@@ -242,13 +242,13 @@ export default function DailyChallenge() {
             <motion.span animate={{ rotate: [0, -10, 10, 0] }} transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}>
               <Trophy className="h-5 w-5 text-cia-gold-500" />
             </motion.span>
-            Top des séries
+            {t('daily.topStreaks')}
           </h3>
-          <Link to="/classement" className="text-xs text-primary hover:underline font-bold">Voir tout</Link>
+          <Link to="/classement" className="text-xs text-primary hover:underline font-bold">{t('daily.seeAll')}</Link>
         </div>
         {topStreaks.length === 0 ? (
           <Card className="p-6 text-center rounded-2xl text-sm text-muted-foreground">
-            Sois le premier à lancer ta série ! 🔥
+            {t('daily.firstToStart')}
           </Card>
         ) : (
           <div className="space-y-2">
@@ -280,7 +280,7 @@ export default function DailyChallenge() {
                     <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center text-sm font-bold text-primary border-2 border-primary/30">{initial}</div>
                   )}
                   <div className="flex-1 min-w-0">
-                    <p className="font-bold text-sm truncate">{displayName(row)} {isMe && <span className="text-xs text-primary">(vous)</span>}</p>
+                    <p className="font-bold text-sm truncate">{displayName(row)} {isMe && <span className="text-xs text-primary">({t('daily.you')})</span>}</p>
                     <p className="text-xs text-muted-foreground">{row.cecr_level || 'A1'}</p>
                   </div>
                   <div className="px-3 py-1.5 rounded-full bg-cia-streak/15 text-cia-streak text-sm font-extrabold flex items-center gap-1">

@@ -1,5 +1,7 @@
 import { useState, FormEvent } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { Trans } from 'react-i18next';
 import { Mail, ArrowLeft, MailCheck, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
@@ -12,6 +14,7 @@ import { AuthShell } from '@/components/auth/AuthShell';
 import { emailSchema } from '@/lib/validators/auth';
 
 export default function ForgotPassword() {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -37,8 +40,8 @@ export default function ForgotPassword() {
 
   return (
     <AuthShell
-      title="Mot de passe oublié"
-      subtitle="Entrez votre adresse email pour recevoir un lien de réinitialisation"
+      title={t('auth.forgotTitle')}
+      subtitle={t('auth.forgotSubtitle')}
     >
       <Card className="border-border/60 shadow-xl rounded-2xl">
         <CardContent className="p-6">
@@ -59,18 +62,21 @@ export default function ForgotPassword() {
                 >
                   <MailCheck className="h-8 w-8 text-cia-success" />
                 </motion.div>
-                <h2 className="text-lg font-semibold text-foreground">Email envoyé !</h2>
+                <h2 className="text-lg font-semibold text-foreground">{t('auth.forgotSent')}</h2>
                 <p className="text-sm text-muted-foreground">
-                  Si un compte existe avec l'adresse <strong>{email}</strong>, vous
-                  recevrez un lien de réinitialisation dans quelques minutes.
+                  <Trans
+                    i18nKey="auth.forgotSentBody"
+                    values={{ email }}
+                    components={{ strong: <strong /> }}
+                  />
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  Pensez à vérifier vos spams.
+                  {t('auth.checkSpam')}
                 </p>
                 <Link to="/connexion">
                   <Button variant="outline" className="w-full mt-2">
                     <ArrowLeft className="h-4 w-4 mr-2" />
-                    Retour à la connexion
+                    {t('auth.backToLogin')}
                   </Button>
                 </Link>
               </motion.div>
@@ -84,7 +90,7 @@ export default function ForgotPassword() {
                 exit={{ opacity: 0 }}
               >
                 <div className="space-y-1.5">
-                  <Label htmlFor="email">Adresse email</Label>
+                  <Label htmlFor="email">{t('auth.emailAddress')}</Label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input
@@ -95,7 +101,7 @@ export default function ForgotPassword() {
                         setEmail(e.target.value);
                         if (error) setError(null);
                       }}
-                      placeholder="votre@email.com"
+                      placeholder={t('auth.emailPlaceholder')}
                       className="pl-10"
                       autoComplete="email"
                       required
@@ -115,10 +121,10 @@ export default function ForgotPassword() {
                     {loading ? (
                       <>
                         <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                        Envoi en cours…
+                        {t('auth.sending')}
                       </>
                     ) : (
-                      'Envoyer le lien'
+                      t('auth.forgotCta')
                     )}
                   </Button>
                 </motion.div>
@@ -128,7 +134,7 @@ export default function ForgotPassword() {
                   className="block text-center text-sm text-accent hover:underline"
                 >
                   <ArrowLeft className="inline h-3 w-3 mr-1" />
-                  Retour à la connexion
+                  {t('auth.backToLogin')}
                 </Link>
               </motion.form>
             )}

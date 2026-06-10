@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Trophy, Crown, Medal, Flame, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
@@ -145,6 +146,7 @@ function AnimatedTabs({ value, onChange, levelLabel }: { value: Mode; onChange: 
 }
 
 export default function Classement() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const { totalXP, cecrLevel } = useUserProgress();
   const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
@@ -223,8 +225,8 @@ export default function Classement() {
           <div className="absolute inset-0 rounded-2xl bg-cia-gold-400/40 blur-xl -z-10" />
           <Trophy className="h-7 w-7 sm:h-9 sm:w-9 text-white" />
         </motion.div>
-        <h1 className="font-display text-2xl sm:text-3xl md:text-4xl text-primary mb-2">Classement</h1>
-        <p className="text-muted-foreground text-xs sm:text-sm px-4">Affrontez les autres apprenants et grimpez dans le classement !</p>
+        <h1 className="font-display text-2xl sm:text-3xl md:text-4xl text-primary mb-2">{t('classement.title')}</h1>
+        <p className="text-muted-foreground text-xs sm:text-sm px-4">{t('classement.heroSubtitle')}</p>
       </div>
 
       <AnimatedTabs value={tab} onChange={setTab} levelLabel={cecrLevel} />
@@ -244,13 +246,13 @@ export default function Classement() {
       ) : entries.length === 0 ? (
         <EmptyState
           icon={Trophy}
-          title="Classement encore vide"
+          title={t('classement.emptyTitle')}
           description={
             tab === 'streak'
-              ? "Personne n'a encore lancé de série. Soyez le premier 🔥"
+              ? t('classement.emptyStreak')
               : tab === 'level'
-              ? `Aucun apprenant au niveau ${cecrLevel} pour l'instant.`
-              : "Soyez le premier à grimper dans le classement !"
+              ? t('classement.emptyLevel', { level: cecrLevel })
+              : t('classement.emptyGlobal')
           }
         />
       ) : (
@@ -291,10 +293,10 @@ export default function Classement() {
               <div className="bg-gradient-to-r from-primary via-primary to-cia-gold-500 text-primary-foreground p-4 rounded-2xl shadow-2xl flex items-center gap-3 ring-2 ring-primary/30">
                 <Flame className="h-6 w-6" />
                 <div className="flex-1">
-                  <p className="text-xs font-bold opacity-90">VOTRE POSITION</p>
+                  <p className="text-xs font-bold opacity-90">{t('classement.yourPosition')}</p>
                   <p className="font-extrabold">#{myRank} • {totalXP.toLocaleString()} XP</p>
                 </div>
-                <p className="text-xs opacity-90">Continuez pour entrer dans le top 50 !</p>
+                <p className="text-xs opacity-90">{t('classement.keepGoingTop50')}</p>
               </div>
             </motion.div>
           )}
