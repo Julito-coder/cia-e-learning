@@ -88,6 +88,7 @@ Deno.serve(async (req) => {
       ui_mode: "embedded_page",
       return_url: returnUrl,
       customer: customerId,
+      customer_update: { address: "auto", name: "auto" },
       metadata: { userId },
       ...(isRecurring && { subscription_data: { metadata: { userId } } }),
       automatic_tax: { enabled: true },
