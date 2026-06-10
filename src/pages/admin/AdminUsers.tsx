@@ -50,7 +50,7 @@ export default function AdminUsers() {
     setLoading(true);
     // Use SECURITY DEFINER admin RPC to read full profiles (email/phone/nationality).
     const { data, error } = await supabase.rpc('admin_list_profiles', {
-      _level: levelFilter !== 'all' ? levelFilter : null,
+      _level: levelFilter !== 'all' ? levelFilter : undefined,
     });
     if (error) notify.error(error.message);
     let rows = (data as UserProfile[] | null) || [];
