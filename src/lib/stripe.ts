@@ -9,7 +9,7 @@ function paymentsEnvironment(): StripeEnv {
   if (clientToken?.startsWith("pk_live_")) return "live";
   throw new Error(
     "Les paiements ne sont pas encore configurés pour cette version. " +
-    "Terminez la mise en ligne des paiements dans votre projet Lovable.",
+    "Terminez la mise en ligne des paiements dans votre projet.",
   );
 }
 
