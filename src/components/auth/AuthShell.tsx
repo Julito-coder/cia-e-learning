@@ -15,7 +15,7 @@ export function AuthShell({ title, subtitle, children }: AuthShellProps) {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.35, ease: 'easeOut' }}
-        className="w-full max-w-md"
+        className="w-full max-w-2xl"
       >
         <div className="text-center mb-8">
           <motion.img
@@ -26,7 +26,7 @@ export function AuthShell({ title, subtitle, children }: AuthShellProps) {
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.4, ease: 'backOut' }}
           />
-          <p className="font-display text-3xl md:text-4xl lg:text-5xl font-extrabold bg-gradient-to-r from-[var(--cia-spark-mid)] to-[var(--cia-blue-700)] bg-clip-text text-transparent tracking-tight leading-tight">
+          <p className="font-display text-5xl md:text-6xl lg:text-7xl font-extrabold bg-gradient-to-r from-[var(--cia-spark-mid)] to-[var(--cia-blue-700)] bg-clip-text text-transparent tracking-tight leading-[1.05] mt-2">
             Don't learn French, live it
           </p>
           <h1 className="font-display text-2xl font-bold text-primary mt-3">{title}</h1>
