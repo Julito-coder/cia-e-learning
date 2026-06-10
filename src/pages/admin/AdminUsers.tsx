@@ -48,15 +48,17 @@ export default function AdminUsers() {
 
   const fetchUsers = async () => {
     setLoading(true);
-    let query = supabase.from('profiles').select('*').order('created_at', { ascending: false });
-    if (levelFilter !== 'all') query = query.eq('cecr_level', levelFilter);
-    if (statusFilter === 'active') query = query.eq('is_active', true);
-    if (statusFilter === 'inactive') query = query.eq('is_active', false);
-    if (typeFilter === 'cia') query = query.eq('is_cia_student', true);
-    if (typeFilter === 'external') query = query.eq('is_cia_student', false);
-    const { data, error } = await query;
+    // Use SECURITY DEFINER admin RPC to read full profiles (email/phone/nationality).
+    const { data, error } = await supabase.rpc('admin_list_profiles', {
+      _level: levelFilter !== 'all' ? levelFilter : null,
+    });
     if (error) notify.error(error.message);
-    setUsers(data || []);
+    let rows = (data as UserProfile[] | null) || [];
+    if (statusFilter === 'active') rows = rows.filter((u) => u.is_active === true);
+    if (statusFilter === 'inactive') rows = rows.filter((u) => u.is_active === false);
+    if (typeFilter === 'cia') rows = rows.filter((u) => (u as any).is_cia_student === true);
+    if (typeFilter === 'external') rows = rows.filter((u) => (u as any).is_cia_student === false);
+    setUsers(rows);
     setLoading(false);
   };
 
