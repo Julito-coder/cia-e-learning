@@ -8,6 +8,8 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import type { ModuleNodeState } from './ModuleNode';
 import type { ModuleIconType } from '@/lib/moduleIcon';
+import { getEntryLessonForModule } from '@/data/contentRegistry';
+import { readCourseProgressMap } from '@/lib/courseProgress';
 
 interface ModuleDrawerProps {
   open: boolean;
@@ -42,6 +44,19 @@ export function ModuleDrawer(props: ModuleDrawerProps) {
     state === 'completed' ? t('curriculum.drawer.completed_cta') :
     progress > 0          ? t('curriculum.drawer.continue_cta') :
                             t('curriculum.drawer.start_cta');
+
+  // Resolve the canonical lesson route via the content registry. Same rule
+  // as the Catalogue : send the user to the first not-yet-completed lesson
+  // of the module — never to `/cours/${moduleId}`, which lands on
+  // "Cours introuvable" because moduleId is not a content key.
+  const progressMap = readCourseProgressMap();
+  const completedIds = new Set(
+    Object.entries(progressMap)
+      .filter(([, p]) => p?.completed)
+      .map(([id]) => id),
+  );
+  const entryLesson = getEntryLessonForModule(moduleId, completedIds);
+  const ctaHref = entryLesson ? `/cours/${entryLesson.lessonId}` : `/cours/${moduleId}`;
 
   const renderHeroIcon = () => {
     if (state === 'locked') return <Lock className="h-9 w-9 text-ink-400" />;
@@ -130,7 +145,7 @@ export function ModuleDrawer(props: ModuleDrawerProps) {
             /* CTA primaire : bleu 3D charte (variant default), pas de gradient or */
             <Button asChild size="cta" className="w-full">
               <Link
-                to={`/cours/${moduleId}`}
+                to={ctaHref}
                 onClick={() => onOpenChange(false)}
                 className="gap-2"
               >

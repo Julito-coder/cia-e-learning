@@ -19,6 +19,13 @@ export interface CourseCardProps {
   isLocked?: boolean;
   isFree?: boolean;
   isCompleted?: boolean;
+  /** Canonical navigation target (e.g. `/cours/lesson-12`). When omitted
+   *  the card falls back to the legacy `/cours/${id}` route. */
+  href?: string;
+  /** True when no lesson of the module has playable content yet. The card
+   *  is still rendered but routed to a fallback that shows "Bientôt
+   *  disponible" instead of "Cours introuvable". */
+  isComingSoon?: boolean;
 }
 
 const LEVEL_BG: Record<string, string> = {
@@ -34,6 +41,7 @@ export function CourseCard(props: CourseCardProps) {
   const {
     id, title, description, level, theme, durationMinutes, totalLessons,
     xpReward, progress = 0, isLocked = false, isFree = true, isCompleted = false,
+    href, isComingSoon = false,
   } = props;
 
   const tilt = useTilt3D({ max: 6, scale: 1.015, perspective: 1200, active: !isLocked });
@@ -60,6 +68,11 @@ export function CourseCard(props: CourseCardProps) {
             {isCompleted && (
               <Badge className="bg-cia-success text-white border-transparent gap-1">
                 <CheckCircle2 className="h-3 w-3" /> Complété
+              </Badge>
+            )}
+            {isComingSoon && !isLocked && (
+              <Badge variant="outline" className="bg-background/80 border-cia-blue-300/50 text-cia-blue-700 dark:text-cia-blue-300 gap-1">
+                Bientôt
               </Badge>
             )}
           </div>
@@ -106,5 +119,9 @@ export function CourseCard(props: CourseCardProps) {
   );
 
   if (isLocked) return <div>{inner}</div>;
-  return <Link to={`/cours/${id}`} className="block h-full">{inner}</Link>;
+  // Prefer canonical lesson route from the content registry (`href`). The
+  // legacy `/cours/${id}` fallback is preserved for callers that have not
+  // yet migrated, but it currently lands on "Cours introuvable" when `id`
+  // is a moduleId — so callers should always pass `href`.
+  return <Link to={href ?? `/cours/${id}`} className="block h-full">{inner}</Link>;
 }

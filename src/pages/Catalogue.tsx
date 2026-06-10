@@ -9,8 +9,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { CourseCard, type CourseCardProps } from '@/components/courses/CourseCard';
 import { EmptyState } from '@/components/states/EmptyState';
 import { staggerContainer, staggerItem, slideUp } from '@/lib/animations';
-import { curriculum } from '@/data/curriculum';
+import { allRegistryModules, getEntryLessonForModule } from '@/data/contentRegistry';
 import { useUserProgress, isLevelAccessible } from '@/hooks/useUserProgress';
+import { readCourseProgressMap } from '@/lib/courseProgress';
 import type { CECRLevel } from '@/data/demo-courses';
 
 const LEVELS = ['all', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2'] as const;
@@ -28,27 +29,41 @@ export default function Catalogue() {
   const [showFilters, setShowFilters] = useState(false);
 
   const allCourses = useMemo<CourseCardProps[]>(() => {
-    const out: CourseCardProps[] = [];
-    curriculum.forEach((lvl) => {
-      lvl.modules.forEach((mod) => {
-        const totalLessons = mod.lessons?.length ?? 0;
-        const isFree = lvl.level === 'A1';
-        out.push({
-          id: mod.id,
-          title: mod.title,
-          description: mod.theme,
-          level: lvl.level,
-          theme: mod.theme,
-          durationMinutes: totalLessons * 12,
-          totalLessons,
-          xpReward: totalLessons * 50,
-          isFree,
-          isLocked: !isLevelAccessible(lvl.level, cecrLevel),
-          progress: 0,
-        });
-      });
+    // Per-user completion set lets the catalogue card route to the first
+    // not-yet-completed lesson — same logic the Parcours drawer uses.
+    const progressMap = readCourseProgressMap();
+    const completedIds = new Set(
+      Object.entries(progressMap)
+        .filter(([, p]) => p?.completed)
+        .map(([id]) => id),
+    );
+
+    return allRegistryModules.map((mod) => {
+      const totalLessons = mod.lessons.length;
+      const isFree = mod.level === 'A1';
+      const entry = getEntryLessonForModule(mod.moduleId, completedIds);
+      // Module is "playable" when at least one of its lessons has content.
+      const isPlayable = mod.playableLessons.length > 0;
+      return {
+        // Card key stays the moduleId for stable React keys and filtering.
+        id: mod.moduleId,
+        // Navigation target — always a canonical lesson key so the player
+        // can resolve content. Falls back to lesson-1 of the module so
+        // "Bientôt disponible" appears instead of "Cours introuvable".
+        href: entry ? `/cours/${entry.lessonId}` : undefined,
+        title: mod.moduleTitle,
+        description: mod.moduleTheme,
+        level: mod.level,
+        theme: mod.moduleTheme,
+        durationMinutes: totalLessons * 12,
+        totalLessons,
+        xpReward: totalLessons * 50,
+        isFree,
+        isLocked: !isLevelAccessible(mod.level, cecrLevel),
+        isComingSoon: !isPlayable,
+        progress: 0,
+      };
     });
-    return out;
   }, [cecrLevel]);
 
   const filtered = useMemo(() => {

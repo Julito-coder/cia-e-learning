@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, Clock, FileText, Headphones, Video, BookOpen, Mic, Play, Trophy, Lock } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,6 +10,7 @@ import { LevelBadge } from '@/components/courses/LevelBadge';
 import { demoCourses } from '@/data/demo-courses';
 import { getCourseContent } from '@/data/course-content';
 import { getLessonById, curriculum } from '@/data/curriculum';
+import { getEntryLessonForModule, getRegistryModule } from '@/data/contentRegistry';
 import { CoursePlayer } from '@/components/course-player/CoursePlayer';
 import { useUserProgress, isLevelAccessible } from '@/hooks/useUserProgress';
 import { getNewlyUnlockedModules, isModuleComplete, computeLevelFromProgress } from '@/hooks/useModuleUnlock';
@@ -37,11 +38,24 @@ export default function CourseDetail() {
   // Le défi du jour autorise tous les niveaux, sans restriction d'accès.
   const isDailyChallenge = searchParams.get('daily') === '1';
   
+  // Failsafe : older surfaces may still link to `/cours/${moduleId}` (e.g.
+  // `A1.1`). Resolve those to the canonical first lesson of the module so
+  // we never land on the misleading "Cours introuvable" screen.
+  const moduleEntry = id ? getRegistryModule(id) : undefined;
+  useEffect(() => {
+    if (!moduleEntry) return;
+    const entry = getEntryLessonForModule(moduleEntry.moduleId);
+    if (entry) {
+      const next = `/cours/${entry.lessonId}${isDailyChallenge ? '?daily=1' : ''}`;
+      navigate(next, { replace: true });
+    }
+  }, [moduleEntry, navigate, isDailyChallenge]);
+
   // Check if this is a curriculum lesson (lesson-N) or a legacy demo course
   const isCurriculumLesson = id?.startsWith('lesson-');
   const lessonId = isCurriculumLesson ? parseInt(id!.replace('lesson-', '')) : null;
   const curriculumData = lessonId ? getLessonById(lessonId) : null;
-  
+
   const course = isCurriculumLesson ? null : demoCourses.find((c) => c.id === id);
   const content = id ? getCourseContent(id) : undefined;
   const [playing, setPlaying] = useState(false);
