@@ -25,7 +25,7 @@ export function CECRJourney() {
             <defs>
               <linearGradient id="pathGradient" x1="0%" x2="100%">
                 <stop offset="0%" stopColor="hsl(var(--cia-blue-500))" />
-                <stop offset="100%" stopColor="hsl(var(--cia-gold))" />
+                <stop offset="100%" stopColor="hsl(var(--cia-spark-mid))" />
               </linearGradient>
             </defs>
             <motion.line
@@ -50,7 +50,7 @@ export function CECRJourney() {
                 animate={inView ? { opacity: 1, scale: 1 } : {}}
                 transition={{ duration: 0.4, delay: 0.3 + i * 0.12, ease: [0.34, 1.56, 0.64, 1] }}
               >
-                <div className="h-14 w-14 rounded-full bg-card border-2 border-cia-blue-500/40 shadow-sm flex items-center justify-center font-display text-base text-cia-blue-700 group-hover:border-cia-gold group-hover:scale-110 transition-all">
+                <div className="h-14 w-14 rounded-full bg-card border-2 border-cia-blue-500/40 shadow-sm flex items-center justify-center font-display text-base text-cia-blue-700 group-hover:border-cia-spark-mid group-hover:scale-110 transition-all">
                   {level}
                 </div>
                 <p className="mt-3 text-sm font-bold text-foreground">{t(`landing.cecr.${level.toLowerCase()}_label`)}</p>
@@ -70,7 +70,7 @@ export function CECRJourney() {
 
         {/* Mobile : timeline verticale */}
         <div className="md:hidden space-y-6 relative">
-          <div className="absolute left-7 top-0 bottom-0 w-0.5 bg-gradient-to-b from-cia-blue-500 to-cia-gold" />
+          <div className="absolute left-7 top-0 bottom-0 w-0.5 bg-gradient-to-b from-cia-blue-500 to-cia-spark-mid" />
           {LEVELS.map((level, i) => (
             <motion.div
               key={level}

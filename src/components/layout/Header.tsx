@@ -160,7 +160,7 @@ export function Header() {
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
                     <Link to="/abonnement" className="rounded-lg cursor-pointer">
-                      <Crown className="h-4 w-4 mr-2 text-cia-gold-500" /> Mon abonnement
+                      <Crown className="h-4 w-4 mr-2 text-cia-spark-mid" /> Mon abonnement
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
