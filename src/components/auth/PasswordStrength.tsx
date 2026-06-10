@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import { computePasswordScore, passwordStrengthLabels } from '@/lib/validators/auth';
+import { useTranslation } from 'react-i18next';
+import { computePasswordScore, getPasswordStrengthLabels } from '@/lib/validators/auth';
 
 const segmentColors = [
   'bg-muted',
@@ -18,8 +19,10 @@ const labelColors = [
 ];
 
 export function PasswordStrength({ value }: { value: string }) {
+  useTranslation(); // re-render on language change
   if (!value) return null;
   const score = computePasswordScore(value);
+  const labels = getPasswordStrengthLabels();
   return (
     <div className="mt-2 space-y-1">
       <div className="flex gap-1">
@@ -37,7 +40,7 @@ export function PasswordStrength({ value }: { value: string }) {
         ))}
       </div>
       <p className={`text-[11px] font-medium ${labelColors[score]}`}>
-        {passwordStrengthLabels[score]}
+        {labels[score]}
       </p>
     </div>
   );
