@@ -473,7 +473,42 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      leaderboard: {
+        Row: {
+          avatar_url: string | null
+          cecr_level: string | null
+          daily_streak: number | null
+          first_name: string | null
+          last_name: string | null
+          league: string | null
+          total_xp: number | null
+          user_id: string | null
+          weekly_xp: number | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          cecr_level?: string | null
+          daily_streak?: number | null
+          first_name?: string | null
+          last_name?: string | null
+          league?: string | null
+          total_xp?: number | null
+          user_id?: string | null
+          weekly_xp?: number | null
+        }
+        Update: {
+          avatar_url?: string | null
+          cecr_level?: string | null
+          daily_streak?: number | null
+          first_name?: string | null
+          last_name?: string | null
+          league?: string | null
+          total_xp?: number | null
+          user_id?: string | null
+          weekly_xp?: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       add_weekly_xp: {
