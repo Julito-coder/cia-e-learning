@@ -20,13 +20,16 @@ export function AuthShell({ title, subtitle, children }: AuthShellProps) {
         <div className="text-center mb-8">
           <motion.img
             src={logoCia.url}
-            alt="Centre International d'Antibes — Don't learn French. Live it."
-            className="h-36 md:h-44 w-auto mx-auto mb-5 drop-shadow-sm"
+            alt="Centre International d'Antibes"
+            className="h-44 md:h-56 w-auto mx-auto mb-4 drop-shadow-sm"
             initial={{ scale: 0.85, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.4, ease: 'backOut' }}
           />
-          <h1 className="font-display text-2xl font-bold text-primary">{title}</h1>
+          <p className="font-display text-xl md:text-2xl font-bold bg-gradient-to-r from-[var(--cia-spark-mid)] to-[var(--cia-blue-700)] bg-clip-text text-transparent tracking-tight">
+            Don't learn French, live it
+          </p>
+          <h1 className="font-display text-2xl font-bold text-primary mt-3">{title}</h1>
           {subtitle && (
             <p className="text-muted-foreground text-sm mt-1">{subtitle}</p>
           )}
