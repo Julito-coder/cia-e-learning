@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
 import { ReactNode } from 'react';
-import { useTranslation } from 'react-i18next';
 import logoCia from '@/assets/logo-cia-full.png.asset.json';
 
 interface AuthShellProps {
@@ -10,7 +9,6 @@ interface AuthShellProps {
 }
 
 export function AuthShell({ title, subtitle, children }: AuthShellProps) {
-  const { t } = useTranslation();
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-12 bg-gradient-to-b from-background to-muted/30">
       <motion.div
