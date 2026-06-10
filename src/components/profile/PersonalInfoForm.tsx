@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Mail } from 'lucide-react';
+import { Mail, Phone } from 'lucide-react';
 import { toast } from 'sonner';
 import { z } from 'zod';
 import { Input } from '@/components/ui/input';
@@ -22,6 +22,7 @@ const LANGS = [
 const schema = z.object({
   first_name: z.string().trim().max(50, { message: 'Max 50 caractères' }),
   last_name:  z.string().trim().max(50, { message: 'Max 50 caractères' }),
+  phone:      z.string().trim().max(30, { message: 'Max 30 caractères' }).optional().or(z.literal('')),
 });
 
 export function PersonalInfoForm() {
@@ -32,6 +33,7 @@ export function PersonalInfoForm() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [nationality, setNationality] = useState<string | null>(null);
+  const [phone, setPhone] = useState('');
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<{ first_name?: string; last_name?: string }>({});
 
@@ -40,16 +42,18 @@ export function PersonalInfoForm() {
     setFirstName(profile.first_name ?? '');
     setLastName(profile.last_name ?? '');
     setNationality(profile.nationality ?? null);
+    setPhone((profile as any).phone ?? '');
   }, [profile]);
 
   const dirty =
     profile != null &&
     ((profile.first_name ?? '') !== firstName ||
       (profile.last_name ?? '') !== lastName ||
-      (profile.nationality ?? null) !== nationality);
+      (profile.nationality ?? null) !== nationality ||
+      (((profile as any).phone ?? '') !== phone));
 
   const handleSave = async () => {
-    const parsed = schema.safeParse({ first_name: firstName, last_name: lastName });
+    const parsed = schema.safeParse({ first_name: firstName, last_name: lastName, phone });
     if (!parsed.success) {
       const e: typeof errors = {};
       parsed.error.issues.forEach((i) => { e[i.path[0] as 'first_name' | 'last_name'] = i.message; });
@@ -62,6 +66,7 @@ export function PersonalInfoForm() {
       first_name: firstName.trim() || null,
       last_name: lastName.trim() || null,
       nationality,
+      phone: phone.trim() || null,
     });
     setSaving(false);
     if (res.ok) toast.success(t('profile.saved'));
@@ -112,6 +117,21 @@ export function PersonalInfoForm() {
         <div className="relative">
           <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input id="email" value={profile?.email ?? ''} readOnly disabled className="pl-10 rounded-xl" />
+        </div>
+      </div>
+
+      <div className="space-y-1.5">
+        <Label htmlFor="phone">Téléphone</Label>
+        <div className="relative">
+          <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            id="phone"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            maxLength={30}
+            placeholder="+33 6 12 34 56 78"
+            className="pl-10 rounded-xl"
+          />
         </div>
       </div>
 
