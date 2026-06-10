@@ -1,8 +1,9 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
-import { X, Sparkles, Trophy, ArrowRight, RotateCcw } from 'lucide-react';
+import { X, Trophy, ArrowRight, RotateCcw } from 'lucide-react';
 import type { CourseContent, CourseStep } from '@/data/course-content';
 import { LessonStep } from './LessonStep';
 import { QCMStep } from './QCMStep';
@@ -118,6 +119,16 @@ export function CoursePlayer({ content, courseTitle, onExit, onComplete }: Props
     }
   }, [completed]);
 
+  /* P0.1 — Lock body scroll while the player is mounted, so there's no
+     double scroll with the marketing page underneath that bleeds through. */
+  useEffect(() => {
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, []);
+
   const showBubble = (text: string, mood: 'encouraging' | 'sad') => {
     setBubble({ text, mood });
     if (bubbleTimerRef.current) window.clearTimeout(bubbleTimerRef.current);
@@ -178,8 +189,15 @@ export function CoursePlayer({ content, courseTitle, onExit, onComplete }: Props
         exit:    { opacity: 0, x: -40, transition: { duration: 0.25, ease: [0.16, 1, 0.3, 1] as const } },
       };
 
-  return (
-    <div className="fixed inset-0 z-50 bg-background flex flex-col lg:flex-row">
+  /* P0.1 — Portal to `document.body` so the player escapes the
+     transformed stacking context created by AppLayout's pageTransition
+     wrapper (which clamps `position: fixed` and lets the marketing
+     footer bleed through). Combined with body scroll lock above. */
+  return createPortal(
+    <div
+      className="fixed inset-0 z-[100] bg-background flex flex-col lg:flex-row"
+      style={{ isolation: 'isolate' }}
+    >
       {/* ===== MOBILE top bar (sticky) ===== */}
       <header
         className="lg:hidden sticky top-0 z-20 bg-card/95 backdrop-blur-md border-b border-ink-100 px-4 py-3 flex items-center gap-3"
@@ -349,7 +367,8 @@ export function CoursePlayer({ content, courseTitle, onExit, onComplete }: Props
           </div>
         </main>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
 
