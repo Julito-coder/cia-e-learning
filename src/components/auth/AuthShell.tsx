@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
+import logoCia from '@/assets/logo-cia-full.png.asset.json';
 
 interface AuthShellProps {
   title: string;
@@ -20,9 +21,9 @@ export function AuthShell({ title, subtitle, children }: AuthShellProps) {
       >
         <div className="text-center mb-8">
           <motion.img
-            src="/picto.png"
-            alt="CIA"
-            className="h-20 mx-auto mb-4"
+            src={logoCia.url}
+            alt="Centre International d'Antibes — Don't learn French. Live it."
+            className="h-36 md:h-44 w-auto mx-auto mb-5 drop-shadow-sm"
             initial={{ scale: 0.85, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.4, ease: 'backOut' }}
@@ -33,9 +34,6 @@ export function AuthShell({ title, subtitle, children }: AuthShellProps) {
           )}
         </div>
         {children}
-        <p className="mt-6 text-center text-[11px] text-muted-foreground">
-          {t('auth.shellBaseline')}
-        </p>
       </motion.div>
     </div>
   );
