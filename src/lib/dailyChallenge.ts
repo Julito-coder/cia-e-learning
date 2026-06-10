@@ -1,5 +1,4 @@
-import { curriculum } from '@/data/curriculum';
-import { getCourseContent } from '@/data/course-content';
+import { allRegistryLessons } from '@/data/contentRegistry';
 import type { CECRLevel } from '@/data/demo-courses';
 
 export const DAILY_LEVELS: CECRLevel[] = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
@@ -13,26 +12,39 @@ export interface DailyLessonInfo {
   level: CECRLevel;
 }
 
+// Pulls playable lessons for a level from the canonical content registry,
+// so the daily challenge uses the exact same content surface as Catalogue
+// and Parcours — no divergence possible.
 function getAllPlayableLessons(level: CECRLevel) {
-  const lvl = curriculum.find((l) => l.level === level);
-  if (!lvl) return [];
-  const out: { id: number; title: string; moduleId: string; moduleTitle: string }[] = [];
-  for (const mod of lvl.modules) {
-    for (const lesson of mod.lessons) {
-      if (getCourseContent(`lesson-${lesson.id}`)) {
-        out.push({ id: lesson.id, title: lesson.title, moduleId: mod.id, moduleTitle: mod.title });
-      }
-    }
-  }
-  return out;
+  return allRegistryLessons
+    .filter((l) => l.level === level && l.hasContent)
+    .map((l) => ({
+      id: l.numericId,
+      title: l.title,
+      moduleId: l.moduleId,
+      moduleTitle: l.moduleTitle,
+    }));
 }
 
-/** Stable date key in user's local timezone, format YYYY-MM-DD */
+/**
+ * Stable date key in Europe/Paris, format YYYY-MM-DD.
+ *
+ * The daily challenge MUST roll over at Paris midnight regardless of where
+ * the user is, otherwise a Parisian leaving for NYC could "extend" their
+ * streak by playing the same lesson twice within a single Paris day.
+ * Using `Intl.DateTimeFormat` with `timeZone: 'Europe/Paris'` is the only
+ * way to get the date a Parisian sees, irrespective of the runtime tz.
+ */
+const PARIS_DATE_FMT = new Intl.DateTimeFormat('en-CA', {
+  timeZone: 'Europe/Paris',
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+});
+
 export function todayKey(date = new Date()): string {
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, '0');
-  const d = String(date.getDate()).padStart(2, '0');
-  return `${y}-${m}-${d}`;
+  // `en-CA` formats as YYYY-MM-DD natively.
+  return PARIS_DATE_FMT.format(date);
 }
 
 /** Hash a string into a small integer (deterministic across clients) */
@@ -59,6 +71,11 @@ export function getDailyLesson(level: CECRLevel, date = new Date()): DailyLesson
   };
 }
 
+// Use raw 24h timestamp arithmetic for "yesterday" so the result is
+// independent of the runtime tz and DST boundaries — the date conversion
+// happens via todayKey() (Europe/Paris).
+const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+
 /** Returns the next streak value given the previous completion date (YYYY-MM-DD or null/undefined). */
 export function computeStreakUpdate(
   lastDate: string | null | undefined,
@@ -67,9 +84,7 @@ export function computeStreakUpdate(
 ): { streak: number; alreadyDone: boolean } {
   const today = todayKey(todayDate);
   if (lastDate === today) return { streak: currentStreak, alreadyDone: true };
-  const yest = new Date(todayDate);
-  yest.setDate(yest.getDate() - 1);
-  const yesterday = todayKey(yest);
+  const yesterday = todayKey(new Date(todayDate.getTime() - ONE_DAY_MS));
   if (lastDate === yesterday) return { streak: currentStreak + 1, alreadyDone: false };
   return { streak: 1, alreadyDone: false };
 }
@@ -82,9 +97,7 @@ export function effectiveStreak(
 ): number {
   if (!lastDate) return 0;
   const today = todayKey(todayDate);
-  const yest = new Date(todayDate);
-  yest.setDate(yest.getDate() - 1);
-  const yesterday = todayKey(yest);
+  const yesterday = todayKey(new Date(todayDate.getTime() - ONE_DAY_MS));
   if (lastDate === today || lastDate === yesterday) return storedStreak;
   return 0;
 }
