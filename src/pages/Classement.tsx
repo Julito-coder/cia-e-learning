@@ -160,9 +160,8 @@ export default function Classement() {
     }
     const orderField = tab === 'streak' ? 'daily_streak' : 'total_xp';
     let q = supabase
-      .from('profiles')
+      .from('leaderboard')
       .select('user_id, first_name, last_name, avatar_url, total_xp, cecr_level, daily_streak')
-      .eq('is_active', true)
       .order(orderField, { ascending: false })
       .limit(50);
     if (tab === 'level') q = q.eq('cecr_level', cecrLevel);
@@ -179,9 +178,8 @@ export default function Classement() {
         setMyRank(null);
       } else {
         let countQ = supabase
-          .from('profiles')
-          .select('*', { count: 'exact', head: true })
-          .eq('is_active', true)
+          .from('leaderboard')
+          .select('user_id', { count: 'exact', head: true })
           .gt('total_xp', totalXP);
         if (tab === 'level') countQ = countQ.eq('cecr_level', cecrLevel);
         const { count } = await countQ;
