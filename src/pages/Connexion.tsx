@@ -194,16 +194,12 @@ export default function Connexion() {
               type="button"
               variant="outline"
               size="lg"
-              className="w-full gap-2 opacity-60 cursor-not-allowed"
-              disabled
-              aria-disabled="true"
-              title="Bientôt disponible"
+              className="w-full gap-2"
+              onClick={handleAppleSignIn}
+              disabled={appleLoading || googleLoading || loading}
             >
-              <AppleIcon />
+              {appleLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <AppleIcon />}
               Continuer avec Apple
-              <span className="ml-auto text-[10px] uppercase tracking-wider text-muted-foreground">
-                bientôt
-              </span>
             </Button>
           </div>
 
