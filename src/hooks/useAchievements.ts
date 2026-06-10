@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef } from 'react';
 import { useUserProgress } from './useUserProgress';
 import { useLeague } from './useLeague';
 import { useDailyChallenge } from './useDailyChallenge';
+import { useSubscription } from './useSubscription';
 import { ACHIEVEMENTS, type UserGameState, type Achievement } from '@/data/achievements';
 
 const LS_SEEN_KEY = 'cia-achievements-seen';
@@ -25,6 +26,7 @@ export function useAchievements() {
   const { totalXP, cecrLevel, placementTestTakenAt } = useUserProgress();
   const { myLeague } = useLeague();
   const { streak } = useDailyChallenge();
+  const { isPremium } = useSubscription();
   const seenRef = useRef<Set<string>>(readSeen());
 
   const state: UserGameState = useMemo(() => ({
@@ -33,7 +35,8 @@ export function useAchievements() {
     dailyStreak: streak,
     league: (myLeague ?? null) as UserGameState['league'],
     placementTestTaken: placementTestTakenAt != null,
-  }), [totalXP, cecrLevel, streak, myLeague, placementTestTakenAt]);
+    isPremium,
+  }), [totalXP, cecrLevel, streak, myLeague, placementTestTakenAt, isPremium]);
 
   const unlocked = useMemo(
     () => ACHIEVEMENTS.filter((a) => a.isUnlocked(state)),

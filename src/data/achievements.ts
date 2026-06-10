@@ -9,6 +9,7 @@ export interface UserGameState {
   dailyStreak: number;
   league: 'bronze' | 'argent' | 'or' | null;
   placementTestTaken: boolean;
+  isPremium?: boolean;
 }
 
 export interface Achievement {
@@ -39,4 +40,5 @@ export const ACHIEVEMENTS: Achievement[] = [
   { id: 'level_c1',       titleKey: 'achievements.level_c1.title',       descriptionKey: 'achievements.level_c1.desc',       icon: 'crown',      rarity: 'legendary', isUnlocked: (s) => LEVEL_INDEX[s.cecrLevel] >= 4 },
   { id: 'league_silver',  titleKey: 'achievements.league_silver.title',  descriptionKey: 'achievements.league_silver.desc',  icon: 'trophy',     rarity: 'rare',      isUnlocked: (s) => s.league === 'argent' || s.league === 'or' },
   { id: 'league_gold',    titleKey: 'achievements.league_gold.title',    descriptionKey: 'achievements.league_gold.desc',    icon: 'crown',      rarity: 'epic',      isUnlocked: (s) => s.league === 'or' },
+  { id: 'premium',        titleKey: 'achievements.premium.title',        descriptionKey: 'achievements.premium.desc',        icon: 'sparkles',   rarity: 'legendary', isUnlocked: (s) => s.isPremium === true },
 ];

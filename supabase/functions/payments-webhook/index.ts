@@ -1,5 +1,5 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
-import { type StripeEnv, verifyWebhook } from "../_shared/stripe.ts";
+import { type StripeEnv, verifyWebhook, createStripeClient } from "../_shared/stripe.ts";
 
 let _supabase: ReturnType<typeof createClient> | null = null;
 function getSupabase() {
@@ -61,6 +61,31 @@ async function markCanceled(subscription: any, env: StripeEnv) {
     .eq("environment", env);
 }
 
+async function handleCheckoutCompleted(session: any, env: StripeEnv) {
+  // Fallback path: some Stripe configurations send checkout.session.completed
+  // before/instead of customer.subscription.created. Retrieve the subscription
+  // and upsert it ourselves so the local row exists immediately.
+  const subscriptionId = session.subscription;
+  if (!subscriptionId || typeof subscriptionId !== "string") {
+    console.log("checkout.session.completed without subscription id, ignoring");
+    return;
+  }
+  const stripe = createStripeClient(env);
+  const subscription = await stripe.subscriptions.retrieve(subscriptionId, {
+    expand: ["items.data.price"],
+  });
+  // Backfill userId from the session metadata if it's missing on the subscription.
+  if (!subscription.metadata?.userId && session.metadata?.userId) {
+    (subscription as any).metadata = { ...subscription.metadata, userId: session.metadata.userId };
+    try {
+      await stripe.subscriptions.update(subscriptionId, {
+        metadata: { ...subscription.metadata, userId: session.metadata.userId },
+      });
+    } catch (e) { console.warn("Failed to backfill subscription metadata", e); }
+  }
+  await upsertSubscription(subscription, env);
+}
+
 Deno.serve(async (req) => {
   if (req.method !== "POST") return new Response("Method not allowed", { status: 405 });
   const rawEnv = new URL(req.url).searchParams.get("env");
@@ -81,6 +106,9 @@ Deno.serve(async (req) => {
         break;
       case "customer.subscription.deleted":
         await markCanceled(event.data.object, env);
+        break;
+      case "checkout.session.completed":
+        await handleCheckoutCompleted(event.data.object, env);
         break;
       default:
         console.log("Unhandled event:", event.type);

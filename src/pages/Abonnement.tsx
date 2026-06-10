@@ -39,11 +39,16 @@ export default function Abonnement() {
     const canceled = searchParams.get("canceled");
     if (success === "1") {
       toast.success("Paiement validé ! Bienvenue dans Premium 🎉");
+      // Webhook can lag a few seconds — poll a few times.
       void syncWithStripe();
+      const t1 = setTimeout(() => { void syncWithStripe(); }, 2500);
+      const t2 = setTimeout(() => { void syncWithStripe(); }, 6000);
+      const t3 = setTimeout(() => { void syncWithStripe(); }, 12000);
       const next = new URLSearchParams(searchParams);
       next.delete("success");
       next.delete("session_id");
       setSearchParams(next, { replace: true });
+      return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
     } else if (canceled === "1") {
       toast.info("Paiement annulé. Vous pouvez réessayer quand vous voulez.");
       const next = new URLSearchParams(searchParams);

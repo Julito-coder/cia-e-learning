@@ -189,6 +189,10 @@
     "league_gold": {
       "title": "Or",
       "desc": "Tu es promu en ligue or."
+    },
+    "premium": {
+      "title": "Membre Premium",
+      "desc": "Tu as débloqué l'accès illimité au parcours CIA."
     }
   },
   "profile": {
