@@ -10,9 +10,9 @@
     "leaderboard": "Рейтинг",
     "daily_challenge": "Задание дня",
     "profile": "Мой профиль",
+    "dashboard": "Mon tableau de bord",
     "logout": "Выйти",
-    "signup": "Регистрация",
-    "dashboard": "Mon tableau de bord"
+    "signup": "Регистрация"
   },
   "hero": {
     "greeting": "Привет, {{name}}!",
@@ -95,7 +95,11 @@
     "detailByLevel": "Детали по уровням",
     "retake": "Пройти тест снова",
     "seeCourses": "Курсы уровня {{level}}",
-    "placeholder": "Ваш ответ..."
+    "placeholder": "Ваш ответ...",
+    "alreadyTakenTitle": "Test already taken",
+    "alreadyTakenBody": "You've already taken the placement test. Your official level wasn't changed, but you can browse the catalogue freely.",
+    "alreadyTakenBodyWithDate": "You took the placement test on {{date}}. Your official level wasn't changed, but you can browse the catalogue freely.",
+    "seeCatalogue": "See the catalogue"
   },
   "footer": {
     "school": "Centre International d'Antibes — школа FLE с 1985 года.",
@@ -187,6 +191,33 @@
       "desc": "Tu es promu en ligue or."
     }
   },
+  "profile": {
+    "title": "Мой профиль",
+    "identity": "Идентификация",
+    "personal_info": "Личные данные",
+    "account": "Аккаунт",
+    "firstName": "Имя",
+    "lastName": "Фамилия",
+    "nationality": "Гражданство",
+    "email": "Эл. почта",
+    "interfaceLanguage": "Язык интерфейса",
+    "save": "Сохранить",
+    "saved": "Изменения сохранены",
+    "error": "Произошла ошибка",
+    "redoOnboarding": "Пройти знакомство снова",
+    "redoPlacement": "Пройти тест уровня снова",
+    "logout": "Выйти",
+    "adminAccess": "Открыть админ-панель",
+    "achievements": {
+      "title": "🏅 Витрина достижений",
+      "all": "Все",
+      "unlocked": "Открыты",
+      "locked": "Закрыты",
+      "unlockedCount": "{{done}} / {{total}} открыто",
+      "empty": "Пока нет достижений в этой категории.",
+      "howToUnlock": "Продолжайте учиться, чтобы открыть это достижение."
+    }
+  },
   "player": {
     "continue": "Продолжить",
     "next": "Далее",
@@ -226,10 +257,17 @@
       "title": "Отлично!",
       "steps": "шаги",
       "time": "время",
+      "correct": "Correct",
       "next_course": "Следующий курс",
       "back_catalogue": "Назад к каталогу",
       "retry": "Повторить"
-    }
+    },
+    "step": "Step",
+    "sparkLabel": "Spark",
+    "xpEarned": "XP earned",
+    "bubbleCorrect": "Nice, +5 XP!",
+    "bubbleWrong": "Almost — keep going.",
+    "generating": "Generating audio..."
   },
   "indicators": {
     "xp_tooltip": "Всего {{count}} XP",
@@ -292,10 +330,16 @@
       "title": "À qui c'est fait ?",
       "b2c_title": "Apprenant à distance",
       "b2c_desc": "Tu veux apprendre depuis chez toi, à ton rythme, avec une vraie méthode pédagogique.",
+      "b2c_stat_value": "60+",
+      "b2c_stat_label": "nationalities welcomed",
       "cia_title": "Étudiant CIA",
       "cia_desc": "Tu prépares ton séjour à Antibes ou tu prolonges ta formation. Accès complet inclus dans ton inscription.",
+      "cia_stat_value": "10,000",
+      "cia_stat_label": "students / year in Antibes",
       "school_title": "École & entreprise",
       "school_desc": "Tu veux former tes équipes ou compléter le programme de tes étudiants. Solution sur-mesure disponible.",
+      "school_stat_value": "40 years",
+      "school_stat_label": "of expertise — since 1985",
       "learn_more": "En savoir plus"
     },
     "pricing": {
@@ -348,6 +392,13 @@
     "module": "Module",
     "coming_soon": "Modules en préparation. Disponibles bientôt.",
     "you_are_here": "Tu es ici",
+    "unit_label": "UNIT",
+    "unit_progress": "{{done}} / {{total}} modules",
+    "bubble_continue": "Keep going, you're almost there!",
+    "bubble_keep_going": "{{count}} module left to finish this unit.",
+    "bubble_keep_going_plural": "{{count}} modules left to finish this unit.",
+    "bubble_start_unit": "Ready? Let's start this unit!",
+    "unit_complete_toast": "🎉 Unit {{level}} completed!",
     "state": {
       "locked": "verrouillé",
       "available": "disponible",
@@ -362,6 +413,7 @@
       "continue_cta": "Continuer",
       "completed_cta": "Refaire le module",
       "locked_cta": "Verrouillé",
+      "simulate_complete": "Simulate completion (demo)",
       "close": "Fermer"
     }
   },
@@ -441,6 +493,80 @@
       "streak_medium": "Bravo, ne lâche pas !",
       "streak_long": "Tu es incroyable !",
       "done": "Bravo pour aujourd'hui !"
+    },
+    "tag": "DAILY CHALLENGE",
+    "todayLessonTitle": "Today's lesson",
+    "streakLabel_one": "day streak",
+    "streakLabel_other": "day streak",
+    "chooseLevel": "PICK YOUR LEVEL",
+    "doneToday": "DONE TODAY",
+    "moduleLabel": "Module: {{module}}",
+    "doneMessage": "🎉 Well done! Come back tomorrow to keep your streak.",
+    "nextIn": "Next challenge in",
+    "redoLesson": "Replay the lesson",
+    "startCta": "Start the challenge",
+    "bonusHint": "+25 bonus XP if you finish today ⚡",
+    "noLessonForLevel": "No lesson available for this level yet.",
+    "topStreaks": "Top streaks",
+    "seeAll": "See all",
+    "firstToStart": "Be the first to start a streak! 🔥",
+    "you": "you",
+    "learnerFallback": "Learner"
+  },
+  "onboarding": {
+    "skip": "Пропустить",
+    "next": "Далее",
+    "previous": "Назад",
+    "finish": "Завершить",
+    "bonusXp": "+50 приветственных XP!",
+    "welcome": {
+      "title": "Добро пожаловать в Антиб!",
+      "subtitle": "Я помогу начать. Это займёт минуту.",
+      "cta": "Начать путешествие"
+    },
+    "profile": {
+      "title": "Какой у вас профиль?",
+      "beginner": {
+        "label": "Полный новичок",
+        "desc": "Никогда не учил французский."
+      },
+      "falseBeginner": {
+        "label": "Ложный новичок",
+        "desc": "Кое-что знаю, но давно."
+      },
+      "confirmed": {
+        "label": "Подтверждённый",
+        "desc": "Хочу совершенствоваться."
+      }
+    },
+    "level": {
+      "title": "С чего начать?",
+      "subtitle": "Выберите подходящий вариант.",
+      "takeTest": "Пройти тест уровня",
+      "later": "Позже, начну с A1",
+      "knowMine": "Я знаю свой уровень"
+    },
+    "coach": {
+      "xp": {
+        "title": "Ваша панель",
+        "desc": "XP, серия и лига — всё в правом верхнем углу."
+      },
+      "programme": {
+        "title": "Программа",
+        "desc": "Ваш направленный путь, урок за уроком."
+      },
+      "catalogue": {
+        "title": "Каталог",
+        "desc": "Все доступные уроки."
+      },
+      "daily": {
+        "title": "Ежедневный вызов",
+        "desc": "Один урок в день для серии и бонус XP."
+      },
+      "classement": {
+        "title": "Рейтинг и лиги",
+        "desc": "Сравните недельный XP. Повышение каждый понедельник!"
+      }
     }
   },
   "common": {
@@ -492,12 +618,37 @@
     "tab_login": "Войти",
     "tab_signup": "Регистрация",
     "email": "Эл. почта",
+    "emailPlaceholder": "you@email.com",
     "password": "Пароль",
     "firstName": "Имя",
+    "firstNamePlaceholder": "Marie",
     "lastName": "Фамилия",
+    "lastNamePlaceholder": "Smith",
+    "show": "Show",
+    "hide": "Hide",
     "forgotPassword": "Забыли пароль?",
     "signInCta": "Войти",
+    "signIn": "Sign in",
     "signUpCta": "Создать аккаунт",
+    "signUp": "Sign up",
+    "signingIn": "Signing in…",
+    "signingUp": "Creating…",
+    "welcomeTitle": "Welcome back!",
+    "createAccount": "Create an account",
+    "loginSuccess": "Signed in",
+    "signupSuccess": "Welcome! Let's start your French journey 🇫🇷",
+    "googleError": "Google sign-in failed: {{message}}",
+    "continueWithGoogle": "Continue with Google",
+    "continueWithApple": "Continue with Apple",
+    "comingSoon": "Coming soon",
+    "comingSoonShort": "soon",
+    "orWithEmail": "or with your email",
+    "legalPrefix": "By creating your account, you agree to our",
+    "legalTerms": "Terms",
+    "legalAnd": "and our",
+    "legalPrivacy": "privacy policy",
+    "noAccountYet": "No account yet?",
+    "alreadyAccount": "Already have an account?",
     "loginTitle": "С возвращением",
     "loginSubtitle": "Войдите, чтобы продолжить обучение.",
     "signupTitle": "Создайте аккаунт",
@@ -506,12 +657,23 @@
     "forgotSubtitle": "Получите ссылку для сброса пароля.",
     "forgotCta": "Отправить ссылку",
     "forgotSent": "Письмо отправлено",
+    "forgotSentBody": "If an account exists for <strong>{{email}}</strong>, you'll receive a reset link in a few minutes.",
     "forgotSentDesc": "Проверьте почту, чтобы сбросить пароль.",
+    "checkSpam": "Check your spam folder too.",
+    "emailAddress": "Email address",
+    "sending": "Sending…",
     "resetTitle": "Новый пароль",
     "resetSubtitle": "Выберите новый надёжный пароль.",
     "resetCta": "Обновить",
     "resetSuccess": "Пароль обновлён",
     "resetRedirect": "Перенаправление через {{count}} с…",
+    "newPassword": "New password",
+    "updatePassword": "Update password",
+    "updating": "Updating…",
+    "invalidLinkTitle": "Invalid link",
+    "invalidLinkSubtitle": "This reset link is no longer valid.",
+    "invalidLinkBody": "Please request a new link to reset your password.",
+    "requestNewLink": "Request a new link",
     "confirmPassword": "Подтвердите пароль",
     "passwordsMatch": "Пароли совпадают",
     "passwordsDiffer": "Пароли не совпадают",
@@ -536,6 +698,13 @@
   },
   "classement": {
     "title": "Рейтинг",
+    "heroSubtitle": "Challenge other learners and climb the ranks!",
+    "emptyTitle": "Leaderboard still empty",
+    "emptyStreak": "Nobody has started a streak yet. Be the first 🔥",
+    "emptyLevel": "No learners at level {{level}} yet.",
+    "emptyGlobal": "Be the first to climb the leaderboard!",
+    "yourPosition": "YOUR POSITION",
+    "keepGoingTop50": "Keep going to break into the top 50!",
     "subtitle": "Сравните недельный XP с другими учениками.",
     "weeklyXp": "XP за неделю",
     "rank": "Место",
@@ -554,21 +723,50 @@
   },
   "courseDetail": {
     "back": "Вернуться в каталог",
+    "backToProgramme": "Back to programme",
     "level": "Уровень",
     "theme": "Тема",
     "duration": "Длительность",
     "sections": "Разделы",
     "start": "Начать курс",
     "continue": "Продолжить курс",
+    "redo": "Retake the course",
     "review": "Повторить курс",
     "progress": "Прогресс",
     "completed": "Завершено",
+    "completedTitle": "Course completed!",
+    "completedToast": "Course completed",
+    "scoreLabel": "Score: {{score}}/100",
+    "score": "Score",
+    "descriptionTitle": "Description",
+    "contentTitle": "Course content",
+    "stepsCount": "{{count}} interactive steps",
+    "estimatedDuration": "Estimated duration: {{minutes}} minutes",
+    "comingSoon": "Soon",
+    "comingSoonCta": "Coming soon",
+    "levelRequired": "Level {{level}} required",
+    "lockedBadge": "Locked",
     "addFavorite": "В избранное",
     "removeFavorite": "Убрать из избранного",
     "lockedTitle": "Премиум-курс",
     "lockedDesc": "Оформите подписку, чтобы открыть этот курс.",
+    "lockedDescription": "Reach level {{required}} (5000 XP per level) to unlock this course. Your current level: {{current}}",
     "lockedCta": "Подписка",
-    "notFound": "Курс не найден"
+    "notFound": "Курс не найден",
+    "dailyAlreadyDone": "✅ Daily challenge already completed today — no extra bonus.",
+    "contentType": {
+      "text": "Text",
+      "audio": "Audio",
+      "video": "Video",
+      "qcm": "Quiz",
+      "dragDrop": "Drag & drop",
+      "fillBlank": "Fill in the blanks",
+      "flashcard": "Flashcards",
+      "voice": "Voice recording",
+      "lesson": "Lesson",
+      "listening": "Listening",
+      "finalQuiz": "Final quiz"
+    }
   },
   "dailyChallenge": {
     "title": "Ежедневный вызов",
@@ -589,7 +787,17 @@
     "timeLeft": "Осталось",
     "finished": "Готово!",
     "score": "Счёт",
-    "retry": "Ещё раз"
+    "retry": "Ещё раз",
+    "lockedTitle": "Speed test {{level}} locked",
+    "lockedBody": "Finish at least one {{level}} module at 100% to unlock this timed challenge.",
+    "backToProgramme": "Back to programme",
+    "doneTitle": "Done!",
+    "doneSubtitle": "Well done on this {{level}} challenge",
+    "correct": "Correct",
+    "errors": "Errors",
+    "accuracy": "Accuracy",
+    "replay": "Replay",
+    "stop": "Stop"
   },
   "admin": {
     "breadcrumb": "Админ",
@@ -788,89 +996,6 @@
       "reindexDesc": "Перестроить индекс поиска.",
       "reindexBtn": "Запустить",
       "reindexOk": "Глоссарий переиндексирован"
-    }
-  },
-  "profile": {
-    "title": "Мой профиль",
-    "identity": "Идентификация",
-    "personal_info": "Личные данные",
-    "account": "Аккаунт",
-    "firstName": "Имя",
-    "lastName": "Фамилия",
-    "nationality": "Гражданство",
-    "email": "Эл. почта",
-    "interfaceLanguage": "Язык интерфейса",
-    "save": "Сохранить",
-    "saved": "Изменения сохранены",
-    "error": "Произошла ошибка",
-    "redoOnboarding": "Пройти знакомство снова",
-    "redoPlacement": "Пройти тест уровня снова",
-    "logout": "Выйти",
-    "adminAccess": "Открыть админ-панель",
-    "achievements": {
-      "title": "🏅 Витрина достижений",
-      "all": "Все",
-      "unlocked": "Открыты",
-      "locked": "Закрыты",
-      "unlockedCount": "{{done}} / {{total}} открыто",
-      "empty": "Пока нет достижений в этой категории.",
-      "howToUnlock": "Продолжайте учиться, чтобы открыть это достижение."
-    }
-  },
-  "onboarding": {
-    "skip": "Пропустить",
-    "next": "Далее",
-    "previous": "Назад",
-    "finish": "Завершить",
-    "bonusXp": "+50 приветственных XP!",
-    "welcome": {
-      "title": "Добро пожаловать в Антиб!",
-      "subtitle": "Я помогу начать. Это займёт минуту.",
-      "cta": "Начать путешествие"
-    },
-    "profile": {
-      "title": "Какой у вас профиль?",
-      "beginner": {
-        "label": "Полный новичок",
-        "desc": "Никогда не учил французский."
-      },
-      "falseBeginner": {
-        "label": "Ложный новичок",
-        "desc": "Кое-что знаю, но давно."
-      },
-      "confirmed": {
-        "label": "Подтверждённый",
-        "desc": "Хочу совершенствоваться."
-      }
-    },
-    "level": {
-      "title": "С чего начать?",
-      "subtitle": "Выберите подходящий вариант.",
-      "takeTest": "Пройти тест уровня",
-      "later": "Позже, начну с A1",
-      "knowMine": "Я знаю свой уровень"
-    },
-    "coach": {
-      "xp": {
-        "title": "Ваша панель",
-        "desc": "XP, серия и лига — всё в правом верхнем углу."
-      },
-      "programme": {
-        "title": "Программа",
-        "desc": "Ваш направленный путь, урок за уроком."
-      },
-      "catalogue": {
-        "title": "Каталог",
-        "desc": "Все доступные уроки."
-      },
-      "daily": {
-        "title": "Ежедневный вызов",
-        "desc": "Один урок в день для серии и бонус XP."
-      },
-      "classement": {
-        "title": "Рейтинг и лиги",
-        "desc": "Сравните недельный XP. Повышение каждый понедельник!"
-      }
     }
   },
   "dashboard": {
