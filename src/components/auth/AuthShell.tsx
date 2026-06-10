@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { ReactNode } from 'react';
-import logoCia from '@/assets/logo-cia-full.png.asset.json';
+import logoCia from '@/assets/picto-cia.png.asset.json';
 
 interface AuthShellProps {
   title: string;
@@ -21,7 +21,7 @@ export function AuthShell({ title, subtitle, children }: AuthShellProps) {
           <motion.img
             src={logoCia.url}
             alt="Centre International d'Antibes"
-            className="h-44 md:h-56 w-auto mx-auto mb-4 drop-shadow-sm"
+            className="h-28 md:h-32 w-auto mx-auto mb-4 drop-shadow-sm"
             initial={{ scale: 0.85, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.4, ease: 'backOut' }}
