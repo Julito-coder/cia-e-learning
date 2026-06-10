@@ -8,6 +8,7 @@ export type EditableProfile = {
   nationality: string | null;
   interface_language: string | null;
   avatar_url: string | null;
+  phone: string | null;
 };
 
 export type ProfileSnapshot = EditableProfile & {
@@ -28,7 +29,7 @@ export function useProfile() {
     setLoading(true);
     const { data } = await supabase
       .from('profiles')
-      .select('first_name, last_name, nationality, interface_language, avatar_url, email, cecr_level, total_xp, league, daily_streak')
+      .select('first_name, last_name, nationality, interface_language, avatar_url, phone, email, cecr_level, total_xp, league, daily_streak')
       .eq('user_id', user.id)
       .maybeSingle();
     if (data) setProfile(data as ProfileSnapshot);

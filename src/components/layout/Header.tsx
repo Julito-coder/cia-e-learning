@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Menu, User, LogOut } from 'lucide-react';
+import { Menu, User, LogOut, Crown, MessageCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import {
@@ -155,6 +155,17 @@ export function Header() {
                   <DropdownMenuItem asChild>
                     <Link to="/favoris" className="rounded-lg cursor-pointer">
                       {t('nav.favorites')}
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link to="/abonnement" className="rounded-lg cursor-pointer">
+                      <Crown className="h-4 w-4 mr-2 text-cia-gold-500" /> Mon abonnement
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/contact-cia" className="rounded-lg cursor-pointer">
+                      <MessageCircle className="h-4 w-4 mr-2" /> Le Centre International d'Antibes
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
