@@ -36,15 +36,15 @@ export default defineConfig(({ mode }) => ({
               id.includes("/react-dom/") ||
               id.includes("/react/") ||
               id.includes("react-i18next") ||
+              id.includes("@tanstack/react-query") ||
+              id.includes("react-hook-form") ||
+              id.includes("@hookform") ||
               id.includes("/scheduler/")
             ) {
               return "react-vendor";
             }
             if (
-              id.includes("@tanstack/react-query") ||
               id.includes("@supabase") ||
-              id.includes("react-hook-form") ||
-              id.includes("@hookform") ||
               id.includes("zod")
             ) {
               return "data-vendor";
