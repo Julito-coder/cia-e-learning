@@ -55,27 +55,6 @@ export default function Connexion() {
 
   const redirectTo = searchParams.get('redirect') || '/dashboard';
 
-  const handleGoogleSignIn = async () => {
-    setGoogleLoading(true);
-    const result = await lovable.auth.signInWithOAuth('google', {
-      redirect_uri: `${window.location.origin}${redirectTo}`,
-    });
-    if (result.error) {
-      toast.error(t('auth.googleError', { message: result.error.message ?? String(result.error) }));
-      setGoogleLoading(false);
-    }
-  };
-
-  const handleAppleSignIn = async () => {
-    setAppleLoading(true);
-    const result = await lovable.auth.signInWithOAuth('apple', {
-      redirect_uri: `${window.location.origin}${redirectTo}`,
-    });
-    if (result.error) {
-      toast.error(t('auth.appleError', { message: result.error.message ?? String(result.error) }));
-      setAppleLoading(false);
-    }
-  };
 
   useEffect(() => {
     if (user) navigate(redirectTo, { replace: true });
@@ -154,43 +133,6 @@ export default function Connexion() {
         <CardContent className="p-6 space-y-4">
           <AuthTabs value={tab} onChange={switchTab} />
 
-          {/* SSO — Apple + Google managés par Lovable Cloud. */}
-          <div className="space-y-2">
-            <Button
-              type="button"
-              variant="outline"
-              size="lg"
-              className="w-full gap-2"
-              onClick={handleGoogleSignIn}
-              disabled={googleLoading || loading}
-            >
-              {googleLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <GoogleIcon />}
-              {t('auth.continueWithGoogle')}
-            </Button>
-            <Button
-              type="button"
-              variant="outline"
-              size="lg"
-              className="w-full gap-2"
-              onClick={handleAppleSignIn}
-              disabled={appleLoading || loading}
-            >
-              {appleLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <AppleIcon />}
-              {t('auth.continueWithApple')}
-            </Button>
-          </div>
-
-          {/* Divider */}
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center" aria-hidden="true">
-              <div className="w-full border-t border-border" />
-            </div>
-            <div className="relative flex justify-center">
-              <span className="bg-card px-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                {t('auth.orWithEmail')}
-              </span>
-            </div>
-          </div>
 
           <AnimatePresence mode="wait" initial={false}>
             <motion.form
