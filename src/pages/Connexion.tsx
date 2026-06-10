@@ -125,6 +125,16 @@ export default function Connexion() {
     setErrors({});
   };
 
+  const handleOAuthSignIn = async (provider: 'google' | 'apple') => {
+    const result = await lovable.auth.signInWithOAuth(provider, {
+      redirect_uri: `${window.location.origin}${redirectTo}`,
+    });
+    if (result.error) {
+      toast.error(result.error.message || `Erreur de connexion ${provider}`);
+    }
+    // redirected = browser handles the redirect flow
+  };
+
   return (
     <AuthShell
       title={isLogin ? t('auth.welcomeTitle') : t('auth.createAccount')}
